@@ -14,7 +14,7 @@ set(TA-LIB TA-lib/DFA.cpp TA-lib/DFA.h TA-lib/ENFA.cpp
         TA-lib/ENFA.h TA-lib/RE.cpp TA-lib/RE.h)
 ################################################################
 #exec
-add_executable(Tog main.cpp)
+add_executable(Tog main.cpp ${TA-LIB})
 ################################################################
 #library
 
