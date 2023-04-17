@@ -8,6 +8,10 @@
 # Prerequisites
 *.d
 
+/.idea/*
+/.idea/
+/.idea
+
 # Compiled Object files
 *.slo
 *.lo
@@ -163,6 +167,7 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+
 
 ### CMake Patch ###
 # External projects
