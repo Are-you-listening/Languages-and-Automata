@@ -11,7 +11,7 @@
 #include "../../../lib/DesignByContract.h"
 #include "Note.h"
 #include "iostream"
-
+#include "Parser.h"
 
 using namespace std;
 
@@ -20,9 +20,16 @@ class Regex;
 class Song {
     string title;
     vector<Note*> notes;
-    std::map<int,Note*> // int = timestamp , Node = Node
+    std::map<int,Note*> notesz; // int = timestamp , Node = Node
 
-    toRegex();	 //(Alles)
+public:
+    Song();
+
+    void Parse(fstream &file);
+
+    void Partition() const;
+
+    void toRegex() const;	 //(Alles)
 
     Regex toRegexToonHoogte();		//	A = B // (A+B)CD
 

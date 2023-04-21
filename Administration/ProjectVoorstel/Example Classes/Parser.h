@@ -15,7 +15,7 @@ class Parser {
      * @param file : .mid file to read from
      * @return .mid file in Song format
      */
-    Song Parse(fstream &file) const;
+    Song* Parse(fstream &file) const;
 
 };
 

@@ -3,3 +3,11 @@
 //
 
 #include "Song.h"
+
+Song::Song(){
+
+}
+
+void Song::Parse(fstream &file){
+
+}
