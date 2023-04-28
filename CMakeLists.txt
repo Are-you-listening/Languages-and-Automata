@@ -14,7 +14,7 @@ include_directories(lib)
 set(RELEASE_SOURCE_FILES
         main.cpp
 
-        )
+        Genre.cpp Genre.h Song.cpp Song.h)
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES
