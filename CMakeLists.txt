@@ -7,19 +7,9 @@ project(Tog)
 set(CMAKE_CXX_STANDARD 17)
 ################################################################
 #directories
-include_directories(JSON_Parser TA-lib)
+include_directories(lib)
 ################################################################
 #sources
-#set()
-################################################################
-#exec
-add_executable(Tog main.cpp ${TA-LIB} )
-
-################################################################
-#library
-
-################################################################
-
 # Set source files for RELEASE target
 set(RELEASE_SOURCE_FILES
         main.cpp
@@ -32,9 +22,11 @@ set(DEBUG_SOURCE_FILES
         testing/testing.cpp
 
         )
-
+################################################################
 # Create RELEASE target
-add_executable(main_executable ${RELEASE_SOURCE_FILES})
+add_executable(Tog ${RELEASE_SOURCE_FILES} ${TA-LIB} )
 
 # Create DEBUG target
-add_executable(testing_tool ${DEBUG_SOURCE_FILES})
+add_executable(testing_tool ${DEBUG_SOURCE_FILES} ${TA-LIB})
+################################################################
+
