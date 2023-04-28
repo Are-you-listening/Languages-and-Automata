@@ -7,6 +7,9 @@
 
 #include "lib/DesignByContract.h"
 
+/**
+ * Object which contains all the data of a Song.
+ */
 class Song {
 private:
     Song* fInitCheck;
