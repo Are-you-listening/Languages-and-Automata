@@ -15,7 +15,7 @@ public:
     /**
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * \ENSURE(succes, "Percentage must be between 0 and 100");
-     * \brief Run a similarity Check on this and a given song (song).
+     * \brief Run a similarity Check on this Song and a given Song ('song').
      * @param song
      * @return percentage, the percentage the Songs are the same
      */
@@ -24,6 +24,7 @@ public:
     /**
     * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     * \brief Checks if an item is properly initialised
+     * @return succes, bool deciding the succes of the operation
     */
     bool ProperlyInitialized() const;
 };
