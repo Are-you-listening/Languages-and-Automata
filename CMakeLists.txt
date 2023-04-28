@@ -29,4 +29,3 @@ add_executable(Tog ${RELEASE_SOURCE_FILES} ${TA-LIB} )
 # Create DEBUG target
 add_executable(testing_tool ${DEBUG_SOURCE_FILES} ${TA-LIB})
 ################################################################
-
