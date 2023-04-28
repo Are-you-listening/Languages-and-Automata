@@ -12,7 +12,7 @@
 #include <iostream>
 #include <queue>
 
-#include "json.hpp"
+#include "../json.hpp"
 #include "transitiefunctie.h"
 #include "Utils.h"
 

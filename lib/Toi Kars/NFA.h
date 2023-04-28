@@ -6,7 +6,7 @@
 #define INC_1_NFA_H
 
 #include "DFA.h"
-#include "json.hpp"
+#include "../json.hpp"
 #include "State.h"
 #include "Utils.h"
 #include "queue"
