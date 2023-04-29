@@ -5,7 +5,7 @@
 #ifndef TOG_SONG_H
 #define TOG_SONG_H
 
-#include "lib/DesignByContract.h"
+#include "DesignByContract.h"
 
 /**
  * Object which contains all the data of a Song.
