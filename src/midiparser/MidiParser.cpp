@@ -3,16 +3,17 @@
 #include "ByteX.h"
 
 MidiParser::MidiParser(const string &path) {
-    stream.open(&path[0]);
+    stream.open(&path[0], ios_base::binary);
     readHeader();
 
     for (unsigned int i = 0; i<track_amount; i++){
         readTrack();
         bool b = true;
+
         while (b){
             b = readComponent();
+
         }
-        //cout << "track done " << i << endl;
     }
 }
 
@@ -31,6 +32,8 @@ ByteX MidiParser::byteRead(int length) {
 
         original_byte = (original_byte << 8) | b;
     }
+
+
 
     ByteX output(original_byte, length);
     return output;
