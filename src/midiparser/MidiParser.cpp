@@ -12,6 +12,7 @@ MidiParser::MidiParser(const string &path) {
         while (b){
             b = readComponent();
         }
+        //cout << "track done " << i << endl;
     }
 }
 
@@ -43,7 +44,6 @@ bool MidiParser::readComponent() {
 
     ByteX delta_time = byteRead(1);
     ByteX current_delta = delta_time;
-
     while (current_delta.getMSB(0)){
         current_delta = byteRead(1);
         delta_time.concatinateDeltaTime(current_delta);
@@ -52,6 +52,7 @@ bool MidiParser::readComponent() {
     delta_time_counter += delta_time.getValue();
 
     ByteX basic_data = byteRead(2);
+
     //cout << basic_data.toHex() << endl;
     //cout << "delta " << delta_time.toHex() << endl;
     if (basic_data.equalsHex("ff", 0)){
@@ -117,11 +118,11 @@ bool MidiParser::readComponent() {
         }else{
             cout << "error" << basic_data.toHex() << endl;
         }
-    }else if (basic_data.equalsHex("c", 0) || basic_data.equalsHex("e", 0)){
+    }else if (basic_data.equalsHex("c", 0)){
         /**
          * checks for c/e nibble
          * */
-    }else if (basic_data.equalsHex("a", 0) || basic_data.equalsHex("b", 0)){
+    }else if (basic_data.equalsHex("a", 0) || basic_data.equalsHex("b", 0)|| basic_data.equalsHex("e", 0)){
         /**
          * reads 1 extra byte
          * */
@@ -141,6 +142,7 @@ bool MidiParser::readComponent() {
         ByteX velocity = byteRead(1);
         unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
         bool note_on = velocity.getValue() != 0;
+        //cout << "note " << basic_data.toHex() << " " << velocity.toHex() << endl;
         addNote(time, note_on, new Note(time, note_on, basic_data.getNibble(0, false),
                                         basic_data.getByte(1), velocity.getValue()));
     }else{
