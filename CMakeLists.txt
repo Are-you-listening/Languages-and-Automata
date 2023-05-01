@@ -30,7 +30,14 @@ set(MAIN_SRC
         src/Song.h
         src/Song.cpp
         ${MIDIPASER_SRC}
-        src/NFA.cpp src/NFA.h src/REGEX.cpp src/REGEX.h src/DFA.cpp src/DFA.h src/ENFA.cpp src/ENFA.h)
+        src/NFA.cpp
+        src/NFA.h
+        src/RE.cpp
+        src/RE.h
+        src/DFA.cpp
+        src/DFA.h
+        src/ENFA.cpp
+        src/ENFA.h)
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
 
