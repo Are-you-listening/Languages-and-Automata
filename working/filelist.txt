@@ -66,7 +66,6 @@ boss-miracle-matter-2-.mid
 BrambleBlastSSBBv3.mid
 BrotherLouie.mid
 Calamity_Mod_-_Hadopelagic_Pressure_and_Void.mid
-cascades_a_rag_(1904)_(nc)smythe.mid
 casinopolis-dilapidated-way.mid
 Castle Crashers - The Necromancer [MIDISTOCK.RU].mid
 castle.mid
@@ -370,7 +369,6 @@ mmzxa_raiderpursuit_v1_0.mid
 MMZXA_Soul_Ablaze-KM.mid
 MMZXA_Trap_Phantasm-KM.mid
 MMZXAreaJXG.mid
-morton_159s_mr_jelly_lord_(1924)_(nc)smythe.mid
 mother3-unfoundedrevenge.mid
 MP_Magmoor_Caverns_V2-0_XG_By_Nova.mid
 MS3_M48p.mid
