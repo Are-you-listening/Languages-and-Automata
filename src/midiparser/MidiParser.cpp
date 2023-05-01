@@ -42,6 +42,7 @@ ByteX MidiParser::byteRead(int length) {
 bool MidiParser::readComponent() {
 
     if (stream.eof()){
+        cout << "coole bug" << endl;
         throw 1;
     }
 
@@ -55,9 +56,6 @@ bool MidiParser::readComponent() {
     delta_time_counter += delta_time.getValue();
 
     ByteX basic_data = byteRead(2);
-
-    //cout << basic_data.toHex() << endl;
-    //cout << "delta " << delta_time.toHex() << endl;
     if (basic_data.equalsHex("ff", 0)){
 
         if (basic_data.equalsHex("01", 1) || basic_data.equalsHex("02", 1) || basic_data.equalsHex("03", 1) ||
@@ -110,7 +108,9 @@ bool MidiParser::readComponent() {
                 byteRead(1);
             }
             //cout << "06" << endl;
+        }else if (basic_data.equalsHex("09", 1)) {
         }else if (basic_data.equalsHex("20", 1)) {
+
             byteRead(2);
             //cout << "06" << endl;
         }else if (basic_data.equalsHex("7f", 1)){
