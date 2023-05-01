@@ -121,7 +121,7 @@ bool MidiParser::readComponent() {
         }else{
             cout << "error" << basic_data.toHex() << endl;
         }
-    }else if (basic_data.equalsHex("c", 0)){
+    }else if (basic_data.equalsHex("c", 0) || basic_data.equalsHex("d", 0)){
         /**
          * checks for c/e nibble
          * */
