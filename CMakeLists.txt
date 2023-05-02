@@ -42,10 +42,14 @@ set(MAIN_SRC
         src/DFA.h
         src/ENFA.cpp
         src/ENFA.h
-        lib/Toi_Emil/DFA.h
-        lib/Toi_Kars/DFA.h
-        lib/Toi_Tibo/DFA.h
-        lib/Toi_Tibo/DFA.cpp lib/Toi_Tibo/DFAT.cpp lib/Toi_Tibo/DFAT.h lib/Toi_Emil/DFAE.cpp lib/Toi_Emil/DFAE.h lib/Toi_Emil/NFAE.cpp lib/Toi_Emil/NFAE.h lib/Toi_Emil/REE.cpp lib/Toi_Emil/REE.h)
+        lib/Toi_Tibo/DFAT.cpp
+        lib/Toi_Tibo/DFAT.h
+        lib/Toi_Emil/DFAE.cpp
+        lib/Toi_Emil/DFAE.h
+        lib/Toi_Emil/NFAE.cpp
+        lib/Toi_Emil/NFAE.h
+        lib/Toi_Emil/REE.cpp
+        lib/Toi_Emil/REE.h)
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
 

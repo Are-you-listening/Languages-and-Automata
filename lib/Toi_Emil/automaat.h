@@ -10,7 +10,7 @@
 using namespace std;
 
 class automaat {
-protected:
+public:
     list<Node*> states;
     set<char> alfabet;
     Node* startState = nullptr;

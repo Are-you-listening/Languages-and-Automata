@@ -13,6 +13,7 @@
 #include <fstream>
 #include <iomanip>
 #include "json.hpp"
+#include "Toi_Tibo/DFAT.h"
 using namespace std;
 
 using json = nlohmann::json;
@@ -58,7 +59,9 @@ public:
 
     void print()const&;
 
+    DFA minimize();
 
+    bool operator==(const DFA& d);
 
 };
 

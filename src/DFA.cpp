@@ -231,3 +231,10 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
         }
     }
 }
+
+DFA DFA::minimize() {
+    string c;
+    DFA::print();
+    DFAT
+
+}
