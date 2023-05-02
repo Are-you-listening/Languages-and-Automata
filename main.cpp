@@ -4,6 +4,7 @@
 #include "src/DFA.h"
 #include "src/ENFA.h"
 #include "src/RE.h"
+
 int main() {
 
     DFA temp("JSONWORK.json");
