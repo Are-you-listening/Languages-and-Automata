@@ -5,7 +5,6 @@
 #include <iostream>
 #include "DFAE.h"
 #include "automaat.h"
-
 using namespace std;
 
 DFAE::DFAE(const string &fileName) : automaat(fileName) {
