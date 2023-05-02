@@ -32,6 +32,10 @@ class DFA {
     vector<state*> states;
     set<string> alphabet;
     vector<state*> endstates;
+    json json_data;
+
+    void load(const json& j);
+
 public:
     state *getStartingState() const;
 
@@ -62,6 +66,8 @@ public:
     DFA minimize();
 
     bool operator==(const DFA& d);
+
+    json getJson() const;
 
 };
 

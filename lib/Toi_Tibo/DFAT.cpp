@@ -5,7 +5,7 @@
 #include "DFAT.h"
 #include <algorithm>
 #include <fstream>
-#include "json.hpp"
+
 #include <iomanip>
 
 DFAT::DFAT(const string &path) {
@@ -16,36 +16,8 @@ DFAT::DFAT(const string &path) {
 
     nlohmann::json data = nlohmann::json::parse(f);
 
-    for (string s: data["alphabet"].get<std::set<string>>()){
-        alfabet.insert(s[0]);
-    }
+    load(data);
 
-    int state_size = data["states"].size();
-    for (int i = 0; i<state_size; i++){
-        string state_name = data["states"][i]["name"].get<std::string>();
-        states.insert(state_name);
-        bool starting = data["states"][i]["starting"].get<bool>();
-        if (starting){
-            start_state = state_name;
-        }
-
-        bool accepting = data["states"][i]["accepting"].get<bool>();
-        if (accepting){
-            end_states.insert(state_name);
-        }
-
-    }
-
-    int transition_size = data["transitions"].size();
-    for (int i = 0; i < transition_size; i++){
-        string from = data["transitions"][i]["from"].get<std::string>();
-        string to = data["transitions"][i]["to"].get<std::string>();
-        char input = data["transitions"][i]["input"].get<std::string>()[0];
-
-        transition_map[from].insert({input, to});
-    }
-
-    make_TFA();
 }
 
 bool DFAT::accepts(const string &s) {
@@ -528,3 +500,79 @@ void DFAT::printTable(const set<string> &p_states, const map<string, map<string,
 DFAT::DFAT() {
 
 }
+
+void DFAT::load(const nlohmann::json &data) {
+    for (string s: data["alphabet"].get<std::set<string>>()){
+        alfabet.insert(s[0]);
+    }
+
+    int state_size = data["states"].size();
+    for (int i = 0; i<state_size; i++){
+        string state_name = data["states"][i]["name"].get<std::string>();
+        states.insert(state_name);
+        bool starting = data["states"][i]["starting"].get<bool>();
+        if (starting){
+            start_state = state_name;
+        }
+
+        bool accepting = data["states"][i]["accepting"].get<bool>();
+        if (accepting){
+            end_states.insert(state_name);
+        }
+
+    }
+    int transition_size = data["transitions"].size();
+    for (int i = 0; i < transition_size; i++){
+        string from = data["transitions"][i]["from"].get<std::string>();
+        string to = data["transitions"][i]["to"].get<std::string>();
+        char input = data["transitions"][i]["input"].get<std::string>()[0];
+        transition_map[from].insert({input, to});
+    }
+    make_TFA();
+}
+
+nlohmann::json DFAT::getJson() const {
+    nlohmann::json data = nlohmann::json::parse(R"({})");
+    data["type"] = "DFA";
+    for (auto a: alfabet){
+        string s;
+        s += a;
+        data["alphabet"].push_back( s);
+    }
+    int index = 0;
+    for (auto s : states){
+        bool start = false;
+        bool end = false;
+        if (start_state == s){
+            start = true;
+        }
+
+        if (find(end_states.begin(), end_states.end(), s) != end_states.end()){
+            end = true;
+        }
+
+        data["states"][index]["name"] = s;
+        data["states"][index]["starting"] = start;
+        data["states"][index]["accepting"] = end;
+        index += 1;
+    }
+
+    index = 0;
+    for (auto t : transition_map){
+        string state = t.first;
+        for (char a: alfabet){
+            string target = t.second.at(a);
+
+            string s;
+            s += a;
+
+            data["transitions"][index]["from"] = state;
+            data["transitions"][index]["to"] = target;
+            data["transitions"][index]["input"] = s;
+            index += 1;
+        }
+
+    }
+    return data;
+}
+

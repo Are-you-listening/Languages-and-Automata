@@ -8,6 +8,14 @@ DFA::DFA(const string& c) {
     ifstream input(c);
     json j;
     input >> j;
+
+    json_data = j;
+
+    load(j);
+    input.close();
+}
+
+void DFA::load(const json &j) {
     if (j.value("type","string") == "DFA"){
         vector<string> a=j["alphabet"];
         for(vector<string>::const_iterator it=a.begin();it!=a.end();it++){
@@ -46,8 +54,11 @@ DFA::DFA(const string& c) {
             count2++;
         }
     }
-    input.close();
+
 }
+
+
+
 
 bool DFA::accepts(string c) const& {
     state* nextState = startingState;
@@ -234,6 +245,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
 }
 
 DFA DFA::minimize() {
+    /*
     fstream FILE;
     FILE.open("JSONWORK.json", std::ofstream::out | std::ofstream::trunc);
     streambuf* sbufFILE = FILE.rdbuf();
@@ -251,6 +263,31 @@ DFA DFA::minimize() {
     dfatemp2.print();
     DFA temp("JSONWORK.json");
     cout.rdbuf(coutold);
-    FILE2.close();
-    return temp;
+    FILE2.close();*/
+
+    json data = getJson();
+    DFAT temp;
+    temp.load(data);
+
+    DFA final;
+    final.load(temp.getJson());
+    return final;
 }
+
+bool DFA::operator==(const DFA &d) {
+
+    json data = getJson();
+    json data2 = d.getJson();
+
+    DFAT temp;
+    DFAT temp2;
+    temp.load(data);
+    temp2.load(data);
+
+    return temp == temp;
+}
+
+json DFA::getJson() const{
+    return json_data;
+}
+
