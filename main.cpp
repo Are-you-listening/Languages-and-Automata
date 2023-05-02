@@ -2,12 +2,22 @@
 #include "midiparser/MidiParser.h"
 #include <algorithm>
 #include "src/DFA.h"
+#include "src/ENFA.h"
+#include "src/RE.h"
 int main() {
 
     DFA temp("JSONWORK.json");
+    string s = temp.ToRe();
+    RE RE(s, '*');
+    ENFA n = RE.toENFA();
+    DFA d = n.toDFA();
+    cout << (d == temp) << endl;
+    /*
+    DFA temp("JSONWORK.json");
     DFA b = temp.minimize();
     bool bd = temp==b;
-    cout << bd << endl;
+    cout << bd << endl;*/
+
     /*
     ifstream Filelist("filelist.txt");
     string c;

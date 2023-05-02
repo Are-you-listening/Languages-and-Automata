@@ -9,8 +9,6 @@ DFA::DFA(const string& c) {
     json j;
     input >> j;
 
-    json_data = j;
-
     load(j);
     input.close();
 }
@@ -282,12 +280,35 @@ bool DFA::operator==(const DFA &d) {
     DFAT temp;
     DFAT temp2;
     temp.load(data);
-    temp2.load(data);
+    temp2.load(data2);
 
     return temp == temp;
 }
 
 json DFA::getJson() const{
-    return json_data;
+    json j;
+    j["type"] = "DFA";
+    j["alphabet"]=DFA::alphabet;
+    vector<json> states;
+    for(vector<state*>::const_iterator it=DFA::states.begin(); it!=DFA::states.end(); it++){
+        json temp;
+        temp["name"]=(*it)->name;
+        temp["starting"]=(*it)->starting;
+        temp["accepting"]=(*it)->accepting;
+        states.push_back(temp);
+    }
+    j["states"]=states;
+    vector<json> transitions;
+    for(vector<state*>::const_iterator it=DFA::states.begin(); it!=DFA::states.end(); it++){
+        for(set<string>::const_iterator it2=DFA::alphabet.begin(); it2!=DFA::alphabet.end(); it2++){
+            json temp;
+            temp["from"]=(*it)->name;
+            temp["input"] = (*it2);
+            temp["to"]=(*it)->states[(*it2)]->name;
+            transitions.push_back(temp);
+        }
+    }
+    j["transitions"]=transitions;
+    return j;
 }
 

@@ -13,6 +13,8 @@ public:
     void print();
 
     explicit REE(const string &regex);
+
+    const string &getRegex() const;
 };
 
 

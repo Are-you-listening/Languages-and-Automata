@@ -7,6 +7,7 @@ MidiParser::MidiParser(const string &path) {
      * Welkom in the midiparser, here some binary data will be converted to
      * more usefull data. Are you intrested in this very intresting journey of deciphering Bytes
      * Follow me through this documentation and you will achieve an basic understanding of our midi-parser
+     * Voor we beginnen zullen we eerst duidelijk moeten
      * */
     stream.open(&path[0], ios_base::binary);
     readHeader();

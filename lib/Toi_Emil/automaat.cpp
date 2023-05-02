@@ -20,30 +20,7 @@ automaat::automaat(string fileName) {
     ifstream input(fileName);
     json j;
     input >> j;
-    type = j["type"];
-    set<string> temp = j["alphabet"];
-    alfabet.clear();
-    for (auto item : temp){
-        char symbol = item[0];
-        alfabet.emplace(symbol);
-    }
-    set<json> newstates = j["states"];
-    for (auto state : newstates){
-        string tempname = state["name"];
-        bool tempstart = state["starting"];
-        bool tempend = state["accepting"];
-        addState(tempname, tempstart, tempend);
-    }
-
-    set<json> newtransitions = j["transitions"];
-    for (auto transition : newtransitions) {
-        Node *state1 = getState(transition["from"]).first;
-        Node *state2 = getState(transition["to"]).first;
-        string inputsymbol = transition["input"];
-        for (auto symbol: inputsymbol) {
-            state1->addconnection(state2, symbol);
-        }
-    }
+    load(j);
 }
 
 
@@ -102,7 +79,7 @@ bool automaat::accepts(string input) {
     return false;
 }
 
-bool automaat::isStartState(string name) {
+bool automaat::isStartState(string name) const{
     if (getState(name).first == startState){
         return true;
     } else {
@@ -110,7 +87,7 @@ bool automaat::isStartState(string name) {
     }
 }
 
-bool automaat::isEndState(string name) {
+bool automaat::isEndState(string name) const{
     for (auto state : endStates){
         if (state == getState(name).first){
             return true;
@@ -168,3 +145,57 @@ vector<string> automaat::splitString(const string &str) {
     return tokens;
 }
 
+void automaat::load(const nlohmann::json& j){
+    type = j["type"];
+    set<string> temp = j["alphabet"];
+    alfabet.clear();
+    for (auto item : temp){
+        char symbol = item[0];
+        alfabet.emplace(symbol);
+    }
+    set<json> newstates = j["states"];
+    for (auto state : newstates){
+        string tempname = state["name"];
+        bool tempstart = state["starting"];
+        bool tempend = state["accepting"];
+        addState(tempname, tempstart, tempend);
+    }
+
+    set<json> newtransitions = j["transitions"];
+    for (auto transition : newtransitions) {
+        Node *state1 = getState(transition["from"]).first;
+        Node *state2 = getState(transition["to"]).first;
+        string inputsymbol = transition["input"];
+        for (auto symbol: inputsymbol) {
+            state1->addconnection(state2, symbol);
+        }
+    }
+}
+
+nlohmann::json automaat::getJson() const{
+    json Jout;
+    Jout["type"] = type;
+    for (auto symbol : alfabet){
+        Jout["alphabet"].push_back(string(1, symbol));
+    }
+    for (auto state: states) {  // add all the states
+        json temp;
+        temp["name"] = state->getName();
+        temp["starting"] = isStartState(state->getName());
+        temp["accepting"] = isEndState(state->getName());
+        Jout["states"].push_back(temp);
+    }
+    // these 2 for loops can probably be merged, but I will keep them separate for readability
+    for (auto state: states) {  // add all the transitions
+        for (const auto& transition: state->getConnections()) {
+            for (auto symbol: transition.second) {
+                json temp;
+                temp["from"] = state->getName();
+                temp["to"] = transition.first->getName();
+                temp["input"] = string(1, symbol);
+                Jout["transitions"].push_back(temp);
+            }
+        }
+    }
+    return Jout;
+}

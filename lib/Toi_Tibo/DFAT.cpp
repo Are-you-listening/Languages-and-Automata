@@ -415,7 +415,7 @@ bool DFAT::operator==(const DFAT &d) {
         }
     }
 
-    printTable(all_states, compare_tfa_map);
+    //printTable(all_states, compare_tfa_map);
 
     /**
      * check dat de eindstaten distinguishable zijn

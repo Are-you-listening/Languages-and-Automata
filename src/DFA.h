@@ -14,6 +14,8 @@
 #include <iomanip>
 #include "json.hpp"
 #include "Toi_Tibo/DFAT.h"
+#include "Toi_Emil/DFAE.h"
+#include "Toi_Emil/REE.h"
 using namespace std;
 
 using json = nlohmann::json;

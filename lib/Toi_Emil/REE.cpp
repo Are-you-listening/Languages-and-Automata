@@ -11,3 +11,7 @@ void REE::print() {
 }
 
 REE::REE(const string &regex) : regex(regex) {}
+
+const string &REE::getRegex() const {
+    return regex;
+}
