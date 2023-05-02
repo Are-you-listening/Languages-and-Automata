@@ -3,6 +3,8 @@
 #include <algorithm>
 #include "src/DFA.h"
 int main() {
+    DFA temp("JSONWORK.json");
+    temp.minimize().print();
     ifstream Filelist("filelist.txt");
     string c;
     string c2="midi_files/";

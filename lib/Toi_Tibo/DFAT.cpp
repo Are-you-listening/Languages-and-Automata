@@ -67,7 +67,7 @@ bool DFAT::accepts(const string &s) {
 
 void DFAT::print() const{
     nlohmann::json data = nlohmann::json::parse(R"({})");
-    data["type"] = "DFAT";
+    data["type"] = "DFA";
     for (auto a: alfabet){
         string s;
         s += a;

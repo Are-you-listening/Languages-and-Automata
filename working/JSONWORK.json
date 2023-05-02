@@ -5,81 +5,51 @@
     ],
     "states": [
         {
-            "accepting": true,
-            "name": "1",
-            "starting": false
-        },
-        {
             "accepting": false,
-            "name": "3",
-            "starting": false
-        },
-        {
-            "accepting": false,
-            "name": "2",
-            "starting": false
-        },
-        {
-            "accepting": false,
-            "name": "0",
+            "name": "{0}",
             "starting": true
         },
         {
+            "accepting": true,
+            "name": "{1}",
+            "starting": false
+        },
+        {
             "accepting": false,
-            "name": "4",
+            "name": "{2, 3, 4}",
             "starting": false
         }
     ],
     "transitions": [
         {
-            "from": "1",
+            "from": "{0}",
             "input": "a",
-            "to": "3"
+            "to": "{2, 3, 4}"
         },
         {
-            "from": "1",
+            "from": "{0}",
             "input": "e",
-            "to": "2"
+            "to": "{1}"
         },
         {
-            "from": "3",
+            "from": "{1}",
             "input": "a",
-            "to": "2"
+            "to": "{2, 3, 4}"
         },
         {
-            "from": "3",
+            "from": "{1}",
             "input": "e",
-            "to": "2"
+            "to": "{2, 3, 4}"
         },
         {
-            "from": "2",
+            "from": "{2, 3, 4}",
             "input": "a",
-            "to": "4"
+            "to": "{2, 3, 4}"
         },
         {
-            "from": "2",
+            "from": "{2, 3, 4}",
             "input": "e",
-            "to": "3"
-        },
-        {
-            "from": "0",
-            "input": "a",
-            "to": "4"
-        },
-        {
-            "from": "0",
-            "input": "e",
-            "to": "1"
-        },
-        {
-            "from": "4",
-            "input": "a",
-            "to": "4"
-        },
-        {
-            "from": "4",
-            "input": "e",
-            "to": "4"
+            "to": "{2, 3, 4}"
         }
     ],
     "type": "DFA"

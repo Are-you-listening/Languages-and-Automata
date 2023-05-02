@@ -46,6 +46,7 @@ DFA::DFA(const string& c) {
             count2++;
         }
     }
+    input.close();
 }
 
 bool DFA::accepts(string c) const& {
@@ -233,16 +234,23 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
 }
 
 DFA DFA::minimize() {
-    fstream FILE("JSONWORK.json");
+    fstream FILE;
+    FILE.open("JSONWORK.json", std::ofstream::out | std::ofstream::trunc);
     streambuf* sbufFILE = FILE.rdbuf();
     streambuf* coutold = cout.rdbuf();
     cout.rdbuf(sbufFILE);
     DFA::print();
-    DFAT dfatemp("JSONWORK.json");
-    dfatemp.minimize();
-    dfatemp.print();// JSONWORK moet voor dit nog gecleared worden
-    DFA temp("JSONWORK.json");
     FILE.close();
+    DFAT dfatemp("JSONWORK.json");
+    DFAT dfatemp2;
+    dfatemp2=dfatemp.minimize();
+    ofstream FILE2("JSONWORK.json");
+    FILE2.open("JSONWORK.json", std::ofstream::out | std::ofstream::trunc);
+    sbufFILE = FILE2.rdbuf();
+    cout.rdbuf(sbufFILE);
+    dfatemp2.print();
+    DFA temp("JSONWORK.json");
     cout.rdbuf(coutold);
+    FILE2.close();
     return temp;
 }
