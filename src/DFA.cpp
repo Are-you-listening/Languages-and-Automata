@@ -233,16 +233,16 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
 }
 
 DFA DFA::minimize() {
-    string c;
-    ofstream FILE("JSONWORK.json");
+    fstream FILE("JSONWORK.json");
+    streambuf* sbufFILE = FILE.rdbuf();
+    streambuf* coutold = cout.rdbuf();
+    cout.rdbuf(sbufFILE);
     DFA::print();
-    FILE << ios::out;
     DFAT dfatemp("JSONWORK.json");
     dfatemp.minimize();
-    dfatemp.print();
-    FILE.clear();
-    FILE << ios::out;
+    dfatemp.print();// JSONWORK moet voor dit nog gecleared worden
     DFA temp("JSONWORK.json");
-    (*this) = temp;
     FILE.close();
+    cout.rdbuf(coutold);
+    return temp;
 }
