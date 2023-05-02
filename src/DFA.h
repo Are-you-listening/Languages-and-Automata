@@ -47,12 +47,19 @@ public:
     const vector<state *> &getEndstates() const;
 
     void setEndstates(const vector<state *> &endstates);
-public:
+
     DFA(const string& c);
+
     DFA();
+
     DFA(DFA& dfa1, DFA& dfa2, bool c);
+
     bool accepts(string c)const&;
+
     void print()const&;
+
+
+
 };
 
 
