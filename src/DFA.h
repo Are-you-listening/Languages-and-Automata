@@ -71,6 +71,8 @@ public:
 
     json getJson() const;
 
+    string ToRe();
+
 };
 
 

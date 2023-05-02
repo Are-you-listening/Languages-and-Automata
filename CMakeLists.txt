@@ -54,7 +54,10 @@ set(MAIN_SRC
         lib/Toi_Emil/automaat.h
         lib/Toi_Emil/Node.cpp
         lib/Toi_Emil/Node.h
-        )
+        lib/Toi_Kars/Utils.cpp
+        lib/Toi_Kars/Utils.h
+        lib/Toi_Kars/State.h
+        lib/Toi_Kars/State.cpp)
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
 

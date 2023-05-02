@@ -312,3 +312,12 @@ json DFA::getJson() const{
     return j;
 }
 
+string DFA::ToRe(){
+    json data = getJson();
+    DFAE temp;
+    temp.load(data);
+    REE r = temp.toREE();
+    return r.getRegex();
+
+}
+

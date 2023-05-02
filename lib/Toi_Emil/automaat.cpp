@@ -41,7 +41,7 @@ void automaat::addState(string name, bool start, bool endState) {
  * @return (Node*, bool)
  */
 
-pair<Node*, bool> automaat::getState(string name) {
+pair<Node*, bool> automaat::getState(string name) const{
     
     for (Node* state : states){
         if (state->getName() == name){

@@ -22,8 +22,8 @@ public:
 
     virtual void addState(string name, bool startState, bool endState);
 
-    virtual bool isStartState(string name);
-    virtual bool isEndState(string name);
+    virtual bool isStartState(string name) const;
+    virtual bool isEndState(string name) const;
 
     virtual vector<string> splitString(const string &str);
 
