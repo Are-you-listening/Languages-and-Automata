@@ -234,7 +234,15 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
 
 DFA DFA::minimize() {
     string c;
+    ofstream FILE("JSONWORK.json");
     DFA::print();
-    DFAT
-
+    FILE << ios::out;
+    DFAT dfatemp("JSONWORK.json");
+    dfatemp.minimize();
+    dfatemp.print();
+    FILE.clear();
+    FILE << ios::out;
+    DFA temp("JSONWORK.json");
+    (*this) = temp;
+    FILE.close();
 }

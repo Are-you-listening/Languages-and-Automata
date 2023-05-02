@@ -44,10 +44,6 @@ set(MAIN_SRC
         src/ENFA.h
         lib/Toi_Tibo/DFAT.cpp
         lib/Toi_Tibo/DFAT.h
-        lib/Toi_Emil/DFAE.cpp
-        lib/Toi_Emil/DFAE.h
-        lib/Toi_Emil/NFAE.cpp
-        lib/Toi_Emil/NFAE.h
         lib/Toi_Emil/REE.cpp
         lib/Toi_Emil/REE.h)
 
