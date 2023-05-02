@@ -57,8 +57,12 @@ bool MidiParser::readComponent() {
 
     ByteX basic_data = byteRead(2);
     if (basic_data.equalsHex("ff", 0)){
-
-        if (basic_data.equalsHex("01", 1) || basic_data.equalsHex("02", 1) || basic_data.equalsHex("03", 1) ||
+        if (basic_data.equalsHex("07", 1)){
+            ByteX data_length = byteRead(1);
+            for (unsigned int i=0; i < data_length.getValue(); i ++){
+                ByteX text = byteRead(1);
+        }
+        }else if (basic_data.equalsHex("01", 1) || basic_data.equalsHex("02", 1) || basic_data.equalsHex("03", 1) ||
             basic_data.equalsHex("04", 1)){
             ByteX data_length = byteRead(1);
             for (unsigned int i=0; i < data_length.getValue(); i ++){
@@ -66,6 +70,11 @@ bool MidiParser::readComponent() {
             }
             //cout << "01-04" << endl;
 
+        }else if (basic_data.equalsHex("4b", 1)){
+            ByteX data_length = byteRead(1);
+            for (unsigned int i=0; i < data_length.getValue(); i ++){
+                byteRead(1);
+            }
 
         }else if (basic_data.equalsHex("51", 1)){
             ByteX value = byteRead(1);

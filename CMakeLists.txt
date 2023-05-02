@@ -41,11 +41,7 @@ set(MAIN_SRC
         src/DFA.cpp
         src/DFA.h
         src/ENFA.cpp
-        src/ENFA.h
-        lib/Toi_Emil/DFA.h
-        lib/Toi_Kars/DFA.h
-        lib/Toi_Tibo/DFA.h
-        lib/Toi_Tibo/DFA.cpp)
+        src/ENFA.h)
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
 
