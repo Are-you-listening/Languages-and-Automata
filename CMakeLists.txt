@@ -8,6 +8,10 @@ set(CMAKE_CXX_STANDARD 17)
 ################################################################
 #directories
 include_directories(lib)
+include_directories(lib/Toi_Anas)
+include_directories(lib/Toi_Emil)
+include_directories(lib/Toi_Kars)
+include_directories(lib/Toi_Tibo)
 ################################################################
 #sources
 # Set source files for RELEASE target
@@ -37,7 +41,11 @@ set(MAIN_SRC
         src/DFA.cpp
         src/DFA.h
         src/ENFA.cpp
-        src/ENFA.h)
+        src/ENFA.h
+        lib/Toi_Emil/DFA.h
+        lib/Toi_Kars/DFA.h
+        lib/Toi_Tibo/DFA.h
+        lib/Toi_Tibo/DFA.cpp)
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
 
