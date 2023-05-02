@@ -20,10 +20,10 @@
 
 #ifdef _WIN32
 #define REQUIRE(assertion, what) \
-	if (!(assertion)) __assert (what, __FILE__, __LINE__)
+	if (!(assertion)) _assert (what, __FILE__, __LINE__)
 
 #define ENSURE(assertion, what) \
-	if (!(assertion)) __assert (what, __FILE__, __LINE__)
+	if (!(assertion)) _assert (what, __FILE__, __LINE__)
 #endif
 
 #endif //PROJECT_V1_DESIGNBYCONTRACT_H

@@ -2,7 +2,6 @@
 #include "midiparser/MidiParser.h"
 #include <algorithm>
 int main() {
-    MidiParser m("midi_files/White_Park_Zone.mid");
 
     ifstream Filelist("filelist.txt");
     string c;
@@ -13,6 +12,6 @@ int main() {
         cout << c+ " " +to_string(b.size()) + " bytes"<< endl; //TODO deze files zijn geschreven in rag time. kan zijn dat dit hierdoor komt, ik heb die voor nu uit de filelist gelaten.
     }
     Filelist.close();
-
+    
     return 0;
 }
