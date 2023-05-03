@@ -8,6 +8,7 @@
 #include "DesignByContract.h"
 #include "string"
 #include "midiparser/MidiParser.h"
+#include "RE.h"
 using namespace std;
 /**
  * Object which contains all the data of a Song.
@@ -36,6 +37,8 @@ public:
     bool ProperlyInitialized() const;
 
     void parse(const string& path);
+
+    RE toregex(bool time_stamp, bool note_on, bool channel, bool note, bool velocity)const;
 };
 
 

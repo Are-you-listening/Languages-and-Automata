@@ -30,3 +30,12 @@ void Song::parse(const string &path) {
     note_map = m.getNoteMap();
 }
 
+RE Song::toregex(bool time_stamp, bool note_on, bool channel, bool note, bool velocity) const {
+    string c;
+    char epsilon;
+
+
+    RE regex(c, epsilon);
+    return regex;
+}
+
