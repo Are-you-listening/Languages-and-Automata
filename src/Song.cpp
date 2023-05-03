@@ -29,3 +29,4 @@ void Song::parse(const string &path) {
     MidiParser m(path);
     note_map = m.getNoteMap();
 }
+

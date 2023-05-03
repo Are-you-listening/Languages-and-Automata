@@ -6,7 +6,9 @@
 #define TOG_SONG_H
 
 #include "DesignByContract.h"
-
+#include "string"
+#include "midiparser/MidiParser.h"
+using namespace std;
 /**
  * Object which contains all the data of a Song.
  */
@@ -32,6 +34,8 @@ public:
      * @return succes, bool deciding the succes of the operation
     */
     bool ProperlyInitialized() const;
+
+    void parse(const string& path);
 };
 
 

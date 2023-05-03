@@ -61,6 +61,7 @@ bool MidiParser::readComponent() {
     delta_time_counter += delta_time.getValue();
 
     ByteX basic_data = byteRead(2);
+    cout << basic_data.toHex() << endl;
     if (basic_data.equalsHex("ff", 0)){
 
 
