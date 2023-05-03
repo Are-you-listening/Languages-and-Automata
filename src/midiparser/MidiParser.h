@@ -23,6 +23,8 @@ public:
 
     const map<pair<unsigned int, bool>, set<Note *>> &getNoteMap() const;
 
+    bool valid();
+
 private:
     ifstream stream;
 

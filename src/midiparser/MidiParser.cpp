@@ -62,18 +62,16 @@ bool MidiParser::readComponent() {
 
     ByteX basic_data = byteRead(2);
     if (basic_data.equalsHex("ff", 0)){
-        if (basic_data.equalsHex("07", 1)){
+
+
+        if (basic_data.getNibble(1, true) == 0 && basic_data.getNibble(1, false) < 9){
+            /**
+            * these instructions are all instructions containing an extra byte giving an size of the data
+            **/
             ByteX data_length = byteRead(1);
             for (unsigned int i=0; i < data_length.getValue(); i ++){
-                ByteX text = byteRead(1);
-        }
-        }else if (basic_data.equalsHex("01", 1) || basic_data.equalsHex("02", 1) || basic_data.equalsHex("03", 1) ||
-            basic_data.equalsHex("04", 1)){
-            ByteX data_length = byteRead(1);
-            for (unsigned int i=0; i < data_length.getValue(); i ++){
-                ByteX text = byteRead(1);
+                byteRead(1);
             }
-            //cout << "01-04" << endl;
 
         }else if (basic_data.equalsHex("4b", 1)){
             ByteX data_length = byteRead(1);
@@ -85,48 +83,30 @@ bool MidiParser::readComponent() {
             ByteX value = byteRead(1);
             if (value.equalsHex("03", 0)){
                 ms_per_quarter_note = byteRead(3).getValue();
-                //cout << "51 03" << endl;
             }
-            //cout << "51" << endl;
+
         }else if (basic_data.equalsHex("58", 1)){
             ByteX value = byteRead(1);
             if (value.equalsHex("04", 0)){
                 byteRead(4);
             }
-            //cout << "58" << endl;
+
         }else if (basic_data.equalsHex("2f", 1)){
             byteRead(1);
             return false;
         }else if (basic_data.equalsHex("21", 1)){
             byteRead(2);
-            //cout << "21" << endl;
         }else if (basic_data.equalsHex("54", 1)){
             byteRead(1);
             byteRead(2);
             byteRead(3);
-            //cout << "54" << endl;
-        }else if (basic_data.equalsHex("05", 1)){
-            ByteX length = byteRead(1);
-            //cout << length.getValue() << endl;
-            for (unsigned int i=0; i < length.getValue(); i++){
-                byteRead(1);
-            }
-            //cout << "05" << endl;
         }else if (basic_data.equalsHex("59", 1)){
             byteRead(1).getValue();
             byteRead(2).toHex();
-            //cout << "59" << endl;
-        }else if (basic_data.equalsHex("06", 1)){
-            ByteX length = byteRead(1);
-            for (unsigned int i=0; i < length.getValue(); i++){
-                byteRead(1);
-            }
-            //cout << "06" << endl;
         }else if (basic_data.equalsHex("09", 1)) {
         }else if (basic_data.equalsHex("20", 1)) {
 
             byteRead(2);
-            //cout << "06" << endl;
         }else if (basic_data.equalsHex("7f", 1)){
             ByteX length = byteRead(1);
             for (unsigned int i=0; i < length.getValue(); i++){
@@ -157,10 +137,12 @@ bool MidiParser::readComponent() {
             byteRead(1);
         }
     }else if (basic_data.equalsHex("9", 0) || basic_data.equalsHex("8", 0)){
+        /**
+         * Here the bytes will be considered a Note On/ Note Off
+         * **/
         ByteX velocity = byteRead(1);
         unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
-        bool note_on = velocity.getValue() != 0;
-        //cout << "note " << basic_data.toHex() << " " << velocity.toHex() << endl;
+        bool note_on = velocity.getValue() != 0 && basic_data.getNibble(0, true) == 9;
         addNote(time, note_on, new Note(time, note_on, basic_data.getNibble(0, false),
                                         basic_data.getByte(1), velocity.getValue()));
     }else{
@@ -178,6 +160,9 @@ void MidiParser::readTrack() {
 }
 
 void MidiParser::readHeader() {
+    /**
+     * Reads the header file, containing information about the amount of tracks, ticks per second
+     * */
     ByteX header = byteRead(4);
     ByteX header_size = byteRead(4);
 
@@ -202,4 +187,10 @@ void MidiParser::addNote(unsigned int time, bool note_on, Note* note) {
 
 const map<pair<unsigned int, bool>, set<Note *>> &MidiParser::getNoteMap() const {
     return note_map;
+}
+
+bool MidiParser::valid() {
+    string regex_string = "MThd,$^4 Byte(0), Byte(1), $^4(MTrk$^4(data)*)*";
+    //data: Byte(MSB true)*Byte(delta), FF(Byte(0-7)THROW AWAY DATA)
+    return false;
 }
