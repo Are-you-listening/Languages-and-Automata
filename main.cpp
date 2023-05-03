@@ -6,22 +6,6 @@
 #include "src/RE.h"
 
 int main() {
-
-    /*
-    DFA temp("JSONWORK.json");
-    string s = temp.ToRe();
-    RE RE(s, '*');
-    ENFA n = RE.toENFA();
-    DFA d = n.toDFA();
-    cout << (d == temp) << endl;
-     */
-    /*
-    DFA temp("JSONWORK.json");
-    DFA b = temp.minimize();
-    bool bd = temp==b;
-    cout << bd << endl;*/
-
-
     ifstream Filelist("filelist.txt");
     string c;
     string c2="midi_files/";
@@ -31,6 +15,5 @@ int main() {
         cout << c+ " " +to_string(b.size()) + " bytes"<< endl; //TODO deze files zijn geschreven in rag time. kan zijn dat dit hierdoor komt, ik heb die voor nu uit de filelist gelaten.
     } //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
     Filelist.close();
-
     return 0;
 }
