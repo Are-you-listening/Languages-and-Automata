@@ -25,11 +25,11 @@ MidiParser::MidiParser(const string &path) {
 
 ByteX MidiParser::byteRead(int length) {
     char c = '\000';
-    unsigned int original_byte = 0;
+    long unsigned int original_byte = 0;
     for (int i = 0; i<length; i++){
         stream.get(c);
 
-        unsigned int b;
+        long unsigned int b;
         if (int(c) >= 0){
            b = int(c);
         }else{
@@ -61,7 +61,6 @@ bool MidiParser::readComponent() {
     delta_time_counter += delta_time.getValue();
 
     ByteX basic_data = byteRead(2);
-    //cout << basic_data.toHex() << endl;
     if (basic_data.equalsHex("ff", 0)){
 
 
@@ -70,7 +69,15 @@ bool MidiParser::readComponent() {
             * these instructions are all instructions containing an extra byte giving an size of the data
             **/
             ByteX data_length = byteRead(1);
-            for (unsigned int i=0; i < data_length.getValue(); i ++){
+
+            ByteX temp_data = data_length;
+            while (temp_data.getMSB(0)){
+                temp_data = byteRead(1);
+
+                data_length.concatinateDeltaTime(temp_data);
+            }
+
+            for (long unsigned int i=0; i < data_length.getValue(); i ++){
                 byteRead(1);
             }
 
@@ -183,8 +190,6 @@ void MidiParser::readHeader() {
 
 void MidiParser::addNote(unsigned int time, bool note_on, Note* note) {
 
-
-    std::wcout << "a" << note->getRE(true, true, true, true, true) << std::endl;
     pair<unsigned int, bool> p = make_pair(time, note_on);
     note_map[p].insert(note);
 }

@@ -109,6 +109,6 @@ bool ByteX::getMSB(int index) {
     return getByte(index) >= 128;
 }
 
-unsigned int ByteX::getValue() const {
+long unsigned int ByteX::getValue() const {
     return value;
 }

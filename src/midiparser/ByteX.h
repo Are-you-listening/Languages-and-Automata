@@ -20,12 +20,12 @@ public:
     void concatinateDeltaTime(ByteX add);
     bool getMSB(int index);
 
-    unsigned int getValue() const;
+    long unsigned int getValue() const;
 
 
 private:
     unsigned int length;
-    unsigned int value;
+    long unsigned int value;
 };
 
 
