@@ -6,7 +6,8 @@
 #include "src/RE.h"
 
 int main() {
-
+    DFA temp("JSONWORK.json");
+    temp.complement().print();
     /*
     DFA temp("JSONWORK.json");
     string s = temp.ToRe();

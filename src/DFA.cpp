@@ -143,6 +143,16 @@ void state::addTransitionFunction(string c, state * q){
     state::states[cCopy]=q;
 }
 
+state* state::getComplement() {
+    state* new_state = new state() ;
+    new_state->name = name;
+    new_state->states = states;
+    new_state->accepting = !accepting;
+    new_state->starting = starting;
+    return new_state;
+
+}
+
 DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     bool a= true;
     state* startstate = new state();
@@ -319,5 +329,28 @@ string DFA::ToRe(){
     REE r = temp.toREE();
     return r.getRegex();
 
+}
+
+DFA DFA::complement() {
+    vector<state*> new_states;
+    for (state* s: states){
+        state* new_state = s->getComplement();
+        new_states.push_back(new_state);
+    }
+    json j = getJson();
+
+    vector<json> states;
+    for(vector<state*>::const_iterator it=new_states.begin(); it!=new_states.end(); it++){
+        json temp;
+        temp["name"]=(*it)->name;
+        temp["starting"]=(*it)->starting;
+        temp["accepting"]=(*it)->accepting;
+        states.push_back(temp);
+    }
+
+    j["states"]=states;
+    DFA d;
+    d.load(j);
+    return d;
 }
 

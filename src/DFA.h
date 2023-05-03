@@ -27,6 +27,7 @@ public:
     bool starting;
     bool accepting;
     void addTransitionFunction(string c ,state* q);
+    state* getComplement();
 };
 
 class DFA {
@@ -72,6 +73,8 @@ public:
     json getJson() const;
 
     string ToRe();
+
+    DFA complement();
 
 };
 
