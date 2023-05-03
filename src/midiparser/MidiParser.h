@@ -23,7 +23,7 @@ public:
 
     const map<pair<unsigned int, bool>, set<Note *>> &getNoteMap() const;
 
-    bool valid();
+    const map<unsigned int, map<unsigned int, unsigned int>> &getLinkChannel() const;
 
 private:
     ifstream stream;
@@ -43,7 +43,10 @@ private:
 
     void addNote(unsigned int time, bool note_on, Note* note);
 
+    unsigned int get_closest_change(unsigned int time, unsigned int channel);
+
     map<pair<unsigned int, bool>, set<Note*>> note_map;
+    map<unsigned int, map<unsigned int, unsigned int> > link_channel;
 
 
 };

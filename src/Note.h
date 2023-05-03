@@ -22,7 +22,7 @@ public:
      * @param note
      * @param velocity
      */
-    Note(unsigned int time_stamp, bool note_on, int channel, int note, int velocity);
+    Note(unsigned int time_stamp, bool note_on, int channel, int note, int velocity, unsigned int instrument);
 
     /**
      * \brief Convert a NoteObject to a Regex given by the selected inputparamaters (if @param=true, add to regex)

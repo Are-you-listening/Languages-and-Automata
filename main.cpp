@@ -6,12 +6,10 @@
 #include "src/RE.h"
 
 int main() {
-    /*
+
     Song* song = new Song();
-    song->parse("midi_files/morton_159s_mr_jelly_lord_(1924)_(nc)smythe.mid");*/
-    DFA temp("JSONWORK.json");
-    ENFA n = temp.reverse();
-    n.print();
+    song->parse("midi_files/morton_159s_mr_jelly_lord_(1924)_(nc)smythe.mid");
+
     /*
     ifstream Filelist("filelist.txt");
     string c;
