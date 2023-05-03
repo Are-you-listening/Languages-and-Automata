@@ -3,6 +3,7 @@
 //
 
 #include "DFA.h"
+#include "ENFA.h"
 
 DFA::DFA(const string& c) {
     ifstream input(c);
@@ -135,7 +136,7 @@ void state::addTransitionFunction(string c, state * q){
     string* ptr = &c;
     string cCopy = *ptr;
     int count=0;
-    while (states.find(cCopy)!=states.end()){
+    while (states.find(cCopy) != states.end()){
         cCopy = *ptr;
         cCopy+=to_string(count);
         count++;
@@ -151,6 +152,12 @@ state* state::getComplement() {
     new_state->starting = starting;
     return new_state;
 
+}
+
+void state::addTransitionFunctionENFA(string c, state *q) {
+    string* ptr = &c;
+    string cCopy = *ptr;
+    state::statesENFA[cCopy].insert(q);
 }
 
 DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
@@ -201,7 +208,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
                     }
                 }
                 bool b2=false;
-                string name="("+state1->states[(*it2)]->name+","+state2->states[(*it2)]->name+")";
+                string name= "(" + state1->states[(*it2)]->name + "," + state2->states[(*it2)]->name + ")";
                 for(vector<state*>::const_iterator it3=DFA::states.begin(); it3!=DFA::states.end(); it3++){
                     if ((*it3)->name==name){
                         b2=true;
@@ -233,7 +240,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
                         TOBEADDED.push_back(temp);
                     }
                 }
-                if ((*it)->states.find((*it2))==(*it)->states.end()){
+                if ((*it)->states.find((*it2)) == (*it)->states.end()){
                     (*it)->addTransitionFunction((*it2),temp);
                 }
             }
@@ -353,4 +360,95 @@ DFA DFA::complement() {
     d.load(j);
     return d;
 }
+
+ENFA DFA::reverse() {
+    vector<state*> new_states;
+    map<string, set<pair<state*, string>>> reverse_link_map;
+    map<string, state*> name_to_state_map;
+    for (state* s: states){
+        state* new_state = new state();
+        new_state->name = s->name;
+        new_state->accepting = s->starting;
+        new_state->starting = false;
+
+        for (auto entry: s->states){
+            string transition_char = entry.first;
+            state* target = entry.second;
+            reverse_link_map[target->name].insert(make_pair(new_state, transition_char));
+            name_to_state_map[new_state->name] = new_state;
+        }
+
+        new_states.push_back(new_state);
+    }
+
+    for (auto entry: reverse_link_map){
+        state* state_go = name_to_state_map.at(entry.first);
+        for (auto p: entry.second){
+            state* state_target = p.first;
+            string transition_char = p.second;
+
+            state_go->addTransitionFunctionENFA(transition_char, state_target);
+        }
+
+    }
+
+    state* new_start = new state();
+    new_start->name = "reversed_start";
+    new_start->starting = true;
+    new_start->accepting = false;
+    for (auto s: states){
+        if (s->accepting){
+            state* target = name_to_state_map.at(s->name);
+            new_start->addTransitionFunctionENFA("*", target);
+        }
+    }
+
+    new_states.push_back(new_start);
+
+
+    vector<json> states;
+    for(vector<state*>::const_iterator it=new_states.begin(); it!=new_states.end(); it++){
+        json temp;
+        temp["name"]=(*it)->name;
+        temp["starting"]=(*it)->starting;
+        temp["accepting"]=(*it)->accepting;
+        states.push_back(temp);
+    }
+    json j = getJson();
+    j["states"] = states;
+
+    set<string> alphabet2 = alphabet;
+    alphabet2.insert("*");
+
+    vector<json> transitions;
+    for(vector<state*>::const_iterator it=new_states.begin(); it!=new_states.end(); it++){
+        for(set<string>::const_iterator it2=alphabet2.begin(); it2!=alphabet2.end(); it2++){
+
+            if ((*it)->statesENFA.find((*it2)) != (*it)->statesENFA.end()){
+                for(auto target: (*it)->statesENFA.at((*it2))){
+                    json temp;
+                    temp["from"]=(*it)->name;
+                    temp["input"] = (*it2);
+                    temp["to"]=target->name;
+                    transitions.push_back(temp);
+                }
+
+
+            }
+
+
+        }
+
+    }
+    j["transitions"]=transitions;
+
+    j["type"]="ENFA";
+    j["eps"] = "*";
+
+    ENFA n;
+    n.load(j);
+    return n;
+}
+
+
 

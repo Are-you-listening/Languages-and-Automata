@@ -42,6 +42,7 @@ public:
     DFA toDFA2()&;
     void printStats()const&;
     void concatenate(const ENFA& enfa)&;
+    void load(const json& j);
 };
 
 

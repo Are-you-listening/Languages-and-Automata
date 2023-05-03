@@ -62,17 +62,17 @@ bool ENFA::accepts(string c) const& {
     string itString;
     for(string::const_iterator it=c.begin();it!=c.end();it++){
         itString.assign(&(*it),&(*it)+1);
-        for(map<string,state*>::const_iterator it2=nextState->states.begin(); it2!=nextState->states.end(); it2++){
+        for(map<string,state*>::const_iterator it2=nextState->states.begin(); it2 != nextState->states.end(); it2++){
             if ((*it2->first.begin()) == (*ENFA::eps.begin())){
                 ENFA enfa(*this, nextState->states[it2->first]);
                 if (enfa.accepts(c)){
                     return true;
                 }
             }
-            if (nextState->states.find(itString.substr(0,1))!=nextState->states.end()){
-                ENFA enfa(*this, nextState->states[itString.substr(0,1)]);
+            if (nextState->states.find(itString.substr(0, 1)) != nextState->states.end()){
+                ENFA enfa(*this, nextState->states[itString.substr(0, 1)]);
                 if (itString.empty()){
-                    return find(endstates.begin(),endstates.end(),nextState->states[itString.substr(0,1)])!=endstates.end();
+                    return find(endstates.begin(),endstates.end(),nextState->states[itString.substr(0, 1)]) != endstates.end();
                 }
                 string COPY = c;
                 if (enfa.accepts(COPY.erase(0,COPY.find(itString)+1))){
@@ -82,7 +82,7 @@ bool ENFA::accepts(string c) const& {
         }
         return false;
     }
-    for(map<string,state*>::const_iterator it2=nextState->states.begin(); it2!=nextState->states.end(); it2++) {
+    for(map<string,state*>::const_iterator it2=nextState->states.begin(); it2 != nextState->states.end(); it2++) {
         if ((*it2->first.begin()) == (*ENFA::eps.begin())) {
             ENFA enfa(*this, nextState->states[it2->first]);
             if (enfa.accepts(c)) {
@@ -110,13 +110,21 @@ void ENFA::print()const&{
     }
     j["states"]=states;
     vector<json> transitions;
+
+    set<string> alphabet2 = alphabet;
+    alphabet2.insert("*");
+
     for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
-        for(set<string>::const_iterator it2=ENFA::alphabet.begin(); it2!=ENFA::alphabet.end(); it2++){
+        for(set<string>::const_iterator it2=alphabet2.begin(); it2!=alphabet2.end(); it2++){
             json temp;
-            temp["from"]=(*it)->name;
-            temp["input"] = (*it2);
-            temp["to"]=(*it)->states[(*it2)]->name;
-            transitions.push_back(temp);
+            if ((*it)->states.find((*it2)) != (*it)->states.end()){
+                temp["from"]=(*it)->name;
+                temp["input"] = (*it2);
+                temp["to"]=(*it)->states[(*it2)]->name;
+                transitions.push_back(temp);
+            }
+
+
         }
     }
     j["transitions"]=transitions;
@@ -133,7 +141,7 @@ ENFA::ENFA(const ENFA &enfa, state* state) {
 
 vector<state *> ENFA::ECLOSE(state *Etransition)const&{
     vector<state*> EStates;
-    for(map<string,state*>::const_iterator it=Etransition->states.begin(); it!=Etransition->states.end(); it++) {
+    for(map<string,state*>::const_iterator it=Etransition->states.begin(); it != Etransition->states.end(); it++) {
         if((*it->first.begin())==(*ENFA::eps.begin()) && find(EStates.begin(),EStates.end(), it->second)==EStates.end()){
             if (find(EStates.begin(),EStates.end(),it->second)==EStates.end()){
                 EStates.push_back(it->second);
@@ -185,13 +193,13 @@ void ENFA::Etransitions(vector<state*> &states)const&{
 
 map<pair<char,string>, vector<string>> ENFA::possibleStates(state* nextState, const string &name)const&{
     map<pair<char,string>, vector<string>> states2;
-    for(map<string,state*>::const_iterator it2=nextState->states.begin(); it2!=nextState->states.end(); it2++){
+    for(map<string,state*>::const_iterator it2=nextState->states.begin(); it2 != nextState->states.end(); it2++){
         if ((*it2->first.begin())!=(*ENFA::eps.begin()) && it2->first.size()==1){
-            if (nextState->states.find(it2->first +"0")!=nextState->states.end()){
+            if (nextState->states.find(it2->first + "0") != nextState->states.end()){
                 vector<state*> eclosure;
                 state* temp = nextState->states[it2->first];
                 eclosure.push_back(temp);
-                for(int i=0; nextState->states.find(it2->first + to_string(i))!=nextState->states.end(); i++){
+                for(int i=0; nextState->states.find(it2->first + to_string(i)) != nextState->states.end(); i++){
                     temp = nextState->states[it2->first + to_string(i)];
                     vector<state*> tempeclosure = ENFA::ECLOSE(temp);
                     eclosure.push_back(temp);
@@ -199,9 +207,9 @@ map<pair<char,string>, vector<string>> ENFA::possibleStates(state* nextState, co
                 }
 
                 vector<state*> eclosureinput;
-                for(map<string,state*>::const_iterator it3=nextState->states.begin(); it3!=nextState->states.end(); it3++){
+                for(map<string,state*>::const_iterator it3=nextState->states.begin(); it3 != nextState->states.end(); it3++){
                     if ((*it3->first.begin())==(*ENFA::eps.begin())){
-                        eclosureinput = ENFA::ECLOSE2(nextState->states[it3->first],it2->first);
+                        eclosureinput = ENFA::ECLOSE2(nextState->states[it3->first], it2->first);
                     }
                 }
                 eclosure.insert(eclosure.end(),eclosureinput.begin(),eclosureinput.end());
@@ -243,7 +251,7 @@ map<pair<char,string>, vector<string>> ENFA::possibleStates(state* nextState, co
                 vector<state*> EClOSURE = ENFA::ECLOSE(ETransition);
 
                 vector<state*> EClOSUREINPUT;
-                for(map<string,state*>::const_iterator it3=it2->second->states.begin(); it3!=it2->second->states.end(); it3++){
+                for(map<string,state*>::const_iterator it3=it2->second->states.begin(); it3 != it2->second->states.end(); it3++){
                     if ((*it3->first.begin())==(*ENFA::eps.begin())){
                         EClOSUREINPUT = ENFA::ECLOSE2(nextState,it2->first);
                     }
@@ -525,7 +533,7 @@ DFA ENFA::toDFA2() &{
                         for(vector<state*>::const_iterator it6=dfaStates.begin(); it6!=dfaStates.end(); it6++){
                             if((*it6)->name==name3){
                                 string temp_string(1,it3->first.first);
-                                if ((*it5)->states.find(temp_string)==(*it5)->states.end()){
+                                if ((*it5)->states.find(temp_string) == (*it5)->states.end()){
                                     (*it5)->addTransitionFunction(temp_string,(*it6));
                                 }
                             }
@@ -537,7 +545,7 @@ DFA ENFA::toDFA2() &{
     }
     for(vector<state*>::const_iterator state=dfaStates.begin(); state!=dfaStates.end(); state++){
         for(set<string>::const_iterator char1=ENFA::alphabet.begin(); char1!=ENFA::alphabet.end(); char1++){
-            if((*state)->states.find((*char1))==(*state)->states.end()){
+            if((*state)->states.find((*char1)) == (*state)->states.end()){
                 (*state)->addTransitionFunction((*char1),emptyset);
             }
         }
@@ -553,13 +561,13 @@ void ENFA::printStats()const&{
     map<string,int> transit;
     map<int,int> degree;
     for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
-        if(degree.find((*it)->states.size())==degree.end()){
+        if(degree.find((*it)->states.size()) == degree.end()){
             degree[(*it)->states.size()]=1;
         } else {
             degree[(*it)->states.size()]+=1;
         }
-        for(map<string,state*>::const_iterator it2=(*it)->states.begin(); it2!=(*it)->states.end(); it2++){
-            if((*it)->states.find((*it2).first)==(*it)->states.end()){
+        for(map<string,state*>::const_iterator it2=(*it)->states.begin(); it2 != (*it)->states.end(); it2++){
+            if((*it)->states.find((*it2).first) == (*it)->states.end()){
                 transit[(*it2).first.substr(0,1)]=1;
             } else {
                 transit[(*it2).first.substr(0,1)]+=1;
@@ -597,4 +605,46 @@ void ENFA::concatenate(const ENFA& enfa) &{
 
 ENFA::ENFA() {
 
+}
+
+void ENFA::load(const json &j) {
+    if (j.value("type","string") == "ENFA"){
+        ENFA::eps=j["eps"];
+        vector<string> a=j["alphabet"];
+        for(vector<string>::const_iterator it=a.begin();it!=a.end();it++){
+            ENFA::alphabet.insert((*it));
+        }
+        vector<json> b =j["states"];
+        int count=0;
+        while(count!=b.size()){
+            json d1 =b[count];
+            state* q= new state();
+            q->name=d1["name"];
+            q->starting=d1["starting"];
+            q->accepting=d1["accepting"];
+            if (q->starting){
+                ENFA::startingState = q;
+            }
+            if (q->accepting){
+                ENFA::endstates.push_back(q);
+            }
+            ENFA::states.push_back(q);
+            count++;
+        }
+        vector<json> d =j["transitions"];
+        int count2=0;
+        while(count2!=d.size()){
+            json d1 =d[count2];
+            for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end();it++){
+                if (d1["from"] == (*it)->name){
+                    for(vector<state*>::const_iterator it2=ENFA::states.begin(); it2!=ENFA::states.end();it2++){
+                        if (d1["to"]==(*it2)->name){
+                            (*it)->addTransitionFunction(d1["input"],(*it2));
+                        }
+                    }
+                }
+            }
+            count2++;
+        }
+    }
 }

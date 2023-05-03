@@ -16,6 +16,8 @@
 #include "Toi_Tibo/DFAT.h"
 #include "Toi_Emil/DFAE.h"
 #include "Toi_Emil/REE.h"
+
+class ENFA;
 using namespace std;
 
 using json = nlohmann::json;
@@ -23,10 +25,12 @@ using json = nlohmann::json;
 class state{
 public:
     map<string,state*> states;
+    map<string,set<state*>> statesENFA;
     string name;
     bool starting;
     bool accepting;
     void addTransitionFunction(string c ,state* q);
+    void addTransitionFunctionENFA(string c ,state* q);
     state* getComplement();
 };
 
@@ -75,6 +79,8 @@ public:
     string ToRe();
 
     DFA complement();
+
+    ENFA reverse();
 
 };
 

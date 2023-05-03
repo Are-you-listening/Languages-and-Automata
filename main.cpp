@@ -9,7 +9,10 @@ int main() {
     /*
     Song* song = new Song();
     song->parse("midi_files/morton_159s_mr_jelly_lord_(1924)_(nc)smythe.mid");*/
-
+    DFA temp("JSONWORK.json");
+    ENFA n = temp.reverse();
+    n.print();
+    /*
     ifstream Filelist("filelist.txt");
     string c;
     string c2="midi_files/";
@@ -20,6 +23,6 @@ int main() {
         cout << c << endl; //TODO deze files zijn geschreven in rag time. kan zijn dat dit hierdoor komt, ik heb die voor nu uit de filelist gelaten.
     } //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
     Filelist.close();
-
+    */
     return 0;
 }
