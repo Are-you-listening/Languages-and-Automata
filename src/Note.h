@@ -5,7 +5,6 @@
 #ifndef MIDIPARSER_NOTE_H
 #define MIDIPARSER_NOTE_H
 
-
 class Note {
 private:
     int channel;
