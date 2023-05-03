@@ -7,7 +7,7 @@
 
 int main() {
     Song* song = new Song();
-    song->parse("midi_files/cascades_a_rag_(1904)_(nc)smythe.mid");
+    song->parse("midi_files/02mid.mid");
     /*
     ifstream Filelist("filelist.txt");
     string c;

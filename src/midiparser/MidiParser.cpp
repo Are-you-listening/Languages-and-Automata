@@ -61,7 +61,7 @@ bool MidiParser::readComponent() {
     delta_time_counter += delta_time.getValue();
 
     ByteX basic_data = byteRead(2);
-    cout << basic_data.toHex() << endl;
+    //cout << basic_data.toHex() << endl;
     if (basic_data.equalsHex("ff", 0)){
 
 
@@ -182,6 +182,9 @@ void MidiParser::readHeader() {
 }
 
 void MidiParser::addNote(unsigned int time, bool note_on, Note* note) {
+
+
+    std::wcout << "a" << note->getRE(true, true, true, true, true) << std::endl;
     pair<unsigned int, bool> p = make_pair(time, note_on);
     note_map[p].insert(note);
 }
