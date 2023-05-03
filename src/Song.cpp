@@ -24,3 +24,8 @@ int Song::similarity(Song &song) const {
     ENSURE(succes, "Percentage must be between 0 and 100");
     return percentage;
 }
+
+void Song::parse(const string &path) {
+    MidiParser m(path);
+    note_map = m.getNoteMap();
+}

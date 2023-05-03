@@ -14,6 +14,8 @@ class Song {
 private:
     Song* fInitCheck;
 
+    map<pair<unsigned int, bool>, set<Note*>> note_map;
+
 public:
     /**
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
