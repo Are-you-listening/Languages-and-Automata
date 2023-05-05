@@ -48,9 +48,8 @@ int Song::similarity(Song &song) const {
         DFA s = k.toDFA();
         tt2.push_back(s);
     }
-    int slagen=0;
+    double slagen=0.;
     int count=0;
-
     for(auto s: tt){
         for(auto k: tt2){
             if(s==k){
@@ -68,13 +67,13 @@ int Song::similarity(Song &song) const {
     int count=0;
     bool b;
     //IDEA TIBO en Anas
-    for(vector<DFA>::const_iterator s=tt.begin(); s!=tt.end(); s++){
-        for(vector<RE>::const_iterator s2=tempregexV.begin(); s2!=tempregexV.end(); s2++){
+    for(vector<DFA>::const_iterator s=tt.begin(); s!=tt.end(); s++){ // Given song
+        for(vector<RE>::const_iterator s2=t2.begin(); s2!=t2.end(); s2++){ //this.Song
             string test=s2->re;
             b = s->accepts(test);
             if(b){
                 slagen++;
-                break;
+                //break;
             }
         }
         count++;
