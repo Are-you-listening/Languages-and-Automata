@@ -6,6 +6,14 @@
 #include "src/RE.h"
 
 int main() {
+
+    Song song;
+    Song song2;
+    song.parse("midi_files/world-1-birabuto-4-.mid");
+    song2.parse("midi_files/world-1-birabuto-remix-.mid");
+    song.similarity(song2);
+
+    /*
     ifstream Filelist("filelist.txt");
     string c;
     string c3;
@@ -22,5 +30,6 @@ int main() {
         delete song;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
+     */
     return 0;
 }
