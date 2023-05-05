@@ -13,7 +13,11 @@ using namespace std;
 class Note {
 private:
     unsigned int instrument;
-    int note_value = 0;
+    int note_value=0;
+public:
+    int getNoteValue() const;
+
+private:
     unsigned int time_stamp;
     int velocity;
     bool note_on;
@@ -39,8 +43,6 @@ public:
      * @return
      */
     [[nodiscard]] string getRE(bool r_time_stamp, bool r_note_on, bool r_instrument, bool r_note, bool r_velocity) const;
-
-    int getNoteValue() const;
 };
 
 #endif //MIDIPARSER_NOTE_H
