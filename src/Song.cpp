@@ -24,6 +24,16 @@ int Song::similarity(Song &song) const {
     //IDEA KARS
     auto t = song.toRegex(0,1,1,1,1,7);
     auto t2 = this->toRegex(0,1,1,1,1,7);
+
+    for (int i=0; i<t.size(); i++){
+        auto a1 = t[i];
+        auto a2 = t2[i];
+
+        if (a1.re != a2.re){
+            cout << "nhwdwdwdwdwdwdwd niet yoopie" << endl;
+        }
+    }
+
     vector<DFA> tt;
     //vector<DFA> tt2;
     vector<ENFA> tt3;
@@ -92,7 +102,7 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
     char epsilon='*';
     vector<RE> regex_list;
     int count = 0;
-    string temp;
+    string temp = "";
 
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
         for(Note* note: it->second){
@@ -105,6 +115,7 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
                 regex_list.push_back(regex);
                 count=0;
                 temp.clear();
+                temp = "";
             }
         }
     }

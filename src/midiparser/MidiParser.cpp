@@ -31,7 +31,7 @@ ByteX MidiParser::byteRead(int length) {
 
         long unsigned int b;
         if (int(c) >= 0){
-           b = int(c);
+            b = int(c);
         }else{
             b = int(c) + 256;
         }
@@ -61,6 +61,15 @@ bool MidiParser::readComponent() {
     delta_time_counter += delta_time.getValue();
 
     ByteX basic_data = byteRead(2);
+
+    if(basic_data.getNibble(0, true) == status_running){
+        unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
+        bool note_on = basic_data.getByte(1) != 0;
+        addNote(time, note_on, new Note(time, note_on,
+                                        basic_data.getByte(0), basic_data.getByte(1),
+                                        get_closest_change(time, channel)));
+    }
+
     if (basic_data.equalsHex("ff", 0)){
 
 
@@ -124,7 +133,8 @@ bool MidiParser::readComponent() {
             cout << "error" << basic_data.toHex() << endl;
         }
 
-    }else if (basic_data.equalsHex("c", 0)) {
+    }
+    else if (basic_data.equalsHex("c", 0)) {
         link_channel[delta_time_counter][basic_data.getNibble(0, false)] = basic_data.getByte(1);
     }else if(basic_data.equalsHex("d", 0)){
         /**
@@ -138,6 +148,10 @@ bool MidiParser::readComponent() {
 
 
     }else if(!basic_data.getMSB(0)){
+        if (basic_data.getNibble(0, true) == 4){
+            //cout << "val " << basic_data.toHex() << endl;
+        }
+
         /**
          * checks for data byte
          * */
@@ -153,10 +167,12 @@ bool MidiParser::readComponent() {
         ByteX velocity = byteRead(1);
         unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
         bool note_on = velocity.getValue() != 0 && basic_data.getNibble(0, true) == 9;
-        cout << "note" << basic_data.toHex() << endl;
+        status_running = basic_data.getNibble(1, true);
+        //cout << "note " << basic_data.toHex() << endl;
         addNote(time, note_on, new Note(time, note_on,
                                         basic_data.getByte(1), velocity.getValue(),
                                         get_closest_change(time, basic_data.getNibble(0, false))));
+        channel = basic_data.getNibble(0, false);
     }else{
         cout << "error basic " << basic_data.toHex()<< endl;
     }
