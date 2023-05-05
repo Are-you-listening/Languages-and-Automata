@@ -153,7 +153,7 @@ bool MidiParser::readComponent() {
         ByteX velocity = byteRead(1);
         unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
         bool note_on = velocity.getValue() != 0 && basic_data.getNibble(0, true) == 9;
-
+        cout << "note" << basic_data.toHex() << endl;
         addNote(time, note_on, new Note(time, note_on,
                                         basic_data.getByte(1), velocity.getValue(),
                                         get_closest_change(time, basic_data.getNibble(0, false))));
