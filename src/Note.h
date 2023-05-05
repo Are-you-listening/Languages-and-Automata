@@ -4,7 +4,8 @@
 
 #ifndef MIDIPARSER_NOTE_H
 #define MIDIPARSER_NOTE_H
-#include "iostream"
+
+#include <iostream>
 #include <string>
 
 using namespace std;
@@ -16,6 +17,7 @@ private:
     unsigned int time_stamp;
     int velocity;
     bool note_on;
+    double pitch;
 
 public:
     /**
@@ -39,6 +41,5 @@ public:
      */
     [[nodiscard]] string getRE(bool r_time_stamp, bool r_note_on, bool r_instrument, bool r_note, bool r_velocity) const;
 };
-
 
 #endif //MIDIPARSER_NOTE_H

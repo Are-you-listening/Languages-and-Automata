@@ -56,7 +56,14 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
         regex_list.push_back(regex);
     }
 
-
     return regex_list;
+}
+
+Song::~Song(){
+    for(auto it = note_map.begin(); it!=note_map.end() ; it++){
+        for(Note* note: it->second){
+            delete note;
+        }
+    }
 }
 
