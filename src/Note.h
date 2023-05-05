@@ -17,7 +17,6 @@ private:
     unsigned int time_stamp;
     int velocity;
     bool note_on;
-    double pitch;
 
 public:
     /**

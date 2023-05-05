@@ -25,7 +25,8 @@ int Song::similarity(Song &song) const {
     auto t = song.toRegex(0,1,1,1,1,7);
     auto t2 = this->toRegex(0,1,1,1,1,7);
     vector<DFA> tt;
-    vector<DFA> tt2;
+    //vector<DFA> tt2;
+    vector<ENFA> tt3;
     for(auto z: t){
         ENFA k = z.toENFA();
         DFA s = k.toDFA();
@@ -43,19 +44,19 @@ int Song::similarity(Song &song) const {
     for(auto s: tt){
         for(auto k: tt2){
             if(s==k){
-                slagen++; //Percentage
+                slagen++;
+                break;//Percentage
             }
             count++;
         }
     }
-    int resultaat = slagen/count;
-    cout << "kars: " << resultaat <<endl;
+    double resultaat = slagen/count;
+    cout << "kars: " << resultaat << " slagen: " << slagen << " coutns: " << count  <<endl;
     */
 
     double slagen=0.0;
     int count=0;
     bool b;
-    vector<RE> tempregexV = song.toRegex(0,1,1,1,1,7);
     //IDEA TIBO en Anas
     for(vector<DFA>::const_iterator s=tt.begin(); s!=tt.end(); s++){
         for(vector<RE>::const_iterator s2=tempregexV.begin(); s2!=tempregexV.end(); s2++){
@@ -70,7 +71,6 @@ int Song::similarity(Song &song) const {
     }
     double resultaat=slagen/count;
     cout << "Tibo & Anas: " << resultaat << " slagen: " << slagen << " coutns: " << count  <<endl;
-
 
     ENSURE(succes, "Percentage must be between 0 and 100");
     return resultaat;

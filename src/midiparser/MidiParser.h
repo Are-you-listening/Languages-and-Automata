@@ -48,6 +48,8 @@ private:
 
     map<pair<unsigned int, bool>, set<Note*>> note_map;
     map<unsigned int, map<unsigned int, unsigned int> > link_channel;
+    int status_running = -1;
+    int channel = -1;
 
 
 };

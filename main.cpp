@@ -11,8 +11,8 @@ int main() {
     Song song;
     Song song2;
     song.parse("midi_files/world-1-birabuto-4-.mid");
-    song2.parse("midi_files/CVB-_Iron_Blue_Intention.mid");
-    song2.similarity(song);
+    song2.parse("midi_files/world-1-birabuto-4-.mid");
+    song.similarity(song2);
 
     /*
     ifstream Filelist("filelist.txt");
