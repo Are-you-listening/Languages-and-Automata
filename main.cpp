@@ -8,11 +8,19 @@
 
 int main() {
 
-    Song song;
+    //Song song;
     Song song2;
-    song.parse("midi_files/world-1-birabuto-4-.mid");
+    //song.parse("midi_files/world-1-birabuto-4-.mid");
     song2.parse("midi_files/world-1-birabuto-4-.mid");
-    song.similarity(song2);
+    //song.similarity(song2);
+    /*
+    Song song3;
+    Song song4;
+    song3.parse("midi_files/quick-man-s-stage-4-.mid");
+    song4.parse("midi_files/MM9_Tornadoman.mid");
+    song3.similarity(song4);
+     */
+
 
     /*
     ifstream Filelist("filelist.txt");

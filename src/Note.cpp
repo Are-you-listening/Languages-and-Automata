@@ -34,3 +34,7 @@ char toChar(int value){
     s +=toChar((velocity/3)*r_velocity);
     return s;
 }
+
+int Note::getNoteValue() const {
+    return note_value;
+}

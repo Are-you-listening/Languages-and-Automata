@@ -13,7 +13,11 @@ using namespace std;
 class Note {
 private:
     unsigned int instrument;
-    int note_value;
+    int note_value=0;
+public:
+    int getNoteValue() const;
+
+private:
     unsigned int time_stamp;
     int velocity;
     bool note_on;

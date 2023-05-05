@@ -25,18 +25,8 @@ int Song::similarity(Song &song) const {
     auto t = song.toRegex(0,1,1,1,1,7);
     auto t2 = this->toRegex(0,1,1,1,1,7);
 
-    for (int i=0; i<t.size(); i++){
-        auto a1 = t[i];
-        auto a2 = t2[i];
-
-        if (a1.re != a2.re){
-            cout << "nhwdwdwdwdwdwdwd niet yoopie" << endl;
-        }
-    }
-
     vector<DFA> tt;
     //vector<DFA> tt2;
-    vector<ENFA> tt3;
     for(auto z: t){
         ENFA k = z.toENFA();
         DFA s = k.toDFA();
