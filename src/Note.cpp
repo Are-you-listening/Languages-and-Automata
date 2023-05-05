@@ -21,7 +21,11 @@ char toChar(int value){
         throw "All i want for christmas, is an working function";
     }
 
-    char c = int(index);
+    if (index < 28){
+        throw "dwdw";
+    }
+
+    char c = (char)(index);
     return c;
 }
 
@@ -33,4 +37,8 @@ char toChar(int value){
     s +=toChar(note_value*r_note);
     s +=toChar((velocity/3)*r_velocity);
     return s;
+}
+
+int Note::getNoteValue() const {
+    return note_value;
 }

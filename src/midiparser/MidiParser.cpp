@@ -21,6 +21,8 @@ MidiParser::MidiParser(const string &path) {
 
         }
     }
+
+    stream.close();
 }
 
 ByteX MidiParser::byteRead(int length) {

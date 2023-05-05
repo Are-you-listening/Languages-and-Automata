@@ -1,0 +1,254 @@
+{
+  "type": "WNFA",
+  "alphabet": [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e"
+  ],
+  "states": [
+    {
+      "name": "0",
+      "starting": true,
+      "accepting": true
+    },
+    {
+      "name": "1",
+      "starting": false,
+      "accepting": true
+    },
+    {
+      "name": "2",
+      "starting": false,
+      "accepting": true
+    },
+    {
+      "name": "3",
+      "starting": false,
+      "accepting": true
+    },
+    {
+      "name": "4",
+      "starting": false,
+      "accepting": true
+    },
+    {
+      "name": "5",
+      "starting": false,
+      "accepting": true
+    }
+  ],
+  "transitions": [
+    {
+      "from": "0",
+      "to": "1",
+      "input": "a",
+      "weight": 1.0
+    },
+    {
+      "from": "1",
+      "to": "2",
+      "input": "b",
+      "weight": 1.0
+    },
+    {
+      "from": "2",
+      "to": "3",
+      "input": "c",
+      "weight": 1.0
+    },
+    {
+      "from": "3",
+      "to": "4",
+      "input": "d",
+      "weight": 1.0
+    },
+    {
+      "from": "4",
+      "to": "5",
+      "input": "e",
+      "weight": 1.0
+    },
+    {
+      "from": "5",
+      "to": "5",
+      "input": "a",
+      "weight": 0.0
+    },
+    {
+      "from": "5",
+      "to": "5",
+      "input": "b",
+      "weight": 0.0
+    },
+    {
+      "from": "5",
+      "to": "5",
+      "input": "c",
+      "weight": 0.0
+    },
+    {
+      "from": "5",
+      "to": "5",
+      "input": "d",
+      "weight": 0.0
+    },
+    {
+      "from": "5",
+      "to": "5",
+      "input": "e",
+      "weight": 0.0
+    },
+    {
+      "from": "0",
+      "to": "0",
+      "input": "a",
+      "weight": 0.0
+    },
+    {
+      "from": "0",
+      "to": "0",
+      "input": "b",
+      "weight": 0.0
+    },
+    {
+      "from": "0",
+      "to": "0",
+      "input": "c",
+      "weight": 0.0
+    },
+    {
+      "from": "0",
+      "to": "0",
+      "input": "d",
+      "weight": 0.0
+    },
+    {
+      "from": "0",
+      "to": "0",
+      "input": "e",
+      "weight": 0.0
+    },
+    {
+      "from": "1",
+      "to": "1",
+      "input": "a",
+      "weight": -0.2
+    },
+    {
+      "from": "1",
+      "to": "1",
+      "input": "b",
+      "weight": -0.2
+    },
+    {
+      "from": "1",
+      "to": "1",
+      "input": "c",
+      "weight": -0.2
+    },
+    {
+      "from": "1",
+      "to": "1",
+      "input": "d",
+      "weight": -0.2
+    },
+    {
+      "from": "1",
+      "to": "1",
+      "input": "e",
+      "weight": -0.2
+    },
+    {
+      "from": "2",
+      "to": "2",
+      "input": "a",
+      "weight": -0.2
+    },
+    {
+      "from": "2",
+      "to": "2",
+      "input": "b",
+      "weight": -0.2
+    },
+    {
+      "from": "2",
+      "to": "2",
+      "input": "c",
+      "weight": -0.2
+    },
+    {
+      "from": "2",
+      "to": "2",
+      "input": "d",
+      "weight": -0.2
+    },
+    {
+      "from": "2",
+      "to": "2",
+      "input": "e",
+      "weight": -0.2
+    },
+    {
+      "from": "3",
+      "to": "3",
+      "input": "a",
+      "weight": -0.2
+    },
+    {
+      "from": "3",
+      "to": "3",
+      "input": "b",
+      "weight": -0.2
+    },
+    {
+      "from": "3",
+      "to": "3",
+      "input": "c",
+      "weight": -0.2
+    },
+    {
+      "from": "3",
+      "to": "3",
+      "input": "d",
+      "weight": -0.2
+    },
+    {
+      "from": "3",
+      "to": "3",
+      "input": "e",
+      "weight": -0.2
+    },
+    {
+      "from": "4",
+      "to": "4",
+      "input": "a",
+      "weight": -0.2
+    },
+    {
+      "from": "4",
+      "to": "4",
+      "input": "b",
+      "weight": -0.2
+    },
+    {
+      "from": "4",
+      "to": "4",
+      "input": "c",
+      "weight": -0.2
+    },
+    {
+      "from": "4",
+      "to": "4",
+      "input": "d",
+      "weight": -0.2
+    },
+    {
+      "from": "4",
+      "to": "4",
+      "input": "e",
+      "weight": -0.2
+    }
+  ]
+}

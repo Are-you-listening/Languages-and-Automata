@@ -25,6 +25,7 @@ double WNFA::weightedaccepts(string input) {
                 if (get<1>(connection).find(symbol) != get<1>(connection).end()) {
                     connectionfound = true;
                     result += get<2>(connection);
+                    cout << "help" << get<2>(connection) << endl;
                     tempstates.push_back(get<0>(connection));
                 }
             }
@@ -37,7 +38,8 @@ double WNFA::weightedaccepts(string input) {
     for (Node* state : currentStates){
         for (Node* endstate : endStates){
             if (state == endstate){
-                return result;
+                cout << result << endl;
+                //return result;
             }
         }
     }

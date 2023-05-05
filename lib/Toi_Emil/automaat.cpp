@@ -58,6 +58,7 @@ pair<Node*, bool> automaat::getState(string name) const{
  */
 
 bool automaat::accepts(string input) {
+    cout << startState << endl;
     Node* currentState = startState;
     for (char symbol : input){
         if (alfabet.find(symbol) == alfabet.end()){

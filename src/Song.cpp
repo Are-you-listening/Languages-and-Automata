@@ -31,6 +31,8 @@ int Song::similarity(Song &song) const {
 
         if (a1.re != a2.re){
             cout << "nhwdwdwdwdwdwdwd niet yoopie" << endl;
+            cout << i << endl;
+            throw 1;
         }
     }
 

@@ -57,7 +57,14 @@ set(MAIN_SRC
         lib/Toi_Kars/Utils.cpp
         lib/Toi_Kars/Utils.h
         lib/Toi_Kars/State.h
-        lib/Toi_Kars/State.cpp)
+        lib/Toi_Kars/State.cpp
+        lib/Toi_Emil/weightedautomaat.cpp
+        lib/Toi_Emil/weightedautomaat.h
+        lib/Toi_Emil/weightedNode.cpp
+        lib/Toi_Emil/weightedNode.h
+        lib/Toi_Emil/WNFA.cpp
+        lib/Toi_Emil/WNFA.h
+        )
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
 
