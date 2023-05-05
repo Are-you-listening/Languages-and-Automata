@@ -65,6 +65,9 @@ bool DFA::accepts(string c) const& {
         string itString;
         itString.assign(&(*it),&(*it)+1);
         nextState = nextState->states[itString];
+        if( find(alphabet.begin(), alphabet.end(), itString)==alphabet.end() ){
+            return false;
+        }
     }
     return find(endstates.begin(),endstates.end(),nextState)!=endstates.end();
 }

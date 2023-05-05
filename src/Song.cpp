@@ -27,7 +27,6 @@ int Song::similarity(Song &song) const {
     vector<DFA> tt;
     vector<DFA> tt2;
     for(auto z: t){
-        cout << "A" <<endl;
         ENFA k = z.toENFA();
         DFA s = k.toDFA();
         tt.push_back(s);
@@ -53,20 +52,21 @@ int Song::similarity(Song &song) const {
     cout << "kars: " << resultaat <<endl;
     */
 
-    int slagen=0;
+    double slagen=0.0;
     int count=0;
     bool b;
     vector<RE> tempregexV = song.toRegex(0,1,1,1,1,7);
     //IDEA TIBO en Anas
     for(vector<DFA>::const_iterator s=tt.begin(); s!=tt.end(); s++){
-        cout << "B" <<endl;
         for(vector<RE>::const_iterator s2=tempregexV.begin(); s2!=tempregexV.end(); s2++){
-            b = s->accepts(s2->re);
+            string test=s2->re;
+            b = s->accepts(test);
             if(b){
                 slagen++;
+                break;
             }
-            count++;
         }
+        count++;
     }
     int resultaat=slagen/count;
     cout << "Tibo & Anas: " << resultaat <<endl;
