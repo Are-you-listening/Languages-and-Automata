@@ -15,6 +15,12 @@ char toChar(int value){
     if(index > 122){
         index += 51;
     }
+
+    if (index > 255){
+        cout << "All i want for christmas, is an working function" << endl;
+        throw "All i want for christmas, is an working function";
+    }
+
     char c = int(index);
     return c;
 }

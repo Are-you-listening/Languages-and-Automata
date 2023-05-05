@@ -17,8 +17,9 @@ int Song::similarity(Song &song) const {
     int percentage = 5;
 
     bool succes = false;
+
     if(percentage<=100 && percentage>=0){
-        succes== true;
+        succes = true;
     }
 
     ENSURE(succes, "Percentage must be between 0 and 100");
