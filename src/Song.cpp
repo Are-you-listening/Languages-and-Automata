@@ -14,19 +14,73 @@ bool Song::ProperlyInitialized() const {
 int Song::similarity(Song &song) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    int percentage = 5;
+    int percentage = 0;
 
     bool succes = false;
 
     if(percentage<=100 && percentage>=0){
         succes = true;
     }
+    //IDEA KARS
+    auto t = song.toRegex(0,1,1,1,1,7);
+    auto t2 = this->toRegex(0,1,1,1,1,7);
+    vector<DFA> tt;
+    vector<DFA> tt2;
+    for(auto z: t){
+        cout << "A" <<endl;
+        cout << z.re <<endl;
+        ENFA k = z.toENFA();
+        k.print();
+        cout << "B" <<endl;
+        DFA s = k.toDFA();
+        cout << "C" <<endl;
+        tt.push_back(s);
+    }
+    /*
+    for(auto z: t2){
+        ENFA k = z.toENFA();
+        DFA s = k.toDFA();
+        tt2.push_back(s);
+    }
+    int slagen=0;
+    int count=0;
+
+    for(auto s: tt){
+        for(auto k: tt2){
+            if(s==k){
+                slagen++; //Percentage
+            }
+            count++;
+        }
+    }
+    int resultaat = slagen/count;
+    cout << "kars: " << resultaat <<endl;
+     */
+
+    int slagen=0;
+    int count=0;
+    //IDEA TIBO en Anas
+    for(auto s: tt){
+        cout << "B" <<endl;
+        for(auto s2:song.toRegex(0,1,1,1,1,7)){
+            bool b = s.accepts(s2.re);
+            if(b){
+                slagen++;
+            }
+            count++;
+        }
+    }
+    int resultaat=slagen/count;
+    cout << "Tibo & Anas: " << resultaat <<endl;
+
 
     ENSURE(succes, "Percentage must be between 0 and 100");
-    return percentage;
+    return resultaat;
 }
 
 void Song::parse(const string &path) {
+    fInitCheck=this;
+
     MidiParser m(path);
     note_map = m.getNoteMap();
 }
