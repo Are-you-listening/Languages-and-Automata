@@ -8,10 +8,10 @@ set(CMAKE_CXX_STANDARD 17)
 ################################################################
 #directories
 include_directories(lib)
-include_directories(lib/Toi_Anas)
-include_directories(lib/Toi_Emil)
-include_directories(lib/Toi_Kars)
-include_directories(lib/Toi_Tibo)
+#include_directories(lib/Toi_Anas)
+#include_directories(lib/Toi_Emil)
+#include_directories(lib/Toi_Kars)
+#include_directories(lib/Toi_Tibo)
 ################################################################
 #sources
 # Set source files for RELEASE target

@@ -56,9 +56,6 @@ void DFA::load(const json &j) {
 
 }
 
-
-
-
 bool DFA::accepts(string c) const& {
     state* nextState = startingState;
     for(string::const_iterator it=c.begin();it!=c.end();it++){

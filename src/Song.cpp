@@ -68,8 +68,8 @@ int Song::similarity(Song &song) const {
         }
         count++;
     }
-    int resultaat=slagen/count;
-    cout << "Tibo & Anas: " << resultaat <<endl;
+    double resultaat=slagen/count;
+    cout << "Tibo & Anas: " << resultaat << " slagen: " << slagen << " coutns: " << count  <<endl;
 
 
     ENSURE(succes, "Percentage must be between 0 and 100");

@@ -1,6 +1,7 @@
 #include <iostream>
-#include "Song.h"
 #include <algorithm>
+
+#include "Song.h"
 #include "src/DFA.h"
 #include "src/ENFA.h"
 #include "src/RE.h"
