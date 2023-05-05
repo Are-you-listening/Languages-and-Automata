@@ -25,6 +25,6 @@ char toChar(int value){
     s +=toChar(note_on*r_note_on);
     s +=toChar(instrument*r_instrument);
     s +=toChar(note_value*r_note);
-    s +=toChar(velocity*r_velocity);
+    s +=toChar((velocity/3)*r_velocity);
     return s;
 }

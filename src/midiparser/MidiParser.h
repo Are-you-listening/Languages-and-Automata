@@ -13,6 +13,7 @@
 #include <map>
 #include <set>
 #include "ByteX.h"
+#include <cmath>
 
 using namespace std;
 

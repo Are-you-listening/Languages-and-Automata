@@ -37,7 +37,7 @@ public:
      * @param r_velocity
      * @return
      */
-    [[nodiscard]] string getRE(bool r_time_stamp, bool r_note_on, bool r_channel, bool r_note, bool r_velocity) const;
+    [[nodiscard]] string getRE(bool r_time_stamp, bool r_note_on, bool r_instrument, bool r_note, bool r_velocity) const;
 };
 
 
