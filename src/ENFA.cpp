@@ -274,7 +274,6 @@ map<pair<char,string>, vector<string>> ENFA::possibleStates(state* nextState, co
 
 DFA ENFA::toDFA() &{
     map<char,string> dict;
-    vector<string> names;
     int count=0;
     for(vector<state*>::const_iterator state=ENFA::states.begin(); state!=ENFA::states.end(); state++, count++){
         char temp=count;
@@ -286,8 +285,8 @@ DFA ENFA::toDFA() &{
     }
     DFA dfa = ENFA::toDFA2();
     vector<state*> tempSTATES = dfa.getStates();
-    for(vector<state*>::const_iterator state=tempSTATES.begin(); state!=tempSTATES.end(); state++, count++){
-        string s;
+    for(vector<state*>::const_iterator state=tempSTATES.begin(); state!=tempSTATES.end(); state++){
+        vector<string> names;
         if ((*state)->name=="{}"){
             continue;
         }
@@ -295,30 +294,20 @@ DFA ENFA::toDFA() &{
             if ((*name)=='{' || (*name)==',' || (*name)=='}'){
                 continue;
             }
-            s+=dict[(*name)];
+            names.push_back(dict[(*name)]);
         }
-        std::sort(s.begin(), s.end());
-        names.push_back(s);
-        (*state)->name=s;
-    }
-    for(vector<state*>::const_iterator state=tempSTATES.begin(); state!=tempSTATES.end(); state++, count++){
-        string c="{";
-        if ((*state)->name=="{}"){
-            continue;
-        }
-        for(string::iterator name=(*state)->name.begin(); name!=(*state)->name.end(); name++){
-            if ((*name)=='{' || (*name)==',' || (*name)=='}'){
-                continue;
-            }
-            if (name==(*state)->name.end()-1){
-                c.push_back((*name));
-                c+="}";
+        std::sort(names.begin(), names.end());
+        string s="{";
+        for(vector<string>::const_iterator name=names.begin(); name!=names.end();){
+            s+=*name;
+            name++;
+            if(name!=names.end()){
+                s+=",";
             } else {
-                c.push_back((*name));
-                c+=",";
+                s+="}";
             }
         }
-        (*state)->name=c;
+        (*state)->name=s;
     }
     return dfa;
 }
