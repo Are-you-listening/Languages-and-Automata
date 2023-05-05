@@ -8,11 +8,11 @@
 
 int main() {
 
-    //Song song;
+    Song song;
     Song song2;
-    //song.parse("midi_files/world-1-birabuto-4-.mid");
+    song.parse("midi_files/world-1-birabuto-4-.mid");
     song2.parse("midi_files/world-1-birabuto-4-.mid");
-    //song.similarity(song2);
+    song.similarity(song2);
     /*
     Song song3;
     Song song4;

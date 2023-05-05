@@ -23,7 +23,7 @@ private:
     /**
      * \brief Map sorted by the timestamp of the song and a bool deciding if these Notes are on/off. The timestamp is manually set to a accuracy of 1ms (0,001s)
      */
-    map<pair<unsigned int, bool>, set<Note*>> note_map; //{TimeStamp, on/off} {Note*} Timestamp=0,001s
+    map<pair<unsigned int, bool>, vector<Note*>> note_map; //{TimeStamp, on/off} {Note*} Timestamp=0,001s
 
 public:
 

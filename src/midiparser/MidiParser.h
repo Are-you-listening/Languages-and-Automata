@@ -14,6 +14,7 @@
 #include <set>
 #include "ByteX.h"
 #include <cmath>
+#include <vector>
 
 using namespace std;
 
@@ -22,7 +23,7 @@ class MidiParser {
 public:
     MidiParser(const string& path);
 
-    const map<pair<unsigned int, bool>, set<Note *>> &getNoteMap() const;
+    const map<pair<unsigned int, bool>, vector<Note *>> &getNoteMap() const;
 
     const map<unsigned int, map<unsigned int, unsigned int>> &getLinkChannel() const;
 
@@ -37,16 +38,16 @@ private:
 
     void readHeader();
 
-    unsigned int track_amount;
-    unsigned int delta_time_counter;
-    unsigned int ms_per_quarter_note;
-    unsigned int ticks_per_quarter_note;
+    unsigned int track_amount = 0;
+    unsigned int delta_time_counter = 0;
+    unsigned int ms_per_quarter_note = 0;
+    unsigned int ticks_per_quarter_note = 0;
 
     void addNote(unsigned int time, bool note_on, Note* note);
 
     unsigned int get_closest_change(unsigned int time, unsigned int channel);
 
-    map<pair<unsigned int, bool>, set<Note*>> note_map;
+    map<pair<unsigned int, bool>, vector<Note*>> note_map;
     map<unsigned int, map<unsigned int, unsigned int> > link_channel;
     int status_running = -1;
     int channel = -1;

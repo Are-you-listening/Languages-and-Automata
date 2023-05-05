@@ -32,6 +32,16 @@ int Song::similarity(Song &song) const {
         DFA s = k.toDFA();
         tt.push_back(s);
     }
+
+    for(int i=0; i<t.size(); i++){
+        auto a1 = t[i];
+        auto a2 = t2[i];
+
+        if(a1.re != a2.re){
+            throw 1;
+        }
+    }
+
     /*
     for(auto z: t2){
         ENFA k = z.toENFA();

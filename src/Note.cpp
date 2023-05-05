@@ -25,7 +25,9 @@ char toChar(int value){
         throw "dwdw";
     }
 
+
     char c = (char)(index);
+
     return c;
 }
 
@@ -36,6 +38,9 @@ char toChar(int value){
     s +=toChar(instrument*r_instrument);
     s +=toChar(note_value*r_note);
     s +=toChar((velocity/3)*r_velocity);
+    if(time_stamp == 71490 && note_value == 71){
+        cout << "he" << endl;
+    }
     return s;
 }
 

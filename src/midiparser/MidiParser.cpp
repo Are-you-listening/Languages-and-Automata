@@ -20,6 +20,7 @@ MidiParser::MidiParser(const string &path) {
             b = readComponent();
 
         }
+
     }
 
     stream.close();
@@ -70,9 +71,7 @@ bool MidiParser::readComponent() {
         addNote(time, note_on, new Note(time, note_on,
                                         basic_data.getByte(0), basic_data.getByte(1),
                                         get_closest_change(time, channel)));
-    }
-
-    if (basic_data.equalsHex("ff", 0)){
+    }else if (basic_data.equalsHex("ff", 0)){
 
 
         if (basic_data.getNibble(1, true) == 0 && basic_data.getNibble(1, false) < 9){
@@ -175,6 +174,9 @@ bool MidiParser::readComponent() {
                                         basic_data.getByte(1), velocity.getValue(),
                                         get_closest_change(time, basic_data.getNibble(0, false))));
         channel = basic_data.getNibble(0, false);
+
+
+
     }else{
         cout << "error basic " << basic_data.toHex()<< endl;
     }
@@ -212,10 +214,10 @@ void MidiParser::readHeader() {
 
 void MidiParser::addNote(unsigned int time, bool note_on, Note* note) {
     pair<unsigned int, bool> p = make_pair(time, note_on);
-    note_map[p].insert(note);
+    note_map[p].push_back(note);
 }
 
-const map<pair<unsigned int, bool>, set<Note *>> &MidiParser::getNoteMap() const {
+const map<pair<unsigned int, bool>, vector<Note *>> &MidiParser::getNoteMap() const {
     return note_map;
 }
 
