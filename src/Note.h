@@ -11,7 +11,7 @@ using namespace std;
 
 class Note {
 private:
-    int channel;
+    unsigned int instrument;
     int note_value;
     unsigned int time_stamp;
     int velocity;
@@ -26,7 +26,7 @@ public:
      * @param note
      * @param velocity
      */
-    Note(unsigned int time_stamp, bool note_on, int channel, int note, int velocity, unsigned int instrument);
+    Note(unsigned int time_stamp, bool note_on, int note, int velocity, unsigned int instrument);
 
     /**
      * \brief Convert a NoteObject to a Regex given by the selected inputparamaters (if @param=true, add to regex)
