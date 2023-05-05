@@ -11,10 +11,10 @@ using namespace std;
 
 class RE {
 protected:
-    ENFA* plus(ENFA& enfa1, ENFA& enfa2)const&;
-    void kleene(ENFA& enfa)const&;
+    ENFA * plus(ENFA& enfa1, ENFA& enfa2);
+    void kleene(ENFA& enfa);
     void concatenation(ENFA& enfa1, ENFA& enfa2)const&;
-    ENFA* onechar(const string& c)const&;
+    ENFA * onechar(const string& c);
 public:
     string re;
     string epsilon;

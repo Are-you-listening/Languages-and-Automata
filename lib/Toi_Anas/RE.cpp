@@ -9,7 +9,7 @@ RE::RE(const string& re, const char epsilon) {
     RE::epsilon=epsilon;
 }
 
-ENFA* RE::plus(ENFA& enfa1, ENFA& enfa2)const& {
+ENFA * RE::plus(ENFA& enfa1, ENFA& enfa2) {
     ENFA* enfa=new ENFA();
     state* temp1=new state();
     state* temp2=new state();
@@ -45,7 +45,7 @@ ENFA* RE::plus(ENFA& enfa1, ENFA& enfa2)const& {
     return enfa;
 }
 
-ENFA* RE::onechar(const string& c)const& {
+ENFA * RE::onechar(const string& c) {
     ENFA* enfa=new ENFA();
     state* temp1=new state();
     state* temp2=new state();
@@ -67,7 +67,7 @@ ENFA* RE::onechar(const string& c)const& {
     return enfa;
 }
 
-void RE::kleene(ENFA& enfa)const& {
+void RE::kleene(ENFA& enfa) {
     state* temp1=new state();
     state* temp2=new state();
     temp1->starting= true;

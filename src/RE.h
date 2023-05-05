@@ -11,15 +11,16 @@ using namespace std;
 
 class RE {
 protected:
-    ENFA* plus(ENFA& enfa1, ENFA& enfa2)const&;
-    void kleene(ENFA& enfa)const&;
-    void concatenation(ENFA& enfa1, ENFA& enfa2)const&;
-    ENFA* onechar(const string& c)const&;
+    ENFA * plus(ENFA& enfa1, ENFA& enfa2);
+    void kleene(ENFA& enfa);
+    void concatenation(ENFA& enfa1, ENFA& enfa2)&;
+    ENFA * onechar(const string& c);
+    int count=0;
 public:
     string re;
     string epsilon;
     RE(const string& re,const char epsilon);
-    ENFA toENFA()const&;
+    ENFA toENFA()&;
 };
 
 #endif //TA__TOG_RE_H

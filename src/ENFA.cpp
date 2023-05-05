@@ -278,6 +278,7 @@ DFA ENFA::toDFA() &{
     for(vector<state*>::const_iterator state=ENFA::states.begin(); state!=ENFA::states.end(); state++, count++){
         char temp=count;
         while (temp=='{' || temp==',' || temp=='}'){
+            temp=count;
             count++;
         }
         dict[temp]=(*state)->name;

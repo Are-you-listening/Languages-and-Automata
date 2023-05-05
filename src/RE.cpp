@@ -9,13 +9,14 @@ RE::RE(const string& re, const char epsilon) {
     RE::epsilon=epsilon;
 }
 
-ENFA* RE::plus(ENFA& enfa1, ENFA& enfa2)const& {
+ENFA * RE::plus(ENFA& enfa1, ENFA& enfa2) {
     ENFA* enfa=new ENFA();
     state* temp1=new state();
     state* temp2=new state();
     temp1->starting= true;
     temp1->accepting= false;
-    temp1->name="1";
+    temp1->name= to_string(count);
+    count++;
     enfa->startingState=temp1;
     vector<state*> endstates={temp1};
     enfa->endstates=endstates;
@@ -33,7 +34,8 @@ ENFA* RE::plus(ENFA& enfa1, ENFA& enfa2)const& {
 
     temp2->starting= false;
     temp2->accepting=true;
-    temp2->name="01";
+    temp2->name=to_string(count);
+    count++;
     enfa->endstates[0]->accepting= false;
     enfa->endstates[1]->accepting= false;
     enfa->endstates[0]->addTransitionFunction(RE::epsilon,temp2);
@@ -45,16 +47,18 @@ ENFA* RE::plus(ENFA& enfa1, ENFA& enfa2)const& {
     return enfa;
 }
 
-ENFA* RE::onechar(const string& c)const& {
+ENFA * RE::onechar(const string& c) {
     ENFA* enfa=new ENFA();
     state* temp1=new state();
     state* temp2=new state();
     temp1->starting= true;
     temp1->accepting= false;
-    temp1->name="0";
+    temp1->name=to_string(count);
+    count++;
     temp2->starting= false;
     temp2->accepting=true;
-    temp2->name="01";
+    temp2->name=to_string(count);
+    count++;
     temp1->addTransitionFunction(c,temp2);
     enfa->startingState=temp1;
     vector<state*> endstates={temp2};
@@ -67,15 +71,17 @@ ENFA* RE::onechar(const string& c)const& {
     return enfa;
 }
 
-void RE::kleene(ENFA& enfa)const& {
+void RE::kleene(ENFA& enfa) {
     state* temp1=new state();
     state* temp2=new state();
     temp1->starting= true;
     temp1->accepting= false;
-    temp1->name="0";
+    temp1->name=to_string(count);
+    count++;
     temp2->starting= false;
     temp2->accepting=true;
-    temp2->name="01";
+    temp2->name=to_string(count);
+    count++;
     temp1->addTransitionFunction(RE::epsilon,enfa.startingState);
     temp1->addTransitionFunction(RE::epsilon,temp2);
     enfa.endstates[0]->accepting= false;
@@ -90,11 +96,11 @@ void RE::kleene(ENFA& enfa)const& {
 
 }
 
-void RE::concatenation(ENFA& enfa1, ENFA& enfa2)const& {
+void RE::concatenation(ENFA& enfa1, ENFA& enfa2)& {
     enfa1.concatenate(enfa2);
 }
 
-ENFA RE::toENFA()const& {
+ENFA RE::toENFA()& {
     ENFA* enfa= nullptr;
     int count=0;
     for(string::const_iterator it=re.begin(); it!=re.end(); it++,count++){
