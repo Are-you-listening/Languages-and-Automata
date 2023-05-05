@@ -2,9 +2,11 @@
 // Created by tibov on 29/04/23.
 //
 
-#include "Note.h"
 #include "iostream"
 #include <string>
+
+#include "Note.h"
+
 Note::Note(unsigned int time_stamp, bool note_on, int channel, int note,  int velocity, unsigned int instrument): note_value(note), channel(channel), note_on(note_on), velocity(velocity) {
 }
 
