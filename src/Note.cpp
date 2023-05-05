@@ -3,8 +3,7 @@
 //
 
 #include "Note.h"
-#include "iostream"
-#include <string>
+
 Note::Note(unsigned int time_stamp, bool note_on, int note,  int velocity, unsigned int instrument):
 note_value(note), instrument(instrument), note_on(note_on), velocity(velocity), time_stamp(time_stamp) {
 }
@@ -20,11 +19,11 @@ char toChar(int value){
     return c;
 }
 
-string Note::getRE(bool r_time_stamp, bool r_note_on, bool r_channel, bool r_note, bool r_velocity) const{
+[[nodiscard]] string Note::getRE(bool r_time_stamp, bool r_note_on, bool r_instrument, bool r_note, bool r_velocity) const{
     string s;
     s +=toChar(time_stamp*r_time_stamp);
     s +=toChar(note_on*r_note_on);
-    s +=toChar(instrument*r_channel);
+    s +=toChar(instrument*r_instrument);
     s +=toChar(note_value*r_note);
     s +=toChar(velocity*r_velocity);
     return s;
