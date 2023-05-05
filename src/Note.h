@@ -4,6 +4,10 @@
 
 #ifndef MIDIPARSER_NOTE_H
 #define MIDIPARSER_NOTE_H
+#include "iostream"
+#include <string>
+
+using namespace std;
 
 class Note {
 private:
@@ -33,8 +37,7 @@ public:
      * @param r_velocity
      * @return
      */
-    char getRE(bool r_time_stamp, bool r_note_on, bool r_channel, bool r_note, bool r_velocity) const;
-
+    [[nodiscard]] string getRE(bool r_time_stamp, bool r_note_on, bool r_channel, bool r_note, bool r_velocity) const;
 };
 
 
