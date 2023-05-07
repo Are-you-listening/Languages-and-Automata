@@ -3,7 +3,7 @@
 //
 
 #include "Song.h"
-
+#include "algorithm"
 bool Song::ProperlyInitialized() const {
     if(fInitCheck==this){
         return true;
@@ -22,8 +22,8 @@ int Song::similarity(Song &song) const {
         succes = true;
     }
     //IDEA KARS
-    auto t = song.toRegex(0,1,1,1,1,7);
-    auto t2 = this->toRegex(0,1,1,1,1,7);
+    auto t = song.toRegex(0,1,1,1,1,3);
+    auto t2 = this->toRegex(0,1,1,1,1,3);
 
     vector<DFA> tt;
     //vector<DFA> tt2;
@@ -37,9 +37,6 @@ int Song::similarity(Song &song) const {
         auto a1 = t[i];
         auto a2 = t2[i];
 
-        if(a1.re != a2.re){
-            throw 1;
-        }
     }
 
     /*
@@ -94,7 +91,7 @@ void Song::parse(const string &path) {
     for(auto entry: note_map){
         count += entry.second.size();
     }
-    //cout << count << endl;
+    cout << count << endl;
 }
 
 vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern) const {
@@ -110,6 +107,7 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
             count++;
             if(count==pattern){
                 //DO ACTUAL MERGE/MAKE REGEX
+
                 RE regex(temp,epsilon);
                 regex_list.push_back(regex);
                 count=0;
@@ -119,7 +117,8 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
         }
     }
 
-    if (count != 0){ //Add the resting regex parts incase we didn't got a full pattern run
+    if (count != 0){
+        //Add the resting regex parts incase we didn't got a full pattern run
         RE regex(temp,epsilon);
         regex_list.push_back(regex);
     }

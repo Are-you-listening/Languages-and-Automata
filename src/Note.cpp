@@ -10,7 +10,7 @@ note_value(note), instrument(instrument), note_on(note_on), velocity(velocity), 
 
 char toChar(int value){
     int index = value;
-    index -= 20;
+
     index += 48;
     if(index > 122){
         index += 51;
@@ -21,7 +21,7 @@ char toChar(int value){
         throw "All i want for christmas, is an working function";
     }
 
-    if (index < 28){
+    if (index < 48){
         throw "dwdw";
     }
 
@@ -35,15 +35,30 @@ char toChar(int value){
     string s;
     s +=toChar(time_stamp*r_time_stamp);
     s +=toChar(note_on*r_note_on);
-    s +=toChar(instrument*r_instrument);
+    s += noteRoundInstrument(false, r_instrument);
     s +=toChar(note_value*r_note);
     s +=toChar((velocity/3)*r_velocity);
-    if(time_stamp == 71490 && note_value == 71){
-        cout << "he" << endl;
-    }
     return s;
 }
 
 int Note::getNoteValue() const {
     return note_value;
+}
+
+string Note::noteRoundInstrument(bool round_instrument, bool r_instrument) const {
+    if (round_instrument){
+        string s = "(";
+        int base_instrument = instrument/8;
+        for (int i=0; i<8; i++){
+            s += toChar((base_instrument+i)*r_instrument);
+            s += "+";
+        }
+
+        s[s.size()-1] = ')';
+
+        return s;
+    }else{
+        return to_string(toChar(instrument*r_instrument));
+    }
+
 }

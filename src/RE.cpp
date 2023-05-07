@@ -110,7 +110,7 @@ ENFA RE::toENFA()& {
             enfa = RE::plus(*enfa,temp);
             break;
         } else if ((*it)=='('){
-            string temp_string;
+            string temp_string = "";
             it++;
             count++;
             int count2=1;
