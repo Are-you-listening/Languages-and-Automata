@@ -11,39 +11,27 @@ using json = nlohmann::json;
 
 
 double WNFA::weightedaccepts(string input) {
-    vector<weightedNode*> currentStates = {startState};
-    double result = 0.0;
-    for (char symbol : input) {
-        if (alfabet.find(symbol) == alfabet.end()) {
-            cerr << "inputstring contains an unknown symbol" << endl;
-            return 0.0;
-        }
-        vector<weightedNode*> tempstates;
-        bool connectionfound = false;
-        for (weightedNode* state: currentStates) {
-            for (auto connection: state->weightedNode::getconnections()) {
-                if (get<1>(connection).find(symbol) != get<1>(connection).end()) {
-                    connectionfound = true;
-                    result += get<2>(connection);
-                    cout << "help" << get<2>(connection) << endl;
-                    tempstates.push_back(get<0>(connection));
+    vector<pair<double, weightedNode*>> currentstates = {make_pair(0.0, this->startState)};
+
+    for (char symbol : input){
+        vector<pair<double, weightedNode*>> tempstates;
+        for (pair<double, weightedNode*> state : currentstates){
+            for (auto connection : state.second->getconnections()){
+                if (get<1>(connection).find(symbol) != get<1>(connection).end()){
+                    tempstates.emplace_back(state.first + get<2>(connection), get<0>(connection));
                 }
             }
         }
-        if (not connectionfound){
-            return 0.0;
-        }
-        currentStates = tempstates;
+        currentstates = tempstates;
     }
-    for (Node* state : currentStates){
-        for (Node* endstate : endStates){
-            if (state == endstate){
-                cout << result << endl;
-                //return result;
-            }
+
+    double largestpath = 0.0;
+    for (pair<double, weightedNode*> state : currentstates){
+        if (state.first > largestpath){
+            largestpath = state.first;
         }
     }
-    return 0.0;
+    return largestpath;
 }
 
 WNFA::WNFA(const string &filename) : weightedautomaat(filename) {}
