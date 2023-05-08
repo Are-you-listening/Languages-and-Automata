@@ -45,6 +45,7 @@ class DFA {
 
 public:
     void load(const json& j);
+    void load(const set<string>& alfa, const vector<state*>& states, state* start_state, const vector<state*>& end_states);
     state *getStartingState() const;
 
     void setStartingState(state *startingState);

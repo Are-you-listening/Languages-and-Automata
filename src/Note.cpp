@@ -36,9 +36,8 @@ char toChar(int value){
     s +=toChar(time_stamp*r_time_stamp);
     s +=toChar(note_on*r_note_on);
     s += RoundInstrument(rounder, r_instrument);
-    s += RoundNote(rounder, note_value, 3, r_note);
+    s += RoundNote(note_value, r_note, rounder, 3, false, 0);
     s +=toChar((velocity/3)*r_velocity);
-
     return s;
 }
 
@@ -65,26 +64,43 @@ string Note::RoundInstrument(bool round_instrument, bool r_instrument) const {
 
 }
 
-string Note::RoundNote(bool round_instrument, int note_value, int round_index, bool r_note) const {
+string Note::RoundNote(int note_value, bool r_note, bool round, int round_index, bool round_octave, int round_index2) const {
     REQUIRE(note_value+round_index < 255, "note range not allowed");
 
-    if (round_instrument){
-        string s = "(";
-        for (int i=note_value-round_index; i<=note_value+round_index; i++){
-            int i_out = i;
-            if (i < 0){
-                i_out = 0;
-            }
-            s += toChar(i_out*r_note);
-            s += "+";
-        }
-
-        s[s.size()-1] = ')';
-        return s;
-    }else{
+    if (!round && !round_octave){
         string s = "";
         s += toChar(note_value*r_note);
         return s;
     }
+
+    if (!round){
+        round_index = 0;
+    }
+
+    if (!round_octave){
+        round_index2 = 0;
+    }
+
+    int note_number = note_value % 12;
+    int octave = note_value/ 12 - 1;
+
+    string s = "(";
+    for (int i=note_number-round_index; i<=note_number+round_index; i++){
+        for (int j=octave-round_index2; j<=octave+round_index2; j++){
+
+            int value = 12 * (j + 1) + i;
+
+            if (value < 0 || value > 255){
+                throw "oei";
+            }
+
+            s += toChar(value*r_note);
+            s += "+";
+        }
+
+    }
+
+    s[s.size()-1] = ')';
+    return s;
 
 }

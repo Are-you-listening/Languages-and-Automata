@@ -45,8 +45,7 @@ private:
     bool note_on;
 
     string RoundInstrument(bool round_instrument, bool r_instrument) const;
-    string RoundNote(bool round_instrument, int note_value, int round_index, bool r_note) const;
-    string RoundOctaaf(int note_value, bool r_note);
+    string RoundNote(int note_value, bool r_note, bool round, int round_index, bool round_octave, int round_index2) const;
 
 };
 #endif //MIDIPARSER_NOTE_H

@@ -450,5 +450,14 @@ ENFA DFA::reverse() {
     return n;
 }
 
+void DFA::load(const set<string> &alfa, const vector<state *> &states, state *start_state,
+               const vector<state *> &end_states) {
+    alphabet = alfa;
+    DFA::states = states;
+    DFA::startingState = start_state;
+    DFA::endstates = end_states;
+
+}
+
 
 

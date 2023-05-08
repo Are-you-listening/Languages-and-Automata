@@ -9,6 +9,7 @@
 #include <iomanip>
 #include "DFA.h"
 
+
 using namespace std;
 ENFAT::ENFAT(const string &path) {
     /**
@@ -153,51 +154,61 @@ DFA ENFAT::toDFA() {
 
     string new_start_state = set_to_string(DFA_start_state);
 
-    nlohmann::json data = nlohmann::json::parse(R"({})");
-    data["type"] = "DFA";
+
+    set<string> alfabet_parent;
     for (auto a: alfabet){
         string s;
         s += a;
-        data["alphabet"].push_back( s);
+        alfabet_parent.insert(s);
     }
-    int index = 0;
+
+    map<string, state*> state_linker;
+    vector<state*> states_parent;
+    vector<state*> end_parent;
+    state* start_state_parent;
     for (auto s : states_string){
         bool start = false;
         bool end = false;
+
+        state* temp_state = new state;
+
         if (new_start_state == s){
             start = true;
+            start_state_parent = temp_state;
         }
 
         if (find(end_states_string.begin(), end_states_string.end(), s) != end_states_string.end()){
             end = true;
+            end_parent.push_back(temp_state);
         }
 
-        data["states"][index]["name"] = s;
-        data["states"][index]["starting"] = start;
-        data["states"][index]["accepting"] = end;
-        index += 1;
+        temp_state->name = s;
+        temp_state->starting = start;
+        temp_state->accepting = end;
+
+        state_linker.insert({s, temp_state});
+        states_parent.push_back(temp_state);
+
     }
 
-    index = 0;
     for (auto t : new_transition_map){
-        string state = t.first;
+        string state_string = t.first;
+        state* depart_state = state_linker.at(state_string);
         for (char a: alfabet){
-            string target = t.second.at(a);
+            string target_string = t.second.at(a);
+            state* arrive_state = state_linker.at(target_string);
 
             string s;
             s += a;
+            depart_state->addTransitionFunction(s, arrive_state);
 
-            data["transitions"][index]["from"] = state;
-            data["transitions"][index]["to"] = target;
-            data["transitions"][index]["input"] = s;
-            index += 1;
         }
 
     }
 
 
     DFA d;
-    d.load(data);
+    d.load(alfabet_parent, states_parent, start_state_parent, end_parent);
     return d;
 
 }
