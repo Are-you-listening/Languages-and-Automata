@@ -14,11 +14,13 @@
 using namespace std;
 
 
-class ENFA {
+class ENFAT {
 public:
-    ENFA(const string& path);
+    ENFAT(const string& path);
+    ENFAT();
     DFA toDFA();
     bool accepts(const string& s);
+    void load(const nlohmann::json& data);
 private:
     set<string> states;
     set<char> alfabet;

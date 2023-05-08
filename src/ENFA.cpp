@@ -3,6 +3,7 @@
 //
 
 #include "ENFA.h"
+#include "ENFAT.h"
 
 ENFA::ENFA(const string& c) {
     ifstream input(c);
@@ -100,6 +101,7 @@ void ENFA::print()const&{
     json j;
     j["type"] = "ENFA";
     j["alphabet"]=ENFA::alphabet;
+
     vector<json> states;
     for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
         json temp;
@@ -294,6 +296,7 @@ map<pair<char,string>, vector<string>> ENFA::possibleStates(state* nextState, co
 }
 
 DFA ENFA::toDFA() &{
+    /*
     map<char,string> dict;
     int count=0;
     for(vector<state*>::const_iterator state=ENFA::states.begin(); state!=ENFA::states.end(); state++, count++){
@@ -330,7 +333,15 @@ DFA ENFA::toDFA() &{
             }
         }
         (*state)->name=s;
-    }
+    }*/
+
+
+
+    ENFAT t;
+    t.load(getJson());
+    DFA dfa = t.toDFA();
+
+
     return dfa;
 }
 
@@ -658,4 +669,56 @@ void ENFA::load(const json &j) {
             count2++;
         }
     }
+}
+
+json ENFA::getJson() const {
+
+    json j;
+    j["type"] = "ENFA";
+    j["alphabet"]=ENFA::alphabet;
+    vector<json> states;
+    for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
+        json temp;
+        temp["name"]=(*it)->name;
+        temp["starting"]=(*it)->starting;
+        temp["accepting"]=(*it)->accepting;
+        states.push_back(temp);
+    }
+    j["states"]=states;
+    vector<json> transitions;
+
+    set<string> alphabet2 = alphabet;
+    alphabet2.insert("*");
+
+    for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
+        for(set<string>::const_iterator it2=alphabet2.begin(); it2!=alphabet2.end(); it2++){
+            int count = -1;
+            while (true){
+                json temp;
+
+                string key;
+                if (count == -1){
+                    key = (*it2);
+                }else{
+                    key = (*it2)+ to_string(count);
+                }
+
+                if ((*it)->states.find(key) != (*it)->states.end()){
+                    temp["from"]=(*it)->name;
+                    temp["input"] = (*it2);
+                    temp["to"]=(*it)->states[key]->name;
+                    transitions.push_back(temp);
+                    count += 1;
+                }else{
+                    break;
+                }
+            }
+
+
+
+        }
+    }
+    j["transitions"]=transitions;
+    j["eps"] = "*";
+    return j;
 }

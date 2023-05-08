@@ -64,6 +64,8 @@ set(MAIN_SRC
         lib/Toi_Emil/weightedNode.h
         lib/Toi_Emil/WNFA.cpp
         lib/Toi_Emil/WNFA.h
+        src/ENFAT.cpp
+        src/ENFAT.h
         )
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)

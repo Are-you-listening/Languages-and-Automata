@@ -2,14 +2,15 @@
 // Created by tibov on 21/03/23.
 //
 
-#include "ENFA.h"
+#include "ENFAT.h"
 #include <algorithm>
 #include <fstream>
 #include "json.hpp"
 #include <iomanip>
 #include "DFA.h"
+
 using namespace std;
-ENFA::ENFA(const string &path) {
+ENFAT::ENFAT(const string &path) {
     /**
      * Constructor
      * Maakt een e-NFA aan
@@ -65,14 +66,14 @@ ENFA::ENFA(const string &path) {
 
 
 }
-set<string> ENFA::Eclose(const string &state){
+set<string> ENFAT::Eclose(const string &state){
     /**
      * Default Eclose functie
      * */
     set<string> empty;
     return Eclose(state, empty);
 }
-set<string> ENFA::Eclose(const string &state, const set<string>& found) {
+set<string> ENFAT::Eclose(const string &state, const set<string>& found) {
     /**
      * echte Eclose functie, wordt gebruikt om bij te houden welke elementen we al in de verzameling hebben
      * zodat we een inf loop voorkomen
@@ -108,7 +109,7 @@ set<string> ENFA::Eclose(const string &state, const set<string>& found) {
     return output;
 }
 
-DFA ENFA::toDFA() {
+DFA ENFAT::toDFA() {
     /**
      * Vormt een DFA om naar e-NFA
      * */
@@ -192,12 +193,12 @@ DFA ENFA::toDFA() {
     /**
      * maak nieuwe DFA aan
      * */
-    DFA d(alfabet, states_string, new_transition_map, set_to_string(DFA_start_state), end_states_string);
+    //DFA d(alfabet, states_string, new_transition_map, set_to_string(DFA_start_state), end_states_string);
     return d;
 
 }
 
-string ENFA::set_to_string(const set<string> &s) const {
+string ENFAT::set_to_string(const set<string> &s) const {
     /**
      * Convert set naar juiste format string
      * */
@@ -214,7 +215,7 @@ string ENFA::set_to_string(const set<string> &s) const {
     return output;
 }
 
-bool ENFA::accepts(const string &s) {
+bool ENFAT::accepts(const string &s) {
     set<string> current_states;
     current_states = Eclose(start_state);
     for (char c: s){

@@ -44,6 +44,7 @@ public:
     void printStats()const&;
     void concatenate(const ENFA& enfa)&;
     void load(const json& j);
+    json getJson() const;
 };
 
 
