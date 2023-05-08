@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include "tuple"
+#include <DesignByContract.h>
 
 using namespace std;
 
@@ -43,6 +44,9 @@ private:
     int velocity;
     bool note_on;
 
-    string noteRoundInstrument(bool round_instrument, bool r_instrument) const;
+    string RoundInstrument(bool round_instrument, bool r_instrument) const;
+    string RoundNote(bool round_instrument, int note_value, int round_index, bool r_note) const;
+    string RoundOctaaf(int note_value, bool r_note);
+
 };
 #endif //MIDIPARSER_NOTE_H

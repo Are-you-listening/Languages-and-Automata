@@ -22,8 +22,8 @@ int Song::similarity(Song &song) const {
         succes = true;
     }
     //IDEA KARS
-    auto t = song.toRegex(0,1,1,1,0,1,0); // als je een hogere match precentage wilt dat nog steeds accuraat is, maak instrument 0 en velocity 0 song.toRegex(0,1,0,1,0,1, 1);
-    auto t2 = this->toRegex(0,1,1,1,0,1,0);
+    auto t = song.toRegex(0,1,1,1,0,2,1); // als je een hogere match precentage wilt dat nog steeds accuraat is, maak instrument 0 en velocity 0 song.toRegex(0,1,0,1,0,1, 1);
+    auto t2 = this->toRegex(0,1,1,1,0,2,0);
 
     vector<DFA> tt;
     //vector<DFA> tt2;
@@ -118,6 +118,7 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
                 temp = "";
             }
         }
+
     }
 
     if (count != 0){

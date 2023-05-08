@@ -175,6 +175,7 @@ vector<state *> ENFA::ECLOSE2(state *Etransition, string input)const&{
 }
 
 void ENFA::Etransitions(vector<state*> &states)const&{
+    /*
     for(vector<state*>::const_iterator it=states.begin(); it!=states.end(); it++){
         bool a=false;
         vector<state*> states2= ECLOSE((*it));
@@ -184,10 +185,30 @@ void ENFA::Etransitions(vector<state*> &states)const&{
                 a=true;
             }
         }
+
+
         if (a){
             Etransitions(states);
             it=states.begin();
         }
+    }*/
+
+    vector<state*> new_states;
+    new_states.insert(new_states.begin(), states.begin(), states.end());
+    Etransitions(new_states, states);
+}
+
+void ENFA::Etransitions(vector<state*> &states, vector<state*> &found)const&{
+    for(vector<state*>::const_iterator it=states.begin(); it!=states.end(); it++){
+        vector<state*> states2= ECLOSE((*it));
+        vector<state*> new_states;
+        for(vector<state*>::const_iterator it2=states2.begin(); it2!=states2.end(); it2++){
+            if(find(found.begin(),found.end(),(*it2))==found.end()){
+                new_states.push_back((*it2));
+            }
+        }
+        found.insert(found.end(), new_states.begin(), new_states.end());
+        Etransitions(new_states, found);
     }
 }
 
