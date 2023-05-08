@@ -4,6 +4,11 @@
 
 #include "RE.h"
 
+struct number{
+    unsigned int count=0;
+};
+number tempcounter;
+
 RE::RE(const string& re, const char epsilon) {
     RE::re=re;
     RE::epsilon=epsilon;
@@ -15,8 +20,8 @@ ENFA * RE::plus(ENFA& enfa1, ENFA& enfa2) {
     state* temp2=new state();
     temp1->starting= true;
     temp1->accepting= false;
-    temp1->name= to_string(count);
-    count++;
+    temp1->name= to_string(tempcounter.count);
+    tempcounter.count++;
     enfa->startingState=temp1;
     vector<state*> endstates={temp1};
     enfa->endstates=endstates;
@@ -34,8 +39,8 @@ ENFA * RE::plus(ENFA& enfa1, ENFA& enfa2) {
 
     temp2->starting= false;
     temp2->accepting=true;
-    temp2->name=to_string(count);
-    count++;
+    temp2->name=to_string(tempcounter.count);
+    tempcounter.count++;
     enfa->endstates[0]->accepting= false;
     enfa->endstates[1]->accepting= false;
     enfa->endstates[0]->addTransitionFunction(RE::epsilon,temp2);
@@ -53,12 +58,12 @@ ENFA * RE::onechar(const string& c) {
     state* temp2=new state();
     temp1->starting= true;
     temp1->accepting= false;
-    temp1->name=to_string(count);
-    count++;
+    temp1->name=to_string(tempcounter.count);
+    tempcounter.count++;
     temp2->starting= false;
     temp2->accepting=true;
-    temp2->name=to_string(count);
-    count++;
+    temp2->name=to_string(tempcounter.count);
+    tempcounter.count++;
     temp1->addTransitionFunction(c,temp2);
     enfa->startingState=temp1;
     vector<state*> endstates={temp2};
@@ -76,12 +81,12 @@ void RE::kleene(ENFA& enfa) {
     state* temp2=new state();
     temp1->starting= true;
     temp1->accepting= false;
-    temp1->name=to_string(count);
-    count++;
+    temp1->name=to_string(tempcounter.count);
+    tempcounter.count++;
     temp2->starting= false;
     temp2->accepting=true;
-    temp2->name=to_string(count);
-    count++;
+    temp2->name=to_string(tempcounter.count);
+    tempcounter.count++;
     temp1->addTransitionFunction(RE::epsilon,enfa.startingState);
     temp1->addTransitionFunction(RE::epsilon,temp2);
     enfa.endstates[0]->accepting= false;
