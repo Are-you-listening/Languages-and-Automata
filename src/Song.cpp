@@ -22,8 +22,8 @@ int Song::similarity(Song &song) const {
         succes = true;
     }
     //IDEA KARS
-    auto t = song.toRegex(0,1,1,1,1,1, 1);
-    auto t2 = this->toRegex(0,1,1,1,1,1, 0);
+    auto t = song.toRegex(0,1,1,1,0,1,0); // als je een hogere match precentage wilt dat nog steeds accuraat is, maak instrument 0 en velocity 0 song.toRegex(0,1,0,1,0,1, 1);
+    auto t2 = this->toRegex(0,1,1,1,0,1,0);
 
     vector<DFA> tt;
     //vector<DFA> tt2;
@@ -33,11 +33,13 @@ int Song::similarity(Song &song) const {
         tt.push_back(s);
     }
 
-    for(int i=0; i<t.size(); i++){
+    /*
+    for(int i=0; i<t.size(); i++){ // dit zorgt nog voor een error
         auto a1 = t[i];
         auto a2 = t2[i];
 
     }
+     */
 
     /*
     for(auto z: t2){
