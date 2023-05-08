@@ -64,7 +64,7 @@ public:
      * @param pattern, int deciding the complexixity of the constructed Regex
      * @return vector<RE> rex
      */
-    vector<RE> toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern) const;
+    vector<RE> toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern, bool rounder) const;
 };
 
 

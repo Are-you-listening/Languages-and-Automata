@@ -22,8 +22,8 @@ int Song::similarity(Song &song) const {
         succes = true;
     }
     //IDEA KARS
-    auto t = song.toRegex(0,1,1,1,1,3);
-    auto t2 = this->toRegex(0,1,1,1,1,3);
+    auto t = song.toRegex(0,1,1,1,1,1, 1);
+    auto t2 = this->toRegex(0,1,1,1,1,1, 0);
 
     vector<DFA> tt;
     //vector<DFA> tt2;
@@ -70,6 +70,7 @@ int Song::similarity(Song &song) const {
             b = s->accepts(test);
             if(b){
                 slagen++;
+                //cout << test << endl;
                 break;
             }
         }
@@ -94,7 +95,7 @@ void Song::parse(const string &path) {
     cout << count << endl;
 }
 
-vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern) const {
+vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern, bool rounder) const {
     char epsilon='*';
     vector<RE> regex_list;
     int count = 0;
@@ -102,7 +103,7 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
 
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
         for(Note* note: it->second){
-            string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity);
+            string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity, rounder);
             temp+=z;
             count++;
             if(count==pattern){

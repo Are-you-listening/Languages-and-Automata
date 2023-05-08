@@ -31,13 +31,18 @@ char toChar(int value){
     return c;
 }
 
-[[nodiscard]] string Note::getRE(bool r_time_stamp, bool r_note_on, bool r_instrument, bool r_note, bool r_velocity) const{
-    string s;
+[[nodiscard]] string Note::getRE(bool r_time_stamp, bool r_note_on, bool r_instrument, bool r_note, bool r_velocity, bool rounder) const{
+    string s = "";
     s +=toChar(time_stamp*r_time_stamp);
     s +=toChar(note_on*r_note_on);
-    s += noteRoundInstrument(false, r_instrument);
+    s += noteRoundInstrument(rounder, r_instrument);
     s +=toChar(note_value*r_note);
     s +=toChar((velocity/3)*r_velocity);
+
+    if(s == "00(0+1+2+3+4+5+6+7)i0"){
+        //cout << "s" << endl;
+    }
+
     return s;
 }
 
@@ -55,10 +60,11 @@ string Note::noteRoundInstrument(bool round_instrument, bool r_instrument) const
         }
 
         s[s.size()-1] = ')';
-
         return s;
     }else{
-        return to_string(toChar(instrument*r_instrument));
+        string s = "";
+        s += toChar(instrument*r_instrument);
+        return s;
     }
 
 }
