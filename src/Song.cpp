@@ -135,6 +135,33 @@ double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
 }
 
 double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
+    REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+    REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
+
+    bool succeeded = false;
+    int succes = 0; //Counter to keep the amount of time the test passes
+
+    for(int i = 0; i<d.size(); i++){ // Given song
+        for(int j = 0; j<s.size(); j++){
+
+            string test=s[j].re;
+            bool b = d[i].accepts(test); //Addition Anas
+
+            if(b){succes++;}
+        }
+    }
+
+    double resultaat = succes/ (d.size() * s.size()) ;
+
+    if(resultaat>=0 && resultaat<=1){
+        succeeded = true;
+    }
+
+    ENSURE(succeeded, "Operation did not work properly");
+    return resultaat;
+}
+
+double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     return 0;
 }
 
