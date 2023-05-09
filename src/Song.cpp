@@ -206,7 +206,7 @@ double Song::similarity(Song &song) const {
     vector<double> results;
 
     //No roundings
-    pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(0,1,0,1,0,   1,0), this->toRegex(0,1,0,1,0,   1,0) }; //Test 1
+    pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(0,1,0,1,0,   1,0), this->toRegex(0,1,0,1,0,   1,0) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
     results.push_back( similar(toCheck) );
 
     //DO the above in a for loop to change parameters
