@@ -121,17 +121,14 @@ double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
     for(int i = 0; i<d.size(); i++){ // Given song
         string test=s[i].re;
         bool b = d[i].accepts(test); //Addition Anas
-
         if(b){succes++;}
     };
 
-    double resultaat = succes/d.size();
-    if(resultaat>=0 && resultaat<=1){
-        succeeded = true;
-    }
+    double result = succes/d.size();
+    if(result>=0 && result<=1){succeeded = true;} //Result bust me a percentage
 
     ENSURE(succeeded, "Operation did not work properly");
-    return resultaat;
+    return result;
 }
 
 double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
@@ -143,22 +140,17 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
 
     for(int i = 0; i<d.size(); i++){ // Given song
         for(int j = 0; j<s.size(); j++){
-
             string test=s[j].re;
             bool b = d[i].accepts(test); //Addition Anas
-
             if(b){succes++;}
         }
     }
 
-    double resultaat = succes/ (d.size() * s.size()) ;
-
-    if(resultaat>=0 && resultaat<=1){
-        succeeded = true;
-    }
+    double result = succes / (d.size() * s.size()) ;
+    if(result>=0 && result<=1){succeeded = true;} //Result bust me a percentage
 
     ENSURE(succeeded, "Operation did not work properly");
-    return resultaat;
+    return result;
 }
 
 double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
@@ -167,39 +159,34 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
 
     bool succeeded = false;
     int succes = 0; //Counter to keep the amount of time the test passes
-    int count = 0;
+    int count = 0; //Counter to keep Nr of Operations
 
     for(int i = 0; i<d.size(); i++){ // Given song
         for(int j = 0; j<s.size(); j++){
-
             string test=s[j].re;
             bool b = d[i].accepts(test); //Addition Anas
 
             if(b){
                 succes++;
+                count++;
                 break; //Idea Anas
             }
         }
-        count++;
     }
 
-    double resultaat = succes/ count ;
-
-    if(resultaat>=0 && resultaat<=1){
-        succeeded = true;
-    }
+    double result = succes / count ;
+    if(result>=0 && result<=1){succeeded = true;}
 
     ENSURE(succeeded, "Operation did not work properly");
-    return resultaat;
+    return result;
 }
 
 double Song::similarity(Song &song) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    double resultaat = 0.0;
+    double result = 0.0;
     bool succes = false;
-
-    //IDEA KARS
+    
     vector<RE> t = song.toRegex(0,1,1,1,0,2,1); // als je een hogere match precentage wilt dat nog steeds accuraat is, maak instrument 0 en velocity 0 song.toRegex(0,1,0,1,0,1, 1);
     vector<RE> t2 = this->toRegex(0,1,1,1,0,2,0);
 
@@ -211,12 +198,10 @@ double Song::similarity(Song &song) const {
         tt.push_back(s);
     }
 
-    if(resultaat<=1 && resultaat>=0){
-        succes = true;
-    }
+    if(result<=1 && result>=0){succes = true;}
 
     ENSURE(succes, "Percentage must be between 0 and 1");
-    return resultaat;
+    return result;
 }
 
 double Song::reverseSimilarity(Song &song) const {
