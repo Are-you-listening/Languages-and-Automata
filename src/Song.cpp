@@ -184,7 +184,7 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::similarity(Song &song) const {
+double Song::similarity(const Song &song) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     double result;
@@ -207,15 +207,17 @@ double Song::similarity(Song &song) const {
     return result;
 }
 
-double Song::reverseSimilarity(Song &song) const {
+double Song::reverseSimilarity(const Song &song) const {
     return 0;
 }
 
-double Song::complementSimilarity(Song &song) const {
+double Song::complementSimilarity(const Song &song) const {
     return 0;
 }
-bool Song::operator==(Song &rhs) const {
-    if(similarity(rhs))
+bool Song::operator==(const Song &rhs) const {
+    if(similarity(rhs)==1){
+        return true;
+    }
     return false;
 }
 
