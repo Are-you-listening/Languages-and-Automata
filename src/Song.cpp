@@ -3,7 +3,7 @@
 //
 
 #include "Song.h"
-#include "algorithm"
+
 bool Song::ProperlyInitialized() const {
     if(fInitCheck==this){
         return true;
