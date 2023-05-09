@@ -234,7 +234,7 @@ bool Song::operator==(const Song &rhs) {
 
 bool Song::operator!=(const Song &rhs) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    return !( rhs == *this);
+    return !((Song) rhs == *this);
 }
 
 double Song::magimathical(vector<vector<double>> &results) const {
