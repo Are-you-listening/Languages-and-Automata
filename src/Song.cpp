@@ -199,7 +199,7 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::similarity(const Song &song, bool complement, bool reverse) const {
+double Song::similarity(const Song &song, bool complement, bool reverse) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     double result;
@@ -223,7 +223,7 @@ double Song::similarity(const Song &song, bool complement, bool reverse) const {
     return result;
 }
 
-bool Song::operator==(const Song &rhs) const {
+bool Song::operator==(const Song &rhs) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     double percentage = similarity(rhs, false, false);
     if(percentage>=1){
@@ -232,9 +232,9 @@ bool Song::operator==(const Song &rhs) const {
     return false;
 }
 
-bool Song::operator!=(const Song &rhs) const {
+bool Song::operator!=(const Song &rhs) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    return !(rhs == *this);
+    return !( rhs == *this);
 }
 
 double Song::magimathical(vector<vector<double>> &results) const {

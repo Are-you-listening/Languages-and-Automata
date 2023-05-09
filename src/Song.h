@@ -184,7 +184,7 @@ public:
      * @param rhs
      * @return
      */
-    bool operator==(const Song &rhs) const;
+    bool operator==(const Song &rhs);
 
     /**
      * \brief Check if songs are not the same
@@ -192,7 +192,7 @@ public:
      * @param rhs
      * @return
      */
-    bool operator!=(const Song &rhs) const;
+    bool operator!=(const Song &rhs);
 
     /**
      * \brief Export the retrieved data by a Song's operations into a .txt file
