@@ -13,7 +13,7 @@ DFA Genre::toProductAutomata() const {
     //vector<RE> REs = s->toRegex(param[0],param[0],param[0],param[0],param[0],-1,param[0]); //Set pattern to -1 so we can generate 1 big Regex
     //vector<RE> REk = k->toRegex(param[0],param[0],param[0],param[0],param[0],-1,param[0]);
 
-    return vector<DFA>();
+    return DFA();
 }
 
 bool Genre::inGenre(const Song *&s) {
