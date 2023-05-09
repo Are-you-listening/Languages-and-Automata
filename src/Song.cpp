@@ -99,7 +99,7 @@ Song::~Song(){
     }
 }
 
-vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern, bool rounder) const {
+vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     char epsilon='*';
@@ -109,7 +109,7 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
 
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
         for(Note* note: it->second){
-            string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity, rounder);
+            string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity);
             temp+=z;
             count++;
             if(count==pattern){
@@ -250,7 +250,7 @@ double Song::magimathical(vector<vector<double>> &results) const {
     double result = 0;
     
     //Anas Working Space
-    vector<vector<int>> vectors;
+    vector<vector<int>> vectors; //TODO dit moet nog de vector<vector<int>> worden waarin alle regex waarden zitten
     for(vector<vector<int>>::iterator v=vectors.begin(); v!=vectors.end(); v++){
         double boolparam = 0.05*(*v)[0] + 0.1*(*v)[1] + 0.025*(*v)[2] + 0.4*(*v)[3] + 0.025*(*v)[4] + 0.4*(*v)[5]; //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
         while(boolparam>1){

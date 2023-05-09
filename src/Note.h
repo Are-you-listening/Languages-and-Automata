@@ -39,7 +39,7 @@ public:
      * @param r_velocity
      * @return
      */
-    [[nodiscard]] string getRE(bool r_time_stamp, bool r_note_on, bool r_instrument, bool r_note, bool r_velocity, bool rounder) const;
+    [[nodiscard]] string getRE(int r_time_stamp, int r_note_on, int r_instrument, int r_note, int r_velocity, int octaaf) const;
 
     int getNoteValue() const;
 

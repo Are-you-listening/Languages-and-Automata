@@ -142,7 +142,7 @@ public:
      * @param pattern, int deciding the complexixity of the constructed Regex
      * @return vector<RE> rex
      */
-    [[nodiscard]] vector<RE> toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern, bool rounder) const;
+    [[nodiscard]] vector<RE> toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern) const;
 
     /**
      * \brief Count the amount of notes (per type) of a Song

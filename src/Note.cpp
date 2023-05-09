@@ -30,10 +30,10 @@ char toChar(int value){
     return c;
 }
 
-[[nodiscard]] string Note::getRE(bool r_time_stamp, bool r_note_on, bool r_instrument, bool r_note, bool r_velocity, bool rounder) const{
+[[nodiscard]] string Note::getRE(int r_time_stamp, int r_note_on, int r_instrument, int r_note, int r_velocity, int octaaf) const{
     string s = "";
-    s +=toChar(time_stamp*r_time_stamp);
-    s +=toChar(note_on*r_note_on);
+    s += RoundTime_stamp(r_time_stamp);
+    s += RoundNote_on(r_note_on);
     s += RoundInstrument(rounder, r_instrument);
     s += RoundNote(note_value, r_note, rounder, 3, false, 0);
     s +=toChar((velocity/3)*r_velocity);
@@ -42,6 +42,49 @@ char toChar(int value){
 
 int Note::getNoteValue() const {
     return note_value;
+}
+
+string Note::RoundTime_stamp(int r_time_stamp){
+    string s;
+    if(r_time_stamp){
+        s="(";
+        for(int i=-r_time_stamp;  i!=r_time_stamp+1; i++){
+
+        }
+    } else {
+        
+    }
+    return s;
+}
+
+string Note::RoundNote_on(int r_note_on){
+    string s;
+    if(r_note_on>1){
+        s="(";
+        for(int i=-r_note_on;  i!=r_note_on+1; i++){
+
+
+        }
+    } else if(r_note_on==1){
+        s=toChar(note_on);
+    } else {
+        s="";
+    }
+    return s;
+}
+
+string Note::RoundVelocity(int r_velocity){
+    string s;
+    if(r_velocity){
+        s="(";
+        for(int i=velocity-r_velocity;  i<=velocity+r_velocity; i++){
+
+
+        }
+    } else {
+        
+    }
+    return s;
 }
 
 string Note::RoundInstrument(bool round_instrument, bool r_instrument) const {
