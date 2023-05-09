@@ -217,16 +217,6 @@ double Song::similarity(const Song &song, bool complement, bool reverse) const {
     return result;
 }
 
-double Song::reverseSimilarity(const Song &song) const {
-    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    return 0;
-}
-
-double Song::complementSimilarity(const Song &song) const {
-    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-
-    return 0;
-}
 bool Song::operator==(const Song &rhs) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     if(similarity(rhs,0,0)==1){

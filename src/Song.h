@@ -76,9 +76,11 @@ private:
      * \ENSURE(succes, "Percentage must be between 0 and 1");
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @param pair<vector<RE>,vector<RE>> &toCheck
+     * @param complement, in case the complements of the 2 songs needs to be checked
+     * @param reverse, in case the complements of the 2 songs needs to be checked
      * @return
      */
-     vector<double> similar(pair<vector<RE>,vector<RE>> &toCheck) const;
+     vector<double> similar(pair<vector<RE>,vector<RE>> &toCheck,bool complement, bool reverse) const;
 
     /**
      * \brief Magimathical Formula Anas
@@ -152,25 +154,11 @@ public:
      * \ENSURE(succes, "Percentage must be between 0 and 1");
      * \brief Run a similarity Check on this Song and a given Song ('song').
      * @param song
+     * @param complement, in case the complements of the 2 songs needs to be checked
+     * @param reverse, in case the complements of the 2 songs needs to be checked
      * @return percentage, the percentage the Songs are the same
      */
-    double similarity(const Song &song) const;
-
-    /**
-     * \brief Check the similarity between the reverse of 2 Songs
-     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * @param song
-     * @return
-     */
-    double reverseSimilarity(const Song &song) const;
-
-    /**
-     * \brief Check the similarity between the complements of 2 Songs
-     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * @param song
-     * @return
-     */
-    double complementSimilarity(const Song &song) const;
+    double similarity(const Song &song,bool complement, bool reverse) const;
 
     /**
      * \brief Check the occurences of the Notes and its similarity towards the notes of this object
