@@ -111,7 +111,26 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
 }
 
 double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
-    return 0;
+    REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+    REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
+
+    bool succeeded = false;
+    int succes = 0;
+
+    for(int i = 0; i<d.size(); i++){ // Given song
+        string test=s[i].re;
+        bool b = d[i].accepts(test); //Addition Anas
+
+        if(b){succes++;}
+    };
+
+    double resultaat = succes/d.size();
+    if(resultaat>=0 && resultaat<=1){
+        succeeded = true;
+    }
+
+    ENSURE(succeeded, "Operation did not work properly");
+    return resultaat;
 }
 
 double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
@@ -121,12 +140,12 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
 double Song::similarity(Song &song) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    double resultaat = 0;
+    double resultaat = 0.0;
     bool succes = false;
 
     //IDEA KARS
-    auto t = song.toRegex(0,1,1,1,0,2,1); // als je een hogere match precentage wilt dat nog steeds accuraat is, maak instrument 0 en velocity 0 song.toRegex(0,1,0,1,0,1, 1);
-    auto t2 = this->toRegex(0,1,1,1,0,2,0);
+    vector<RE> t = song.toRegex(0,1,1,1,0,2,1); // als je een hogere match precentage wilt dat nog steeds accuraat is, maak instrument 0 en velocity 0 song.toRegex(0,1,0,1,0,1, 1);
+    vector<RE> t2 = this->toRegex(0,1,1,1,0,2,0);
 
     vector<DFA> tt;
     //vector<DFA> tt2;

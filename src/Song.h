@@ -23,6 +23,9 @@ private:
 
     /**
      * \brief Check the similarity in order
+     * \REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+     * \REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
+     * \ENSURE(succeeded, "Operation did not work properly");
      * @return
      */
     double checkTibo(vector<DFA> &d, vector<RE> &s) const;
@@ -124,6 +127,5 @@ public:
 
     bool operator!=(const Song &rhs) const;
 };
-
 
 #endif //TOG_SONG_H
