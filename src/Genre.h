@@ -13,6 +13,11 @@
 class Genre {
 private:
     /**
+     * \brief The name of this genre
+     */
+    string name;
+
+    /**
      * \brief Keep a self pointer for ProperlyInitialised
      */
      const Genre* fInitCheck;
@@ -93,6 +98,21 @@ public:
      * @return
      */
     void output() const;
+
+    /**
+     * \brief Simple getter
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @return
+     */
+    const string &getName() const;
+
+    /**
+     * \brief Simple setter
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * \ENSURE(Genre::name == name , "Setter didn't work properly");
+     * @param name
+     */
+    void setName(const string &name);
 };
 
 #endif //TOG_GENRE_H

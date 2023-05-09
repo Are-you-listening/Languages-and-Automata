@@ -65,7 +65,6 @@ Genre::Genre(const vector<const Song *> &members, double limit, const vector<int
 
 void Genre::output() const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    /*REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string file= "report_"+title+".txt";
     string file2 = "report_"+title;
@@ -87,8 +86,6 @@ void Genre::output() const {
     }
 
     out.close();
-
-    ENSURE(FileExists(file),"No log file has been created");*/
 }
 
 bool Genre::ProperlyInitialized() const {
@@ -96,4 +93,15 @@ bool Genre::ProperlyInitialized() const {
         return true;
     }
     return false;
+}
+
+const string &Genre::getName() const {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+    return name;
+}
+
+void Genre::setName(const string &name) {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+    Genre::name = name;
+    ENSURE(Genre::name == name , "Setter didn't work properly");
 }
