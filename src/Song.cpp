@@ -3,7 +3,7 @@
 //
 
 #include "Song.h"
-
+#include "midiparser/SongExporter.h"
 bool Song::ProperlyInitialized() const {
     if(fInitCheck==this){
         return true;
@@ -94,6 +94,8 @@ void Song::parse(const string &path) {
     for(auto entry: note_map){
         count += entry.second.size();
     }
+
+
 
 }
 

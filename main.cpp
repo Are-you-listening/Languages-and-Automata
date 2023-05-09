@@ -20,7 +20,7 @@ int main() {
     Song song;
     Song song2;
     song.parse("midi_files/metal_crusher.mid");
-    song2.parse("midi_files/Metal_Crusher2.mid");
+    song2.parse("midi_files/metal_crusher.mid");
     song.similarity(song2);
 
     /*
