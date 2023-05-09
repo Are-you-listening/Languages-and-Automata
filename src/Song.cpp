@@ -186,7 +186,8 @@ double Song::similarity(Song &song) const {
 
     double result = 0.0;
     bool succes = false;
-    
+
+
     vector<RE> t = song.toRegex(0,1,1,1,0,2,1); // als je een hogere match precentage wilt dat nog steeds accuraat is, maak instrument 0 en velocity 0 song.toRegex(0,1,0,1,0,1, 1);
     vector<RE> t2 = this->toRegex(0,1,1,1,0,2,0);
 
@@ -199,7 +200,6 @@ double Song::similarity(Song &song) const {
     }
 
     if(result<=1 && result>=0){succes = true;}
-
     ENSURE(succes, "Percentage must be between 0 and 1");
     return result;
 }
@@ -218,4 +218,16 @@ bool Song::operator==(const Song &rhs) const {
 
 bool Song::operator!=(const Song &rhs) const {
     return !(rhs == *this);
+}
+
+vector<DFA> Song::convert(vector<RE> &s) const {
+    vector<DFA> tt;
+
+    for(auto z: s){
+        ENFA k = z.toENFA();
+        DFA s = k.toDFA();
+        s.minimize();
+        tt.push_back(s);
+    }
+    return tt;
 }

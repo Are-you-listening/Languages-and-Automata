@@ -22,6 +22,13 @@ private:
     Song* fInitCheck;
 
     /**
+     * \brief Convert Regex's to minimized DFA's
+     * @param s
+     * @return
+     */
+    vector<DFA> convert(vector<RE> &s) const;
+
+    /**
      * \brief Check the similarity in order
      * \REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * \REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
