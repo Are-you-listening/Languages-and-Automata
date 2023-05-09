@@ -39,7 +39,7 @@ private:
     /**
      * \brief Check the similarity in order
      * \REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
-     * \REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
+     * \REQUIRE(d.size()<=s.size(), "Indices should be always valid");
      * \ENSURE(succeeded, "Operation did not work properly");
      * @return
      */

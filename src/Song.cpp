@@ -133,7 +133,7 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
 
 double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
-    REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
+    REQUIRE(d.size()<=s.size(), "Indices should be always valid");
 
     bool succeeded = false;
     int succes = 0;
@@ -256,6 +256,7 @@ double Song::similar(pair<vector<RE>, vector<RE>> &toCheck) const {
 
     pair<vector<RE>,vector<RE>> toCheck2 = sort(toCheck);
     d = convert(toCheck2 .first);
+    cout << d.size() << " " << toCheck2.second.size() << endl;
     results.push_back( checkTibo(d , toCheck2 .second ) );
 
     //Check Kars
