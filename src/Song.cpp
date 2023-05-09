@@ -160,5 +160,8 @@ Song::Song(const string &path) {
 
 }
 
+Song &Song::operator=(const Song &a) {
 
+    return <#initializer#>;
+}
 
