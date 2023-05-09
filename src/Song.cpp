@@ -369,3 +369,7 @@ void Song::setTitle(const string &title) {
     Song::title = title;
     ENSURE(Song::title == title , "Setter didn't work properly");
 }
+
+void Song::save(const string &path) {
+    SongExporter exp(path, note_map);
+}
