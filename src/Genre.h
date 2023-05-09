@@ -31,7 +31,7 @@ private:
      * \brief Generate a product automata for the current Genre's member-sub-regexes
      * @return Datatype containing the sub DFA's in productautomata
      */
-    vector<DFA> toProductAutomata() const;
+    DFA toProductAutomata() const;
 
 public:
     /**
