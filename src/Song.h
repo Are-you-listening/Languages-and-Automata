@@ -146,11 +146,11 @@ public:
      * @param song
      * @return percentage, the percentage the Songs are the same
      */
-    double similarity(Song &song) const;
+    double similarity(const Song &song) const;
 
-    double reverseSimilarity(Song &song) const;
+    double reverseSimilarity(const Song &song) const;
 
-    double complementSimilarity(Song &song) const;
+    double complementSimilarity(const Song &song) const;
     
     /**
      * \brief Check for 100% Equality of Songs
