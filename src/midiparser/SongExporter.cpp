@@ -28,7 +28,7 @@ void SongExporter::changeFormat() {
     ByteX total_l(6, 4);
     ByteX format("0001");
     ByteX tracks_amount(instrument_map.size(),2);
-    ByteX ticks_per_frame(480, 2);
+    ByteX ticks_per_frame(120, 2);
     buffer.push_back(header);
     buffer.push_back(total_l);
     buffer.push_back(format);
@@ -46,7 +46,7 @@ void SongExporter::addNote(Note* note) {
 
     }
 
-    unsigned int ticks_per_quarter_note = 480;
+    unsigned int ticks_per_quarter_note = 120;
     unsigned int ms_per_quarter_note = 500*1000;
     unsigned int changed_time = note->getTimeStamp()*1000/(ms_per_quarter_note/ticks_per_quarter_note);
     unsigned int delta_time = changed_time - last_timestamp;
@@ -92,14 +92,25 @@ void SongExporter::createTracks() {
             sub_buffer.insert(sub_buffer.end(), delta_buffer.begin(), delta_buffer.end());
 
             //ByteX delta_time(delta, count); // delta time van control message
-            ByteX note_on_byte(144+channel, 1); //set channel to instrument
-            ByteX note_byte(n->getNoteValue(), 1);
-            ByteX velocity(n->getVelocity(), 1);
+            if (n->isNoteOn()){
+                ByteX note_on_byte(144+channel, 1); //set channel to instrument
+                ByteX note_byte(n->getNoteValue(), 1);
+                ByteX velocity(n->getVelocity(), 1);
 
+                sub_buffer.push_back(note_on_byte);
+                sub_buffer.push_back(note_byte);
+                sub_buffer.push_back(velocity);
+            }else{
+                ByteX note_on_byte(128+channel, 1); //set channel to instrument
+                ByteX note_byte(n->getNoteValue(), 1);
+                ByteX velocity(n->getVelocity(), 1);
 
-            sub_buffer.push_back(note_on_byte);
-            sub_buffer.push_back(note_byte);
-            sub_buffer.push_back(velocity);
+                sub_buffer.push_back(note_on_byte);
+                sub_buffer.push_back(note_byte);
+                sub_buffer.push_back(velocity);
+            }
+            cout << "note " << n->getNoteValue() << " " << delta << endl;
+
         }
         ByteX track_header("4d54726b");
         ByteX track_size(track_length, 4);
