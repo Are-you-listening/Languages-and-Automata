@@ -8,6 +8,7 @@
 #include <string>
 
 #include "DesignByContract.h"
+#include "Utils.h"
 #include "midiparser/MidiParser.h"
 #include "RE.h"
 
@@ -26,6 +27,28 @@ private:
     map<pair<unsigned int, bool>, vector<Note*>> note_map; //{TimeStamp, on/off} {Note*} Timestamp=0,001s
 
 public:
+    explicit Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap);
+
+    /**
+     * \brief Empty Constructor
+     * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+     */
+    Song();
+
+    /**
+     * \brief Parse a .mid file and load it's contents into a newly created object.
+     * @param path , the path to the .mid file
+     * \REQUIRE(FileExists(path) , "Given file not found");
+     * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+     */
+    Song(const string& path);
+
+    /**
+     * \brief Overloader Constructor (Creates a new object) Including new usages of memory!
+     * @param a
+     * @return
+     */
+    Song& operator=(const Song &a);
 
     /**
      * \brief Destructor to free all used memory
@@ -50,6 +73,8 @@ public:
 
     /**
      * \brief Parse a .mid file and load the Note-data into this Song-Object.
+     * \REQUIRE(FileExists(path) , "Given file not found");
+     * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * @param path , the path to the .mid file
      */
     void parse(const string& path);

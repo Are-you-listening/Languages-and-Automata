@@ -86,6 +86,8 @@ int Song::similarity(Song &song) const {
 }
 
 void Song::parse(const string &path) {
+    REQUIRE(FileExists(path) , "Given file not found");
+
     fInitCheck=this;
 
     MidiParser m(path);
@@ -95,9 +97,12 @@ void Song::parse(const string &path) {
         count += entry.second.size();
     }
     cout << count << endl;
+    ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
 vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern, bool rounder) const {
+    REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+
     char epsilon='*';
     vector<RE> regex_list;
     int count = 0;
@@ -137,4 +142,23 @@ Song::~Song(){
         }
     }
 }
+
+Song::Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap) : note_map(noteMap) {
+    fInitCheck = this;
+    ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+}
+
+Song::Song() {
+    fInitCheck = this;
+    ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+}
+
+Song::Song(const string &path) {
+    REQUIRE(FileExists(path) , "Given file not found");
+    fInitCheck = this;
+    ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+
+}
+
+
 
