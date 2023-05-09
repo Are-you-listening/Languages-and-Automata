@@ -82,3 +82,17 @@ vector<string> MergeVectors(vector<string> vec1, vector<string> vec2) {
 	}
 	return vec1;
 }
+
+string getCurrTime(){
+    //Code from https://stackoverflow.com/questions/16357999/current-date-and-time-as-string
+    time_t rawtime;
+    struct tm * timeinfo;
+    char buffer[80];
+
+    time (&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(buffer,sizeof(buffer),"%d-%m-%Y %H:%M:%S",timeinfo);
+    std::string str(buffer);
+    return "["+str+"]";
+}
