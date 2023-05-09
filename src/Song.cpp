@@ -371,5 +371,18 @@ void Song::setTitle(const string &title) {
 }
 
 void Song::save(const string &path) {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     SongExporter exp(path, note_map);
+
+
+    //ENSURE FILEXISTS
+}
+
+void Song::switchConsoleOutput() {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+    if(console){
+        console = false;
+    }else{
+        console = true;
+    }
 }

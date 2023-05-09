@@ -123,7 +123,7 @@ public:
      * \brief Turn the console output on/off
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      */
-    void switchConsole();
+    void switchConsoleOutput();
 };
 
 #endif //TOG_GENRE_H

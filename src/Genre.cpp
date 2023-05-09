@@ -138,7 +138,7 @@ void Genre::setName(const string &name) {
     ENSURE(Genre::name == name , "Setter didn't work properly");
 }
 
-void Genre::switchConsole() {
+void Genre::switchConsoleOutput() {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     if(console){
         console = false;

@@ -22,6 +22,11 @@ using namespace std;
 class Song {
 private:
     /**
+     * \brief Toggle the Console Output
+     */
+    bool console = false;
+
+    /**
      * \brief Title of the song
      */
     string title;
@@ -219,7 +224,18 @@ public:
      */
     void setTitle(const string &title);
 
+    /**
+     * \brief Export this Song back to a .mid File
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @param path
+     */
     void save(const string &path);
+
+    /**
+     * \brief Turn the console output on/off
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     */
+    void switchConsoleOutput();
 };
 
 #endif //TOG_SONG_H
