@@ -86,7 +86,6 @@ void Song::parse(const string &path) {
     for(auto entry: note_map){
         count += entry.second.size();
     }
-    cout << count << endl;
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
@@ -153,7 +152,6 @@ double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
 
 double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
-    REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
 
     bool succeeded = false;
     int succes = 0; //Counter to keep the amount of time the test passes
@@ -175,7 +173,6 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
 
 double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
-    REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
 
     bool succeeded = false;
     int succes = 0; //Counter to keep the amount of time the test passes

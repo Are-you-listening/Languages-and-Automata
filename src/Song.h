@@ -48,7 +48,6 @@ private:
     /**
      * \brief Cross check the similarity
      * \REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
-     * \REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
      * \ENSURE(succeeded, "Operation did not work properly");
      * @return
      */
@@ -57,7 +56,6 @@ private:
     /**
      * \brief Cross check the similarity but more accuractly?
      * \REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
-     * \REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
      * \ENSURE(succeeded, "Operation did not work properly");
      * @param d
      * @param s
