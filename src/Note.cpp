@@ -49,7 +49,7 @@ string Note::RoundInstrument(bool round_instrument, bool r_instrument) const {
         string s = "(";
         int base_instrument = instrument/8;
         for (int i=0; i<8; i++){
-            s += toChar((base_instrument+i)*r_instrument);
+            s += toChar(((base_instrument*8)+i)*r_instrument);
             s += "+";
         }
 

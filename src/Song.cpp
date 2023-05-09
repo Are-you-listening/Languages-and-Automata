@@ -1,8 +1,9 @@
 //
 // Created by watson on 4/28/23.
 //
-#include "Song.h"
 
+#include "Song.h"
+#include "midiparser/SongExporter.h"
 bool Song::ProperlyInitialized() const {
     if(fInitCheck==this){
         return true;
