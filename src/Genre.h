@@ -15,7 +15,7 @@ private:
     /**
      * \brief Contains the current members of this Genre sorted by its match %
      */
-    map<double,vector<Song*>> members;
+    map<double,vector<const Song*>> members;
 
     /**
      * \brief The minimum % of Similarity a newly given Song has to have with the Genre to join it
@@ -54,7 +54,7 @@ public:
      * @param limit
      * @param param
      */
-    Genre(const map<double, vector<Song *>> &members, double limit, const vector<int> &param);
+    Genre(const map<double, vector<const Song *>> &members, double limit, const vector<int> &param);
 
      /**
       * \brief Create a Genre based on 2 Song's and a given set of paramaters.
