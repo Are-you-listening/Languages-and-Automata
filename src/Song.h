@@ -148,19 +148,42 @@ public:
      */
     double similarity(const Song &song) const;
 
+    /**
+     * \brief Check the similarity between the reverse of 2 Songs
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @param song
+     * @return
+     */
     double reverseSimilarity(const Song &song) const;
 
+    /**
+     * \brief Check the similarity between the complements of 2 Songs
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @param song
+     * @return
+     */
     double complementSimilarity(const Song &song) const;
     
     /**
      * \brief Check for 100% Equality of Songs
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @param rhs
      * @return
      */
     bool operator==(const Song &rhs) const;
 
+    /**
+     * \brief Check if songs are not the same
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @param rhs
+     * @return
+     */
     bool operator!=(const Song &rhs) const;
 
+    /**
+     * \brief Count the amount of notes (per type) of a Song
+     * @return
+     */
     unsigned int countNotes() const;
 };
 
