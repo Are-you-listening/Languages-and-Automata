@@ -10,8 +10,10 @@
 class weightedNode;
 
 class WNFA: public weightedautomaat{
+    friend class NFA;
 public:
     WNFA(const string &filename);
+    WNFA();
     double weightedaccepts(string input) override;
 };
 

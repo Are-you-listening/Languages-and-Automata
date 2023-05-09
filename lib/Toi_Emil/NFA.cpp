@@ -5,12 +5,10 @@
 #include <sstream>
 #include <queue>
 #include "json.hpp"
-#include <iomanip>
 #include <utility>
-#include <fstream>
-#include <iostream>
 #include "automaat.h"
 #include "NFA.h"
+#include "weightedNode.h"
 
 string NFA::ssc_helper(const string& currentState, char input) {
     vector<string> temp;
@@ -58,7 +56,7 @@ DFA NFA::toDFA() {
         accepting = false;
         processing = toProcess.front();
         split = splitString(processing);
-        
+
         if (splitString(processing)[0] == startState->getName() && splitString(processing).size() == 1){
             starting = true;
         }
@@ -116,4 +114,28 @@ NFA::NFA(const string &fileName) : automaat(fileName) {
 
 NFA::NFA() {
     type = "NFA";
+}
+
+WNFA NFA::toWNFA() {
+    WNFA result = WNFA();
+    bool startingstate;
+    bool acceptingstate;
+    for (Node* state : states){
+        startingstate = (state == startState);
+        if (std::find(endStates.begin(), endStates.end(),state) != endStates.end()){
+            acceptingstate = true;
+        }
+
+        result.addState(state->getName(), startingstate, acceptingstate);
+
+    }
+    for (weightedNode* state : result.states){
+
+        for (const auto& connection : getState(state->getName()).first->getConnections()) {
+            for (char symbol: get<1>(connection)) {
+                state->addconnection(result.getWeightedState(get<0>(connection)->getName()).first, symbol, 1);
+            }
+        }
+    }
+    return result;
 }

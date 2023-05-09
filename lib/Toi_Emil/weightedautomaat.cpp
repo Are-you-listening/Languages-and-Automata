@@ -60,3 +60,16 @@ void weightedautomaat::addState(string name, bool start, bool endState) {
     }
 }
 
+weightedautomaat::weightedautomaat() {
+}
+
+pair<weightedNode *, bool> weightedautomaat::getWeightedState(string name) {
+    for (weightedNode* state : states){
+        if (state->getName() == name){
+            return make_pair(state, true);
+        }
+    }
+    return make_pair(nullptr, false);
+}
+
+

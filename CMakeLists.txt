@@ -70,6 +70,9 @@ set(MAIN_SRC
         lib/Toi_Kars/Utils.h
         lib/Toi_Kars/State.h
         lib/Toi_Kars/State.cpp
+
+        lib/Utils.h
+        lib/Utils.cpp
         )
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)

@@ -25,6 +25,12 @@ public:
     Note(unsigned int time_stamp, bool note_on, int note, int velocity, unsigned int instrument);
 
     /**
+     * \brief Constructor to build Object Copy
+     * @param n
+     */
+    Note(const Note &n);
+
+    /**
      * \brief Convert a NoteObject to a Regex given by the selected inputparamaters (if @param=true, add to regex)
      * @param r_time_stamp
      * @param r_note_on
