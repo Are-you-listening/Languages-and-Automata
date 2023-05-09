@@ -194,7 +194,7 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::similarity(const Song &song) const {
+double Song::similarity(const Song &song, bool complement, bool reverse) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     double result;
@@ -208,7 +208,7 @@ double Song::similarity(const Song &song) const {
     for(const vector<bool> &v: vectors){
         //No roundings
         pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5], v[6]), this->toRegex(v[0], v[1], v[2], v[3], v[4], v[5], 0) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
-        results.push_back( similar(toCheck) ); // 0,1,0,1,0, 1,0
+        results.push_back( similar(toCheck,complement,reverse) ); // 0,1,0,1,0, 1,0
     }
     
     result = magimathical(results);
@@ -229,7 +229,7 @@ double Song::complementSimilarity(const Song &song) const {
 }
 bool Song::operator==(const Song &rhs) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    if(similarity(rhs)==1){
+    if(similarity(rhs,0,0)==1){
         return true;
     }
     return false;
@@ -249,7 +249,7 @@ double Song::magimathical(vector<vector<double>> &results) const {
     return result;
 }
 
-vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck) const {
+vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complement, bool reverse) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     double result;
@@ -258,12 +258,12 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck) const {
     vector<DFA> d;
 
     pair<vector<RE>,vector<RE>> toCheck2 = sort(toCheck);
-    d = convert(toCheck2 .first,0,0);
+    d = convert(toCheck2 .first,complement,reverse);
     cout << d.size() << " " << toCheck2.second.size() << endl;
     results.push_back( checkTibo(d , toCheck2 .second ) );
 
     //Check Kars
-    d = convert(toCheck.first,0,0);
+    d = convert(toCheck.first,complement,reverse);
     results.push_back(checkKars(d, toCheck.second) );
 
     //Check KarsAnas
