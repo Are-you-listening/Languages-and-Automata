@@ -6,13 +6,19 @@
 #include "src/ENFA.h"
 #include "src/RE.h"
 #include "Toi_Emil/WNFA.h"
+#include "NFA.h"
 
 int main() {
+    Song song("midi_files/world-1-birabuto-4-.mid");
+    RE r = song.toRegex(0, 0, 1, 1, 0, -1)[0];
+    ENFA e = r.toENFA();
+    json j= e.getJsonNfa();
+    NFA n(j);
     //Song song("midi_files/world-1-birabuto-4-.mid");
     //Song song2("midi_broken/world-1-birabuto-remix-.mid");
     //song.similarity(song2);
 
-
+    /*
     Song song3("midi_files/metal_crusher.mid");
     Song song4("midi_files/metal_crusher.mid");
     song3.setTitle("metal_crusher");
@@ -20,6 +26,7 @@ int main() {
 
     cout << song3.similarity(song4,0,0) << endl;
     song3.output();
+     */
 
     //Song song5("midi_files/Metal_Crusher2.mid");
     //cout << song3.similarity(song5,0,0) << endl;

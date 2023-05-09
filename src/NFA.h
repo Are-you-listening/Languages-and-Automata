@@ -38,6 +38,7 @@ public:
     DFA toDFA() const;
 
     NFA(const string &inputfile);
+    NFA(const json &j);
 
     virtual ~NFA();
 };

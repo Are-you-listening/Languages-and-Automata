@@ -36,7 +36,7 @@ char toChar(int value){
     s += RoundNote_on(r_note_on);
     s += RoundInstrument(r_instrument);
     s += RoundNote(r_note,0);
-    s += RoundTime_stamp(r_velocity);
+    s += RoundVelocity(r_velocity);
     return s;
 }
 
@@ -75,14 +75,15 @@ string Note::RoundNote_on(int r_note_on) const{
 
 string Note::RoundVelocity(int r_velocity) const{
     string s;
-    if(r_velocity){
+    if(r_velocity > 1){
         s="(";
-        for(int i=velocity-r_velocity;  i<=velocity+r_velocity; i++){
+        for(int i=velocity-(r_velocity-1);  i<=velocity+(r_velocity-1); i++){
 
 
         }
+
     } else {
-        
+        s = toChar(velocity*r_velocity);
     }
     return s;
 }

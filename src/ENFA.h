@@ -49,6 +49,7 @@ public:
     void concatenate(const ENFA& enfa)&;
     void load(const json& j);
     json getJson() const;
+    json getJsonNfa() const;
 };
 
 

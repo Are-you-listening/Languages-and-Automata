@@ -708,3 +708,81 @@ json ENFA::getJson() const {
     j["eps"] = "*";
     return j;
 }
+
+json ENFA::getJsonNfa() const {
+    json j;
+    j["type"] = "NFA";
+    j["alphabet"]=ENFA::alphabet;
+    vector<json> states;
+    for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
+        json temp;
+        temp["name"]=(*it)->name;
+        temp["starting"]=(*it)->starting;
+        temp["accepting"]=(*it)->accepting;
+        states.push_back(temp);
+    }
+    j["states"]=states;
+    vector<json> transitions;
+
+    map<string, pair<string, string>> link_skipper;
+
+    for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
+        for(set<string>::const_iterator it2=alphabet.begin(); it2!=alphabet.end(); it2++){
+            int count = -1;
+            while (true){
+                json temp;
+
+                string key;
+                if (count == -1){
+                    key = (*it2);
+                }else{
+                    key = (*it2)+ to_string(count);
+                }
+
+                if ((*it)->states.find(key) != (*it)->states.end()){
+                    temp["from"]=(*it)->name;
+                    temp["input"] = (*it2);
+                    temp["to"]=(*it)->states[key]->name;
+                    transitions.push_back(temp);
+                    link_skipper[(*it)->states[key]->name] = make_pair((*it2), (*it)->name);
+                    count += 1;
+                }else{
+                    break;
+                }
+            }
+        }
+    }
+
+    for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
+        int count = -1;
+        while (true){
+            json temp;
+
+            string key;
+            if (count == -1){
+                key = "*";
+            }else{
+                key = "*"+ to_string(count);
+            }
+
+            if ((*it)->states.find(key) != (*it)->states.end()){
+
+                pair<string, string> before = link_skipper.at((*it)->name);
+                string target_name = (*it)->states[key]->name;
+
+                temp["from"]=before.second;
+                temp["input"] = before.first;
+                temp["to"]=target_name;
+
+                transitions.push_back(temp);
+
+                count += 1;
+            }else{
+                break;
+            }
+        }
+    }
+
+    j["transitions"]=transitions;
+    return j;
+}

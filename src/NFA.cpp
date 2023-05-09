@@ -222,4 +222,30 @@ string NFA::SortName(string &a) const {
     return newName;
 }
 
+NFA::NFA(const json &j) {
+    Alphabet = j["alphabet"].get<std::vector<string>>();
+
+    //Parse States
+    auto states = j["states"];
+    for(int i = 0 ; i<states.size() ; i++){
+        string toestand = states[i]["name"];
+        bool start = states[i]["starting"];
+        bool accept = states[i]["accepting"];
+
+        State* temp = new State(toestand,start,accept);
+        Q.insert({toestand, temp});
+    }
+
+    //Parse Delta
+    auto transitions = j["transitions"];
+    for(int i = 0 ; i<transitions.size() ; i++) {
+        string from = transitions[i]["from"];
+        string to = transitions[i]["to"];
+        string in = transitions[i]["input"];
+        char input = in[0];
+
+        Q.find(from)->second->AddTransition(input, to );
+    }
+}
+
 
