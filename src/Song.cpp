@@ -4,6 +4,7 @@
 
 #include "Song.h"
 #include "algorithm"
+#include "midiparser/SongExporter.h"
 bool Song::ProperlyInitialized() const {
     if(fInitCheck==this){
         return true;
@@ -94,7 +95,7 @@ void Song::parse(const string &path) {
     for(auto entry: note_map){
         count += entry.second.size();
     }
-    cout << count << endl;
+
 }
 
 vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern, bool rounder) const {

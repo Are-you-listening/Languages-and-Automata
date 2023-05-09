@@ -37,6 +37,14 @@ public:
 
     int getNoteValue() const;
 
+    unsigned int getInstrument() const;
+
+    unsigned int getTimeStamp() const;
+
+    int getVelocity() const;
+
+    bool isNoteOn() const;
+
 private:
     unsigned int instrument;
     int note_value=0;

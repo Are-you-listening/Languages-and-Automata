@@ -25,8 +25,6 @@ public:
 
     const map<pair<unsigned int, bool>, vector<Note *>> &getNoteMap() const;
 
-    const map<unsigned int, map<unsigned int, unsigned int>> &getLinkChannel() const;
-
 private:
     ifstream stream;
 
@@ -45,10 +43,8 @@ private:
 
     void addNote(unsigned int time, bool note_on, Note* note);
 
-    unsigned int get_closest_change(unsigned int time, unsigned int channel);
-
     map<pair<unsigned int, bool>, vector<Note*>> note_map;
-    map<unsigned int, map<unsigned int, unsigned int> > link_channel;
+    map<unsigned int, unsigned int> link_channel;
     int status_running = -1;
     int channel = -1;
 
