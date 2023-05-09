@@ -162,7 +162,35 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
 }
 
 double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
-    return 0;
+    REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+    REQUIRE(d.size()>=s.size(), "Order must be kept otherwise ");
+
+    bool succeeded = false;
+    int succes = 0; //Counter to keep the amount of time the test passes
+    int count = 0;
+
+    for(int i = 0; i<d.size(); i++){ // Given song
+        for(int j = 0; j<s.size(); j++){
+
+            string test=s[j].re;
+            bool b = d[i].accepts(test); //Addition Anas
+
+            if(b){
+                succes++;
+                break; //Idea Anas
+            }
+        }
+        count++;
+    }
+
+    double resultaat = succes/ count ;
+
+    if(resultaat>=0 && resultaat<=1){
+        succeeded = true;
+    }
+
+    ENSURE(succeeded, "Operation did not work properly");
+    return resultaat;
 }
 
 double Song::similarity(Song &song) const {
@@ -176,60 +204,12 @@ double Song::similarity(Song &song) const {
     vector<RE> t2 = this->toRegex(0,1,1,1,0,2,0);
 
     vector<DFA> tt;
-    //vector<DFA> tt2;
     for(auto z: t){
         ENFA k = z.toENFA();
         DFA s = k.toDFA();
+        s.minimize();
         tt.push_back(s);
     }
-
-    /*
-    for(int i=0; i<t.size(); i++){ // dit zorgt nog voor een error
-        auto a1 = t[i];
-        auto a2 = t2[i];
-
-    }
-     */
-
-    /*
-    for(auto z: t2){
-        ENFA k = z.toENFA();
-        DFA s = k.toDFA();
-        tt2.push_back(s);
-    }
-    double slagen=0.;
-    int count=0;
-    for(auto s: tt){
-        for(auto k: tt2){
-            if(s==k){
-                slagen++;
-                break;//Percentage
-            }
-            count++;
-        }
-    }
-    double resultaat = slagen/count;
-    cout << "kars: " << resultaat << " slagen: " << slagen << " coutns: " << count  <<endl;
-    */
-
-    double slagen=0.0;
-    int count=0;
-    bool b;
-    //IDEA TIBO en Anas
-    for(vector<DFA>::const_iterator s=tt.begin(); s!=tt.end(); s++){ // Given song
-        for(vector<RE>::const_iterator s2=t2.begin(); s2!=t2.end(); s2++){ //this.Song
-            string test=s2->re;
-            b = s->accepts(test);
-            if(b){
-                slagen++;
-                //cout << test << endl;
-                break;
-            }
-        }
-        count++;
-    }
-    resultaat=slagen/count;
-    cout << "Tibo & Anas: " << resultaat << " slagen: " << slagen << " coutns: " << count  <<endl;
 
     if(resultaat<=1 && resultaat>=0){
         succes = true;
