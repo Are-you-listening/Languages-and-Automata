@@ -18,6 +18,7 @@
 
 using namespace std;
 
+class DFA;
 
 class ENFAT {
 public:

@@ -7,6 +7,7 @@ project(Tog)
 set(CMAKE_CXX_STANDARD 17)
 ################################################################
 #directories
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(lib)
 #include_directories(lib/Toi_Anas)
 #include_directories(lib/Toi_Emil)
@@ -16,14 +17,14 @@ include_directories(lib)
 #sources
 # Set source files for RELEASE target
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
-
 # List the source files with the correct directory prefixes
 set(MIDIPASER_SRC
+
         src/midiparser/MidiParser.h
         src/midiparser/MidiParser.cpp
         src/midiparser/ByteX.h
         src/midiparser/ByteX.cpp
+
         )
 
 set(MAIN_SRC
@@ -33,7 +34,9 @@ set(MAIN_SRC
         src/Note.cpp
         src/Song.h
         src/Song.cpp
+
         ${MIDIPASER_SRC}
+
         src/NFA.cpp
         src/NFA.h
         src/RE.cpp
@@ -42,34 +45,34 @@ set(MAIN_SRC
         src/DFA.h
         src/ENFA.cpp
         src/ENFA.h
+        src/ENFAT.cpp
+        src/ENFAT.h
+
         lib/Toi_Tibo/DFAT.cpp
         lib/Toi_Tibo/DFAT.h
 
         lib/Toi_Emil/REE.cpp
         lib/Toi_Emil/REE.h
-
         lib/Toi_Emil/DFAE.cpp
         lib/Toi_Emil/DFAE.h
         lib/Toi_Emil/automaat.cpp
         lib/Toi_Emil/automaat.h
         lib/Toi_Emil/Node.cpp
         lib/Toi_Emil/Node.h
-        lib/Toi_Kars/Utils.cpp
-        lib/Toi_Kars/Utils.h
-        lib/Toi_Kars/State.h
-        lib/Toi_Kars/State.cpp
         lib/Toi_Emil/weightedautomaat.cpp
         lib/Toi_Emil/weightedautomaat.h
         lib/Toi_Emil/weightedNode.cpp
         lib/Toi_Emil/weightedNode.h
         lib/Toi_Emil/WNFA.cpp
         lib/Toi_Emil/WNFA.h
-        src/ENFAT.cpp
-        src/ENFAT.h
+
+        lib/Toi_Kars/Utils.cpp
+        lib/Toi_Kars/Utils.h
+        lib/Toi_Kars/State.h
+        lib/Toi_Kars/State.cpp
         )
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
-
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES
