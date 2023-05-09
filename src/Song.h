@@ -85,17 +85,6 @@ private:
     double checkKarsAnas(vector<DFA> &d, vector<RE> &s) const;
 
     /**
-     * \brief Run all checks on 1 sort of Regex
-     * \ENSURE(succes, "Percentage must be between 0 and 1");
-     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * @param pair<vector<RE>,vector<RE>> &toCheck
-     * @param complement, in case the complements of the 2 songs needs to be checked
-     * @param reverse, in case the complements of the 2 songs needs to be checked
-     * @return
-     */
-     vector<double> similar(pair<vector<RE>,vector<RE>> &toCheck,bool complement, bool reverse) const;
-
-    /**
      * \brief Magimathical Formula Anas
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      */
@@ -161,6 +150,17 @@ public:
      * @return map<int,unsigned int> map[Note]=occurences
      */
     [[nodiscard]] map<int,unsigned int> countNotes() const;
+
+    /**
+     * \brief Run all checks on 1 sort of Regex
+     * \ENSURE(succes, "Percentage must be between 0 and 1");
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @param pair<vector<RE>,vector<RE>> &toCheck
+     * @param complement, in case the complements of the 2 songs needs to be checked
+     * @param reverse, in case the complements of the 2 songs needs to be checked
+     * @return
+     */
+    vector<double> similar(pair<vector<RE>,vector<RE>> &toCheck,bool complement, bool reverse) const;
 
     /**
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
