@@ -22,11 +22,32 @@ private:
     Song* fInitCheck;
 
     /**
+     * \brief Check the similarity in order
+     * @return
+     */
+    unsigned int checkTibo(vector<DFA> &d, vector<string> &s) const;
+
+    /**
+     * \brief Cross check the similarity
+     * @return
+     */
+    unsigned int checkKars(vector<DFA> &d, vector<string> &s) const;
+
+
+
+    /**
      * \brief Map sorted by the timestamp of the song and a bool deciding if these Notes are on/off. The timestamp is manually set to a accuracy of 1ms (0,001s)
      */
     map<pair<unsigned int, bool>, vector<Note*>> note_map; //{TimeStamp, on/off} {Note*} Timestamp=0,001s
 
 public:
+    /**
+    * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+    * \brief Checks if an item is properly initialised
+     * @return succes, bool deciding the succes of the operation
+    */
+    bool ProperlyInitialized() const;
+
     /**
      * \brief Constructor
      * @param noteMap
@@ -57,33 +78,17 @@ public:
     Song& operator=(const Song &a);
 
     /**
-     * \brief Destructor to free all used memory
-     */
-    ~Song();
-
-    /**
-     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * \ENSURE(succes, "Percentage must be between 0 and 100");
-     * \brief Run a similarity Check on this Song and a given Song ('song').
-     * @param song
-     * @return percentage, the percentage the Songs are the same
-     */
-    int similarity(Song &song) const;
-
-    /**
-    * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    * \brief Checks if an item is properly initialised
-     * @return succes, bool deciding the succes of the operation
-    */
-    bool ProperlyInitialized() const;
-
-    /**
      * \brief Parse a .mid file and load the Note-data into this Song-Object.
      * \REQUIRE(FileExists(path) , "Given file not found");
      * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * @param path , the path to the .mid file
      */
     void parse(const string& path);
+
+    /**
+     * \brief Destructor to free all used memory
+     */
+    ~Song();
 
     /**
      * \brief Convert a Song into a vector of Sub-Regex's
@@ -96,6 +101,28 @@ public:
      * @return vector<RE> rex
      */
     vector<RE> toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern, bool rounder) const;
+
+    /**
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * \ENSURE(succes, "Percentage must be between 0 and 100");
+     * \brief Run a similarity Check on this Song and a given Song ('song').
+     * @param song
+     * @return percentage, the percentage the Songs are the same
+     */
+    unsigned int similarity(Song &song) const;
+
+    unsigned int reverseSimilarity(Song &song) const;
+
+    unsigned int complementSimilarity(Song &song) const;
+
+    /**
+     * \brief Check for 100% Equality of Songs
+     * @param rhs
+     * @return
+     */
+    bool operator==(const Song &rhs) const;
+
+    bool operator!=(const Song &rhs) const;
 };
 
 
