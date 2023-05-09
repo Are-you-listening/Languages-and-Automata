@@ -27,7 +27,7 @@ private:
      * @param t
      * @return
      */
-    pair<vector<RE>,vector<RE>> sort(pair<vector<RE>,vector<RE>> &t) const;
+    pair<vector<RE>,vector<RE>> sort(const pair<vector<RE>,vector<RE>> &t) const;
 
     /**
      * \brief Convert Regex's to minimized DFA's
@@ -64,6 +64,11 @@ private:
      * @return
      */
     double checkKarsAnas(vector<DFA> &d, vector<RE> &s) const;
+
+    /**
+     * \brief Magimathical Formula Anas
+     */
+    double magimathical(vector<double> &results) const;
 
     /**
      * \brief Map sorted by the timestamp of the song and a bool deciding if these Notes are on/off. The timestamp is manually set to a accuracy of 1ms (0,001s)
