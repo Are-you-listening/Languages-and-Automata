@@ -36,8 +36,6 @@ private:
      */
     double checkKars(vector<DFA> &d, vector<RE> &s) const;
 
-
-
     /**
      * \brief Map sorted by the timestamp of the song and a bool deciding if these Notes are on/off. The timestamp is manually set to a accuracy of 1ms (0,001s)
      */
