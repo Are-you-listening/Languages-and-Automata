@@ -14,7 +14,7 @@ DFA Genre::toProductAutomata() const {
     //Loop over each Song
     for(auto it = members.begin(); it!=members.end(); it++){
         for(Song* s: it->second){
-            vector<RE> t = s->toRegex(param[0],param[0],param[0],param[0],param[0],-1,param[0]); //Set pattern to -1 so we can generate 1 big Regex
+            vector<RE> t = s->toRegex(param[0],param[0],param[0],param[0],param[0],-1); //Set pattern to -1 so we can generate 1 big Regex
             ENFA a = t[0].toENFA();
             DFA m = a.toDFA();
             m = m.minimize();
@@ -29,8 +29,10 @@ DFA Genre::toProductAutomata() const {
 }
 
 bool Genre::inGenre(const Song *&s) {
+    DFA m = toProductAutomata();
+    vector<RE> st = s->toRegex(param[0],param[0],param[0],param[0],param[0],param[0]);
 
-    return false;
+    return m.accepts(st[0].re);
 }
 
 Genre::Genre(const map<double, vector<Song *>> &members, double limit, const vector<int> &param) : members(members),
@@ -40,7 +42,7 @@ Genre::Genre(const map<double, vector<Song *>> &members, double limit, const vec
 Genre::Genre(Song *&s, Song *&k, const vector<int> &params) {
     param = params;
 
-    pair<vector<RE> , vector<RE>> toCheck = {s->toRegex(param[0],param[0],param[0],param[0],param[0],param[0],param[0]) , k->toRegex(param[0],param[0],param[0],param[0],param[0],param[0],param[0])};
+    pair<vector<RE> , vector<RE>> toCheck = {s->toRegex(param[0],param[0],param[0],param[0],param[0],param[0]) , k->toRegex(param[0],param[0],param[0],param[0],param[0],param[0])};
     vector<double> temp = s->similar( toCheck , 0 ,0); //Run Similarity Check
 
     double result = 0;
