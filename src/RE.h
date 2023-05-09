@@ -4,7 +4,9 @@
 
 #ifndef TA__TOG_RE_H
 #define TA__TOG_RE_H
+
 #include <string>
+
 #include "ENFA.h"
 
 using namespace std;
