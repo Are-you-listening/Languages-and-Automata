@@ -118,7 +118,7 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
     }
 
     if (count != 0){
-        //Add the resting regex parts incase we didn't got a full pattern run
+        //Add the resting regex parts in case we didn't got a full pattern run
         RE regex(temp,epsilon);
         regex_list.push_back(regex);
     }
@@ -207,7 +207,8 @@ double Song::similarity(const Song &song, bool complement, bool reverse) const {
     //Do different checks on different Regex's
     for(const vector<bool> &v: vectors){
         //No roundings
-        pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5], v[6]), this->toRegex(v[0], v[1], v[2], v[3], v[4], v[5], 0) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
+        pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5], v[6]), this->toRegex(v[0], v[1], v[2], v[3], v[4], v[5],
+                                                                                                                     false) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
         results.push_back( similar(toCheck,complement,reverse) ); // 0,1,0,1,0, 1,0
     }
     
@@ -219,7 +220,8 @@ double Song::similarity(const Song &song, bool complement, bool reverse) const {
 
 bool Song::operator==(const Song &rhs) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    if(similarity(rhs,0,0)==1){
+    double percentage = similarity(rhs, false, false);
+    if(percentage>=1){
         return true;
     }
     return false;
@@ -263,9 +265,9 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
 map<int,unsigned int> Song::countNotes() const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    map<int,unsigned int> counts; // map[Note]=occurences
+    map<int,unsigned int> counts; // map[Note]=occurrences
 
-    for(map<pair<unsigned int, bool>, vector<Note*>>::const_iterator it = note_map.begin(); it!=note_map.end(); it++){
+    for(auto it = note_map.begin(); it!=note_map.end(); it++){
         for(const Note* n: it->second){
             if(counts.find(n->getNoteValue())==counts.end()){ //In case not found
                 counts[n->getNoteValue()]=1;
@@ -277,17 +279,17 @@ map<int,unsigned int> Song::countNotes() const {
     return counts;
 }
 
-double Song::noteCountSimilarity(const Song &s) const {
+[[nodiscard]] double Song::noteCountSimilarity(const Song &s) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     map<int,unsigned int> count = this->countNotes();
     map<int,unsigned int> scount = s.countNotes();
 
-    int succes = 0;
-    int occurences = count.size();
+    unsigned int succes = 0;
+    unsigned int occurences = count.size();
     bool succeed = false;
 
-    for(map<int,unsigned int>::const_iterator k = count.begin(); k!=count.end(); k++){
+    for(auto k = count.begin(); k!=count.end(); k++){
         if( scount.find(k->first)!=scount.end()){ //Sharing a note
             if(scount[k->first]==k->second){
                 succes++;

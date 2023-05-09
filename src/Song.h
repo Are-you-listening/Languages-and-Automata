@@ -33,7 +33,7 @@ private:
      * @param t
      * @return
      */
-    pair<vector<RE>,vector<RE>> sort(const pair<vector<RE>,vector<RE>> &t) const;
+    [[nodiscard]] pair<vector<RE>,vector<RE>> sort(const pair<vector<RE>,vector<RE>> &t) const;
 
     /**
      * \brief Convert Regex's to minimized DFA's
@@ -140,14 +140,14 @@ public:
      * @param pattern, int deciding the complexixity of the constructed Regex
      * @return vector<RE> rex
      */
-    vector<RE> toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern, bool rounder) const;
+    [[nodiscard]] vector<RE> toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern, bool rounder) const;
 
     /**
      * \brief Count the amount of notes (per type) of a Song
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @return map<int,unsigned int> map[Note]=occurences
      */
-    map<int,unsigned int> countNotes() const;
+    [[nodiscard]] map<int,unsigned int> countNotes() const;
 
     /**
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
@@ -158,7 +158,7 @@ public:
      * @param reverse, in case the complements of the 2 songs needs to be checked
      * @return percentage, the percentage the Songs are the same
      */
-    double similarity(const Song &song,bool complement, bool reverse) const;
+    [[nodiscard]] double similarity(const Song &song,bool complement, bool reverse) const;
 
     /**
      * \brief Check the occurences of the Notes and its similarity towards the notes of this object
@@ -166,7 +166,7 @@ public:
      * \ENSURE(succeed, "Percentage must be between 0 and 1");
      * @return
      */
-    double noteCountSimilarity(const Song &s) const;
+    [[nodiscard]] double noteCountSimilarity(const Song &s) const;
     
     /**
      * \brief Check for 100% Equality of Songs
