@@ -17,7 +17,7 @@ void weightedNode::addconnection(weightedNode *otherState, char symbol, double w
     }
 }
 
-const list<tuple<weightedNode *, set<char>, double>> & weightedNode::getconnections() const {
+const list<tuple<weightedNode *, set<char>, double>> & weightedNode::getweightedconnections() const {
     return connections;
 }
 

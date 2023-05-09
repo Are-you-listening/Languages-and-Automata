@@ -12,7 +12,7 @@ class weightedNode: public Node{
 public:
     void addconnection(weightedNode *otherState, char symbol, double weight);
 
-    const list<tuple<weightedNode *, set<char>, double>> & getconnections() const;
+    const list<tuple<weightedNode *, set<char>, double>> & getweightedconnections() const;
 
     explicit weightedNode(const string &name);
 };
