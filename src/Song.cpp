@@ -157,11 +157,23 @@ Song::Song(const string &path) {
     REQUIRE(FileExists(path) , "Given file not found");
     fInitCheck = this;
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
-
 }
 
 Song &Song::operator=(const Song &a) {
+    REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
-    return <#initializer#>;
+    map<pair<unsigned int, bool>, vector<Note*>> map2;
+
+    for(auto it = note_map.begin(); it!=note_map.end(); it++){
+        vector<Note*> temp;
+        for(Note* &n: it->second){ //Construct new Note objects on heap
+            temp.push_back( new Note(*n) );
+        }
+        map2[it->first]=temp;
+    }
+
+    Song s = Song(map2); //Make actual new object
+    ENSURE(s.ProperlyInitialized(), "Constructor must end in properly initialised state!");
+    return s;
 }
 

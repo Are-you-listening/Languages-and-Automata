@@ -45,6 +45,8 @@ public:
 
     /**
      * \brief Overloader Constructor (Creates a new object) Including new usages of memory!
+     * \REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+     * \ENSURE(s.ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * @param a
      * @return
      */
