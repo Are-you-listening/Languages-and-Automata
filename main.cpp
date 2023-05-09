@@ -12,7 +12,7 @@ int main() {
     song.Export();
 
     //Song song("midi_files/world-1-birabuto-4-.mid");
-    /*Song song2("midi_broken/world-1-birabuto-remix-.mid");
+    Song song2("midi_broken/world-1-birabuto-remix-.mid");
     //song.similarity(song2);
 
 
@@ -21,7 +21,7 @@ int main() {
     cout << song3.similarity(song4,0,0) << endl;
 
     Song song5("midi_files/Metal_Crusher2.mid");
-    cout << song3.similarity(song5,0,0) << endl;*/
+    cout << song3.similarity(song5,0,0) << endl;
 
     /*
     RE r("00(0+1+2+3+4+5+6+7)i0", '*');

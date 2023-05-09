@@ -202,6 +202,9 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
 double Song::similarity(const Song &song, bool complement, bool reverse) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
+    string m = getCurrTime()+" Applying" + '"' + "similarity" + "'" +" on " + title + "and " + song.getTitle() + "\n";
+    logs.push_back( m );
+
     double result;
     bool succes = false;
     vector<vector<double>> results;
@@ -220,6 +223,10 @@ double Song::similarity(const Song &song, bool complement, bool reverse) {
     result = magimathical(results);
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
+
+    m = getCurrTime()+" Comparition ended, "+"showing a matchpercentage off: "+ to_string(result) + "%\n";
+    logs.push_back(m);
+
     return result;
 }
 
@@ -309,7 +316,7 @@ map<int,unsigned int> Song::countNotes() const {
     if(result<=1 && result>=0){succeed = true;}
     ENSURE(succeed, "Percentage must be between 0 and 1");
 
-    m = getCurrTime()+" Compared "+"showing a matchpercentage off: "+ to_string(result) + "%\n";
+    m = getCurrTime()+" Comparition ended, "+"showing a matchpercentage off: "+ to_string(result) + "%\n";
     logs.push_back(m);
 
     return result;
@@ -318,14 +325,24 @@ map<int,unsigned int> Song::countNotes() const {
 void Song::Export() const {
     REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    ofstream out(title+"_report.txt");
+    string file= title+"_report.txt";
+    while(FileExists(file)){
+        file+="(copy)";
+    }
+
+    ofstream out(file);
 
     out << "    -==[(*)]==-   ";
     out << "Report of actions";
-    out << "    -==[(*)]==-   "+'\n';
+    out << "    -==[(*)]==-   \n\n";
 
-    out << "Date of report: "+getCurrTime()+'\n';
+    out << "Date of report: "+getCurrTime()+"\n";
 
+    for(string k: logs){
+        out << k;
+    }
+
+    out.close();
 
     ENSURE(FileExists(title+"_report.txt"),"No log file has been created");
 }
