@@ -4,12 +4,17 @@
 
 #ifndef P1_ENFA_H
 #define P1_ENFA_H
-#include <set>
+
 #include <string>
+#include <set>
+#include <vector>
 #include <map>
 #include <iostream>
-#include <vector>
+#include <fstream>
+#include <algorithm>
+
 #include "DFA.h"
+#include "json.hpp"
 
 using namespace std;
 

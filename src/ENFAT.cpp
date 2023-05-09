@@ -3,14 +3,7 @@
 //
 
 #include "ENFAT.h"
-#include <algorithm>
-#include <fstream>
-#include "json.hpp"
-#include <iomanip>
-#include "DFA.h"
 
-
-using namespace std;
 ENFAT::ENFAT(const string &path) {
     /**
      * Constructor
@@ -21,8 +14,6 @@ ENFAT::ENFAT(const string &path) {
     nlohmann::json data = nlohmann::json::parse(f);
 
     load(data);
-
-
 }
 set<string> ENFAT::Eclose(const string &state){
     /**
