@@ -18,6 +18,7 @@ private:
 
 public:
     ByteX(unsigned int value, unsigned int length);
+    ByteX(const string& hex_value);
     string toString() const;
     string toHex() const;
     int getByte(int index) const;

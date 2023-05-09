@@ -3,6 +3,7 @@
 //
 
 #include "Song.h"
+#include "midiparser/SongExporter.h"
 
 vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) const {
     vector<DFA> tt;
