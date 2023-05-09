@@ -15,7 +15,7 @@ private:
     /**
      * \brief Toggle the Console Output
      */
-     bool console = true;
+     bool console = false;
 
     /**
      * \brief The name of this genre
@@ -119,6 +119,10 @@ public:
      */
     void setName(const string &name);
 
+    /**
+     * \brief Turn the console output on/off
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     */
     void switchConsole();
 };
 

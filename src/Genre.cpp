@@ -139,6 +139,7 @@ void Genre::setName(const string &name) {
 }
 
 void Genre::switchConsole() {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     if(console){
         console = false;
     }else{
