@@ -34,7 +34,7 @@ char toChar(int value){
     string s = "";
     s += RoundTime_stamp(r_time_stamp);
     s += RoundNote_on(r_note_on);
-    s += RoundInstrument(rounder, r_instrument);
+    s += RoundInstrument(r_instrument);
     s += RoundNote(r_note);
     s += RoundTime_stamp(r_velocity);
     return s;
@@ -44,7 +44,7 @@ int Note::getNoteValue() const {
     return note_value;
 }
 
-string Note::RoundTime_stamp(int r_time_stamp){
+string Note::RoundTime_stamp(int r_time_stamp) const{
     string s;
     if(r_time_stamp){
         s="(";
@@ -57,7 +57,7 @@ string Note::RoundTime_stamp(int r_time_stamp){
     return s;
 }
 
-string Note::RoundNote_on(int r_note_on){
+string Note::RoundNote_on(int r_note_on) const{
     string s;
     if(r_note_on>1){
         s="(";
@@ -73,7 +73,7 @@ string Note::RoundNote_on(int r_note_on){
     return s;
 }
 
-string Note::RoundVelocity(int r_velocity){
+string Note::RoundVelocity(int r_velocity) const{
     string s;
     if(r_velocity){
         s="(";
@@ -87,12 +87,12 @@ string Note::RoundVelocity(int r_velocity){
     return s;
 }
 
-string Note::RoundInstrument(bool round_instrument, bool r_instrument) const {
-    if (round_instrument){
+string Note::RoundInstrument(int r_instrument) const {
+    if (r_instrument > 2){
         string s = "(";
         int base_instrument = instrument/8;
         for (int i=0; i<8; i++){
-            s += toChar(((base_instrument*8)+i)*r_instrument);
+            s += toChar(((base_instrument*8)+i));
             s += "+";
         }
 
@@ -105,29 +105,20 @@ string Note::RoundInstrument(bool round_instrument, bool r_instrument) const {
     }
 }
 
-string Note::RoundNote(int note_value, int r_note, int round_index, int round_index2) const {
-    REQUIRE(note_value+round_index < 255, "note range not allowed");
+string Note::RoundNote(int r_note, int r_octaaf) const {
 
-    if (!round && !round_octave){
+    if (r_note < 2 && r_octaaf < 2){
         string s = "";
         s += toChar(note_value*r_note);
         return s;
-    }
-
-    if (!round){
-        round_index = 0;
-    }
-
-    if (!round_octave){
-        round_index2 = 0;
     }
 
     int note_number = note_value % 12;
     int octave = note_value/ 12 - 1;
 
     string s = "(";
-    for (int i=note_number-round_index; i<=note_number+round_index; i++){
-        for (int j=octave-round_index2; j<=octave+round_index2; j++){
+    for (int i=note_number-(r_note-1); i<=note_number+(r_note-1); i++){
+        for (int j=octave-(r_octaaf-1); j<=octave+(r_octaaf-1); j++){
 
             int value = 12 * (j + 1) + i;
             if (value < 0){
