@@ -13,9 +13,9 @@
 class Genre {
 private:
     /**
-     * \brief Contains the current members of this Genre sorted by its match %
+     * \brief Contains the current members of this Genre
      */
-    map<double,vector<const Song*>> members;
+    vector<const Song*> members;
 
     /**
      * \brief The minimum % of Similarity a newly given Song has to have with the Genre to join it
@@ -37,9 +37,9 @@ public:
     /**
      * \brief In case the match % <= limit, add to this Genre
      * @param s
-     * @return match %
+     * @return
      */
-    double addGenre(const Song* &s);
+    void addGenre(const Song* &s);
 
     /**
      * \brief Check if a given Song is part of this Genre
@@ -54,14 +54,14 @@ public:
      * @param limit
      * @param param
      */
-    Genre(const map<double, vector<const Song *>> &members, double limit, const vector<int> &param);
+    Genre(const vector<const Song *> &members, double limit, const vector<int> &param);
 
-     /**
-      * \brief Create a Genre based on 2 Song's and a given set of paramaters.
-      * @param s
-      * @param k
-      * @param param
-      */
+    /**
+     * \brief Create a Genre based on 2 Song's and a given set of paramaters.
+     * @param s
+     * @param k
+     * @param param
+     */
     Genre(Song* &s, Song* &k, const vector<int> &params);
 };
 
