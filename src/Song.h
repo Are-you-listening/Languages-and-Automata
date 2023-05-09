@@ -60,7 +60,7 @@ private:
      * @param reverse, bool deciding if the DFA reverse needs to be taken
      * @return
      */
-    vector<DFA> convert(vector<RE> &s, bool complement, bool reverse) const;
+    vector<DFA> convert(vector<RE> &s, bool complement, bool reverse);
 
     /**
      * \brief Check the similarity in order
@@ -93,7 +93,7 @@ private:
      * \brief Magimathical Formula Anas
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      */
-    double magimathical(vector<vector<double>> &results) const;
+    double magimathical(vector<vector<double>> &results);
 
 public:
     /**
@@ -147,14 +147,14 @@ public:
      * @param pattern, int deciding the complexixity of the constructed Regex
      * @return vector<RE> rex
      */
-    [[nodiscard]] vector<RE> toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern) const;
+    [[nodiscard]] vector<RE> toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern);
 
     /**
      * \brief Count the amount of notes (per type) of a Song
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @return map<int,unsigned int> map[Note]=occurences
      */
-    [[nodiscard]] map<int,unsigned int> countNotes() const;
+    [[nodiscard]] map<int,unsigned int> countNotes();
 
     /**
      * \brief Run all checks on 1 sort of Regex
@@ -165,7 +165,7 @@ public:
      * @param reverse, in case the complements of the 2 songs needs to be checked
      * @return
      */
-    vector<double> similar(pair<vector<RE>,vector<RE>> &toCheck,bool complement, bool reverse) const;
+    vector<double> similar(pair<vector<RE>,vector<RE>> &toCheck,bool complement, bool reverse);
 
     /**
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
@@ -176,7 +176,7 @@ public:
      * @param reverse, in case the complements of the 2 songs needs to be checked
      * @return percentage, the percentage the Songs are the same
      */
-    [[nodiscard]] double similarity(const Song &song,bool complement, bool reverse);
+    [[nodiscard]] double similarity(Song &song,bool complement, bool reverse);
 
     /**
      * \brief Check the occurences of the Notes and its similarity towards the notes of this object
@@ -184,7 +184,7 @@ public:
      * \ENSURE(succeed, "Percentage must be between 0 and 1");
      * @return
      */
-    [[nodiscard]] double noteCountSimilarity(const Song &s);
+    [[nodiscard]] double noteCountSimilarity(Song &s);
     
     /**
      * \brief Check for 100% Equality of Songs
@@ -192,7 +192,7 @@ public:
      * @param rhs
      * @return
      */
-    bool operator==(const Song &rhs);
+    bool operator==(Song &rhs);
 
     /**
      * \brief Check if songs are not the same
@@ -200,7 +200,7 @@ public:
      * @param rhs
      * @return
      */
-    bool operator!=(const Song &rhs);
+    bool operator!=(Song &rhs);
 
     /**
      * \brief Export the retrieved data by a Song's operations into a .txt file

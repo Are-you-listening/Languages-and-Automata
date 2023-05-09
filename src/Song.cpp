@@ -5,8 +5,12 @@
 #include "Song.h"
 #include "midiparser/SongExporter.h"
 
-vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) const {
+vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) {
     vector<DFA> tt;
+
+    string log = getCurrTime() + " Converting Regex's to DFA's ("+ to_string(complement) + ") ("+ to_string(reverse) + ") ...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
 
     for(auto z: s){
         ENFA k = z.toENFA();
@@ -45,12 +49,22 @@ bool Song::ProperlyInitialized() const {
 Song::Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap) : note_map(noteMap) {
     fInitCheck = this;
     title = "Are you listening?";
+
+    string log = getCurrTime() + " Initialising new Song Object...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
 Song::Song() {
     fInitCheck = this;
     title = "Are you listening?";
+
+    string log = getCurrTime() + " Creating empty Song Object...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
@@ -60,12 +74,20 @@ Song::Song(const string &path) {
     fInitCheck=this;
     title = "Are you listening?";
 
+    string log = getCurrTime() + " Parsing note_map from .mid file...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
     MidiParser m(path);
     note_map = m.getNoteMap();
     int count = 0;
     for(const auto &entry: note_map){
         count += entry.second.size();
     }
+
+    log = getCurrTime() + " Initialising new Song Object...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
 
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
@@ -92,6 +114,10 @@ Song &Song::operator=(const Song &a) {
 }
 
 Song::~Song(){
+    string log = getCurrTime() + " Destructor called, cleaning up the rubish!\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
         for(Note* note: it->second){
             delete note;
@@ -99,13 +125,17 @@ Song::~Song(){
     }
 }
 
-vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern) const {
+vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern) {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     char epsilon='*';
     vector<RE> regex_list;
     int count = 0;
     string temp = "";
+
+    string log = getCurrTime() + " Converting the Object to Regex's...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
 
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
         for(Note* note: it->second){
@@ -200,10 +230,11 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::similarity(const Song &song, bool complement, bool reverse) {
+double Song::similarity(Song &song, bool complement, bool reverse) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string m = getCurrTime()+" Applying " + '"' + "similarity (" + to_string(complement) + ") (" + to_string(reverse) + ")" +  '"' +" on Song: " + title + " and Song: " + song.getTitle() + "\n";
+    if(console){cout << m;}
     logs.push_back( m );
 
     double result;
@@ -225,29 +256,48 @@ double Song::similarity(const Song &song, bool complement, bool reverse) {
     ENSURE(succes, "Percentage must be between 0 and 1");
 
     m = getCurrTime()+" Comparition ended, showing a matchpercentage off: "+ to_string(result) + " %\n\n";
+    if(console){cout << m;}
     logs.push_back(m);
 
     return result;
 }
 
-bool Song::operator==(const Song &rhs) {
+bool Song::operator==(Song &rhs) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+
+    string log = getCurrTime() + " Checking if the songs are the same...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
+    bool succes;
     double percentage = similarity(rhs, false, false);
     if(percentage>=1){
-        return true;
+        succes = true;
+        log = getCurrTime() + " " + getTitle() + " is the same as: " + rhs.getTitle() + "\n\n";
+    }else{
+        succes = false;
+        log = getCurrTime() + " " + getTitle() + " is differing from: " + rhs.getTitle() + "\n\n";
     }
-    return false;
+
+    if(console){cout << log;}
+    logs.push_back(log);
+
+    return succes;
 }
 
-bool Song::operator!=(const Song &rhs) {
+bool Song::operator!=(Song &rhs) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     return !((Song) rhs == *this);
 }
 
-double Song::magimathical(vector<vector<double>> &results) const {
+double Song::magimathical(vector<vector<double>> &results) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     double result = 0;
-    
+
+    string log = getCurrTime() + " Applying Magic...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
     //Anas Working Space
     vector<vector<int>> vectors; //TODO dit moet nog de vector<vector<int>> worden waarin alle regex waarden zitten
     for(vector<vector<int>>::iterator v=vectors.begin(); v!=vectors.end(); v++){
@@ -263,7 +313,7 @@ double Song::magimathical(vector<vector<double>> &results) const {
     return result;
 }
 
-vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complement, bool reverse) const {
+vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complement, bool reverse) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     vector<double> results;
@@ -284,10 +334,14 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     return results;
 }
 
-map<int,unsigned int> Song::countNotes() const {
+map<int,unsigned int> Song::countNotes() {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     map<int,unsigned int> counts; // map[Note]=occurrences
+
+    string log = getCurrTime() + " Counting Notes...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
 
     for(auto it = note_map.begin(); it!=note_map.end(); it++){
         for(const Note* n: it->second){
@@ -301,7 +355,7 @@ map<int,unsigned int> Song::countNotes() const {
     return counts;
 }
 
-[[nodiscard]] double Song::noteCountSimilarity(const Song &s) {
+[[nodiscard]] double Song::noteCountSimilarity(Song &s) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string m = getCurrTime()+" Applying" + '"' + "noteCountSimilarity" + '"' +" on Song: " + title + " and Song: " + s.getTitle() + "\n";
@@ -372,6 +426,11 @@ void Song::setTitle(const string &title) {
 
 void Song::save(const string &path) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+
+    string log = getCurrTime() + " Saving Song into .mid file...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
     SongExporter exp(path, note_map);
 
 
