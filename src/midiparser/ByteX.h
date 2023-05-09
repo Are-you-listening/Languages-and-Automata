@@ -4,8 +4,11 @@
 
 #ifndef MIDIPARSER_BYTEX_H
 #define MIDIPARSER_BYTEX_H
+
 #include <string>
 #include <iostream>
+#include <sstream>
+
 using namespace std;
 
 class ByteX {

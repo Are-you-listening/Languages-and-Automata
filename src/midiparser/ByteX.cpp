@@ -3,7 +3,7 @@
 //
 
 #include "ByteX.h"
-#include <sstream>
+
 ByteX::ByteX(unsigned int value, unsigned int length): value(value), length(length) {
 
 }
