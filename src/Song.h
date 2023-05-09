@@ -25,13 +25,13 @@ private:
      * \brief Check the similarity in order
      * @return
      */
-    unsigned int checkTibo(vector<DFA> &d, vector<string> &s) const;
+    double checkTibo(vector<DFA> &d, vector<RE> &s) const;
 
     /**
      * \brief Cross check the similarity
      * @return
      */
-    unsigned int checkKars(vector<DFA> &d, vector<string> &s) const;
+    double checkKars(vector<DFA> &d, vector<RE> &s) const;
 
 
 
@@ -104,16 +104,16 @@ public:
 
     /**
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * \ENSURE(succes, "Percentage must be between 0 and 100");
+     * \ENSURE(succes, "Percentage must be between 0 and 1");
      * \brief Run a similarity Check on this Song and a given Song ('song').
      * @param song
      * @return percentage, the percentage the Songs are the same
      */
-    unsigned int similarity(Song &song) const;
+    double similarity(Song &song) const;
 
-    unsigned int reverseSimilarity(Song &song) const;
+    double reverseSimilarity(Song &song) const;
 
-    unsigned int complementSimilarity(Song &song) const;
+    double complementSimilarity(Song &song) const;
 
     /**
      * \brief Check for 100% Equality of Songs

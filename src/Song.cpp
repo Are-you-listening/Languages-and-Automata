@@ -110,25 +110,20 @@ vector<RE> Song::toRegex(bool time_stamp, bool note_on, bool instrument, bool no
     return regex_list;
 }
 
-bool Song::operator==(const Song &rhs) const {
-    return fInitCheck == rhs.fInitCheck &&
-           note_map == rhs.note_map;
+double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
+    return 0;
 }
 
-bool Song::operator!=(const Song &rhs) const {
-    return !(rhs == *this);
+double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
+    return 0;
 }
 
-unsigned int Song::similarity(Song &song) const {
+double Song::similarity(Song &song) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    int percentage = 0;
-
+    double resultaat = 0;
     bool succes = false;
 
-    if(percentage<=100 && percentage>=0){
-        succes = true;
-    }
     //IDEA KARS
     auto t = song.toRegex(0,1,1,1,0,2,1); // als je een hogere match precentage wilt dat nog steeds accuraat is, maak instrument 0 en velocity 0 song.toRegex(0,1,0,1,0,1, 1);
     auto t2 = this->toRegex(0,1,1,1,0,2,0);
@@ -186,14 +181,29 @@ unsigned int Song::similarity(Song &song) const {
         }
         count++;
     }
-    double resultaat=slagen/count;
+    resultaat=slagen/count;
     cout << "Tibo & Anas: " << resultaat << " slagen: " << slagen << " coutns: " << count  <<endl;
 
-    ENSURE(succes, "Percentage must be between 0 and 100");
+    if(resultaat<=1 && resultaat>=0){
+        succes = true;
+    }
+
+    ENSURE(succes, "Percentage must be between 0 and 1");
     return resultaat;
 }
 
-unsigned int Song::reverseSimilarity(Song &song) const {
+double Song::reverseSimilarity(Song &song) const {
     return 0;
 }
 
+double Song::complementSimilarity(Song &song) const {
+    return 0;
+}
+
+bool Song::operator==(const Song &rhs) const {
+    return false;
+}
+
+bool Song::operator!=(const Song &rhs) const {
+    return !(rhs == *this);
+}
