@@ -10,6 +10,16 @@ vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) const {
     for(auto z: s){
         ENFA k = z.toENFA();
         DFA s = k.toDFA();
+
+        if(complement){
+            s = s.complement();
+        }
+
+        if(reverse){
+            ENFA z = s.reverse();
+            s = z.toDFA();
+        }
+
         s.minimize();
         tt.push_back(s);
     }
