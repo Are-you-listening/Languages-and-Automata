@@ -9,11 +9,23 @@ double Genre::addGenre(const Song *&s) {
 }
 
 DFA Genre::toProductAutomata() const {
+    vector<DFA> temp;
 
-    //vector<RE> REs = s->toRegex(param[0],param[0],param[0],param[0],param[0],-1,param[0]); //Set pattern to -1 so we can generate 1 big Regex
-    //vector<RE> REk = k->toRegex(param[0],param[0],param[0],param[0],param[0],-1,param[0]);
-
-    return DFA();
+    //Loop over each Song
+    for(auto it = members.begin(); it!=members.end(); it++){
+        for(Song* s: it->second){
+            vector<RE> t = s->toRegex(param[0],param[0],param[0],param[0],param[0],-1,param[0]); //Set pattern to -1 so we can generate 1 big Regex
+            ENFA a = t[0].toENFA();
+            DFA m = a.toDFA();
+            m = m.minimize();
+            if(temp.size()==0){
+                temp.push_back(m);
+            } else{
+                temp[0] = DFA(temp[0], m , 0); //Make or extend ProductAutomata
+            }
+        }
+    }
+    return temp[0];
 }
 
 bool Genre::inGenre(const Song *&s) {
