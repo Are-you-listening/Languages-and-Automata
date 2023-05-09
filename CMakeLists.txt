@@ -24,8 +24,7 @@ set(MIDIPASER_SRC
         src/midiparser/MidiParser.cpp
         src/midiparser/ByteX.h
         src/midiparser/ByteX.cpp
-
-        )
+        src/midiparser/SongExporter.cpp src/midiparser/SongExporter.h)
 
 set(MAIN_SRC
         src/Genre.h

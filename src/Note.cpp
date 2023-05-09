@@ -101,10 +101,18 @@ string Note::RoundNote(int note_value, bool r_note, bool round, int round_index,
     return s;
 }
 
-Note::Note(const Note &n) {
-    this->time_stamp = n.time_stamp;
-    this->note_on = n.note_on;
-    this->note_value = n.note_value;
-    this->velocity = n.velocity;
-    this->instrument = n.instrument;
+unsigned int Note::getInstrument() const {
+    return instrument;
+}
+
+unsigned int Note::getTimeStamp() const {
+    return time_stamp;
+}
+
+int Note::getVelocity() const {
+    return velocity;
+}
+
+bool Note::isNoteOn() const {
+    return note_on;
 }

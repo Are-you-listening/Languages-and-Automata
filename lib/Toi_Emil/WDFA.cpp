@@ -5,7 +5,6 @@
 #include "WDFA.h"
 #include <iostream>
 #include "json.hpp"
-#include <fstream>
 #include "weightedNode.h"
 using json = nlohmann::json;
 
@@ -17,7 +16,7 @@ double WDFA::weightedaccepts(string input) {
             cerr << "inputstring contains an unknown symbol" << endl;
             return 0.0;
         }
-        for (auto connection : currentState->weightedNode::getconnections()){
+        for (auto connection : currentState->weightedNode::getweightedconnections()){
             if (get<1>(connection).find(symbol) != get<1>(connection).end()){
                 result += get<2>(connection);
                 currentState = get<0>(connection);

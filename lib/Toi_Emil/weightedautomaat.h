@@ -15,12 +15,15 @@ protected:
     list<weightedNode*> states;
     weightedNode* startState = nullptr;
     list<weightedNode*> endStates = {};
-    
+
     virtual pair<weightedNode *, bool> getweightedState(string name);
 
     void addState(string name, bool startState, bool endState) override;
-    
+
+    pair<weightedNode*, bool> getWeightedState(string name);
+
 public:
+    weightedautomaat();
     weightedautomaat(const string &filename);
     virtual double weightedaccepts(string input)=0;
 };

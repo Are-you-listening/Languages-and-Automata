@@ -16,7 +16,7 @@ double WNFA::weightedaccepts(string input) {
     for (char symbol : input){
         vector<pair<double, weightedNode*>> tempstates;
         for (pair<double, weightedNode*> state : currentstates){
-            for (auto connection : state.second->getconnections()){
+            for (auto connection : state.second->getweightedconnections()){
                 if (get<1>(connection).find(symbol) != get<1>(connection).end()){
                     tempstates.emplace_back(state.first + get<2>(connection), get<0>(connection));
                 }
@@ -35,4 +35,8 @@ double WNFA::weightedaccepts(string input) {
 }
 
 WNFA::WNFA(const string &filename) : weightedautomaat(filename) {}
+
+WNFA::WNFA() {
+    type = "WNFA";
+}
 

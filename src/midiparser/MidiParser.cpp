@@ -63,7 +63,7 @@ bool MidiParser::readComponent() {
         bool note_on = basic_data.getByte(1) != 0;
         addNote(time, note_on, new Note(time, note_on,
                                         basic_data.getByte(0), basic_data.getByte(1),
-                                        get_closest_change(time, channel)));
+                                        link_channel[channel]));
     }else if (basic_data.equalsHex("ff", 0)){
 
 
@@ -129,7 +129,7 @@ bool MidiParser::readComponent() {
 
     }
     else if (basic_data.equalsHex("c", 0)) {
-        link_channel[delta_time_counter][basic_data.getNibble(0, false)] = basic_data.getByte(1);
+        link_channel[basic_data.getNibble(0, false)] = basic_data.getByte(1);
     }else if(basic_data.equalsHex("d", 0)){
         /**
          * checks for c/e nibble
@@ -165,7 +165,7 @@ bool MidiParser::readComponent() {
         //cout << "note " << basic_data.toHex() << endl;
         addNote(time, note_on, new Note(time, note_on,
                                         basic_data.getByte(1), velocity.getValue(),
-                                        get_closest_change(time, basic_data.getNibble(0, false))));
+                                        link_channel[channel]));
         channel = basic_data.getNibble(0, false);
 
     }else{
@@ -179,6 +179,7 @@ void MidiParser::readTrack() {
     ByteX track_char = byteRead(4);
     ByteX track_size = byteRead(4);
     delta_time_counter = 0;
+    link_channel.clear();
 }
 
 void MidiParser::readHeader() {
@@ -211,20 +212,3 @@ const map<pair<unsigned int, bool>, vector<Note *>> &MidiParser::getNoteMap() co
     return note_map;
 }
 
-
-const map<unsigned int, map<unsigned int, unsigned int>> &MidiParser::getLinkChannel() const {
-    return link_channel;
-}
-
-unsigned int MidiParser::get_closest_change(unsigned int time, unsigned int channel) {
-    unsigned int best_time = 0;
-    unsigned int best = 0;
-    for (auto entry: link_channel){
-        if (entry.second.find(channel) != entry.second.end() && entry.first < time && entry.first > best_time){
-            unsigned int value = entry.second.at(channel);
-            best = value;
-            best_time = entry.first;
-        }
-    }
-    return best;
-}
