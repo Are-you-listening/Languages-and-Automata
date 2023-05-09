@@ -57,7 +57,7 @@ Song::Song(const string &path) {
     REQUIRE(FileExists(path) , "Given file not found");
 
     fInitCheck=this;
-    title = path;
+    title = "Are you listening?";
 
     MidiParser m(path);
     note_map = m.getNoteMap();
@@ -202,7 +202,7 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
 double Song::similarity(const Song &song, bool complement, bool reverse) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    string m = getCurrTime()+" Applying" + '"' + "similarity" + "'" +" on " + title + "and " + song.getTitle() + "\n";
+    string m = getCurrTime()+" Applying " + '"' + "similarity (" + to_string(complement) + ") (" + to_string(reverse) + ")" +  '"' +" on Song: " + title + " and Song: " + song.getTitle() + "\n";
     logs.push_back( m );
 
     double result;
@@ -224,7 +224,7 @@ double Song::similarity(const Song &song, bool complement, bool reverse) {
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
-    m = getCurrTime()+" Comparition ended, "+"showing a matchpercentage off: "+ to_string(result) + "%\n";
+    m = getCurrTime()+" Comparition ended, showing a matchpercentage off: "+ to_string(result) + " %\n\n";
     logs.push_back(m);
 
     return result;
@@ -294,7 +294,7 @@ map<int,unsigned int> Song::countNotes() const {
 [[nodiscard]] double Song::noteCountSimilarity(const Song &s) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    string m = getCurrTime()+" Applying" + '"' + "noteCountSimilarity" + "'" +" on " + title + "and " + s.getTitle() + "\n";
+    string m = getCurrTime()+" Applying" + '"' + "noteCountSimilarity" + '"' +" on Song: " + title + " and Song: " + s.getTitle() + "\n";
     logs.push_back( m );
 
     map<int,unsigned int> count = this->countNotes();
@@ -325,9 +325,11 @@ map<int,unsigned int> Song::countNotes() const {
 void Song::output() const {
     REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    string file= title+"_report.txt";
+    string file= "report_"+title+".txt";
+    string file2 = "report_"+title;
     while(FileExists(file)){
-        file+="(copy)";
+        file2+="(copy)";
+        file = file2+".txt";
     }
 
     ofstream out(file);
@@ -336,7 +338,7 @@ void Song::output() const {
     out << "Report of actions";
     out << "    -==[(*)]==-   \n\n";
 
-    out << "Date of report: "+getCurrTime()+"\n";
+    out << "Date of report: "+getCurrTime()+"\n\n";
 
     for(string k: logs){
         out << k;
@@ -344,10 +346,16 @@ void Song::output() const {
 
     out.close();
 
-    ENSURE(FileExists(title+"_report.txt"),"No log file has been created");
+    ENSURE(FileExists(file),"No log file has been created");
 }
 
 const string &Song::getTitle() const {
     REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     return title;
+}
+
+void Song::setTitle(const string &title) {
+    REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+    Song::title = title;
+    ENSURE(Song::title == title , "Setter didn't work properly");
 }

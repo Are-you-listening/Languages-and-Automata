@@ -207,6 +207,14 @@ public:
      * @return
      */
     const string &getTitle() const;
+
+    /**
+     * \brief Setter
+     * \ENSURE(Song::title == title , "Setter didn't work properly");
+     * \REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @param title
+     */
+    void setTitle(const string &title);
 };
 
 #endif //TOG_SONG_H
