@@ -4,16 +4,20 @@
 
 #ifndef TA__TOG_ENFA_H
 #define TA__TOG_ENFA_H
+
 #include <string>
 #include <vector>
-#include <map>
 #include <set>
+#include <map>
 #include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+
 #include "json.hpp"
+#include "ENFAT.h"
 #include "DFA.h"
+
 using namespace std;
 
 using json = nlohmann::json;

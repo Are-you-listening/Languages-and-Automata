@@ -3,7 +3,6 @@
 //
 
 #include "ENFA.h"
-#include "ENFAT.h"
 
 ENFA::ENFA(const string& c) {
     ifstream input(c);
