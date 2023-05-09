@@ -203,15 +203,18 @@ double Song::similarity(Song &song) const {
 
     double result;
     bool succes = false;
-    vector<double> results;
-
-    //No roundings
-    pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(0,1,0,1,0,   1,0), this->toRegex(0,1,0,1,0,   1,0) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
-    results.push_back( similar(toCheck) );
-
-    //DO the above in a for loop to change parameters
-
-
+    vector<vector<double>> results;
+    
+    vector<vector<bool>> vectors;
+    vectors.push_back({0,1,0,1,0,1,1});
+    
+    //Do different checks on different Regex's
+    for(const vector<bool> &v: vectors){
+        //No roundings
+        pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5], v[6]), this->toRegex(v[0], v[1], v[2], v[3], v[4], v[5], 0) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
+        results.push_back( similar(toCheck) ); // 0,1,0,1,0, 1,0
+    }
+    
     result = magimathical(results);
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");

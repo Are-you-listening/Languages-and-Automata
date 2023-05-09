@@ -11,10 +11,10 @@ int main() {
     Song song("midi_files/world-1-birabuto-4-.mid");
     Song song2("midi_broken/world-1-birabuto-remix-.mid");
     //song.similarity(song2);
-
-    song.parse("midi_files/metal_crusher.mid");
-    song2.parse("midi_files/metal_crusher.mid");
-    cout << song.similarity(song2) << endl;
+    
+    Song song3("midi_files/metal_crusher.mid");
+    Song song4("midi_files/metal_crusher.mid");
+    cout << song3.similarity(song4) << endl;
 
     song.parse("midi_files/Metal_Crusher2.mid");
     cout << song.similarity(song2) << endl;

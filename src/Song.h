@@ -119,15 +119,7 @@ public:
      * @return
      */
     Song& operator=(const Song &a);
-
-    /**
-     * \brief Parse a .mid file and load the Note-data into this Song-Object.
-     * \REQUIRE(FileExists(path) , "Given file not found");
-     * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
-     * @param path , the path to the .mid file
-     */
-    void parse(const string& path);
-
+    
     /**
      * \brief Destructor to free all used memory
      */
