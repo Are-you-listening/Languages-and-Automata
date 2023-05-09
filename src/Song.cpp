@@ -284,8 +284,11 @@ map<int,unsigned int> Song::countNotes() const {
     return counts;
 }
 
-[[nodiscard]] double Song::noteCountSimilarity(const Song &s) const {
+[[nodiscard]] double Song::noteCountSimilarity(const Song &s) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+
+    string m = getCurrTime()+" Applying" + '"' + "noteCountSimilarity" + "'" +" on " + title + "and " + s.getTitle() + "\n";
+    logs.push_back( m );
 
     map<int,unsigned int> count = this->countNotes();
     map<int,unsigned int> scount = s.countNotes();
@@ -305,7 +308,10 @@ map<int,unsigned int> Song::countNotes() const {
     double result = succes/occurences;
     if(result<=1 && result>=0){succeed = true;}
     ENSURE(succeed, "Percentage must be between 0 and 1");
-    //logs.push_back(getCurrTime()+"");
+
+    m = getCurrTime()+" Compared "+"showing a matchpercentage off: "+ to_string(result) + "%\n";
+    logs.push_back(m);
+
     return result;
 }
 
@@ -322,4 +328,9 @@ void Song::Export() const {
 
 
     ENSURE(FileExists(title+"_report.txt"),"No log file has been created");
+}
+
+const string &Song::getTitle() const {
+    REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+    return title;
 }
