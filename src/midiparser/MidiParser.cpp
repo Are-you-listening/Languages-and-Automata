@@ -6,7 +6,6 @@ MidiParser::MidiParser(const string &path) {
      * Welkom in the midiparser, here some binary data will be converted to
      * more usefull data. Are you intrested in this very intresting journey of deciphering Bytes
      * Follow me through this documentation and you will achieve an basic understanding of our midi-parser
-     * Voor we beginnen zullen we eerst duidelijk moeten
      * */
     stream.open(&path[0], ios_base::binary);
     readHeader();
@@ -166,7 +165,6 @@ bool MidiParser::readComponent() {
         addNote(time, note_on, new Note(time, note_on,
                                         basic_data.getByte(1), velocity.getValue(),
                                         link_channel[basic_data.getNibble(1, false)]));
-        channel = basic_data.getNibble(0, false);
 
     }else{
         cout << "error basic " << basic_data.toHex()<< endl;

@@ -218,6 +218,8 @@ public:
      * @param title
      */
     void setTitle(const string &title);
+
+    void save(const string &path);
 };
 
 #endif //TOG_SONG_H

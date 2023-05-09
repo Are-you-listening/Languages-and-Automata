@@ -109,7 +109,7 @@ vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b
 
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
         for(Note* note: it->second){
-            string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity);
+            string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity, 0);
             temp+=z;
             count++;
             if(count==pattern){
@@ -216,8 +216,7 @@ double Song::similarity(const Song &song, bool complement, bool reverse) {
     //Do different checks on different Regex's
     for(const vector<int> &v: vectors){
         //No roundings
-        pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5], v[6]), this->toRegex(v[0], v[1], v[2], v[3], v[4], v[5],
-                                                                                                                     false) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
+        pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]), this->toRegex(v[0], v[1], v[2], v[3], v[4], v[5]) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
         results.push_back( similar(toCheck,complement,reverse) ); // 0,1,0,1,0, 1,0
     }
     
@@ -369,4 +368,8 @@ void Song::setTitle(const string &title) {
     REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     Song::title = title;
     ENSURE(Song::title == title , "Setter didn't work properly");
+}
+
+void Song::save(const string &path) {
+    SongExporter exp(path, note_map);
 }
