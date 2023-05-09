@@ -5,19 +5,20 @@
 #ifndef MIDIPARSER_MIDIPARSER_H
 #define MIDIPARSER_MIDIPARSER_H
 
-#include <iostream>
 #include <string>
+#include <vector>
+#include <set>
+#include <map>
+
+#include <iostream>
 #include <fstream>
 #include <sstream>
-#include "../Note.h"
-#include <map>
-#include <set>
-#include "ByteX.h"
 #include <cmath>
-#include <vector>
+
+#include "ByteX.h"
+#include "../Note.h"
 
 using namespace std;
-
 
 class MidiParser {
 public:

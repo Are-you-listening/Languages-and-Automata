@@ -1,6 +1,5 @@
 
 #include "MidiParser.h"
-#include "ByteX.h"
 
 MidiParser::MidiParser(const string &path) {
     /**
