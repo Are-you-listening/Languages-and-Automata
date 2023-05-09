@@ -5,6 +5,7 @@
 #ifndef TOG_GENRE_H
 #define TOG_GENRE_H
 
+#include "Song.h"
 
 class Genre {
 
