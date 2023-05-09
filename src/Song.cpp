@@ -155,7 +155,16 @@ Song::Song() {
 
 Song::Song(const string &path) {
     REQUIRE(FileExists(path) , "Given file not found");
-    fInitCheck = this;
+
+    fInitCheck=this;
+
+    MidiParser m(path);
+    note_map = m.getNoteMap();
+    int count = 0;
+    for(auto entry: note_map){
+        count += entry.second.size();
+    }
+
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
@@ -167,7 +176,8 @@ Song &Song::operator=(const Song &a) {
     for(auto it = note_map.begin(); it!=note_map.end(); it++){
         vector<Note*> temp;
         for(Note* &n: it->second){ //Construct new Note objects on heap
-            temp.push_back( new Note(*n) );
+            Note* k = new Note(*n);
+            temp.push_back( k );
         }
         map2[it->first]=temp;
     }

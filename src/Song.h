@@ -27,7 +27,11 @@ private:
     map<pair<unsigned int, bool>, vector<Note*>> note_map; //{TimeStamp, on/off} {Note*} Timestamp=0,001s
 
 public:
-    explicit Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap);
+    /**
+     * \brief Constructor
+     * @param noteMap
+     */
+    Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap);
 
     /**
      * \brief Empty Constructor
