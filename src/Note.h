@@ -13,6 +13,16 @@
 using namespace std;
 
 class Note {
+private:
+    unsigned int instrument;
+    int note_value=0;
+    unsigned int time_stamp;
+    int velocity;
+    bool note_on;
+
+    string RoundInstrument(bool round_instrument, bool r_instrument) const;
+    string RoundNote(int note_value, bool r_note, bool round, int round_index, bool round_octave, int round_index2) const;
+
 public:
     /**
      * \brief Simple Constructer
@@ -36,16 +46,5 @@ public:
     [[nodiscard]] string getRE(bool r_time_stamp, bool r_note_on, bool r_instrument, bool r_note, bool r_velocity, bool rounder) const;
 
     int getNoteValue() const;
-
-private:
-    unsigned int instrument;
-    int note_value=0;
-    unsigned int time_stamp;
-    int velocity;
-    bool note_on;
-
-    string RoundInstrument(bool round_instrument, bool r_instrument) const;
-    string RoundNote(int note_value, bool r_note, bool round, int round_index, bool round_octave, int round_index2) const;
-
 };
 #endif //MIDIPARSER_NOTE_H

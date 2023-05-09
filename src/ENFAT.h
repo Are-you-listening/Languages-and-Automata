@@ -21,12 +21,6 @@ using namespace std;
 class DFA;
 
 class ENFAT {
-public:
-    ENFAT(const string& path);
-    ENFAT();
-    DFA toDFA();
-    bool accepts(const string& s);
-    void load(const nlohmann::json& data);
 private:
     set<string> states;
     set<char> alfabet;
@@ -36,10 +30,21 @@ private:
     char epsilon;
 
     set<string> Eclose(const string& state);
+
     set<string> Eclose(const string& state, const set<string>& found);
+
     string set_to_string(const set<string> &s) const;
 
-};
+public:
+    ENFAT(const string& path);
 
+    ENFAT();
+
+    DFA toDFA();
+
+    bool accepts(const string& s);
+
+    void load(const nlohmann::json& data);
+};
 
 #endif //P1_ENFA_H

@@ -5,8 +5,6 @@
 #include "NFA.h"
 
 NFA::NFA(const string &inputfile) {
-    using json = nlohmann::json;
-
     // inlezen uit file
     ifstream input(inputfile);
     json j;
@@ -188,7 +186,6 @@ vector<pair<char, string>> NFA::FindReachableStates(const string &start) const {
             }
         }
     }
-
     return ReachableStates;
 }
 

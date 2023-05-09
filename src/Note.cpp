@@ -25,7 +25,6 @@ char toChar(int value){
         throw "dwdw";
     }
 
-
     char c = (char)(index);
 
     return c;
@@ -61,7 +60,6 @@ string Note::RoundInstrument(bool round_instrument, bool r_instrument) const {
         s += toChar(instrument*r_instrument);
         return s;
     }
-
 }
 
 string Note::RoundNote(int note_value, bool r_note, bool round, int round_index, bool round_octave, int round_index2) const {
@@ -97,10 +95,8 @@ string Note::RoundNote(int note_value, bool r_note, bool round, int round_index,
             s += toChar(value*r_note);
             s += "+";
         }
-
     }
 
     s[s.size()-1] = ')';
     return s;
-
 }

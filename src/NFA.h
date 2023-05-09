@@ -12,6 +12,8 @@
 #include "Toi_Kars/Utils.h"
 #include "json.hpp"
 
+using json = nlohmann::json;
+
 class NFA {
 private:
     vector<string> Alphabet;
@@ -38,7 +40,6 @@ public:
     NFA(const string &inputfile);
 
     virtual ~NFA();
-
 };
 
 

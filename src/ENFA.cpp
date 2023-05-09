@@ -124,8 +124,6 @@ void ENFA::print()const&{
                 temp["to"]=(*it)->states[(*it2)]->name;
                 transitions.push_back(temp);
             }
-
-
         }
     }
     j["transitions"]=transitions;
@@ -334,12 +332,9 @@ DFA ENFA::toDFA() &{
         (*state)->name=s;
     }*/
 
-
-
     ENFAT t;
     t.load(getJson());
     DFA dfa = t.toDFA();
-
 
     return dfa;
 }
@@ -622,11 +617,7 @@ void ENFA::concatenate(const ENFA& enfa) &{
     temp->addTransitionFunction(ENFA::eps,enfa.startingState);
 }
 
-
-
-ENFA::ENFA() {
-
-}
+ENFA::ENFA() {};
 
 void ENFA::load(const json &j) {
     if (j.value("type","string") == "ENFA"){
@@ -671,7 +662,6 @@ void ENFA::load(const json &j) {
 }
 
 json ENFA::getJson() const {
-
     json j;
     j["type"] = "ENFA";
     j["alphabet"]=ENFA::alphabet;
@@ -712,9 +702,6 @@ json ENFA::getJson() const {
                     break;
                 }
             }
-
-
-
         }
     }
     j["transitions"]=transitions;

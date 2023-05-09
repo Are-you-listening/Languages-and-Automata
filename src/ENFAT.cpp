@@ -15,6 +15,7 @@ ENFAT::ENFAT(const string &path) {
 
     load(data);
 }
+
 set<string> ENFAT::Eclose(const string &state){
     /**
      * Default Eclose functie
@@ -22,6 +23,7 @@ set<string> ENFAT::Eclose(const string &state){
     set<string> empty;
     return Eclose(state, empty);
 }
+
 set<string> ENFAT::Eclose(const string &state, const set<string>& found) {
     /**
      * echte Eclose functie, wordt gebruikt om bij te houden welke elementen we al in de verzameling hebben
@@ -85,8 +87,6 @@ DFA ENFAT::toDFA() {
                     set<string> eq = Eclose(t);
                     new_pos.insert(eq.begin(), eq.end());
                 }
-
-
             }
 
             new_transition_map[set_to_string(current)][a] = set_to_string(new_pos);
@@ -94,14 +94,10 @@ DFA ENFAT::toDFA() {
             if (find(finished.begin(), finished.end(), new_pos) == finished.end() && find(state_queue.begin(), state_queue.end(), new_pos) == state_queue.end()){
                 state_queue.insert(new_pos);
             }
-
         }
 
         state_queue.erase(current);
         finished.insert(current);
-
-
-
 
     }
     /**
@@ -114,7 +110,6 @@ DFA ENFAT::toDFA() {
                 end_states_string.insert(set_to_string(f));
             }
         }
-
     }
 
     /**
@@ -124,7 +119,6 @@ DFA ENFAT::toDFA() {
     for (set<string> f: finished){
         states_string.insert(set_to_string(f));
     }
-
 
     for (auto state :states_string){
         if (new_transition_map.find(state) == new_transition_map.end()){
@@ -142,9 +136,7 @@ DFA ENFAT::toDFA() {
     /**
      * maak nieuwe DFA aan
      * */
-
     string new_start_state = set_to_string(DFA_start_state);
-
 
     set<string> alfabet_parent;
     for (auto a: alfabet){
@@ -179,7 +171,6 @@ DFA ENFAT::toDFA() {
 
         state_linker.insert({s, temp_state});
         states_parent.push_back(temp_state);
-
     }
 
     for (auto t : new_transition_map){
@@ -192,16 +183,12 @@ DFA ENFAT::toDFA() {
             string s;
             s += a;
             depart_state->addTransitionFunction(s, arrive_state);
-
         }
-
     }
-
 
     DFA d;
     d.load(alfabet_parent, states_parent, start_state_parent, end_parent);
     return d;
-
 }
 
 string ENFAT::set_to_string(const set<string> &s) const {
@@ -238,9 +225,7 @@ bool ENFAT::accepts(const string &s) {
             }
             new_states.insert(target_states2.begin(), target_states2.end());
         }
-
         current_states = new_states;
-
     }
 
     for (const auto& state: current_states){
@@ -275,7 +260,6 @@ void ENFAT::load(const json &data) {
         if (accepting){
             end_states.insert(state_name);
         }
-
     }
 
     /**
@@ -297,10 +281,7 @@ void ENFAT::load(const json &data) {
         to.insert(temp_to);
 
         transition_map[from][input] = to;
-
     }
 }
 
-ENFAT::ENFAT() {
-
-}
+ENFAT::ENFAT() {};

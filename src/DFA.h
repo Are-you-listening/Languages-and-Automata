@@ -40,13 +40,12 @@ public:
 };
 
 class DFA {
+private:
     state* startingState;
     vector<state*> states;
     set<string> alphabet;
     vector<state*> endstates;
     json json_data;
-
-
 
 public:
     void load(const json& j);
@@ -88,7 +87,6 @@ public:
     DFA complement();
 
     ENFA reverse();
-
 };
 
 

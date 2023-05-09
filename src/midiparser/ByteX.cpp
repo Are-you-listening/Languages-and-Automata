@@ -4,9 +4,7 @@
 
 #include "ByteX.h"
 
-ByteX::ByteX(unsigned int value, unsigned int length): value(value), length(length) {
-
-}
+ByteX::ByteX(unsigned int value, unsigned int length): value(value), length(length) {};
 
 string ByteX::toString() const {
     string s = "";
@@ -62,7 +60,6 @@ int ByteX::getNibble(int index, bool first) const {
         val = int(static_cast<unsigned char>(val));
         val = val >> 4;
     }
-
     return val;
 }
 
@@ -78,7 +75,6 @@ void ByteX::setByte(int index, unsigned int insert_value) {
 
         temp = temp >> 8;
     }
-
     value = new_value;
 }
 

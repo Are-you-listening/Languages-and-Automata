@@ -17,6 +17,7 @@ protected:
     void kleene(ENFA& enfa);
     void concatenation(ENFA& enfa1, ENFA& enfa2)&;
     ENFA * onechar(const string& c);
+
 public:
     string re;
     string epsilon;

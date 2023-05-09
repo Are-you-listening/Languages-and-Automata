@@ -52,8 +52,6 @@ private:
     map<unsigned int, map<unsigned int, unsigned int> > link_channel;
     int status_running = -1;
     int channel = -1;
-
-
 };
 
 #endif //MIDIPARSER_MIDIPARSER_H

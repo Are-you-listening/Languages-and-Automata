@@ -12,6 +12,10 @@
 using namespace std;
 
 class ByteX {
+private:
+    unsigned int length;
+    long unsigned int value;
+
 public:
     ByteX(unsigned int value, unsigned int length);
     string toString() const;
@@ -22,13 +26,7 @@ public:
     bool equalsHex(const string& hex_value, int index) const;
     void concatinateDeltaTime(ByteX add);
     bool getMSB(int index);
-
     long unsigned int getValue() const;
-
-
-private:
-    unsigned int length;
-    long unsigned int value;
 };
 
 
