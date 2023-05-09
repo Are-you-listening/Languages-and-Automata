@@ -168,7 +168,7 @@ public:
      * @param reverse, in case the complements of the 2 songs needs to be checked
      * @return percentage, the percentage the Songs are the same
      */
-    [[nodiscard]] double similarity(const Song &song,bool complement, bool reverse) const;
+    [[nodiscard]] double similarity(const Song &song,bool complement, bool reverse);
 
     /**
      * \brief Check the occurences of the Notes and its similarity towards the notes of this object
@@ -176,7 +176,7 @@ public:
      * \ENSURE(succeed, "Percentage must be between 0 and 1");
      * @return
      */
-    [[nodiscard]] double noteCountSimilarity(const Song &s) const;
+    [[nodiscard]] double noteCountSimilarity(const Song &s);
     
     /**
      * \brief Check for 100% Equality of Songs
@@ -200,6 +200,13 @@ public:
      * \REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      */
     void Export() const;
+
+    /**
+     * \brief Get the title of an object
+     * \REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @return
+     */
+    const string &getTitle() const;
 };
 
 #endif //TOG_SONG_H
