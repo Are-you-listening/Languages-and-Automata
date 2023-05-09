@@ -10,6 +10,7 @@
 #include "DesignByContract.h"
 #include "Utils.h"
 #include "midiparser/MidiParser.h"
+#include "midiparser/SongExporter.h"
 #include "RE.h"
 
 using namespace std;
@@ -20,6 +21,13 @@ using namespace std;
 class Song {
 private:
     Song* fInitCheck;
+
+    /**
+     * \brief Set the biggest vector to the second argument
+     * @param t
+     * @return
+     */
+    pair<vector<RE>,vector<RE>> sort(pair<vector<RE>,vector<RE>> &t) const;
 
     /**
      * \brief Convert Regex's to minimized DFA's

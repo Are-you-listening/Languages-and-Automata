@@ -3,7 +3,26 @@
 //
 
 #include "Song.h"
-#include "midiparser/SongExporter.h"
+
+vector<DFA> Song::convert(vector<RE> &s) const {
+    vector<DFA> tt;
+
+    for(auto z: s){
+        ENFA k = z.toENFA();
+        DFA s = k.toDFA();
+        s.minimize();
+        tt.push_back(s);
+    }
+    return tt;
+}
+
+pair<vector<RE>, vector<RE>> Song::sort(pair<vector<RE>, vector<RE>> &t) const {
+    if(t.first.size()>t.second.size()){
+        t = {t.second, t.first};
+    }
+    return t;
+}
+
 bool Song::ProperlyInitialized() const {
     if(fInitCheck==this){
         return true;
@@ -186,18 +205,11 @@ double Song::similarity(Song &song) const {
 
     double result = 0.0;
     bool succes = false;
+    vector<double> results;
+
+    pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(0,1,0,1,0,1,1), this->toRegex(0,1,0,1,0,1,1) }; //
 
 
-    vector<RE> t = song.toRegex(0,1,1,1,0,2,1); // als je een hogere match precentage wilt dat nog steeds accuraat is, maak instrument 0 en velocity 0 song.toRegex(0,1,0,1,0,1, 1);
-    vector<RE> t2 = this->toRegex(0,1,1,1,0,2,0);
-
-    vector<DFA> tt;
-    for(auto z: t){
-        ENFA k = z.toENFA();
-        DFA s = k.toDFA();
-        s.minimize();
-        tt.push_back(s);
-    }
 
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
@@ -218,16 +230,4 @@ bool Song::operator==(const Song &rhs) const {
 
 bool Song::operator!=(const Song &rhs) const {
     return !(rhs == *this);
-}
-
-vector<DFA> Song::convert(vector<RE> &s) const {
-    vector<DFA> tt;
-
-    for(auto z: s){
-        ENFA k = z.toENFA();
-        DFA s = k.toDFA();
-        s.minimize();
-        tt.push_back(s);
-    }
-    return tt;
 }
