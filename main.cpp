@@ -8,18 +8,11 @@
 #include "Toi_Emil/WNFA.h"
 
 int main() {
-
-    /*
-    Song song; 
-    Song song2;
-    song.parse("midi_files/world-1-birabuto-4-.mid");
-    song2.parse("midi_broken/world-1-birabuto-remix-.mid");
+    Song song("midi_files/world-1-birabuto-4-.mid");
+    Song song2("midi_broken/world-1-birabuto-remix-.mid");
     song.similarity(song2);
-    */
-    
-    Song song;
-    Song song2;
-    song.parse("midi_files/metal_crusher.mid");
+
+    song.parse("midi_files/Metal_Crusher2.mid");
     song2.parse("midi_files/metal_crusher.mid");
     song.similarity(song2);
 
