@@ -56,10 +56,13 @@ public:
      */
     Genre(const map<double, vector<Song *>> &members, double limit, const vector<int> &param);
 
-    /**
-     * \brief Create a Genre based on 2 Song's and a given set of paramaters.
-     */
-    Genre(const Song* &s, const Song* &k, const vector<int> &param);
+     /**
+      * \brief Create a Genre based on 2 Song's and a given set of paramaters.
+      * @param s
+      * @param k
+      * @param param
+      */
+    Genre(Song* &s, Song* &k, const vector<int> &params);
 };
 
 #endif //TOG_GENRE_H

@@ -9,6 +9,10 @@ double Genre::addGenre(const Song *&s) {
 }
 
 vector<DFA> Genre::toProductAutomata() const {
+
+    //vector<RE> REs = s->toRegex(param[0],param[0],param[0],param[0],param[0],-1,param[0]); //Set pattern to -1 so we can generate 1 big Regex
+    //vector<RE> REk = k->toRegex(param[0],param[0],param[0],param[0],param[0],-1,param[0]);
+
     return vector<DFA>();
 }
 
@@ -20,6 +24,18 @@ Genre::Genre(const map<double, vector<Song *>> &members, double limit, const vec
                                                                                                    limit(limit),
                                                                                                    param(param) {}
 
-Genre::Genre(const Song *&s, const Song *&k, const vector<int> &param) {
+Genre::Genre(Song *&s, Song *&k, const vector<int> &params) {
+    param = params;
 
+    pair<vector<RE> , vector<RE>> toCheck = {s->toRegex(param[0],param[0],param[0],param[0],param[0],param[0],param[0]) , k->toRegex(param[0],param[0],param[0],param[0],param[0],param[0],param[0])};
+    vector<double> temp = s->similar( toCheck , 0 ,0); //Run Similarity Check
+
+    double result = 0;
+    for(double &m: temp){
+        result+=m;
+    }
+
+    //Set Data
+    limit = result/temp.size();
+    members[limit]={s,k};
 }
