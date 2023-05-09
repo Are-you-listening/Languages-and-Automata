@@ -67,7 +67,9 @@ private:
 
     /**
      * \brief Run all checks on 1 sort of Regex
-     * @param song
+     * \ENSURE(succes, "Percentage must be between 0 and 1");
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @param pair<vector<RE>,vector<RE>> &toCheck
      * @return
      */
      double similar(pair<vector<RE>,vector<RE>> &toCheck) const;

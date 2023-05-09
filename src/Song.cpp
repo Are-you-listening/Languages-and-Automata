@@ -16,11 +16,12 @@ vector<DFA> Song::convert(vector<RE> &s) const {
     return tt;
 }
 
-pair<vector<RE>, vector<RE>> Song::sort(pair<vector<RE>, vector<RE>> &t) const {
+pair<vector<RE>, vector<RE>> Song::sort(const pair<vector<RE>, vector<RE>> &t) const {
+    pair<vector<RE>, vector<RE>> k = t;
     if(t.first.size()>t.second.size()){
-        t = {t.second, t.first};
+        k = {t.second, t.first};
     }
-    return t;
+    return k;
 }
 
 bool Song::ProperlyInitialized() const {
@@ -203,14 +204,18 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
 double Song::similarity(Song &song) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    double result = 0.0;
+    double result;
     bool succes = false;
     vector<double> results;
 
-    pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(0,1,0,1,0,1,1), this->toRegex(0,1,0,1,0,1,1) }; //
+    //No roundings
+    pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(0,1,0,1,0,   1,0), this->toRegex(0,1,0,1,0,   1,0) }; //Test 1
+    results.push_back( similar(toCheck) );
+
+    //DO the above in a for loop to change parameters
 
 
-
+    result = magimathical(results);
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
     return result;
@@ -230,4 +235,42 @@ bool Song::operator==(const Song &rhs) const {
 
 bool Song::operator!=(const Song &rhs) const {
     return !(rhs == *this);
+}
+
+double Song::magimathical(vector<double> &results) const {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+    double result = 0;
+    for(double &a: results){
+        result+=a;
+    }
+    return result/results.size();
+}
+
+double Song::similar(pair<vector<RE>, vector<RE>> &toCheck) const {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+
+    double result;
+    bool succes = false;
+    vector<double> results;
+    vector<DFA> d;
+
+    pair<vector<RE>,vector<RE>> toCheck2 = sort(toCheck);
+    d = convert(toCheck2 .first);
+    results.push_back( checkTibo(d , toCheck2 .second ) );
+
+    //Check Kars
+    d = convert(toCheck.first);
+    results.push_back(checkKars(d, toCheck.second) );
+
+    //Check KarsAnas
+    results.push_back(checkKarsAnas(d, toCheck.second) );
+
+    //Check KarsAnas Swapped
+    d = convert(toCheck.second);
+    results.push_back(checkKarsAnas(d, toCheck.first) );
+
+    result = magimathical(results);
+    if(result<=1 && result>=0){succes = true;}
+    ENSURE(succes, "Percentage must be between 0 and 1");
+    return result;
 }
