@@ -13,6 +13,11 @@
 class Genre {
 private:
     /**
+     * \brief Keep track of the logs
+     */
+    vector<string> logs;
+
+    /**
      * \brief Contains the current members of this Genre
      */
     vector<const Song*> members;
@@ -63,6 +68,12 @@ public:
      * @param param
      */
     Genre(Song* &s, Song* &k, const vector<int> &params);
+
+    /**
+     * \brief Output results to a .txt file
+     * @return
+     */
+    void output() const;
 };
 
 #endif //TOG_GENRE_H
