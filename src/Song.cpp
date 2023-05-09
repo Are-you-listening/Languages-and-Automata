@@ -9,19 +9,19 @@ vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) const {
 
     for(auto z: s){
         ENFA k = z.toENFA();
-        DFA s = k.toDFA();
+        DFA l = k.toDFA();
 
         if(complement){
-            s = s.complement();
+            l = l.complement();
         }
 
         if(reverse){
-            ENFA z = s.reverse();
-            s = z.toDFA();
+            ENFA m = l.reverse();
+            l = m.toDFA();
         }
 
-        s.minimize();
-        tt.push_back(s);
+        l.minimize();
+        tt.push_back(l);
     }
     return tt;
 }
@@ -59,7 +59,7 @@ Song::Song(const string &path) {
     MidiParser m(path);
     note_map = m.getNoteMap();
     int count = 0;
-    for(auto entry: note_map){
+    for(const auto &entry: note_map){
         count += entry.second.size();
     }
 
@@ -67,22 +67,22 @@ Song::Song(const string &path) {
 }
 
 Song &Song::operator=(const Song &a) {
-    REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+    REQUIRE(a.ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     map<pair<unsigned int, bool>, vector<Note*>> map2;
 
-    for(auto it = note_map.begin(); it!=note_map.end(); it++){
+    for(auto it = a.note_map.begin(); it!=a.note_map.end(); it++){
         vector<Note*> temp;
-        for(Note* &n: it->second){ //Construct new Note objects on heap
+        for(const Note* n: it->second){ //Construct new Note objects on heap
             Note* k = new Note(*n);
             temp.push_back( k );
         }
         map2[it->first]=temp;
     }
 
-    Song s(map2); //Make actual new object
-    ENSURE(s.ProperlyInitialized(), "Constructor must end in properly initialised state!");
-    return s;
+    note_map = map2;
+    fInitCheck = this; //Make actual new object
+    ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
 Song::~Song(){
@@ -242,8 +242,6 @@ double Song::magimathical(vector<vector<double>> &results) const {
 vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complement, bool reverse) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    double result;
-    bool succes = false;
     vector<double> results;
     vector<DFA> d;
 
