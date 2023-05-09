@@ -75,20 +75,6 @@ Song &Song::operator=(const Song &a) {
     return s;
 }
 
-void Song::parse(const string &path) {
-    REQUIRE(FileExists(path) , "Given file not found");
-
-    fInitCheck=this;
-
-    MidiParser m(path);
-    note_map = m.getNoteMap();
-    int count = 0;
-    for(auto entry: note_map){
-        count += entry.second.size();
-    }
-    ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
-}
-
 Song::~Song(){
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
         for(Note* note: it->second){
@@ -237,16 +223,16 @@ bool Song::operator!=(const Song &rhs) const {
     return !(rhs == *this);
 }
 
-double Song::magimathical(vector<double> &results) const {
+double Song::magimathical(vector<vector<double>> &results) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     double result = 0;
-    for(double &a: results){
-        result+=a;
-    }
-    return result/results.size();
+    
+    //Anas Working Space
+    
+    return result;
 }
 
-double Song::similar(pair<vector<RE>, vector<RE>> &toCheck) const {
+vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck) const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     double result;
@@ -265,13 +251,6 @@ double Song::similar(pair<vector<RE>, vector<RE>> &toCheck) const {
 
     //Check KarsAnas
     results.push_back(checkKarsAnas(d, toCheck.second) );
-
-    //Check KarsAnas Swapped
-    d = convert(toCheck.second);
-    results.push_back(checkKarsAnas(d, toCheck.first) );
-
-    result = magimathical(results);
-    if(result<=1 && result>=0){succes = true;}
-    ENSURE(succes, "Percentage must be between 0 and 1");
-    return result;
+    
+    return results;
 }

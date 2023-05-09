@@ -16,8 +16,8 @@ int main() {
     Song song4("midi_files/metal_crusher.mid");
     cout << song3.similarity(song4) << endl;
 
-    song.parse("midi_files/Metal_Crusher2.mid");
-    cout << song.similarity(song2) << endl;
+    Song song5("midi_files/Metal_Crusher2.mid");
+    cout << song3.similarity(song5) << endl;
 
     /*
     RE r("00(0+1+2+3+4+5+6+7)i0", '*');

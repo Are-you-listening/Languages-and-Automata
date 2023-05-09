@@ -70,13 +70,13 @@ private:
      * @param pair<vector<RE>,vector<RE>> &toCheck
      * @return
      */
-     double similar(pair<vector<RE>,vector<RE>> &toCheck) const;
+     vector<double> similar(pair<vector<RE>,vector<RE>> &toCheck) const;
 
     /**
      * \brief Magimathical Formula Anas
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      */
-    double magimathical(vector<double> &results) const;
+    double magimathical(vector<vector<double>> &results) const;
 
     /**
      * \brief Map sorted by the timestamp of the song and a bool deciding if these Notes are on/off. The timestamp is manually set to a accuracy of 1ms (0,001s)
@@ -149,7 +149,7 @@ public:
     double reverseSimilarity(Song &song) const;
 
     double complementSimilarity(Song &song) const;
-
+    
     /**
      * \brief Check for 100% Equality of Songs
      * @param rhs
