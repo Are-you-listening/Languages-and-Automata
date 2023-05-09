@@ -1,9 +1,8 @@
 //============================================================================
-// Name        : TicTacToeUtils.h
-// Author      : Serge Demeyer
+// Name        : Utils.h
+// Author      :
 // Version     : ?
-// Copyright   : Project Software Engineering - BA1 Informatica - Serge Demeyer - University of Antwerp
-// Description : TicTactToe in C++, Ansi-style
+// Copyright   : Serge Demeyer: DirectoryExists, FileExists, FileIsEmpty, FileCompare ; max: getCurrTime (https://stackoverflow.com/questions/16357999/current-date-and-time-as-string)
 //============================================================================
 
 // Below are two lines serving as a so-called ``header guard''.
@@ -15,6 +14,8 @@
 #include <fstream>
 #include <sys/stat.h>
 #include <vector>
+#include <iostream>
+#include <ctime>
 
 using namespace std;
 
@@ -27,5 +28,7 @@ bool FileIsEmpty(const std::string filename);
 bool FileCompare(const std::string leftFileName, const std::string rightFileName);
 
 vector<string> MergeVectors(vector<string> vec1, vector<string> vec2);
+
+string getCurrTime();
 
 #endif
