@@ -31,6 +31,9 @@ private:
      */
     vector<string> logs;
 
+    /**
+     * \brief Keep a pointer to itsself
+     */
     Song* fInitCheck;
 
     /**
