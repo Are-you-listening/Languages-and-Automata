@@ -35,7 +35,7 @@ char toChar(int value){
     s += RoundTime_stamp(r_time_stamp);
     s += RoundNote_on(r_note_on);
     s += RoundInstrument(r_instrument);
-    s += RoundNote(r_note);
+    s += RoundNote(r_note,0);
     s += RoundTime_stamp(r_velocity);
     return s;
 }

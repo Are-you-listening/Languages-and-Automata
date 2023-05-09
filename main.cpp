@@ -17,6 +17,7 @@ int main() {
     Song song4("midi_files/metal_crusher.mid");
     cout << song3.similarity(song4,0,0) << endl;
     song3.setTitle("metal_crusher");
+    song3.switchConsoleOutput();
     song3.output();
 
     //Song song5("midi_files/Metal_Crusher2.mid");

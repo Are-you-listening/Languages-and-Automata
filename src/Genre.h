@@ -35,7 +35,7 @@ private:
     /**
      * \brief Contains the current members of this Genre
      */
-    vector<const Song*> members;
+    vector<Song*> members;
 
     /**
      * \brief The minimum % of Similarity a newly given Song has to have with the Genre to join it
@@ -68,7 +68,7 @@ public:
      * @param s
      * @return
      */
-    void addGenre(const Song* &s);
+    void addGenre(Song* &s);
 
     /**
      * \brief Check if a given Song is part of this Genre
@@ -76,7 +76,7 @@ public:
      * @param s
      * @return
      */
-    bool inGenre(const Song* &s);
+    bool inGenre(Song* &s);
 
     /**
      * \brief Simple constructor
@@ -85,7 +85,7 @@ public:
      * @param limit
      * @param param
      */
-    Genre(const vector<const Song *> &members, double limit, const vector<int> &param, string &name);
+    Genre(const vector<Song *> &members, double limit, const vector<int> &param, string &name);
 
     /**
      * \brief Create a Genre based on 2 Song's and a given set of paramaters.
