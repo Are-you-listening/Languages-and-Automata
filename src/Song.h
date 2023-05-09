@@ -21,6 +21,16 @@ using namespace std;
  */
 class Song {
 private:
+    /**
+     * \brief Title of the song
+     */
+    string title;
+
+    /**
+     * \brief To keep track of the logs (pushed_back into by various functions)
+     */
+    vector<string> logs;
+
     Song* fInitCheck;
 
     /**
@@ -183,6 +193,13 @@ public:
      * @return
      */
     bool operator!=(const Song &rhs) const;
+
+    /**
+     * \brief Export the retrieved data by a Song's operations into a .txt file
+     * \ENSURE(FileExists(title+"_report.txt"),"No log file has been created");
+     * \REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     */
+    void Export() const;
 };
 
 #endif //TOG_SONG_H

@@ -43,11 +43,13 @@ bool Song::ProperlyInitialized() const {
 
 Song::Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap) : note_map(noteMap) {
     fInitCheck = this;
+    title = "Are you listening?";
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
 Song::Song() {
     fInitCheck = this;
+    title = "Are you listening?";
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
@@ -55,6 +57,7 @@ Song::Song(const string &path) {
     REQUIRE(FileExists(path) , "Given file not found");
 
     fInitCheck=this;
+    title = path;
 
     MidiParser m(path);
     note_map = m.getNoteMap();
@@ -80,6 +83,8 @@ Song &Song::operator=(const Song &a) {
         map2[it->first]=temp;
     }
 
+    title = a.title;
+    logs = a.logs;
     note_map = map2;
     fInitCheck = this; //Make actual new object
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
@@ -300,5 +305,21 @@ map<int,unsigned int> Song::countNotes() const {
     double result = succes/occurences;
     if(result<=1 && result>=0){succeed = true;}
     ENSURE(succeed, "Percentage must be between 0 and 1");
+    //logs.push_back(getCurrTime()+"");
     return result;
+}
+
+void Song::Export() const {
+    REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+
+    ofstream out(title+"_report.txt");
+
+    out << "    -==[(*)]==-   ";
+    out << "Report of actions";
+    out << "    -==[(*)]==-   "+'\n';
+
+    out << "Date of report: "+getCurrTime()+'\n';
+
+
+    ENSURE(FileExists(title+"_report.txt"),"No log file has been created");
 }
