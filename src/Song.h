@@ -70,7 +70,7 @@ private:
      * @param song
      * @return
      */
-     double similar(Song &song) const;
+     double similar(pair<vector<RE>,vector<RE>> &toCheck) const;
 
     /**
      * \brief Magimathical Formula Anas
