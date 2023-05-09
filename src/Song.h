@@ -66,7 +66,15 @@ private:
     double checkKarsAnas(vector<DFA> &d, vector<RE> &s) const;
 
     /**
+     * \brief Run all checks on 1 sort of Regex
+     * @param song
+     * @return
+     */
+     double similar(Song &song) const;
+
+    /**
      * \brief Magimathical Formula Anas
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      */
     double magimathical(vector<double> &results) const;
 
