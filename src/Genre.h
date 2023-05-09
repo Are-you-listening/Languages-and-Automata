@@ -13,6 +13,11 @@
 class Genre {
 private:
     /**
+     * \brief Keep a self pointer for ProperlyInitialised
+     */
+     const Genre* fInitCheck;
+
+    /**
      * \brief Keep track of the logs
      */
     vector<string> logs;
@@ -34,13 +39,22 @@ private:
 
     /**
      * \brief Generate a product automata for the current Genre's member-sub-regexes
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @return Datatype containing the sub DFA's in productautomata
      */
     DFA toProductAutomata() const;
 
 public:
     /**
+    * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+    * \brief Checks if an item is properly initialised
+     * @return succes, bool deciding the succes of the operation
+    */
+    bool ProperlyInitialized() const;
+
+    /**
      * \brief In case the match % <= limit, add to this Genre
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @param s
      * @return
      */
@@ -48,6 +62,7 @@ public:
 
     /**
      * \brief Check if a given Song is part of this Genre
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @param s
      * @return
      */
@@ -55,6 +70,7 @@ public:
 
     /**
      * \brief Simple constructor
+     * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @param members
      * @param limit
      * @param param
@@ -63,6 +79,7 @@ public:
 
     /**
      * \brief Create a Genre based on 2 Song's and a given set of paramaters.
+     * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @param s
      * @param k
      * @param param
@@ -71,6 +88,8 @@ public:
 
     /**
      * \brief Output results to a .txt file
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * \ENSURE(FileExists(title+"_report.txt"),"No log file has been created");
      * @return
      */
     void output() const;

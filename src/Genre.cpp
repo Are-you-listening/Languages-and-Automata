@@ -5,12 +5,14 @@
 #include "Genre.h"
 
 void Genre::addGenre(const Song *&s) {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     if(inGenre(s)){
         members.push_back(s);
     }
 }
 
 DFA Genre::toProductAutomata() const {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     vector<DFA> temp;
 
     //Loop over each Song
@@ -30,9 +32,9 @@ DFA Genre::toProductAutomata() const {
 }
 
 bool Genre::inGenre(const Song *&s) {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     DFA m = toProductAutomata();
     vector<RE> st = s->toRegex(param[0],param[0],param[0],param[0],param[0],param[0]);
-
     return m.accepts(st[0].re);
 }
 
@@ -50,8 +52,48 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params) {
     //Set Data
     limit = result/temp.size();
     members={s,k};
+    fInitCheck = this;
+    ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
 Genre::Genre(const vector<const Song *> &members, double limit, const vector<int> &param) : members(members),
                                                                                             limit(limit),
-                                                                                            param(param) {}
+                                                                                            param(param) {
+    fInitCheck=this;
+    ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+}
+
+void Genre::output() const {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+    /*REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+
+    string file= "report_"+title+".txt";
+    string file2 = "report_"+title;
+    while(FileExists(file)){
+        file2+="(copy)";
+        file = file2+".txt";
+    }
+
+    ofstream out(file);
+
+    out << "    -==[(*)]==-   ";
+    out << "Report of actions";
+    out << "    -==[(*)]==-   \n\n";
+
+    out << "Date of report: "+getCurrTime()+"\n\n";
+
+    for(string k: logs){
+        out << k;
+    }
+
+    out.close();
+
+    ENSURE(FileExists(file),"No log file has been created");*/
+}
+
+bool Genre::ProperlyInitialized() const {
+    if(fInitCheck== this){
+        return true;
+    }
+    return false;
+}

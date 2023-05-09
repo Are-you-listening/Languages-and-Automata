@@ -92,7 +92,6 @@ private:
 
 public:
     /**
-    * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     * \brief Checks if an item is properly initialised
      * @return succes, bool deciding the succes of the operation
     */
@@ -134,6 +133,7 @@ public:
 
     /**
      * \brief Convert a Song into a vector of Sub-Regex's
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @param time_stamp , bool deciding if this Note-parameter should be used
      * @param note_on , bool deciding if this Note-parameter should be used
      * @param instrument , bool deciding if this Note-parameter should be used
