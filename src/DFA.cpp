@@ -3,7 +3,6 @@
 //
 
 #include "DFA.h"
-#include "ENFA.h"
 
 DFA::DFA(const string& c) {
     ifstream input(c);
