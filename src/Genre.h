@@ -13,6 +13,11 @@
 class Genre {
 private:
     /**
+     * \brief Toggle the Console Output
+     */
+     bool console = true;
+
+    /**
      * \brief The name of this genre
      */
     string name;
@@ -47,7 +52,7 @@ private:
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @return Datatype containing the sub DFA's in productautomata
      */
-    DFA toProductAutomata() const;
+    DFA toProductAutomata();
 
 public:
     /**
@@ -80,7 +85,7 @@ public:
      * @param limit
      * @param param
      */
-    Genre(const vector<const Song *> &members, double limit, const vector<int> &param);
+    Genre(const vector<const Song *> &members, double limit, const vector<int> &param, string &name);
 
     /**
      * \brief Create a Genre based on 2 Song's and a given set of paramaters.
@@ -113,6 +118,8 @@ public:
      * @param name
      */
     void setName(const string &name);
+
+    void switchConsole();
 };
 
 #endif //TOG_GENRE_H

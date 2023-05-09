@@ -6,14 +6,24 @@
 
 void Genre::addGenre(const Song *&s) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+    string log;
     if(inGenre(s)){
         members.push_back(s);
+        log = getCurrTime()+ " Succesfully added " + s->getTitle() + " to the Genre!\n\n";
+    }else{
+        log = getCurrTime()+ " Could not add this Song the Genre.\n\n";
     }
+    if(console){cout << log;}
+    logs.push_back(log);
 }
 
-DFA Genre::toProductAutomata() const {
+DFA Genre::toProductAutomata() {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     vector<DFA> temp;
+
+    string log = getCurrTime()+ " Converting to ProductAutomata..\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
 
     //Loop over each Song
     for(const Song* s: members) {
@@ -33,9 +43,24 @@ DFA Genre::toProductAutomata() const {
 
 bool Genre::inGenre(const Song *&s) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+
+    string log = getCurrTime()+ " Validating if "+s->getTitle()+" is part of this genre..\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
     DFA m = toProductAutomata();
     vector<RE> st = s->toRegex(param[0],param[0],param[0],param[0],param[0],param[0]);
-    return m.accepts(st[0].re);
+
+    bool succes = m.accepts(st[0].re);
+    if(succes){
+        log = getCurrTime() + " Found matching results on the characteristics on this Genre!\n\n";
+    }else{
+        log = getCurrTime() + " This song did not match the requirements of this Genre!\n\n";
+    }
+    if(console){cout << log;}
+    logs.push_back(log);
+
+    return succes;
 }
 
 Genre::Genre(Song *&s, Song *&k, const vector<int> &params) {
@@ -52,22 +77,29 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params) {
     //Set Data
     limit = result/temp.size();
     members={s,k};
+    name = s->getTitle() + "_and_"+k->getTitle()+"_Genre";
     fInitCheck = this;
+    string log = getCurrTime() + " Created the new Genre: "+name+" , constructed on a "+to_string(limit)+" match %.\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
     ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
-Genre::Genre(const vector<const Song *> &members, double limit, const vector<int> &param) : members(members),
+Genre::Genre(const vector<const Song *> &members, double limit, const vector<int> &param, string &name) : members(members),
                                                                                             limit(limit),
-                                                                                            param(param) {
+                                                                                            param(param), name(name) {
     fInitCheck=this;
+    string log = getCurrTime() + " Loaded the new Genre: "+name+" , based on a "+to_string(limit)+" match %.\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
     ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
 void Genre::output() const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    string file= "report_"+title+".txt";
-    string file2 = "report_"+title;
+    string file= "report_"+name+".txt";
+    string file2 = "report_"+name;
     while(FileExists(file)){
         file2+="(copy)";
         file = file2+".txt";
@@ -104,4 +136,12 @@ void Genre::setName(const string &name) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     Genre::name = name;
     ENSURE(Genre::name == name , "Setter didn't work properly");
+}
+
+void Genre::switchConsole() {
+    if(console){
+        console = false;
+    }else{
+        console = true;
+    }
 }
