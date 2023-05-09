@@ -4,20 +4,37 @@
 
 #include "SongExporter.h"
 #include "DesignByContract.h"
+#include "ByteX.h"
+#include <fstream>
 
-SongExporter::SongExporter(const string &path, const map<pair<unsigned int, bool>, vector<Note *>> &note_map): note_map(note_map) {
+SongExporter::SongExporter(const string &path, const map<pair<unsigned int, bool>, vector<Note *>> &note_map): note_map(note_map), path(path) {
     changeFormat();
+    store();
+
 }
 
 void SongExporter::changeFormat() {
     channel_counter = 0;
     last_timestamp = 0;
 
+
     for (auto entry: note_map){
         for(Note* n: entry.second){
             addNote(n);
         }
     }
+
+    ByteX header("4D546864");
+    ByteX total_l(6, 4);
+    ByteX format("0001");
+    ByteX tracks_amount(instrument_map.size(),2);
+    ByteX ticks_per_frame(480, 2);
+    buffer.push_back(header);
+    buffer.push_back(total_l);
+    buffer.push_back(format);
+    buffer.push_back(tracks_amount);
+    buffer.push_back(ticks_per_frame);
+    createTracks();
 
 }
 
@@ -36,4 +53,79 @@ void SongExporter::addNote(Note* note) {
     last_timestamp = changed_time;
 
     instrument_map[note->getInstrument()].emplace_back(note, delta_time);
+}
+
+void SongExporter::createTracks() {
+    for(auto entry: instrument_map){
+        unsigned int instrument = entry.first;
+        unsigned int channel = instrument_to_channel.at(instrument);
+        unsigned int track_length = 0;
+        track_length += 3; //control message
+        track_length += entry.second.size()*4; //note events
+        track_length += 4; // end track message
+
+
+        ByteX delta_time_c(0, 1); // delta time van control message
+        ByteX control_byte(192+channel, 1); //set channel to instrument
+        ByteX instrument_byte(instrument, 1); // set note
+
+
+
+        vector<ByteX> sub_buffer;
+        for(auto note: entry.second){
+            Note* n = note.first;
+            unsigned int delta = note.second;
+            unsigned int temp_delta = delta;
+            unsigned int count = 1;
+
+            vector<ByteX> delta_buffer;
+            ByteX delta_time((temp_delta%128), 1);
+            delta_buffer.push_back(delta_time);
+            while((temp_delta >> 7) != 0){
+                temp_delta = temp_delta >> 7;
+                ByteX delta_time2((temp_delta%128+128), 1);
+                delta_buffer.insert(delta_buffer.begin(), delta_time2);
+                track_length += 1;
+                count += 1;
+            }
+
+            sub_buffer.insert(sub_buffer.end(), delta_buffer.begin(), delta_buffer.end());
+
+            //ByteX delta_time(delta, count); // delta time van control message
+            ByteX note_on_byte(144+channel, 1); //set channel to instrument
+            ByteX note_byte(n->getNoteValue(), 1);
+            ByteX velocity(n->getVelocity(), 1);
+
+
+            sub_buffer.push_back(note_on_byte);
+            sub_buffer.push_back(note_byte);
+            sub_buffer.push_back(velocity);
+        }
+        ByteX track_header("4d54726b");
+        ByteX track_size(track_length, 4);
+
+        buffer.push_back(track_header);
+        buffer.push_back(track_size);
+
+        buffer.push_back(delta_time_c);
+        buffer.push_back(control_byte);
+        buffer.push_back(instrument_byte);
+
+        buffer.insert(buffer.end(), sub_buffer.begin(), sub_buffer.end());
+
+        ByteX end_track("00ff2f00");
+        buffer.push_back(end_track);
+        //do end line
+    }
+}
+
+void SongExporter::store() {
+    ofstream o(path, ios_base::binary);
+
+
+    for(auto b: buffer){
+        o << b.toString();
+    }
+
+    o.close();
 }

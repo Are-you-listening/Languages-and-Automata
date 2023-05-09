@@ -9,6 +9,7 @@
 #include "Note.h"
 #include <vector>
 #include <map>
+#include "ByteX.h"
 using namespace std;
 class SongExporter {
 public:
@@ -21,8 +22,15 @@ private:
     map<unsigned int, vector<pair<Note *, unsigned int>>> instrument_map;
     map<unsigned int, unsigned int> instrument_to_channel;
 
+    void createTracks();
+
     unsigned int channel_counter;
     unsigned int last_timestamp;
+    string track_data;
+    vector<ByteX> buffer;
+    void store();
+    string path;
+
 };
 
 

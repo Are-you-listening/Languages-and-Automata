@@ -3,8 +3,10 @@
 //
 
 #include "ByteX.h"
+#include <cmath>
 
-ByteX::ByteX(unsigned int value, unsigned int length): value(value), length(length) {};
+ByteX::ByteX(unsigned int value, unsigned int length): value(value), length(length) {
+};
 
 string ByteX::toString() const {
     string s = "";
@@ -107,4 +109,18 @@ bool ByteX::getMSB(int index) {
 
 long unsigned int ByteX::getValue() const {
     return value;
+}
+
+ByteX::ByteX(const string &hex_value) {
+    unsigned int result = 0;
+    for (auto h: hex_value){
+        int v = 0;
+        stringstream ss;
+        ss << hex << h;
+        ss >> v;
+        result = (result << 4) + v;
+    }
+    value = result;
+    length = ceil(hex_value.length()/2.0);
+
 }
