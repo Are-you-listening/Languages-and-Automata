@@ -59,7 +59,9 @@ private:
     bool note_on;
 
     string RoundInstrument(bool round_instrument, bool r_instrument) const;
-    string RoundNote(int note_value, bool r_note, bool round, int round_index, bool round_octave, int round_index2) const;
-
+    string RoundNote(int note_value, int r_note, int round_index, int round_index2) const;
+    string Note::RoundTime_stamp(int r_time_stamp);
+    string Note::RoundNote_on(int r_note_on);
+    string Note::RoundVelocity(int r_velocity);
 };
 #endif //MIDIPARSER_NOTE_H
