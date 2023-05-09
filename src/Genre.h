@@ -25,7 +25,7 @@ private:
     /**
      * \brief The paramaters (for Similarity) this genre is build on
      */
-    vector<bool> param;
+    vector<int> param;
 
     /**
      * \brief Generate a product automata for the current Genre's member-sub-regexes
@@ -54,13 +54,12 @@ public:
      * @param limit
      * @param param
      */
-    Genre(const map<double, vector<Song *>> &members, double limit, const vector<bool> &param);
+    Genre(const map<double, vector<Song *>> &members, double limit, const vector<int> &param);
 
     /**
      * \brief Create a Genre based on 2 Song's and a given set of paramaters.
      */
-    Genre(const Song* &s, const Song* &k, vector<bool> &param);
+    Genre(const Song* &s, const Song* &k, const vector<int> &param);
 };
-
 
 #endif //TOG_GENRE_H

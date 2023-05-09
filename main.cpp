@@ -12,6 +12,7 @@ int main() {
     //Song song2("midi_broken/world-1-birabuto-remix-.mid");
     //song.similarity(song2);
 
+
     Song song3("midi_files/metal_crusher.mid");
     Song song4("midi_files/metal_crusher.mid");
     cout << song3.similarity(song4,0,0) << endl;

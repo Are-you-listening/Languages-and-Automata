@@ -210,11 +210,11 @@ double Song::similarity(const Song &song, bool complement, bool reverse) {
     bool succes = false;
     vector<vector<double>> results;
     
-    vector<vector<bool>> vectors;
+    vector<vector<int>> vectors;
     vectors.push_back({0,1,0,1,0,1,1});
     
     //Do different checks on different Regex's
-    for(const vector<bool> &v: vectors){
+    for(const vector<int> &v: vectors){
         //No roundings
         pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5], v[6]), this->toRegex(v[0], v[1], v[2], v[3], v[4], v[5],
                                                                                                                      false) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
