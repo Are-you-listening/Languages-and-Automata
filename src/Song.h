@@ -10,7 +10,7 @@
 #include "DesignByContract.h"
 #include "Utils.h"
 #include "midiparser/MidiParser.h"
-#include "midiparser/SongExporter.h"
+#include "midiparser/midiExporter.h"
 #include "RE.h"
 #include "Note.h"
 

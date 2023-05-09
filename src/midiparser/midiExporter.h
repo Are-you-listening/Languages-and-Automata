@@ -2,8 +2,8 @@
 // Created by tibov on 09/05/23.
 //
 
-#ifndef TOG_SONGEXPORTER_H
-#define TOG_SONGEXPORTER_H
+#ifndef TOG_MIDIEXPORTER_H
+#define TOG_MIDIEXPORTER_H
 #include <string>
 #include <iostream>
 #include "Note.h"
@@ -11,9 +11,9 @@
 #include <map>
 #include "ByteX.h"
 using namespace std;
-class SongExporter {
+class midiExporter {
 public:
-    SongExporter(const string& path, const map<pair<unsigned int, bool>, vector<Note *>>& note_map);
+    midiExporter(const string& path, const map<pair<unsigned int, bool>, vector<Note *>>& note_map);
 private:
     void changeFormat();
     void addNote(Note * note);
@@ -34,4 +34,4 @@ private:
 };
 
 
-#endif //TOG_SONGEXPORTER_H
+#endif //TOG_MIDIEXPORTER_H

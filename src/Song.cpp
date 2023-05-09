@@ -3,7 +3,7 @@
 //
 
 #include "Song.h"
-#include "midiparser/SongExporter.h"
+#include "midiparser/midiExporter.h"
 
 vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) {
     vector<DFA> tt;
@@ -431,7 +431,7 @@ void Song::save(const string &path) {
     if(console){cout << log;}
     logs.push_back(log);
 
-    SongExporter exp(path, note_map);
+    midiExporter exp(path, note_map);
 
 
     //ENSURE FILEXISTS

@@ -2,18 +2,18 @@
 // Created by tibov on 09/05/23.
 //
 
-#include "SongExporter.h"
+#include "midiExporter.h"
 #include "DesignByContract.h"
 #include "ByteX.h"
 #include <fstream>
 
-SongExporter::SongExporter(const string &path, const map<pair<unsigned int, bool>, vector<Note *>> &note_map): note_map(note_map), path(path) {
+midiExporter::midiExporter(const string &path, const map<pair<unsigned int, bool>, vector<Note *>> &note_map): note_map(note_map), path(path) {
     changeFormat();
     store();
 
 }
 
-void SongExporter::changeFormat() {
+void midiExporter::changeFormat() {
     channel_counter = 0;
     last_timestamp = 0;
 
@@ -38,7 +38,7 @@ void SongExporter::changeFormat() {
 
 }
 
-void SongExporter::addNote(Note* note) {
+void midiExporter::addNote(Note* note) {
     REQUIRE(channel_counter <= 16 ,"out of range");
     if (instrument_map.find(note->getInstrument()) == instrument_map.end()){
          instrument_to_channel[note->getInstrument()] = channel_counter;
@@ -55,7 +55,7 @@ void SongExporter::addNote(Note* note) {
     instrument_map[note->getInstrument()].emplace_back(note, delta_time);
 }
 
-void SongExporter::createTracks() {
+void midiExporter::createTracks() {
     for(auto entry: instrument_map){
         unsigned int instrument = entry.first;
         unsigned int channel = instrument_to_channel.at(instrument);
@@ -130,7 +130,7 @@ void SongExporter::createTracks() {
     }
 }
 
-void SongExporter::store() {
+void midiExporter::store() {
     ofstream o(path, ios_base::binary);
 
 
