@@ -4,23 +4,28 @@
 
 #ifndef TA__TOG_DFA_H
 #define TA__TOG_DFA_H
+
 #include <string>
 #include <vector>
-#include <map>
 #include <set>
+#include <map>
+
 #include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+
+#include "ENFA.h"
 #include "json.hpp"
 #include "Toi_Tibo/DFAT.h"
 #include "Toi_Emil/DFAE.h"
 #include "Toi_Emil/REE.h"
 
-class ENFA;
 using namespace std;
 
 using json = nlohmann::json;
+
+class ENFA;
 
 class state{
 public:
@@ -35,13 +40,12 @@ public:
 };
 
 class DFA {
+private:
     state* startingState;
     vector<state*> states;
     set<string> alphabet;
     vector<state*> endstates;
     json json_data;
-
-
 
 public:
     void load(const json& j);
@@ -83,7 +87,6 @@ public:
     DFA complement();
 
     ENFA reverse();
-
 };
 
 

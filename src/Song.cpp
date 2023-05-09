@@ -3,8 +3,7 @@
 //
 
 #include "Song.h"
-#include "algorithm"
-#include "midiparser/SongExporter.h"
+
 bool Song::ProperlyInitialized() const {
     if(fInitCheck==this){
         return true;

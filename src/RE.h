@@ -4,7 +4,9 @@
 
 #ifndef TA__TOG_RE_H
 #define TA__TOG_RE_H
+
 #include <string>
+
 #include "ENFA.h"
 
 using namespace std;
@@ -15,6 +17,7 @@ protected:
     void kleene(ENFA& enfa);
     void concatenation(ENFA& enfa1, ENFA& enfa2)&;
     ENFA * onechar(const string& c);
+
 public:
     string re;
     string epsilon;

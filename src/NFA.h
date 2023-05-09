@@ -5,11 +5,14 @@
 #ifndef TA__TOG_NFA_H
 #define TA__TOG_NFA_H
 
+#include <queue>
+
 #include "DFA.h"
-#include "json.hpp"
 #include "Toi_Kars/State.h"
 #include "Toi_Kars/Utils.h"
-#include <queue>
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 class NFA {
 private:
@@ -37,7 +40,6 @@ public:
     NFA(const string &inputfile);
 
     virtual ~NFA();
-
 };
 
 

@@ -98,7 +98,6 @@ void RE::kleene(ENFA& enfa) {
     enfa.startingState=temp1;
     enfa.states.push_back(temp1);
     enfa.states.push_back(temp2);
-
 }
 
 void RE::concatenation(ENFA& enfa1, ENFA& enfa2)& {

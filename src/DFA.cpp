@@ -3,7 +3,6 @@
 //
 
 #include "DFA.h"
-#include "ENFA.h"
 
 DFA::DFA(const string& c) {
     ifstream input(c);
@@ -53,7 +52,6 @@ void DFA::load(const json &j) {
             count2++;
         }
     }
-
 }
 
 bool DFA::accepts(string c) const& {
@@ -96,9 +94,7 @@ void DFA::print()const&{
     cout << setw(4) << j <<endl;
 }
 
-DFA::DFA() {
-
-}
+DFA::DFA() {};
 
 state *DFA::getStartingState() const {
     return startingState;
@@ -151,7 +147,6 @@ state* state::getComplement() {
     new_state->accepting = !accepting;
     new_state->starting = starting;
     return new_state;
-
 }
 
 void state::addTransitionFunctionENFA(string c, state *q) {
@@ -290,7 +285,6 @@ DFA DFA::minimize() {
 }
 
 bool DFA::operator==(const DFA &d) {
-
     json data = getJson();
     json data2 = d.getJson();
 
@@ -335,7 +329,6 @@ string DFA::ToRe(){
     temp.load(data);
     REE r = temp.toREE();
     return r.getRegex();
-
 }
 
 DFA DFA::complement() {
@@ -377,7 +370,6 @@ ENFA DFA::reverse() {
             reverse_link_map[target->name].insert(make_pair(new_state, transition_char));
             name_to_state_map[new_state->name] = new_state;
         }
-
         new_states.push_back(new_state);
     }
 
@@ -389,7 +381,6 @@ ENFA DFA::reverse() {
 
             state_go->addTransitionFunctionENFA(transition_char, state_target);
         }
-
     }
 
     state* new_start = new state();
@@ -404,7 +395,6 @@ ENFA DFA::reverse() {
     }
 
     new_states.push_back(new_start);
-
 
     vector<json> states;
     for(vector<state*>::const_iterator it=new_states.begin(); it!=new_states.end(); it++){
@@ -432,13 +422,8 @@ ENFA DFA::reverse() {
                     temp["to"]=target->name;
                     transitions.push_back(temp);
                 }
-
-
             }
-
-
         }
-
     }
     j["transitions"]=transitions;
 
@@ -456,8 +441,4 @@ void DFA::load(const set<string> &alfa, const vector<state *> &states, state *st
     DFA::states = states;
     DFA::startingState = start_state;
     DFA::endstates = end_states;
-
 }
-
-
-

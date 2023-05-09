@@ -1,6 +1,5 @@
 
 #include "MidiParser.h"
-#include "ByteX.h"
 
 MidiParser::MidiParser(const string &path) {
     /**
@@ -18,9 +17,7 @@ MidiParser::MidiParser(const string &path) {
 
         while (b){
             b = readComponent();
-
         }
-
     }
 
     stream.close();
@@ -38,18 +35,14 @@ ByteX MidiParser::byteRead(int length) {
         }else{
             b = int(c) + 256;
         }
-
         original_byte = (original_byte << 8) | b;
     }
-
-
 
     ByteX output(original_byte, length);
     return output;
 }
 
 bool MidiParser::readComponent() {
-
     if (stream.eof()){
         throw 1;
     }
@@ -175,8 +168,6 @@ bool MidiParser::readComponent() {
                                         link_channel[channel]));
         channel = basic_data.getNibble(0, false);
 
-
-
     }else{
         cout << "error basic " << basic_data.toHex()<< endl;
     }
@@ -186,7 +177,6 @@ bool MidiParser::readComponent() {
 
 void MidiParser::readTrack() {
     ByteX track_char = byteRead(4);
-
     ByteX track_size = byteRead(4);
     delta_time_counter = 0;
     link_channel.clear();
