@@ -214,8 +214,8 @@ double Song::reverseSimilarity(Song &song) const {
 double Song::complementSimilarity(Song &song) const {
     return 0;
 }
-
-bool Song::operator==(const Song &rhs) const {
+bool Song::operator==(Song &rhs) const {
+    if(similarity(rhs))
     return false;
 }
 

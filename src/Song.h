@@ -63,6 +63,8 @@ private:
      */
     double checkKarsAnas(vector<DFA> &d, vector<RE> &s) const;
 
+    double checkNoteCounts() const;
+
     /**
      * \brief Run all checks on 1 sort of Regex
      * \ENSURE(succes, "Percentage must be between 0 and 1");
@@ -158,6 +160,8 @@ public:
     bool operator==(const Song &rhs) const;
 
     bool operator!=(const Song &rhs) const;
+
+    unsigned int countNotes() const;
 };
 
 #endif //TOG_SONG_H
