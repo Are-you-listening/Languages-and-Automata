@@ -38,9 +38,11 @@ private:
     /**
      * \brief Convert Regex's to minimized DFA's
      * @param s
+     * @param complement, bool deciding if the DFA complement needs to be taken
+     * @param reverse, bool deciding if the DFA reverse needs to be taken
      * @return
      */
-    vector<DFA> convert(vector<RE> &s) const;
+    vector<DFA> convert(vector<RE> &s, bool complement, bool reverse) const;
 
     /**
      * \brief Check the similarity in order

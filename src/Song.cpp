@@ -4,7 +4,7 @@
 
 #include "Song.h"
 
-vector<DFA> Song::convert(vector<RE> &s) const {
+vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) const {
     vector<DFA> tt;
 
     for(auto z: s){
@@ -248,12 +248,12 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck) const {
     vector<DFA> d;
 
     pair<vector<RE>,vector<RE>> toCheck2 = sort(toCheck);
-    d = convert(toCheck2 .first);
+    d = convert(toCheck2 .first,0,0);
     cout << d.size() << " " << toCheck2.second.size() << endl;
     results.push_back( checkTibo(d , toCheck2 .second ) );
 
     //Check Kars
-    d = convert(toCheck.first);
+    d = convert(toCheck.first,0,0);
     results.push_back(checkKars(d, toCheck.second) );
 
     //Check KarsAnas
