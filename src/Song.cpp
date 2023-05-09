@@ -322,7 +322,7 @@ map<int,unsigned int> Song::countNotes() const {
     return result;
 }
 
-void Song::Export() const {
+void Song::output() const {
     REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string file= title+"_report.txt";

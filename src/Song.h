@@ -199,7 +199,7 @@ public:
      * \ENSURE(FileExists(title+"_report.txt"),"No log file has been created");
      * \REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      */
-    void Export() const;
+    void output() const;
 
     /**
      * \brief Get the title of an object
