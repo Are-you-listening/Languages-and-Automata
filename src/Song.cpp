@@ -261,3 +261,12 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck) const {
     
     return results;
 }
+
+map<const string, unsigned int> Song::countNotes() const {
+    for()
+    return map<const string, unsigned int>();
+}
+
+double Song::noteCountSimilarity(const Song &s) const {
+    return 0;
+}

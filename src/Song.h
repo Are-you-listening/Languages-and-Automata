@@ -23,6 +23,11 @@ private:
     Song* fInitCheck;
 
     /**
+     * \brief Map sorted by the timestamp of the song and a bool deciding if these Notes are on/off. The timestamp is manually set to a accuracy of 1ms (0,001s)
+     */
+    map<pair<unsigned int, bool>, vector<Note*>> note_map; //{TimeStamp, on/off} {Note*} Timestamp=0,001s
+
+    /**
      * \brief Set the biggest vector to the second argument
      * @param t
      * @return
@@ -63,8 +68,6 @@ private:
      */
     double checkKarsAnas(vector<DFA> &d, vector<RE> &s) const;
 
-    double checkNoteCounts() const;
-
     /**
      * \brief Run all checks on 1 sort of Regex
      * \ENSURE(succes, "Percentage must be between 0 and 1");
@@ -79,11 +82,6 @@ private:
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      */
     double magimathical(vector<vector<double>> &results) const;
-
-    /**
-     * \brief Map sorted by the timestamp of the song and a bool deciding if these Notes are on/off. The timestamp is manually set to a accuracy of 1ms (0,001s)
-     */
-    map<pair<unsigned int, bool>, vector<Note*>> note_map; //{TimeStamp, on/off} {Note*} Timestamp=0,001s
 
 public:
     /**
@@ -140,6 +138,12 @@ public:
     vector<RE> toRegex(bool time_stamp, bool note_on, bool instrument, bool note_b, bool velocity, int pattern, bool rounder) const;
 
     /**
+     * \brief Count the amount of notes (per type) of a Song
+     * @return
+     */
+    map<const string,unsigned int> countNotes() const;
+
+    /**
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * \ENSURE(succes, "Percentage must be between 0 and 1");
      * \brief Run a similarity Check on this Song and a given Song ('song').
@@ -163,6 +167,12 @@ public:
      * @return
      */
     double complementSimilarity(const Song &song) const;
+
+    /**
+     * \brief Check the occurences of the Notes
+     * @return
+     */
+    double noteCountSimilarity(const Song &s) const;
     
     /**
      * \brief Check for 100% Equality of Songs
@@ -179,12 +189,6 @@ public:
      * @return
      */
     bool operator!=(const Song &rhs) const;
-
-    /**
-     * \brief Count the amount of notes (per type) of a Song
-     * @return
-     */
-    unsigned int countNotes() const;
 };
 
 #endif //TOG_SONG_H
