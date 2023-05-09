@@ -262,11 +262,43 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck) const {
     return results;
 }
 
-map<const string, unsigned int> Song::countNotes() const {
-    for()
-    return map<const string, unsigned int>();
+map<int,unsigned int> Song::countNotes() const {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+
+    map<int,unsigned int> counts; // map[Note]=occurences
+
+    for(map<pair<unsigned int, bool>, vector<Note*>>::const_iterator it = note_map.begin(); it!=note_map.end(); it++){
+        for(const Note* n: it->second){
+            if(counts.find(n->getNoteValue())==counts.end()){ //In case not found
+                counts[n->getNoteValue()]=1;
+            }else{
+                counts[n->getNoteValue()]++;
+            }
+        }
+    }
+    return counts;
 }
 
 double Song::noteCountSimilarity(const Song &s) const {
-    return 0;
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+
+    map<int,unsigned int> count = this->countNotes();
+    map<int,unsigned int> scount = s.countNotes();
+
+    int succes = 0;
+    int occurences = count.size();
+    bool succeed = false;
+
+    for(map<int,unsigned int>::const_iterator k = count.begin(); k!=count.end(); k++){
+        if( scount.find(k->first)!=scount.end()){ //Sharing a note
+            if(scount[k->first]==k->second){
+                succes++;
+            }
+        }
+    }
+
+    double result = succes/occurences;
+    if(result<=1 && result>=0){succeed = true;}
+    ENSURE(succeed, "Percentage must be between 0 and 1");
+    return result;
 }

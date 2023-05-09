@@ -12,6 +12,7 @@
 #include "midiparser/MidiParser.h"
 #include "midiparser/SongExporter.h"
 #include "RE.h"
+#include "Note.h"
 
 using namespace std;
 
@@ -139,9 +140,10 @@ public:
 
     /**
      * \brief Count the amount of notes (per type) of a Song
-     * @return
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @return map<int,unsigned int> map[Note]=occurences
      */
-    map<const string,unsigned int> countNotes() const;
+    map<int,unsigned int> countNotes() const;
 
     /**
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
@@ -169,7 +171,9 @@ public:
     double complementSimilarity(const Song &song) const;
 
     /**
-     * \brief Check the occurences of the Notes
+     * \brief Check the occurences of the Notes and its similarity towards the notes of this object
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * \ENSURE(succeed, "Percentage must be between 0 and 1");
      * @return
      */
     double noteCountSimilarity(const Song &s) const;
