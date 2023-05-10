@@ -713,16 +713,9 @@ json ENFA::getJsonNfa() const {
     json j;
     j["type"] = "NFA";
     j["alphabet"]=ENFA::alphabet;
-    vector<json> states;
-    for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
-        json temp;
-        temp["name"]=(*it)->name;
-        temp["starting"]=(*it)->starting;
-        temp["accepting"]=(*it)->accepting;
-        states.push_back(temp);
-    }
-    j["states"]=states;
+
     vector<json> transitions;
+    map<string, vector<json>> t_map;
 
     map<string, pair<string, string>> link_skipper;
 
@@ -740,10 +733,12 @@ json ENFA::getJsonNfa() const {
                 }
 
                 if ((*it)->states.find(key) != (*it)->states.end()){
+
                     temp["from"]=(*it)->name;
                     temp["input"] = (*it2);
                     temp["to"]=(*it)->states[key]->name;
-                    transitions.push_back(temp);
+                    //transitions.push_back(temp);
+                    t_map[(*it)->states[key]->name].push_back(temp);
                     link_skipper[(*it)->states[key]->name] = make_pair((*it2), (*it)->name);
                     count += 1;
                 }else{
@@ -776,12 +771,33 @@ json ENFA::getJsonNfa() const {
 
                 transitions.push_back(temp);
 
+                t_map[(*it)->name].clear();
+
                 count += 1;
             }else{
                 break;
             }
         }
     }
+
+    for (auto entry: t_map){
+        for (auto t: entry.second){
+            transitions.push_back(t);
+        }
+    }
+
+    vector<json> states;
+    for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
+        if (link_skipper.find((*it)->name) == link_skipper.end() || !t_map.at((*it)->name).empty()){
+            json temp;
+            temp["name"]=(*it)->name;
+            temp["starting"]=(*it)->starting;
+            temp["accepting"]=(*it)->accepting;
+            states.push_back(temp);
+        }
+
+    }
+    j["states"]=states;
 
     j["transitions"]=transitions;
     return j;

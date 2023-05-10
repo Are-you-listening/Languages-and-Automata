@@ -246,6 +246,7 @@ NFA::NFA(const json &j) {
 
         Q.find(from)->second->AddTransition(input, to );
     }
+
 }
 
 

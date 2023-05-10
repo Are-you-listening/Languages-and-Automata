@@ -10,10 +10,11 @@
 
 int main() {
     Song song("midi_files/world-1-birabuto-4-.mid");
-    RE r = song.toRegex(0, 0, 1, 1, 0, -1)[0];
+    RE r = song.toRegex(0, 0, 1, 1, 0, 1)[0];
     ENFA e = r.toENFA();
     json j= e.getJsonNfa();
     NFA n(j);
+    cout << "d" << endl;
     //Song song("midi_files/world-1-birabuto-4-.mid");
     //Song song2("midi_broken/world-1-birabuto-remix-.mid");
     //song.similarity(song2);
