@@ -44,25 +44,37 @@ int Note::getNoteValue() const {
     return note_value;
 }
 
-string Note::RoundTime_stamp(int r_time_stamp) const{
+string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen rekening gehouden met range
     string s;
-    if(r_time_stamp){
+    if(r_time_stamp>1){
         s="(";
         for(int i=-r_time_stamp;  i!=r_time_stamp+1; i++){
-            
+            if(i<=time_stamp+(r_time_stamp-1)){
+                s+=toChar(i);
+                s+="+";
+            } else {
+                s+=")";
+            }
         }
+    } else if (r_time_stamp==1){
+        s=toChar(time_stamp);
     } else {
-        
+        s="";
     }
     return s;
 }
 
-string Note::RoundNote_on(int r_note_on) const{
-    string s;
+string Note::RoundNote_on(int r_note_on) const{ //TODO hier wordt nog geen rekening gehouden met range
+    string s; // TODO note_on wordt hierbehanld als duration. naamgeving moet nog wijziginen
     if(r_note_on>1){
         s="(";
-        for(int i=-r_note_on;  i!=r_note_on+1; i++){
-            
+        for(int i=note_on-(r_note_on-1);  i<=note_on+(r_note_on-1); i++){
+            if(i<=note_on+(r_note_on-1)-1){
+                s+=toChar(i);
+                s+="+";
+            } else {
+                s+=")";
+            }
         }
     } else if(r_note_on==1){
         s=toChar(note_on);
@@ -72,7 +84,7 @@ string Note::RoundNote_on(int r_note_on) const{
     return s;
 }
 
-string Note::RoundVelocity(int r_velocity) const{
+string Note::RoundVelocity(int r_velocity) const{ //TODO hier wordt nog geen rekening gehouden met range
     string s;
     if(r_velocity > 1){
         s="(";
