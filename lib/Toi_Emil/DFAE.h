@@ -8,7 +8,7 @@
 #include "REE.h"
 
 class DFAE: public automaat{
-    friend class NFA;
+    friend class NFAE;
 
 public:
     DFAE();

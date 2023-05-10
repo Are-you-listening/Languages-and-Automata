@@ -11,6 +11,7 @@
 #include "Toi_Kars/State.h"
 #include "Toi_Kars/Utils.h"
 #include "json.hpp"
+#include "WNFA.h"
 
 using json = nlohmann::json;
 
@@ -39,6 +40,8 @@ public:
 
     NFA(const string &inputfile);
     NFA(const json &j);
+    
+    WNFA toWNFA();
 
     virtual ~NFA();
 };

@@ -10,7 +10,7 @@
 #include "Node.h"
 #include "automaat.h"
 #include "DFA.h"
-#include "WNFA.h"
+
 
 class NFA: public automaat {
     friend class DFA;
@@ -24,8 +24,6 @@ public:
     NFA();
 
     DFA toDFA();
-
-    WNFA toWNFA();
 };
 
 

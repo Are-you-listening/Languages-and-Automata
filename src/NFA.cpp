@@ -249,4 +249,36 @@ NFA::NFA(const json &j) {
 
 }
 
+WNFA NFA::toWNFA(){
+    WNFA result = WNFA();
+    result.alfabet = Alphabet;
+    
+    for (pair<string, State*> state_pair : Q){
+        result.addState(state_pair.first, state_pair.second->getStarting(), state_pair.second->getAnEnd());
+    }
+    
+    for (weightedNode* state : result.states){
+        for (string temp : result.alfabet){
+            char symbol = temp[0];
+            for (const auto& transition : Q.find(state->getName())->second->DoTransition(symbol)){
+                state->addconnection(result.getWeightedState(transition).first, symbol, 1);
+            }
+        }
+    }
 
+    for (string temp : result.alfabet){
+        char symbol = temp[0];
+        result.startState->addconnection(result.startState, symbol, 0);
+        for (weightedNode* endstate : result.endStates){
+            endstate->addconnection(endstate, symbol, 0);
+        }
+
+        for (weightedNode* firststate : result.states){
+            for (weightedNode* secondstate : result.states){
+                firststate->addconnection(secondstate, symbol, 0);
+            }
+        }
+    }
+    
+    return result;
+}

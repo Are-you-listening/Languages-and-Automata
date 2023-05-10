@@ -47,6 +47,10 @@ set(MAIN_SRC
         src/ENFA.h
         src/ENFAT.cpp
         src/ENFAT.h
+        src/WNFA.cpp
+        src/WNFA.h
+        src/WDFA.cpp
+        src/WDFA.h
 
         lib/Toi_Tibo/DFAT.cpp
         lib/Toi_Tibo/DFAT.h
@@ -63,8 +67,6 @@ set(MAIN_SRC
         lib/Toi_Emil/weightedautomaat.h
         lib/Toi_Emil/weightedNode.cpp
         lib/Toi_Emil/weightedNode.h
-        lib/Toi_Emil/WNFA.cpp
-        lib/Toi_Emil/WNFA.h
 
         lib/Toi_Kars/Utils.cpp
         lib/Toi_Kars/Utils.h
