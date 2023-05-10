@@ -5,6 +5,12 @@
 #include "Song.h"
 #include "midiparser/midiExporter.h"
 
+struct Vectors_Params{
+public:
+    vector<vector<int>> vectors={{1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 5
+};
+Vectors_Params PARAMS;
+
 vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) {
     vector<DFA> tt;
 
@@ -133,7 +139,7 @@ vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b
     int count = 0;
     string temp = "";
 
-    string log = getCurrTime() + " Converting the Object to Regex's...\n\n";
+    string log = getCurrTime() + " Converting the Object to Regex's...\n\n"; //TODO endl is beter dan \n\n voor compabiliteit tussen operatingsystemen, zij hebben dit precies geupdate
     if(console){cout << log;}
     logs.push_back(log);
 
@@ -245,7 +251,7 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
     vectors.push_back({0,1,0,1,0,1,1});
     
     //Do different checks on different Regex's
-    for(const vector<int> &v: vectors){
+    for(const vector<int> &v: PARAMS.vectors){
         //No roundings
         pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]), this->toRegex(v[0], v[1], v[2], v[3], v[4], v[5]) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
         results.push_back( similar(toCheck,complement,reverse) ); // 0,1,0,1,0, 1,0
@@ -300,7 +306,7 @@ double Song::magimathical(vector<vector<double>> &results) {
 
     //Anas Working Space
     vector<vector<int>> vectors; //TODO dit moet nog de vector<vector<int>> worden waarin alle regex waarden zitten
-    for(vector<vector<int>>::iterator v=vectors.begin(); v!=vectors.end(); v++){
+    for(vector<vector<int>>::iterator v=PARAMS.vectors.begin(); v!=PARAMS.vectors.end(); v++){
         double boolparam = 0.05*(*v)[0] + 0.1*(*v)[1] + 0.025*(*v)[2] + 0.4*(*v)[3] + 0.025*(*v)[4] + 0.4*(*v)[5]; //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
         while(boolparam>1){
             boolparam=boolparam/10;
