@@ -75,7 +75,7 @@ int main() {
             } else if (matchprecentage<90){
                 cout << "\033[1;32m match precentage: \033[0m" << "\033[1;32m" << matchprecentage << "\033[0m" <<endl;
             } else {
-                cout << "\033[1;32m match precentage: \033[0m" << "\033[1;42m" << matchprecentage << "\033[0m" <<endl;
+                cout << "\033[1;32m match precentage: \033[0m" << "\033[1;42m\033[1;1m\033[1;35m" << matchprecentage << "\033[0m" <<endl;
             }
             delete song2;
             if(c==c3&&matchprecentage!=1){

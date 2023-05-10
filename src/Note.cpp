@@ -50,7 +50,7 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
         s="(";
         for(int i=-r_time_stamp;  i!=r_time_stamp+1; i++){
             if(i<=time_stamp+(r_time_stamp-1)){
-                s+=toChar(div(i,155).rem);
+                s+=toChar(div(i,155).rem); //TODO deze div is temp en moet verandert worden, hetzelfde geld voor de andere divs.
                 s+="+";
             } else {
                 s+=")";
