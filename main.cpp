@@ -69,13 +69,18 @@ int main() {
             cout << "compare " << c << " with " << c3 << endl;
             double matchprecentage = song->similarity(*song2,0,0);
             if (matchprecentage<25){
-                cout << "\032match precentage: \032" << "\031" << matchprecentage << "\031" <<endl;
+                cout << "\033[1;32m match precentage: \033[0m" << "\033[1;31m" << matchprecentage << "\033[0m" <<endl;
             } else if (matchprecentage<50){
-                cout << "\032match precentage: \032" << "\033" << matchprecentage << "\033" <<endl;
+                cout << "\033[1;32m match precentage: \033[0m" << "\033[1;33m" << matchprecentage << "\033[0m" <<endl;
             } else if (matchprecentage<90){
-                cout << "\032match precentage: \032" << "\032" << matchprecentage << "\032" <<endl;
+                cout << "\033[1;32m match precentage: \033[0m" << "\033[1;32m" << matchprecentage << "\033[0m" <<endl;
             } else {
-                cout << "\032match precentage: \032" << R"(")" << matchprecentage << R"(")" <<endl;
+                cout << "\033[1;32m match precentage: \033[0m" << "\033[1;42m" << matchprecentage << "\033[0m" <<endl;
+            }
+            delete song2;
+            if(c==c3&&matchprecentage!=1){
+                cerr << "identical files should result in 100% match" <<endl;
+                throw 3;
             }
         }
         delete song;

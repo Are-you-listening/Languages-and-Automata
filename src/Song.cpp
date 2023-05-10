@@ -7,7 +7,8 @@
 
 struct Vectors_Params{
 public:
-    vector<vector<int>> vectors={{1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 5
+    vector<vector<int>> vectors={{0,1,0,1,0,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
+    //vectors={{1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4}};
 };
 Vectors_Params PARAMS;
 
@@ -246,9 +247,6 @@ double Song::similarity(Song &song, bool complement, bool reverse) { // TODO com
     double result;
     bool succes = false;
     vector<vector<double>> results;
-    
-    vector<vector<int>> vectors;
-    vectors.push_back({0,1,0,1,0,1,1});
     
     //Do different checks on different Regex's
     for(const vector<int> &v: PARAMS.vectors){
