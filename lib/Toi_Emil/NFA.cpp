@@ -118,6 +118,7 @@ NFA::NFA() {
 
 WNFA NFA::toWNFA() {
     WNFA result = WNFA();
+    result.alfabet = alfabet;
     bool startingstate;
     bool acceptingstate;
     for (Node* state : states){
@@ -137,5 +138,19 @@ WNFA NFA::toWNFA() {
             }
         }
     }
+
+    for (char symbol : result.alfabet){
+        result.startState->addconnection(result.startState, symbol, 0);
+        for (weightedNode* endstate : result.endStates){
+            endstate->addconnection(endstate, symbol, 0);
+        }
+
+        for (weightedNode* firststate : result.states){
+            for (weightedNode* secondstate : result.states){
+                firststate->addconnection(secondstate, symbol, 0);
+            }
+        }
+    }
+
     return result;
 }

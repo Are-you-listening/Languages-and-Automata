@@ -72,4 +72,33 @@ pair<weightedNode *, bool> weightedautomaat::getWeightedState(string name) {
     return make_pair(nullptr, false);
 }
 
+void weightedautomaat::print() {
+    json Jout;
+    Jout["type"] = type;
+    for (auto symbol : alfabet){
+        Jout["alphabet"].push_back(string(1, symbol));
+    }
+    for (auto state: states) {  // add all the states
+        json temp;
+        temp["name"] = state->getName();
+        temp["starting"] = isStartState(state->getName());
+        temp["accepting"] = isEndState(state->getName());
+        Jout["states"].push_back(temp);
+    }
+
+    for (auto state: states) {  // add all the transitions
+        for (const auto& transition: state->getweightedconnections()) {
+            for (auto symbol: get<1>(transition)) {
+                json temp;
+                temp["from"] = state->getName();
+                temp["to"] = get<0>(transition)->getName();
+                temp["input"] = string(1, symbol);
+                temp["weight"] = get<2>(transition);
+                Jout["transitions"].push_back(temp);
+            }
+        }
+    }
+    cout << setw(4) << Jout << endl;
+}
+
 

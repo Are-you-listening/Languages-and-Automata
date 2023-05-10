@@ -6,6 +6,7 @@
 #define DFA_WEIGHTEDAUTOMAAT_H
 
 #include "automaat.h"
+#include <iomanip>
 
 class weightedNode;
 
@@ -26,6 +27,7 @@ public:
     weightedautomaat();
     weightedautomaat(const string &filename);
     virtual double weightedaccepts(string input)=0;
+    void print();
 };
 
 
