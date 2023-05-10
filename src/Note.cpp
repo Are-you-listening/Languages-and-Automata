@@ -50,14 +50,14 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
         s="(";
         for(int i=-r_time_stamp;  i!=r_time_stamp+1; i++){
             if(i<=time_stamp+(r_time_stamp-1)){
-                s+=toChar(i);
+                s+=toChar(div(i,155).rem);
                 s+="+";
             } else {
                 s+=")";
             }
         }
     } else if (r_time_stamp==1){
-        s=toChar(time_stamp);
+        s=toChar(div(time_stamp,155).rem);
     } else {
         s="";
     }
@@ -70,14 +70,14 @@ string Note::RoundNote_on(int r_note_on) const{ //TODO hier wordt nog geen reken
         s="(";
         for(int i=note_on-(r_note_on-1);  i<=note_on+(r_note_on-1); i++){
             if(i<=note_on+(r_note_on-1)-1){
-                s+=toChar(i);
+                s+=toChar(div(i,155).rem);
                 s+="+";
             } else {
                 s+=")";
             }
         }
     } else if(r_note_on==1){
-        s=toChar(note_on);
+        s=toChar(div(note_on,155).rem);
     } else {
         s="";
     }
@@ -90,14 +90,14 @@ string Note::RoundVelocity(int r_velocity) const{ //TODO hier wordt nog geen rek
         s="(";
         for(int i=velocity-(r_velocity-1);  i<=velocity+(r_velocity-1); i++){
             if(i<=velocity+(r_velocity-1)-1){
-                s+=toChar(i);
+                s+=toChar(div(i,155).rem);
                 s+="+";
             } else {
                 s+=")";
             }
         }
     } else if(r_velocity==1){
-        s = toChar(velocity*r_velocity);
+        s = toChar(div(velocity,155).rem);
     } else {
         s="";
     }
@@ -122,7 +122,7 @@ string Note::RoundInstrument(int r_instrument) const {
     }
 }
 
-string Note::RoundNote(int r_note, int r_octaaf) const {
+string Note::RoundNote(int r_note, int r_octaaf) const { // TODO deze functie moet zeker nog een keer besproken worken. octaaf is redelijk belangerijk
 
     if (r_note < 2 && r_octaaf < 2){
         string s = "";

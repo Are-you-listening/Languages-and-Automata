@@ -236,7 +236,7 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::similarity(Song &song, bool complement, bool reverse) {
+double Song::similarity(Song &song, bool complement, bool reverse) { // TODO complement en reverse zouden technisch hier niet mogen staan, dit zullen we moeten bespreken.
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string m = getCurrTime()+" Applying " + '"' + "similarity (" + to_string(complement) + ") (" + to_string(reverse) + ")" +  '"' +" on Song: " + title + " and Song: " + song.getTitle() + "\n";
