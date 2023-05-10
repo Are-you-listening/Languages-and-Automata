@@ -62,7 +62,7 @@ bool MidiParser::readComponent() {
         bool note_on = basic_data.getByte(1) != 0;
         addNote(time, note_on, new Note(time, note_on,
                                         basic_data.getByte(0), basic_data.getByte(1),
-                                        link_channel[basic_data.getNibble(1, false)]));
+                                        instrument));
     }else if (basic_data.equalsHex("ff", 0)){
 
 
@@ -164,7 +164,8 @@ bool MidiParser::readComponent() {
         //cout << "note " << basic_data.toHex() << " " << time << "v: " << velocity.getValue()<< "i: "<< link_channel[basic_data.getNibble(1, false)] << endl;
         addNote(time, note_on, new Note(time, note_on,
                                         basic_data.getByte(1), velocity.getValue(),
-                                        link_channel[basic_data.getNibble(1, false)]));
+                                        link_channel[basic_data.getNibble(0, false)]));
+        instrument = link_channel[basic_data.getNibble(0, false)];
 
     }else{
         cout << "error basic " << basic_data.toHex()<< endl;

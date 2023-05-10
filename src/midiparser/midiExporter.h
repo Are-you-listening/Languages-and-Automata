@@ -25,7 +25,7 @@ private:
     void createTracks();
 
     unsigned int channel_counter;
-    unsigned int last_timestamp;
+    map<unsigned int, unsigned int> last_timestamp;
     string track_data;
     vector<ByteX> buffer;
     void store();

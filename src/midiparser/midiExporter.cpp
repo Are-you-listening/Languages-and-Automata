@@ -15,7 +15,6 @@ midiExporter::midiExporter(const string &path, const map<pair<unsigned int, bool
 
 void midiExporter::changeFormat() {
     channel_counter = 0;
-    last_timestamp = 0;
 
 
     for (auto entry: note_map){
@@ -43,14 +42,14 @@ void midiExporter::addNote(Note* note) {
     if (instrument_map.find(note->getInstrument()) == instrument_map.end()){
          instrument_to_channel[note->getInstrument()] = channel_counter;
          channel_counter++;
-
+         last_timestamp[note->getInstrument()] = 0;
     }
 
     unsigned int ticks_per_quarter_note = 120;
     unsigned int ms_per_quarter_note = 500*1000;
     unsigned int changed_time = note->getTimeStamp()*1000/(ms_per_quarter_note/ticks_per_quarter_note);
-    unsigned int delta_time = changed_time - last_timestamp;
-    last_timestamp = changed_time;
+    unsigned int delta_time = changed_time - last_timestamp[note->getInstrument()];
+    last_timestamp[note->getInstrument()] = changed_time;
 
     instrument_map[note->getInstrument()].emplace_back(note, delta_time);
 }
@@ -109,7 +108,7 @@ void midiExporter::createTracks() {
                 sub_buffer.push_back(note_byte);
                 sub_buffer.push_back(velocity);
             }
-            cout << "note " << n->getNoteValue() << " " << delta << endl;
+            //cout << "note " << n->getNoteValue() << " " << delta << endl;
 
         }
         ByteX track_header("4d54726b");

@@ -109,6 +109,7 @@ private:
      * their is a way midi files are a bit more compressed using running status
      * */
     int status_running = -1;
+    int instrument = -1;
 };
 
 #endif //MIDIPARSER_MIDIPARSER_H

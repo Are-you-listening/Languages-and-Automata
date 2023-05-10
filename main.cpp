@@ -17,6 +17,8 @@ int main() {
     NFA n(j);*/
 
     Song song("midi_files/world-1-birabuto-4-.mid");
+    song.save("out.mid");
+    /*
     Song song2("midi_broken/world-1-birabuto-remix-.mid");
     song.similarity(song2, 0, 0);
 
@@ -28,6 +30,7 @@ int main() {
 
     cout << song3.similarity(song4,0,0) << endl;
     song3.output();
+     */
 
 
     //Song song5("midi_files/Metal_Crusher2.mid");
