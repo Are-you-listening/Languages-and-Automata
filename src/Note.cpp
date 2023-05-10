@@ -49,7 +49,7 @@ string Note::RoundTime_stamp(int r_time_stamp) const{
     if(r_time_stamp){
         s="(";
         for(int i=-r_time_stamp;  i!=r_time_stamp+1; i++){
-
+            
         }
     } else {
         
@@ -62,8 +62,7 @@ string Note::RoundNote_on(int r_note_on) const{
     if(r_note_on>1){
         s="(";
         for(int i=-r_note_on;  i!=r_note_on+1; i++){
-
-
+            
         }
     } else if(r_note_on==1){
         s=toChar(note_on);
@@ -78,12 +77,17 @@ string Note::RoundVelocity(int r_velocity) const{
     if(r_velocity > 1){
         s="(";
         for(int i=velocity-(r_velocity-1);  i<=velocity+(r_velocity-1); i++){
-
-
+            if(i<=velocity+(r_velocity-1)-1){
+                s+=toChar(i);
+                s+="+";
+            } else {
+                s+=")";
+            }
         }
-
-    } else {
+    } else if(r_velocity==1){
         s = toChar(velocity*r_velocity);
+    } else {
+        s="";
     }
     return s;
 }
