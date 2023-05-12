@@ -123,7 +123,7 @@ public:
     Song(const string& path);
 
     /**
-     * \brief Generate a Song from a DFA
+     * \brief Generate a Song from a DFA , sets the title to the DFA's StartState
      * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * @param s, a random DFA
      */

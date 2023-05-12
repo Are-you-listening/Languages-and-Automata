@@ -119,6 +119,13 @@ char toChar(int value){
     return c;
 }
 
-int toInt(char x){
+int toInt(const char x){
+    int index = (int)(x);
 
+    if(index >= 173 ){
+        index-=51;
+    }
+    index -=48;
+
+    return index;
 }

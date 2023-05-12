@@ -43,6 +43,6 @@ char toChar(int value);
  * @param x
  * @return
  */
-int toInt(char x);
+int toInt(const char x);
 
 #endif
