@@ -154,3 +154,7 @@ int Note::getVelocity() const {
 bool Note::isNoteOn() const {
     return note_on;
 }
+
+void Note::setDuration(int duration) {
+    Note::duration = duration;
+}
