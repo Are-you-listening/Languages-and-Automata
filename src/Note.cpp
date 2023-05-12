@@ -6,6 +6,7 @@
 
 Note::Note(unsigned int time_stamp, int duration, int note,  int velocity, unsigned int instrument):
 note_value(note), instrument(instrument), duration(duration), velocity(velocity), time_stamp(time_stamp) {
+    Note::duration = -1;
 }
 
 [[nodiscard]] string Note::getRE(int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf) const{

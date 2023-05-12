@@ -101,6 +101,17 @@ Song::Song(const string &path) {
     if(console){cout << log;}
     logs.push_back(log);
 
+    for (auto e: note_map){
+        if (e.first.second){
+            for (auto v: e.second){
+                if (v->getDuration() == -1){
+                    cout << "he" << endl;
+                    throw 1;
+                }
+            }
+        }
+    }
+
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 

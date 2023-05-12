@@ -116,6 +116,8 @@ private:
      * */
     int status_running = -1;
     int instrument = -1;
+    int channel = -1;
+    bool start = false;
     
     map<unsigned int, Note*> note_duration;
 };

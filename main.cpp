@@ -9,6 +9,8 @@
 #include "NFA.h"
 
 int main() {
+    //Song song("midi_files/78679.mid");
+    //cout << "finished" << endl;
     /*
     Song song("midi_files/world-1-birabuto-4-.mid");
     RE r = song.toRegex(0, 0, 1, 1, 0, 1)[0];
@@ -16,10 +18,10 @@ int main() {
     json j= e.getJsonNfa();
     NFA n(j);*/
 
-    Song song("midi_files/World-1-birabuto-remix-.mid");
-    Song song2("midi_files/world-1-birabuto-4-.mid");
-    song.switchConsoleOutput();
-    song.similarity(song2, 0, 0);
+    //Song song("midi_files/(Alex2nd).mid");
+    //Song song2("midi_files/world-1-birabuto-4-.mid");
+    //song.switchConsoleOutput();
+    //song.similarity(song2, 0, 0);
 
     /*
     Song song3("midi_files/metal_crusher.mid");
@@ -55,7 +57,7 @@ int main() {
     double weight =  w.weightedaccepts("abcd");
      */
 
-    /*
+
     ifstream Filelist("filelist.txt");
     ifstream Filelist2("filelist.txt");
     string c;
@@ -63,7 +65,10 @@ int main() {
     string c2="midi_files/";
     vector<Song*> songs;
     while(getline(Filelist,c)){
+        cout << c << endl;
         Song* song = new Song(c2+c);
+
+        /*
         while(getline(Filelist2,c3)){
             Song* song2 = new Song(c2+c3);
             cout << "compare " << c << " with " << c3 << endl;
@@ -82,10 +87,10 @@ int main() {
                 cerr << "\033[1;31midentical files should result in 100% match\033[0m" <<endl;
                 throw 3;
             }
-        }
+        }*/
         delete song;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
-    */
+
     return 0;
 }

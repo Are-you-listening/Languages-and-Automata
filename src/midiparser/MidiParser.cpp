@@ -91,18 +91,23 @@ bool MidiParser::readComponent() {
         * this if statement is for support of running status
         * */
         unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
-        bool note_on = basic_data.getByte(1) != 0;
+        bool note_on = basic_data.getByte(1) != 0 && start;
         Note* current_note = new Note(time, note_on, basic_data.getByte(0), basic_data.getByte(1), instrument);
         addNote(time, note_on, current_note);
-        if (note_on){
-            note_duration[(instrument << 8) + basic_data.getByte(0)] = current_note;
-        }else{
-            Note* n = note_duration.at((instrument << 8) + basic_data.getByte(0));
+
+        if(note_duration.find((channel << 8) + basic_data.getByte(0)) != note_duration.end()){
+            Note* n = note_duration.at((channel << 8) + basic_data.getByte(0));
             unsigned int duration = current_note->getTimeStamp() - n->getTimeStamp();
             n->setDuration(duration);
+            note_duration.erase((channel << 8) + basic_data.getByte(0));
+        }
+
+        if (note_on){
+            note_duration[(channel << 8) + basic_data.getByte(0)] = current_note;
         }
 
     }else if (basic_data.equalsHex("ff", 0)){
+        status_running = -1;
         /**
          * here are midi events
          * */
@@ -151,6 +156,12 @@ bool MidiParser::readComponent() {
              * end of track event (returns false)
              * */
             byteRead(1);
+
+            for(auto entry: note_duration){
+                unsigned int time_stamp = entry.second->getTimeStamp();
+                entry.second->setDuration(delta_time_counter-time_stamp);
+            }
+
             return false;
         }else if (basic_data.equalsHex("21", 1)){
             byteRead(2);
@@ -179,28 +190,50 @@ bool MidiParser::readComponent() {
 
     }
     else if (basic_data.equalsHex("c", 0)) {
+        status_running = -1;
         /**
          * control message
          * says which channel corresponds with which instrument
          * */
         link_channel[basic_data.getNibble(0, false)] = basic_data.getByte(1);
     }else if(basic_data.equalsHex("d", 0)){
+        status_running = -1;
         /**
          * checks for d nibble
          * */
     }else if (basic_data.equalsHex("a", 0) || basic_data.equalsHex("b", 0)|| basic_data.equalsHex("e", 0)){
+        status_running = -1;
         /**
          * reads 1 extra byte in case of (status nibble a, b, e)
          * */
         byteRead(1);
 
 
+    }else if(!basic_data.getMSB(0) && status_running != -1){
+        unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
+        bool note_on = basic_data.getByte(1) != 0  && start;
+        Note* current_note = new Note(time, note_on, basic_data.getByte(0), basic_data.getByte(1), instrument);
+        addNote(time, note_on, current_note);
+
+        if(note_duration.find((channel << 8) + basic_data.getByte(0)) != note_duration.end()){
+            Note* n = note_duration.at((channel << 8) + basic_data.getByte(0));
+            unsigned int duration = current_note->getTimeStamp() - n->getTimeStamp();
+            n->setDuration(duration);
+            note_duration.erase((channel << 8) + basic_data.getByte(0));
+        }
+
+        if (note_on){
+            note_duration[(channel << 8) + basic_data.getByte(0)] = current_note;
+        }
+        /**
+         * checks for data byte
+         * these will just be ignored if occured
+         * */
     }else if(!basic_data.getMSB(0)){
         /**
          * checks for data byte
          * these will just be ignored if occured
          * */
-
     }else if (basic_data.equalsHex("f0", 0)){
         for (unsigned int i=0; i <basic_data.getByte(1); i++){
             byteRead(1);
@@ -214,16 +247,22 @@ bool MidiParser::readComponent() {
         unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
         bool note_on = velocity.getValue() != 0 && basic_data.getNibble(0, true) == 9;
         status_running = basic_data.getNibble(1, true);
+        start = note_on;
         //cout << "note " << basic_data.toHex() << " " << time << "v: " << velocity.getValue()<< "i: "<< link_channel[basic_data.getNibble(1, false)] << endl;
         Note* current_note =  new Note(time, note_on, basic_data.getByte(1), velocity.getValue(), link_channel[basic_data.getNibble(0, false)]);
         addNote(time, note_on, current_note);
-        instrument = link_channel[basic_data.getNibble(0, false)];
-        if (note_on){
-            note_duration[(instrument << 8) + basic_data.getByte(1)] = current_note;
-        }else{
-            Note* n = note_duration.at((instrument << 8) + basic_data.getByte(1));
+        channel = basic_data.getNibble(0, false);
+        instrument = link_channel[channel];
+
+        if(note_duration.find((channel << 8) + basic_data.getByte(1)) != note_duration.end()){
+            Note* n = note_duration.at((channel << 8) + basic_data.getByte(1));
             unsigned int duration = current_note->getTimeStamp() - n->getTimeStamp();
             n->setDuration(duration);
+            note_duration.erase((channel << 8) + basic_data.getByte(1));
+        }
+
+        if (note_on){
+            note_duration[(channel << 8) + basic_data.getByte(1)] = current_note;
         }
 
     }else{
@@ -265,6 +304,9 @@ void MidiParser::readHeader() {
 }
 
 void MidiParser::addNote(unsigned int time, bool note_on, Note* note) {
+    if(note->getNoteValue() == 64 && note->getTimeStamp() == 225469){
+        cout << "he2" << endl;
+    }
     /**
      * correctly add a note to the note map
      * */
