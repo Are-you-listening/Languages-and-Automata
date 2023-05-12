@@ -91,7 +91,7 @@ private:
      * mainly calculating absolute time
      * */
     unsigned int track_amount = 0;
-    unsigned int delta_time_counter = 0;
+    long unsigned int delta_time_counter = 0;
     unsigned int ms_per_quarter_note = 0;
     unsigned int ticks_per_quarter_note = 0;
 

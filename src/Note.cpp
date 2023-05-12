@@ -37,6 +37,7 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
             s+=toChar(temp); //TODO deze div is temp en moet verandert worden, hetzelfde geld voor de andere divs.
             s+="+";
         }
+        s[s.size()-1] = ')';
     } else if (r_time_stamp==1){
         int temp=lround(time_stamp/1000.0);
         if(temp>155){
@@ -50,7 +51,7 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
 }
 
 string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rekening gehouden met range
-    string s; 
+    string s; //1
     if(r_duration>1){
         s="(";
         for(int i=duration-(r_duration-1);  i<=duration+(r_duration-1); i++){
@@ -58,7 +59,7 @@ string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rek
                 s+=toChar(div(i,155).rem);
                 s+="+";
             } else {
-                s+=")";
+                s[s.size()-1] = ')';
             }
         }
     } else{
@@ -72,16 +73,25 @@ string Note::RoundVelocity(int r_velocity) const{ //TODO hier wordt nog geen rek
     string s;
     if(r_velocity > 1){
         s="(";
-        for(int i=velocity-(r_velocity-1);  i<=velocity+(r_velocity-1); i++){
-            if(i<=velocity+(r_velocity-1)-1){
-                s+=toChar(div(i,155).rem);
+        for(int i=velocity/3-(r_velocity-1);  i<=velocity/3+(r_velocity-1); i++){
+            if(i<=velocity/3+(r_velocity-1)-1){
+                int temp =i;
+                if (temp < 0){
+                    
+                    temp = 0;
+                }
+                if (temp > 255/3){
+                    temp = 255/3;
+                }
+                
+                s+=toChar(temp);
                 s+="+";
             } else {
-                s+=")";
+                s[s.size()-1] = ')';
             }
         }
     } else if(r_velocity==1){
-        s = toChar(div(velocity,155).rem);
+        s = toChar(velocity);
     } else {
         s="";
     }
