@@ -13,6 +13,13 @@
 using namespace std;
 class midiExporter {
 public:
+    /**
+     * constructor for the midi Exporter
+     * stores a song in a .mid file
+     * we give a path and a note_map
+     * the path is the path for the file that will be created
+     * notemap contains data about the song
+     * */
     midiExporter(const string& path, const map<pair<unsigned int, bool>, vector<Note *>>& note_map);
 private:
     void changeFormat();

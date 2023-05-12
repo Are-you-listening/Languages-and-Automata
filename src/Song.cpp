@@ -7,8 +7,13 @@
 
 struct Vectors_Params{
 public:
-    vector<vector<int>> vectors={{0,1,0,1,0,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
+    //timestamp, note on, instrument, note, velocity, pattern
+    //vector<vector<int>> vectors={{0,1,0,1,0,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
     //vectors={{1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4}};
+
+    vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
+                                 {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3}};
+
 };
 Vectors_Params PARAMS;
 
@@ -32,7 +37,7 @@ vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) {
             l = m.toDFA();
         }
 
-        l.minimize();
+        //l.minimize();
         tt.push_back(l);
     }
     return tt;
@@ -182,7 +187,7 @@ double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
         if(b){succes++;}
     };
 
-    double result = succes/d.size();
+    double result = (double) succes/d.size();
     if(result>=0 && result<=1){succeeded = true;} //Result bust me a percentage
 
     ENSURE(succeeded, "Operation did not work properly");
@@ -193,7 +198,7 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     bool succeeded = false;
-    int succes = 0; //Counter to keep the amount of time the test passes
+    double succes = 0; //Counter to keep the amount of time the test passes
 
     for(int i = 0; i<d.size(); i++){ // Given song
         for(int j = 0; j<s.size(); j++){
@@ -203,7 +208,7 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
         }
     }
 
-    double result = succes / (d.size() * s.size()) ;
+    double result = succes / (double) (d.size() * s.size()) ;
     if(result>=0 && result<=1){succeeded = true;} //Result bust me a percentage
 
     ENSURE(succeeded, "Operation did not work properly");
@@ -214,8 +219,8 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     bool succeeded = false;
-    int succes = 0; //Counter to keep the amount of time the test passes
-    int count = 0; //Counter to keep Nr of Operations
+    double succes = 0; //Counter to keep the amount of time the test passes
+    double count = 0; //Counter to keep Nr of Operations
 
     for(int i = 0; i<d.size(); i++){ // Given song
         for(int j = 0; j<s.size(); j++){
@@ -224,10 +229,11 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
 
             if(b){
                 succes++;
-                count++;
+
                 break; //Idea Anas
             }
         }
+        count ++;
     }
 
     double result = succes / count ;
@@ -249,9 +255,11 @@ double Song::similarity(Song &song, bool complement, bool reverse) { // TODO com
     vector<vector<double>> results;
     
     //Do different checks on different Regex's
+
     for(const vector<int> &v: PARAMS.vectors){
         //No roundings
-        pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]), this->toRegex(v[0], v[1], v[2], v[3], v[4], v[5]) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
+        song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]);
+        pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]), this->toRegex(min(v[0], 1), min(v[1], 1), min(v[2], 1), min(v[3], 1), min(v[4], 1), v[5]) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
         results.push_back( similar(toCheck,complement,reverse) ); // 0,1,0,1,0, 1,0
     }
     
@@ -324,9 +332,8 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     vector<DFA> d;
 
     pair<vector<RE>,vector<RE>> toCheck2 = sort(toCheck);
-    d = convert(toCheck2 .first,complement,reverse);
-    cout << d.size() << " " << toCheck2.second.size() << endl;
-    results.push_back( checkTibo(d , toCheck2 .second ) );
+    d = convert(toCheck.first,complement,reverse);
+    results.push_back( checkTibo(d , toCheck.second ) );
 
     //Check Kars
     d = convert(toCheck.first,complement,reverse);

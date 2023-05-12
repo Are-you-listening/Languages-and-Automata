@@ -5,7 +5,7 @@
 #include "src/DFA.h"
 #include "src/ENFA.h"
 #include "src/RE.h"
-#include "Toi_Emil/WNFA.h"
+
 #include "NFA.h"
 
 int main() {
@@ -16,21 +16,19 @@ int main() {
     json j= e.getJsonNfa();
     NFA n(j);*/
 
-    Song song3("midi_files/world-1-birabuto-4-.mid");
-    song3.save("out.mid");
-    /*
+    Song song("midi_files/Train Rush MIDI.mid");
     Song song2("midi_broken/world-1-birabuto-remix-.mid");
     song.similarity(song2, 0, 0);
 
-
+    /*
     Song song3("midi_files/metal_crusher.mid");
     Song song4("midi_files/metal_crusher.mid");
     song3.setTitle("metal_crusher");
     song3.switchConsoleOutput();
 
     cout << song3.similarity(song4,0,0) << endl;
-    song3.output();
-     */
+    song3.output();*/
+
 
 
     //Song song5("midi_files/Metal_Crusher2.mid");
@@ -55,7 +53,8 @@ int main() {
     WNFA w("tiboEnv/WNFA_balance_test.json");
     double weight =  w.weightedaccepts("abcd");
      */
-    
+
+    /*
     ifstream Filelist("filelist.txt");
     ifstream Filelist2("filelist.txt");
     string c;
@@ -86,6 +85,6 @@ int main() {
         delete song;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
-    
+    */
     return 0;
 }

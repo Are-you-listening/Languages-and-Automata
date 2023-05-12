@@ -46,11 +46,15 @@ public:
 
     /**
      * Midiparser constructor
+     * receives a path to a midi file
+     * it will read the file and store it in a .mid file
      * */
     MidiParser(const string& path);
 
     /**
      * getter for the note_map containing all the information
+     * following the next format: pair<timestamp, note_on> -> vector notes
+     * this is a vector, because a timestamp can have multiple notes
      * */
     const map<pair<unsigned int, bool>, vector<Note *>> &getNoteMap() const;
 
@@ -68,6 +72,7 @@ private:
 
     /**
      * reads a component from the .mid file mostly a music note
+     * if it returns false the end of the track has been reached
      * */
     bool readComponent();
 
@@ -107,6 +112,7 @@ private:
 
     /**
      * their is a way midi files are a bit more compressed using running status
+     * these 2 variables store data to properly execute running status
      * */
     int status_running = -1;
     int instrument = -1;

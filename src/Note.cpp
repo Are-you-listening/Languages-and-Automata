@@ -33,10 +33,10 @@ char toChar(int value){
 [[nodiscard]] string Note::getRE(int r_time_stamp, int r_note_on, int r_instrument, int r_note, int r_velocity, int octaaf) const{
     string s = "";
     s += RoundTime_stamp(r_time_stamp);
-    s += RoundNote_on(r_note_on);
+    s += toChar(note_on*r_note_on);
     s += RoundInstrument(r_instrument);
-    s += RoundNote(r_note,0);
-    s += RoundVelocity(r_velocity);
+    s += RoundNote(r_note,1);
+    s += toChar(velocity/3*r_velocity);
     return s;
 }
 
@@ -76,10 +76,9 @@ string Note::RoundNote_on(int r_note_on) const{ //TODO hier wordt nog geen reken
                 s+=")";
             }
         }
-    } else if(r_note_on==1){
-        s=toChar(div(note_on,155).rem);
-    } else {
-        s="";
+    } else{
+        //s=toChar(div(note_on,155).rem);
+        s = toChar(note_on);
     }
     return s;
 }
@@ -105,7 +104,7 @@ string Note::RoundVelocity(int r_velocity) const{ //TODO hier wordt nog geen rek
 }
 
 string Note::RoundInstrument(int r_instrument) const {
-    if (r_instrument > 2){
+    if (r_instrument > 1){
         string s = "(";
         int base_instrument = instrument/8;
         for (int i=0; i<8; i++){
@@ -145,7 +144,7 @@ string Note::RoundNote(int r_note, int r_octaaf) const { // TODO deze functie mo
                 throw "oei";
             }
 
-            s += toChar(value*r_note);
+            s += toChar(value);
             s += "+";
         }
     }

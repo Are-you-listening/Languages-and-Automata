@@ -23,29 +23,54 @@ MidiParser::MidiParser(const string &path) {
 }
 
 ByteX MidiParser::byteRead(int length) {
+    /**
+     * reads the given amount of bytes (length)
+     * */
     char c = '\000';
     long unsigned int original_byte = 0;
     for (int i = 0; i<length; i++){
+        /**
+         * we read a character first
+         * later we convert this character to an unsigned int
+         * cause we need to make first a normal integer it can be negative
+         * so in that case we at 256
+         * */
         stream.get(c);
-
         long unsigned int b;
         if (int(c) >= 0){
             b = int(c);
         }else{
             b = int(c) + 256;
         }
+        /**
+         * shift the already obtained value a byte to the left
+         * */
         original_byte = (original_byte << 8) | b;
     }
 
+    /**
+     * store in a byte object
+     * */
     ByteX output(original_byte, length);
     return output;
 }
 
 bool MidiParser::readComponent() {
+    /**
+     * in this function we will read a component from the midi file
+     * */
     if (stream.eof()){
+        /**
+         * in case of an issue with the midi parser
+         * it will throw an exception
+         * */
         throw 1;
     }
 
+    /**
+     * reads the first delta time byte
+     * if its MSB is true, read the next byte, till it is not true anymore
+     * */
     ByteX delta_time = byteRead(1);
     ByteX current_delta = delta_time;
     while (current_delta.getMSB(0)){
@@ -55,20 +80,31 @@ bool MidiParser::readComponent() {
 
     delta_time_counter += delta_time.getValue();
 
+    /**
+     * reads the basic data (2 bytes) the first byte/nibble will determine which action will
+     * the second determines on the action
+     * */
     ByteX basic_data = byteRead(2);
 
     if(basic_data.getNibble(0, true) == status_running){
+        /**
+        * this if statement is for support of running status
+        * */
         unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
         bool note_on = basic_data.getByte(1) != 0;
         addNote(time, note_on, new Note(time, note_on,
                                         basic_data.getByte(0), basic_data.getByte(1),
                                         instrument));
-    }else if (basic_data.equalsHex("ff", 0)){
 
+    }else if (basic_data.equalsHex("ff", 0)){
+        /**
+         * here are midi events
+         * */
 
         if (basic_data.getNibble(1, true) == 0 && basic_data.getNibble(1, false) < 9){
             /**
             * these instructions are all instructions containing an extra byte giving an size of the data
+            * this data contains of title/copyright text,...
             **/
             ByteX data_length = byteRead(1);
 
@@ -90,6 +126,9 @@ bool MidiParser::readComponent() {
             }
 
         }else if (basic_data.equalsHex("51", 1)){
+            /**
+             * changes the ms per quarter note
+             * */
             ByteX value = byteRead(1);
             if (value.equalsHex("03", 0)){
                 ms_per_quarter_note = byteRead(3).getValue();
@@ -102,6 +141,9 @@ bool MidiParser::readComponent() {
             }
 
         }else if (basic_data.equalsHex("2f", 1)){
+            /**
+             * end of track event (returns false)
+             * */
             byteRead(1);
             return false;
         }else if (basic_data.equalsHex("21", 1)){
@@ -123,30 +165,34 @@ bool MidiParser::readComponent() {
                 byteRead(1);
             }
         }else{
-            cout << "error" << basic_data.toHex() << endl;
+            /**
+             * in case an undefined instruction occurs
+             * */
+            throw 2;
         }
 
     }
     else if (basic_data.equalsHex("c", 0)) {
+        /**
+         * control message
+         * says which channel corresponds with which instrument
+         * */
         link_channel[basic_data.getNibble(0, false)] = basic_data.getByte(1);
     }else if(basic_data.equalsHex("d", 0)){
         /**
-         * checks for c/e nibble
+         * checks for d nibble
          * */
     }else if (basic_data.equalsHex("a", 0) || basic_data.equalsHex("b", 0)|| basic_data.equalsHex("e", 0)){
         /**
-         * reads 1 extra byte
+         * reads 1 extra byte in case of (status nibble a, b, e)
          * */
         byteRead(1);
 
 
     }else if(!basic_data.getMSB(0)){
-        if (basic_data.getNibble(0, true) == 4){
-            //cout << "val " << basic_data.toHex() << endl;
-        }
-
         /**
          * checks for data byte
+         * these will just be ignored if occured
          * */
 
     }else if (basic_data.equalsHex("f0", 0)){
@@ -156,6 +202,7 @@ bool MidiParser::readComponent() {
     }else if (basic_data.equalsHex("9", 0) || basic_data.equalsHex("8", 0)){
         /**
          * Here the bytes will be considered a Note On/ Note Off
+         * the note will also be stored in the note_map
          * **/
         ByteX velocity = byteRead(1);
         unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
@@ -175,6 +222,9 @@ bool MidiParser::readComponent() {
 }
 
 void MidiParser::readTrack() {
+    /**
+     * reads track data
+     * */
     ByteX track_char = byteRead(4);
     ByteX track_size = byteRead(4);
     delta_time_counter = 0;
@@ -203,6 +253,9 @@ void MidiParser::readHeader() {
 }
 
 void MidiParser::addNote(unsigned int time, bool note_on, Note* note) {
+    /**
+     * correctly add a note to the note map
+     * */
     pair<unsigned int, bool> p = make_pair(time, note_on);
     note_map[p].push_back(note);
 }
