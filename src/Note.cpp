@@ -8,28 +8,6 @@ Note::Note(unsigned int time_stamp, int duration, int note,  int velocity, unsig
 note_value(note), instrument(instrument), duration(duration), velocity(velocity), time_stamp(time_stamp) {
 }
 
-char toChar(int value){
-    int index = value;
-
-    index += 48;
-    if(index > 122){
-        index += 51;
-    }
-
-    if (index > 255){
-        cerr << endl << "All i want for christmas, is an working function" << endl;
-        throw "All i want for christmas, is an working function";
-    }
-
-    if (index < 48){
-        throw "dwdw";
-    }
-
-    char c = (char)(index);
-
-    return c;
-}
-
 [[nodiscard]] string Note::getRE(int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf) const{
     string s = "";
     s += RoundTime_stamp(r_time_stamp);
