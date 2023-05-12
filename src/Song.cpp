@@ -267,7 +267,6 @@ double Song::similarity(Song &song, bool complement, bool reverse) { // TODO com
     //Do different checks on different Regex's
     for(const vector<int> &v: PARAMS.vectors){
         //No roundings
-        song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]);
         pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]), this->toRegex(min(v[0], 1), min(v[1], 1), min(v[2], 1), min(v[3], 1), min(v[4], 1), v[5]) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
         results.push_back( similar(toCheck,complement,reverse) ); // 0,1,0,1,0, 1,0
     }
@@ -320,12 +319,33 @@ double Song::magimathical(vector<vector<double>> &results) {
     logs.push_back(log);
 
     //Anas Working Space
-    vector<vector<int>> vectors; //TODO dit moet nog de vector<vector<int>> worden waarin alle regex waarden zitten
     for(vector<vector<int>>::iterator v=PARAMS.vectors.begin(); v!=PARAMS.vectors.end(); v++){
-        double boolparam = 0.05*(*v)[0] + 0.1*(*v)[1] + 0.025*(*v)[2] + 0.4*(*v)[3] + 0.025*(*v)[4] + 0.4*(*v)[5]; //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
-        while(boolparam>1){
-            boolparam=boolparam/10;
+        int a=1;
+        int b=1;
+        int c=1;
+        int d=1;
+        int e=1;
+        if((*v)[4]==0){
+            a=0;
+            (*v)[4]=1;
         }
+        if((*v)[3]==0){
+            b=0;
+            (*v)[3]=1;
+        }
+        if((*v)[2]==0){
+            c=0;
+            (*v)[2]=1;
+        }
+        if((*v)[1]==0){
+            d=0;
+            (*v)[1]=1;
+        }
+        if((*v)[0]==0){
+            e=0;
+            (*v)[0]=1;
+        }
+        double boolparam = (40.0/(*v)[0])*e + (17.0/(*v)[1])*d + (6.0/(*v)[2])*c + (17.0/(*v)[3])*b + (20.0/(*v)[4])*a + pow(5,(*v)[5]); //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
         for(vector<vector<double>>::iterator it=results.begin(); it!=results.end(); it++){
             result+=(boolparam*(0.7*(*it)[0]+0.2*(*it)[1]+0.1*(*it)[2]))/results[0].size();
         }
@@ -473,7 +493,7 @@ Song::Song(DFA &s, vector<int> &param){ //param = {int r_time_stamp, int r_durat
     vector<int> options = {}; //Posssible values
 
     //Start up
-    fInitCheck = this;
+    fInitCheck = this; // TODO soms wordt er een plus gehanteerd voor meerdere noten op een tijdstip, mischien moeten wij plus zo hanteren als da niet groter is dan een bepaalde waarde.
     title = s.getStartingState()->name;
 
     string log = getCurrTime() + " Creating Song Object from your perfect DFA...\n\n";
