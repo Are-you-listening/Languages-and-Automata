@@ -5,6 +5,7 @@
 #include "DFA.h"
 
 DFA::DFA(const string& c) {
+    REQUIRE(FileExists(c),"No file found");
     ifstream input(c);
     json j;
     input >> j;

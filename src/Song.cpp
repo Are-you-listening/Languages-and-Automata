@@ -502,11 +502,13 @@ Song::Song(DFA &s, vector<int> &param){ //param = {int r_time_stamp, int r_durat
             if(m=='('){ //Begin of Regex
                 tempstack.push(m);
                 continue;
-            }else if(m==')'){ //Ended 1 character
+            }else if(m==')') { //Ended 1 character
                 index++;
                 info.push_back(options); //Push back options
                 options.clear(); //Reset options
                 tempstack.pop();
+            }else if(m=='*'){
+                cerr << "Honeseltely no clue what to do with Kleene Star, which lenght should I take?" << endl;
             }else{
                 options.push_back(toChar(m));
                 if(tempstack.empty()){
