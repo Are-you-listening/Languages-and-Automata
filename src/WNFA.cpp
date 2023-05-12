@@ -70,6 +70,11 @@ double WNFA::weightedaccepts(string input) {
     vector<pair<double, weightedNode*>> currentstates = {make_pair(0.0, this->startState)};
 
     for (char symbol : input){
+        string temp = string(1, symbol);
+        if (std::find(alfabet.begin(), alfabet.end(), temp) == alfabet.end()){
+            cerr << "Symbol " << symbol << " not in alphabet" << endl;
+            return -1.0;
+        }
         vector<pair<double, weightedNode*>> tempstates;
         for (pair<double, weightedNode*> state : currentstates){
             for (auto connection : state.second->getweightedconnections()){

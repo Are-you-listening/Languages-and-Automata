@@ -20,6 +20,7 @@
 #include "Toi_Tibo/DFAT.h"
 #include "Toi_Emil/DFAE.h"
 #include "Toi_Emil/REE.h"
+#include "WDFA.h"
 
 using namespace std;
 

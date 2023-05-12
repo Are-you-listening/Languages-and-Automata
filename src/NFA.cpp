@@ -269,21 +269,20 @@ WNFA NFA::toWNFA(){
     }
 
     // voeg nieuwe transities toe die enkel in de WNFA aanwezig zijn
-    for (string temp : result.alfabet){
+    for (string temp : result.alfabet) {
         char symbol = temp[0];
-        
+
         result.startState->addconnection(result.startState, symbol, 0);
-        
-        for (weightedNode* endstate : result.endStates){
+
+        for (weightedNode *endstate: result.endStates) {
             endstate->addconnection(endstate, symbol, 0);
         }
 
-        for (weightedNode* firststate : result.states){
-            for (weightedNode* secondstate : result.states){
+        for (weightedNode *firststate: result.states) {
+            for (weightedNode *secondstate: result.states) {
                 firststate->addconnection(secondstate, symbol, 0);
             }
         }
     }
-    
     return result;
 }

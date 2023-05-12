@@ -72,8 +72,8 @@ double WDFA::weightedaccepts(string input) {
     for (char symbol : input){
         string symbol_str = string(1, symbol);
         if (std::find(alfabet.begin(), alfabet.end(),symbol_str) == alfabet.end()){
-            cerr << "inputstring contains an unknown symbol" << endl;
-            return 0.0;
+            cerr << "Symbol " << symbol << " not in alphabet" << endl;
+            return -1.0;
         }
         for (auto connection : currentState->weightedNode::getweightedconnections()){
             if (get<1>(connection).find(symbol) != get<1>(connection).end()){
