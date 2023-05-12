@@ -90,6 +90,8 @@ private:
      */
     double checkKarsAnas(vector<DFA> &d, vector<RE> &s) const;
 
+    double checkWNFA(RE &t) const;
+
     /**
      * \brief Magimathical Formula Anas
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");

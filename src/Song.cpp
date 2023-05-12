@@ -521,4 +521,8 @@ Song::Song(DFA &s, vector<int> &param){ //param = {int r_time_stamp, int r_durat
     logs.push_back(log);
 
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+}
+
+double Song::checkWNFA(RE &t) const {
+    return 0;
 };
