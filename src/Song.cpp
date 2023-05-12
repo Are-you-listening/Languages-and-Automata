@@ -457,7 +457,7 @@ void Song::switchConsoleOutput() {
     }
 }
 
-Song::Song(DFA &s){
+Song::Song(DFA &s, vector<int> &param){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
     fInitCheck = this;
     title = s.getStartingState()->name;
 
@@ -466,8 +466,10 @@ Song::Song(DFA &s){
     RE k(s.ToRe(), epsilon);
 
     //RE to song Map
-    for(const char &m: k.re){ //Vanuit gaan dat alle parameters zijn gebruikt? vector Param meegeven?
-        //Which char is timestamp ??? .. ??
+    for(const char &m: k.re){
+        if( (m!='(') && (m!=')') && (m!='+') && (m!='*') ){ //
+            int value = toChar(m);
+        }
     }
 
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
