@@ -6,6 +6,7 @@
 #define TOG_SONG_H
 
 #include <string>
+#include <stack>
 
 #include "DesignByContract.h"
 #include "Utils.h"

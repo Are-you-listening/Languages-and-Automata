@@ -129,3 +129,29 @@ int toInt(const char x){
 
     return index;
 }
+
+vector<vector<int>> makeNotes(const vector<vector<int>> &info){
+     vector<vector<int>> notes;
+
+     int index = 0;
+     while(info[index].size()==0){ //In case some paramaters are not used, we should move on
+         index++;
+     }
+
+     for(int k: info[index]){ //Set first options
+         notes.push_back({k});
+     }
+
+     for(int i=index+1; i<info.size(); i++) { //Add all possible, not yet created, options
+         vector<vector<int>> notes2;
+         for (int m: info[i]) { //Voor elke variatie
+             for(auto s: notes){
+                 s.push_back(m);
+                 notes2.push_back(s);
+             }
+         }
+         notes=notes2;
+     }
+
+    return notes;
+}
