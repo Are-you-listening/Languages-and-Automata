@@ -17,7 +17,7 @@ char toChar(int value){
     }
 
     if (index > 255){
-        cout << "All i want for christmas, is an working function" << endl;
+        cerr << endl << "All i want for christmas, is an working function" << endl;
         throw "All i want for christmas, is an working function";
     }
 
@@ -36,7 +36,7 @@ char toChar(int value){
     s += toChar(note_on*r_note_on);
     s += RoundInstrument(r_instrument);
     s += RoundNote(r_note,1);
-    s += toChar(velocity/3*r_velocity);
+    s += RoundVelocity(r_velocity);
     return s;
 }
 

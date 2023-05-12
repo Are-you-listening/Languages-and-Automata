@@ -116,6 +116,8 @@ private:
      * */
     int status_running = -1;
     int instrument = -1;
+    
+    map<unsigned int, Note*> note_duration;
 };
 
 #endif //MIDIPARSER_MIDIPARSER_H
