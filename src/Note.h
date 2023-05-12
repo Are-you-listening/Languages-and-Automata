@@ -10,6 +10,7 @@
 
 #include "Utils.h"
 #include "DesignByContract.h"
+#include <cmath>
 
 using namespace std;
 

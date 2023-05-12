@@ -26,16 +26,23 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
     string s;
     if(r_time_stamp>1){
         s="(";
-        for(int i=-r_time_stamp;  i!=r_time_stamp+1; i++){
-            if(i<=time_stamp+(r_time_stamp-1)){
-                s+=toChar(div(i,155).rem); //TODO deze div is temp en moet verandert worden, hetzelfde geld voor de andere divs.
-                s+="+";
-            } else {
-                s+=")";
+        for(int i=::lround(time_stamp/1000)-(r_time_stamp-1);  i!=::lround(time_stamp/1000)+(r_time_stamp-1); i++){
+            int temp =i;
+            if (temp < 0){
+                temp = 0;
             }
+            if (temp > 155){
+                temp = 155;
+            }
+            s+=toChar(temp); //TODO deze div is temp en moet verandert worden, hetzelfde geld voor de andere divs.
+            s+="+";
         }
     } else if (r_time_stamp==1){
-        s=toChar(div(time_stamp,155).rem);
+        int temp=lround(time_stamp/1000.0);
+        if(temp>155){
+            temp=155;
+        }
+        s=toChar(temp);
     } else {
         s="";
     }

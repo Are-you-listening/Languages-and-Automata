@@ -16,10 +16,10 @@ int main() {
     json j= e.getJsonNfa();
     NFA n(j);*/
 
-    //Song song("midi_files/Train Rush MIDI.mid");
+    Song song("midi_files/World-1-birabuto-remix-.mid");
     Song song2("midi_files/world-1-birabuto-4-.mid");
-    //song.switchConsoleOutput();
-    //song.similarity(song2, 0, 0);
+    song.switchConsoleOutput();
+    song.similarity(song2, 0, 0);
 
     /*
     Song song3("midi_files/metal_crusher.mid");

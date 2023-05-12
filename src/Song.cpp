@@ -8,7 +8,7 @@
 struct Vectors_Params{
 public:
     //timestamp, note on, instrument, note, velocity, pattern
-    vector<vector<int>> vectors={{0,1,0,1,0,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
+    vector<vector<int>> vectors={{0,1,0,1,5,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
     //vectors={{1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4}};
 
     //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
@@ -244,7 +244,7 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
 
 double Song::similarity(Song &song, bool complement, bool reverse) { // TODO complement en reverse zouden technisch hier niet mogen staan, dit zullen we moeten bespreken.
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-
+    
     string m = getCurrTime()+" Applying " + '"' + "similarity (" + to_string(complement) + ") (" + to_string(reverse) + ")" +  '"' +" on Song: " + title + " and Song: " + song.getTitle() + "\n";
     if(console){cout << m;}
     logs.push_back( m );
