@@ -123,6 +123,13 @@ public:
     Song(const string& path);
 
     /**
+     * \brief Generate a Song from a DFA
+     * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+     * @param s, a random DFA
+     */
+    Song(DFA &s);
+
+    /**
      * \brief Overloader Constructor (Creates a new object) Including new usages of memory!
      * \REQUIRE(a.ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");

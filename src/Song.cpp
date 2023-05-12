@@ -456,3 +456,19 @@ void Song::switchConsoleOutput() {
         console = true;
     }
 }
+
+Song::Song(DFA &s){
+    fInitCheck = this;
+    title = s.getStartingState()->name;
+
+    //State Elimination
+    const char epsilon='*';
+    RE k(s.ToRe(), epsilon);
+
+    //RE to song Map
+    for(const char &m: k.re){ //Vanuit gaan dat alle parameters zijn gebruikt? vector Param meegeven?
+        //Which char is timestamp ??? .. ??
+    }
+
+    ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+};
