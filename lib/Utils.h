@@ -55,4 +55,11 @@ char toChar(int value);
  */
 int toInt(const char x);
 
+/**
+ * \brief Convert 'info' to possible note combinations
+ * @param info { {possible time_stamps}, {possible durations}, {possible notes},  {possible velocity's}, {possible instruments} }
+ * @return a list with the Notes (and its params)
+ */
+vector<vector<int>> makeNotes(const vector<vector<int>> &info);
+
 #endif

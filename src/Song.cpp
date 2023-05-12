@@ -463,10 +463,44 @@ Song::Song(DFA &s, vector<int> &param){ //param = {int r_time_stamp, int r_durat
     const char epsilon='*';
     RE k(s.ToRe(), epsilon);
 
-    //RE to song Map
-    for(const char &m: k.re){
-        if( (m!='(') && (m!=')') && (m!='+') && (m!='*') ){ //
-            int value = toChar(m);
+    int index = 0; //Index ptr van param
+    stack<char> tempstack;
+
+    vector<vector<int>> info; //{ {possible time_stamps}, {possible durations}, {possible notes},  {possible velocity's}, {possible instruments} }
+    vector<int> options = {}; //Posssible values
+
+    //For each element of the RE
+    for(const char &m: k.re) {
+        if (index == param.size()) { //Reached all params, ready to make objects
+            //Make notes
+            vector<vector<int>> notes = makeNotes(info);
+
+            for(vector<int> &m: notes){ //Create the actual objects
+                Note* e = new Note(m[0],m[1],m[2],m[3],m[4]);
+                note_map[{m[1],m[0]}].push_back(e);
+            }
+
+            index = 0; //Reset Index
+        }
+
+        if (param[index] == 0) { //If param not used
+            index++;
+            info.push_back({0}); //Add Nothing
+        }else { //Param is used
+            if(m=='('){ //Begin of Regex
+                tempstack.push(m);
+                continue;
+            }else if(m==')'){ //Ended 1 character
+                index++;
+                info.push_back(options); //Push back options
+                options.clear(); //Reset options
+                tempstack.pop();
+            }else{
+                options.push_back(toChar(m));
+                if(tempstack.empty()){
+                    index++;
+                }
+            }
         }
     }
 
