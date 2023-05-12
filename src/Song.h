@@ -90,6 +90,11 @@ private:
      */
     double checkKarsAnas(vector<DFA> &d, vector<RE> &s) const;
 
+    /**
+     * \brief Use the WNFA to calculate a similarity %
+     * @param t
+     * @return
+     */
     double checkWNFA(RE &t) const;
 
     /**
