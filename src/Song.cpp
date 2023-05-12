@@ -8,11 +8,11 @@
 struct Vectors_Params{
 public:
     //timestamp, note on, instrument, note, velocity, pattern
-    //vector<vector<int>> vectors={{0,1,0,1,0,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
+    vector<vector<int>> vectors={{0,1,0,1,0,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
     //vectors={{1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4}};
 
-    vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
-                                 {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3}};
+    //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
+    //                             {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3}};
 
 };
 Vectors_Params PARAMS;
@@ -333,6 +333,7 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
 
     pair<vector<RE>,vector<RE>> toCheck2 = sort(toCheck);
     d = convert(toCheck.first,complement,reverse);
+    cout << toCheck2.first.size() << " " << toCheck2.second.size() << endl;
     results.push_back( checkTibo(d , toCheck.second ) );
 
     //Check Kars

@@ -92,9 +92,15 @@ bool MidiParser::readComponent() {
         * */
         unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
         bool note_on = basic_data.getByte(1) != 0;
-        addNote(time, note_on, new Note(time, note_on,
-                                        basic_data.getByte(0), basic_data.getByte(1),
-                                        instrument));
+        Note* current_note = new Note(time, note_on, basic_data.getByte(0), basic_data.getByte(1), instrument);
+        addNote(time, note_on, current_note);
+        if (note_on){
+            note_duration[(instrument << 8) + basic_data.getByte(0)] = current_note;
+        }else{
+            Note* n = note_duration.at((instrument << 8) + basic_data.getByte(0));
+            unsigned int duration = current_note->getTimeStamp() - n->getTimeStamp();
+            n->setDuration(duration);
+        }
 
     }else if (basic_data.equalsHex("ff", 0)){
         /**
@@ -209,10 +215,16 @@ bool MidiParser::readComponent() {
         bool note_on = velocity.getValue() != 0 && basic_data.getNibble(0, true) == 9;
         status_running = basic_data.getNibble(1, true);
         //cout << "note " << basic_data.toHex() << " " << time << "v: " << velocity.getValue()<< "i: "<< link_channel[basic_data.getNibble(1, false)] << endl;
-        addNote(time, note_on, new Note(time, note_on,
-                                        basic_data.getByte(1), velocity.getValue(),
-                                        link_channel[basic_data.getNibble(0, false)]));
+        Note* current_note =  new Note(time, note_on, basic_data.getByte(1), velocity.getValue(), link_channel[basic_data.getNibble(0, false)]);
+        addNote(time, note_on, current_note);
         instrument = link_channel[basic_data.getNibble(0, false)];
+        if (note_on){
+            note_duration[(instrument << 8) + basic_data.getByte(1)] = current_note;
+        }else{
+            Note* n = note_duration.at((instrument << 8) + basic_data.getByte(1));
+            unsigned int duration = current_note->getTimeStamp() - n->getTimeStamp();
+            n->setDuration(duration);
+        }
 
     }else{
         cout << "error basic " << basic_data.toHex()<< endl;

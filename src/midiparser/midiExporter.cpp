@@ -19,7 +19,7 @@ void midiExporter::changeFormat() {
 
     for (auto entry: note_map){
         for(Note* n: entry.second){
-            addNote(n);
+            addNote(n, entry.first.second);
         }
     }
 
@@ -37,7 +37,7 @@ void midiExporter::changeFormat() {
 
 }
 
-void midiExporter::addNote(Note* note) {
+void midiExporter::addNote(Note* note, bool note_on) {
     REQUIRE(channel_counter <= 16 ,"out of range");
     if (instrument_map.find(note->getInstrument()) == instrument_map.end()){
          instrument_to_channel[note->getInstrument()] = channel_counter;
@@ -108,6 +108,7 @@ void midiExporter::createTracks() {
                 sub_buffer.push_back(note_byte);
                 sub_buffer.push_back(velocity);
             }
+             */
             //cout << "note " << n->getNoteValue() << " " << delta << endl;
 
         }

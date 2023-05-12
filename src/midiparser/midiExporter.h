@@ -23,7 +23,7 @@ public:
     midiExporter(const string& path, const map<pair<unsigned int, bool>, vector<Note *>>& note_map);
 private:
     void changeFormat();
-    void addNote(Note * note);
+    void addNote(Note * note, bool note_on);
 
     map<pair<unsigned int, bool>, vector<Note *>> note_map;
     map<unsigned int, vector<pair<Note *, unsigned int>>> instrument_map;

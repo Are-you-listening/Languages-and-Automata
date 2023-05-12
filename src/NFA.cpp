@@ -253,10 +253,12 @@ WNFA NFA::toWNFA(){
     WNFA result = WNFA();
     result.alfabet = Alphabet;
     
+    // maak de staten van de WNFA aan
     for (pair<string, State*> state_pair : Q){
         result.addState(state_pair.first, state_pair.second->getStarting(), state_pair.second->getAnEnd());
     }
     
+    // voeg de transities uit de NFA toe aan de WNFA
     for (weightedNode* state : result.states){
         for (string temp : result.alfabet){
             char symbol = temp[0];
@@ -266,9 +268,12 @@ WNFA NFA::toWNFA(){
         }
     }
 
+    // voeg nieuwe transities toe die enkel in de WNFA aanwezig zijn
     for (string temp : result.alfabet){
         char symbol = temp[0];
+        
         result.startState->addconnection(result.startState, symbol, 0);
+        
         for (weightedNode* endstate : result.endStates){
             endstate->addconnection(endstate, symbol, 0);
         }
