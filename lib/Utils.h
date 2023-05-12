@@ -27,8 +27,18 @@ bool FileIsEmpty(const std::string filename);
 
 bool FileCompare(const std::string leftFileName, const std::string rightFileName);
 
+/**
+ * \brief Merge 2 vectors and remove duplicates
+ * @param vec1
+ * @param vec2
+ * @return
+ */
 vector<string> MergeVectors(vector<string> vec1, vector<string> vec2);
 
+/**
+ * \brief Export Curr time to String
+ * @return
+ */
 string getCurrTime();
 
 /**
