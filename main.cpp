@@ -16,12 +16,12 @@ int main() {
     json j= e.getJsonNfa();
     NFA n(j);*/
 
-    
-    Song song("midi_files/world-1-birabuto-remix-.mid");
+    /*
+    Song song("midi_files/world-1-birabuto-remix-.mid"); //TODO iets verandert output boven converting Regex's to DFA's en ik weet niet zo goed voor wat die waarde nu staat, zeer raar.
     Song song2("midi_files/world-1-birabuto-4-.mid");
     song.switchConsoleOutput();
     song.similarity(song2, 0, 0);
-     
+     */
 
     /*
     Song song3("midi_files/metal_crusher.mid");
@@ -57,7 +57,6 @@ int main() {
     double weight =  w.weightedaccepts("abcd");
      */
     
-    /*
     ifstream Filelist("filelist.txt");
     ifstream Filelist2("filelist.txt");
     string c;
@@ -88,6 +87,5 @@ int main() {
         delete song;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
-     */
     return 0;
 }
