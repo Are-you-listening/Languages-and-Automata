@@ -56,8 +56,8 @@ private:
     int note_value=0;
     unsigned int time_stamp;
     int velocity;
-    bool note_on;
-
+    int duration=-1;
+    
     string RoundInstrument(int r_instrument) const;
     string RoundNote(int r_note, int r_octaaf) const;
     string RoundTime_stamp(int r_time_stamp) const;
