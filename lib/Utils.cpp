@@ -96,3 +96,29 @@ string getCurrTime(){
     std::string str(buffer);
     return "["+str+"]";
 }
+
+char toChar(int value){
+    int index = value;
+
+    index += 48;
+    if(index > 122){
+        index += 51;
+    }
+
+    if (index > 255){
+        cout << "All i want for christmas, is an working function" << endl;
+        throw "All i want for christmas, is an working function";
+    }
+
+    if (index < 48){
+        throw "dwdw";
+    }
+
+    char c = (char)(index);
+
+    return c;
+}
+
+int toInt(char x){
+
+}
