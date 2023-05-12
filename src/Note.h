@@ -17,12 +17,12 @@ public:
     /**
      * \brief Simple Constructer
      * @param time_stamp
-     * @param note_on
+     * @param duration
      * @param channel
      * @param note
      * @param velocity
      */
-    Note(unsigned int time_stamp, bool note_on, int note, int velocity, unsigned int instrument);
+    Note(unsigned int time_stamp, int duration, int note, int velocity, unsigned int instrument);
 
     /**
      * \brief Constructor to build Object Copy
@@ -33,13 +33,13 @@ public:
     /**
      * \brief Convert a NoteObject to a Regex given by the selected inputparamaters (if @param=true, add to regex)
      * @param r_time_stamp
-     * @param r_note_on
+     * @param r_duration
      * @param r_channel
      * @param r_note
      * @param r_velocity
      * @return
      */
-    [[nodiscard]] string getRE(int r_time_stamp, int r_note_on, int r_instrument, int r_note, int r_velocity, int octaaf) const;
+    [[nodiscard]] string getRE(int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf) const;
 
     int getNoteValue() const;
 
@@ -49,7 +49,9 @@ public:
 
     int getVelocity() const;
 
-    bool isNoteOn() const;
+    int getDuration() const;
+
+    void setDuration(int duration);
 
 private:
     unsigned int instrument;
@@ -61,7 +63,7 @@ private:
     string RoundInstrument(int r_instrument) const;
     string RoundNote(int r_note, int r_octaaf) const;
     string RoundTime_stamp(int r_time_stamp) const;
-    string RoundNote_on(int r_note_on) const;
+    string RoundDuration(int r_duration) const;
     string RoundVelocity(int r_velocity) const;
 };
 #endif //MIDIPARSER_NOTE_H

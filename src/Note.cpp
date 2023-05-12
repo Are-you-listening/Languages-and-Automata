@@ -4,8 +4,8 @@
 
 #include "Note.h"
 
-Note::Note(unsigned int time_stamp, bool note_on, int note,  int velocity, unsigned int instrument):
-note_value(note), instrument(instrument), note_on(note_on), velocity(velocity), time_stamp(time_stamp) {
+Note::Note(unsigned int time_stamp, int duration, int note,  int velocity, unsigned int instrument):
+note_value(note), instrument(instrument), duration(duration), velocity(velocity), time_stamp(time_stamp) {
 }
 
 char toChar(int value){
@@ -30,10 +30,10 @@ char toChar(int value){
     return c;
 }
 
-[[nodiscard]] string Note::getRE(int r_time_stamp, int r_note_on, int r_instrument, int r_note, int r_velocity, int octaaf) const{
+[[nodiscard]] string Note::getRE(int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf) const{
     string s = "";
     s += RoundTime_stamp(r_time_stamp);
-    s += toChar(note_on*r_note_on);
+    s += RoundDuration(r_duration);
     s += RoundInstrument(r_instrument);
     s += RoundNote(r_note,1);
     s += RoundVelocity(r_velocity);
@@ -64,12 +64,12 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
     return s;
 }
 
-string Note::RoundNote_on(int r_note_on) const{ //TODO hier wordt nog geen rekening gehouden met range
-    string s; // TODO note_on wordt hierbehanld als duration. naamgeving moet nog wijziginen
-    if(r_note_on>1){
+string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rekening gehouden met range
+    string s; 
+    if(r_duration>1){
         s="(";
-        for(int i=note_on-(r_note_on-1);  i<=note_on+(r_note_on-1); i++){
-            if(i<=note_on+(r_note_on-1)-1){
+        for(int i=duration-(r_duration-1);  i<=duration+(r_duration-1); i++){
+            if(i<=duration+(r_duration-1)-1){
                 s+=toChar(div(i,155).rem);
                 s+="+";
             } else {
@@ -77,8 +77,8 @@ string Note::RoundNote_on(int r_note_on) const{ //TODO hier wordt nog geen reken
             }
         }
     } else{
-        //s=toChar(div(note_on,155).rem);
-        s = toChar(note_on);
+        s=toChar(div(duration,155).rem);
+        //s = toChar(duration);
     }
     return s;
 }
@@ -155,7 +155,7 @@ string Note::RoundNote(int r_note, int r_octaaf) const { // TODO deze functie mo
 
 Note::Note(const Note &n) {
     this->time_stamp = n.time_stamp;
-    this->note_on = n.note_on;
+    this->duration = n.duration;
     this->note_value = n.note_value;
     this->velocity = n.velocity;
     this->instrument = n.instrument;
@@ -173,8 +173,8 @@ int Note::getVelocity() const {
     return velocity;
 }
 
-bool Note::isNoteOn() const {
-    return note_on;
+int Note::getDuration() const {
+    return duration;
 }
 
 void Note::setDuration(int duration) {

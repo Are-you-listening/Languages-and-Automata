@@ -91,7 +91,8 @@ void midiExporter::createTracks() {
             sub_buffer.insert(sub_buffer.end(), delta_buffer.begin(), delta_buffer.end());
 
             //ByteX delta_time(delta, count); // delta time van control message
-            if (n->isNoteOn()){
+            /*
+            if (n->getDuration()){
                 ByteX note_on_byte(144+channel, 1); //set channel to instrument
                 ByteX note_byte(n->getNoteValue(), 1);
                 ByteX velocity(n->getVelocity(), 1);
