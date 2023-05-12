@@ -129,6 +129,14 @@ public:
     Song(DFA &s);
     
     /**
+     * \brief Generate a Song from a DFA , sets the title to the DFA's StartState
+     * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+     * @param s, a random DFA
+     * @param param, the list with used paramaters for Construction of Note Objects
+     */
+    Song(DFA &s, vector<int> &param);
+
+    /**
      * \brief Overloader Constructor (Creates a new object) Including new usages of memory!
      * \REQUIRE(a.ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");

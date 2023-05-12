@@ -31,4 +31,18 @@ vector<string> MergeVectors(vector<string> vec1, vector<string> vec2);
 
 string getCurrTime();
 
+/**
+ * \brief Convert a value to an unique charachter
+ * @param value
+ * @return
+ */
+char toChar(int value);
+
+/**
+ * \brief Decode a character to it's original integer value
+ * @param x
+ * @return
+ */
+int toInt(const char x);
+
 #endif
