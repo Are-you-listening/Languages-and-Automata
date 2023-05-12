@@ -16,10 +16,12 @@ int main() {
     json j= e.getJsonNfa();
     NFA n(j);*/
 
-    Song song("midi_files/World-1-birabuto-remix-.mid");
+    
+    Song song("midi_files/world-1-birabuto-remix-.mid");
     Song song2("midi_files/world-1-birabuto-4-.mid");
     song.switchConsoleOutput();
     song.similarity(song2, 0, 0);
+     
 
     /*
     Song song3("midi_files/metal_crusher.mid");
@@ -54,7 +56,7 @@ int main() {
     WNFA w("tiboEnv/WNFA_balance_test.json");
     double weight =  w.weightedaccepts("abcd");
      */
-
+    
     /*
     ifstream Filelist("filelist.txt");
     ifstream Filelist2("filelist.txt");
@@ -86,6 +88,6 @@ int main() {
         delete song;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
-    */
+     */
     return 0;
 }
