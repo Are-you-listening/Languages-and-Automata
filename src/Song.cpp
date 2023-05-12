@@ -456,19 +456,31 @@ void Song::switchConsoleOutput() {
 }
 
 Song::Song(DFA &s, vector<int> &param){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
-    fInitCheck = this;
-    title = s.getStartingState()->name;
-
-    //State Elimination
-    const char epsilon='*';
-    RE k(s.ToRe(), epsilon);
-
     int index = 0; //Index ptr van param
-    stack<char> tempstack;
-
+    stack<char> tempstack; //Helper variable
     vector<vector<int>> info; //{ {possible time_stamps}, {possible durations}, {possible notes},  {possible velocity's}, {possible instruments} }
     vector<int> options = {}; //Posssible values
 
+    //Start up
+    fInitCheck = this;
+    title = s.getStartingState()->name;
+
+    string log = getCurrTime() + " Creating Song Object from your perfect DFA...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
+    //State Elimination
+    log = getCurrTime() + " Eliminating States...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
+    const char epsilon='*';
+    RE k(s.ToRe(), epsilon);
+
+    //RE to Song
+    log = getCurrTime() + " Started decoding...\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
     //For each element of the RE
     for(const char &m: k.re) {
         if (index == param.size()) { //Reached all params, ready to make objects
@@ -503,6 +515,10 @@ Song::Song(DFA &s, vector<int> &param){ //param = {int r_time_stamp, int r_durat
             }
         }
     }
+
+    log = getCurrTime() + " Construction Finished!\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
 
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 };
