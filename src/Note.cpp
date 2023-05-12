@@ -5,7 +5,7 @@
 #include "Note.h"
 
 Note::Note(unsigned int time_stamp, int duration, int note,  int velocity, unsigned int instrument):
-        note_value(note), instrument(instrument), duration(duration), velocity(velocity), time_stamp(time_stamp) {
+note_value(note), instrument(instrument), duration(duration), velocity(velocity), time_stamp(time_stamp) {
 }
 
 char toChar(int value){
@@ -65,7 +65,7 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
 }
 
 string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rekening gehouden met range
-    string s;
+    string s; 
     if(r_duration>1){
         s="(";
         for(int i=duration-(r_duration-1);  i<=duration+(r_duration-1); i++){

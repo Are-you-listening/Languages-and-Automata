@@ -229,7 +229,6 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
 
             if(b){
                 succes++;
-
                 break; //Idea Anas
             }
         }
@@ -255,7 +254,6 @@ double Song::similarity(Song &song, bool complement, bool reverse) { // TODO com
     vector<vector<double>> results;
     
     //Do different checks on different Regex's
-
     for(const vector<int> &v: PARAMS.vectors){
         //No roundings
         song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]);
@@ -444,8 +442,7 @@ void Song::save(const string &path) {
     logs.push_back(log);
 
     midiExporter exp(path, note_map);
-
-
+    
     //ENSURE FILEXISTS
 }
 
