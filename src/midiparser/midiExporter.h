@@ -10,6 +10,7 @@
 #include <vector>
 #include <map>
 #include "ByteX.h"
+#include "tuple"
 using namespace std;
 class midiExporter {
 public:
@@ -26,7 +27,7 @@ private:
     void addNote(Note * note, bool note_on);
 
     map<pair<unsigned int, bool>, vector<Note *>> note_map;
-    map<unsigned int, vector<pair<Note *, unsigned int>>> instrument_map;
+    map<unsigned int, vector<tuple<Note*, unsigned int,bool>>> instrument_map;
     map<unsigned int, unsigned int> instrument_to_channel;
 
     void createTracks();

@@ -9,6 +9,8 @@
 #include "NFA.h"
 
 int main() {
+    Song song("midi_files/world-1-birabuto-4-.mid");
+    song.save("out.mid");
     /*
     Song song("midi_files/world-1-birabuto-4-.mid");
     RE r = song.toRegex(0, 0, 1, 1, 0, 1)[0];
@@ -56,7 +58,7 @@ int main() {
     WNFA w("tiboEnv/WNFA_balance_test.json");
     double weight =  w.weightedaccepts("abcd");
      */
-    
+    /*
     ifstream Filelist("filelist.txt");
     ifstream Filelist2("filelist.txt");
     string c;
@@ -87,5 +89,6 @@ int main() {
         delete song;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
+     */
     return 0;
 }

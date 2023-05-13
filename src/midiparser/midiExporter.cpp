@@ -51,7 +51,7 @@ void midiExporter::addNote(Note* note, bool note_on) {
     unsigned int delta_time = changed_time - last_timestamp[note->getInstrument()];
     last_timestamp[note->getInstrument()] = changed_time;
 
-    instrument_map[note->getInstrument()].emplace_back(note, delta_time);
+    instrument_map[note->getInstrument()].emplace_back(note, delta_time, note_on);
 }
 
 void midiExporter::createTracks() {
@@ -72,8 +72,9 @@ void midiExporter::createTracks() {
 
         vector<ByteX> sub_buffer;
         for(auto note: entry.second){
-            Note* n = note.first;
-            unsigned int delta = note.second;
+            Note* n = get<0>(note);
+            unsigned int delta = get<1>(note);
+            bool note_on = get<2>(note);
             unsigned int temp_delta = delta;
             unsigned int count = 1;
 
@@ -91,8 +92,8 @@ void midiExporter::createTracks() {
             sub_buffer.insert(sub_buffer.end(), delta_buffer.begin(), delta_buffer.end());
 
             //ByteX delta_time(delta, count); // delta time van control message
-            /*
-            if (n->getDuration()){
+
+            if (note_on){
                 ByteX note_on_byte(144+channel, 1); //set channel to instrument
                 ByteX note_byte(n->getNoteValue(), 1);
                 ByteX velocity(n->getVelocity(), 1);
@@ -109,7 +110,7 @@ void midiExporter::createTracks() {
                 sub_buffer.push_back(note_byte);
                 sub_buffer.push_back(velocity);
             }
-             */
+
             //cout << "note " << n->getNoteValue() << " " << delta << endl;
 
         }
