@@ -19,26 +19,21 @@ void Genre::addGenre(Song *&s) {
 
 DFA Genre::toProductAutomata() {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    vector<DFA> temp;
 
     string log = getCurrTime()+ " Converting to ProductAutomata..\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
     //Loop over each Song
-    for(Song* s: members) {
-        vector<RE> t = s->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
+    for(int i = ProductAutomata.first; i<members.size(); i++) {
+        vector<RE> t = members[i]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
         ENFA a = t[0].toENFA();
-        DFA m = a.toDFA();
-        //m = m.minimize();
-        if (temp.size() == 0) {
-            temp.push_back(m);
-        } else {
-            DFA l = temp[0];
-            temp[0] = DFA(l, m, 0); //Make or extend ProductAutomata
-        }
+        DFA s = a.toDFA();
+        s = s.minimize();
+        ProductAutomata.second = DFA(ProductAutomata.second, s, 0); //Extend ProductAutomata
     }
-    return temp[0];
+    ProductAutomata.first = members.size();
+    return ProductAutomata.second;
 }
 
 bool Genre::inGenre(Song *&s) {
@@ -66,30 +61,25 @@ bool Genre::inGenre(Song *&s) {
 Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name) {
     param = params;
 
-    pair<vector<RE> , vector<RE>> toCheck = {s->toRegex(param[0],param[1],param[2],param[3],param[4],param[5]) , k->toRegex(param[0],param[1],param[2],param[3],param[4],param[5])};
-    vector<double> temp = s->similar( toCheck , 0 ,0); //Run Similarity Check
-
-    double result = 0;
-    for(double &m: temp){ //TODO: apply Magimathical formula
-        result+=m;
-    }
-
     //Set Data
-    limit = result/temp.size();
     members={s,k};
+    ProductAutomata = {0, DFA() };
     this->name = name;
     fInitCheck = this;
-    string log = getCurrTime() + " Created the new Genre: "+name+" , constructed on a "+to_string(limit*100)+" match %.\n\n";
+
+    ProductAutomata = {2,toProductAutomata()}; //Construct First ProductAutomata
+
+    string log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}
     logs.push_back(log);
+
     ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
-Genre::Genre(const vector<Song *> &members, double limit, const vector<int> &param, string &name) : members(members),
-                                                                                            limit(limit),
+Genre::Genre(const vector<Song *> &members,const vector<int> &param, string &name) : members(members),
                                                                                             param(param), name(name) {
     fInitCheck=this;
-    string log = getCurrTime() + " Loaded the new Genre: "+name+" , based on a "+to_string(limit)+" match %.\n\n";
+    string log = getCurrTime() + " Loaded the Genre: "+name+".\n\n"; //TODO Remove this constructor, not used anymore
     if(console){cout << log;}
     logs.push_back(log);
     ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");

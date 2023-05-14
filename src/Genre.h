@@ -13,6 +13,11 @@
 class Genre {
 private:
     /**
+     * \brief The current ProductAutomate build up from the existing members (pair.first = members.size)
+     */
+     pair<int,DFA> ProductAutomata;
+
+    /**
      * \brief Toggle the Console Output
      */
      bool console = false;
@@ -36,11 +41,6 @@ private:
      * \brief Contains the current members of this Genre
      */
     vector<Song*> members;
-
-    /**
-     * \brief The minimum % of Similarity a newly given Song has to have with the Genre to join it
-     */
-    double limit;
 
     /**
      * \brief The paramaters (for Similarity) this genre is build on
@@ -77,7 +77,7 @@ public:
      * @param limit
      * @param param
      */
-    Genre(const vector<Song *> &members, double limit, const vector<int> &param, string &name);
+    Genre(const vector<Song *> &members,const vector<int> &param, string &name);
 
     /**
      * \brief Create a Genre based on 2 Song's and a given set of paramaters.
