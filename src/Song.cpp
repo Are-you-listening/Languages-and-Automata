@@ -493,11 +493,7 @@ void Song::save(const string &path) {
 
 void Song::switchConsoleOutput() {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    if(console){
-        console = false;
-    }else{
-        console = true;
-    }
+    console = !console;
 }
 
 Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}

@@ -132,11 +132,7 @@ void Genre::setName(const string &name) {
 
 void Genre::switchConsoleOutput() {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    if(console){
-        console = false;
-    }else{
-        console = true;
-    }
+    console = !console;
 }
 
 DFA Genre::getProductAutomata() const {
