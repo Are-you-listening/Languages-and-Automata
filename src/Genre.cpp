@@ -65,7 +65,7 @@ bool Genre::inGenre(Song *&s) {
 Genre::Genre(Song *&s, Song *&k, const vector<int> &params) {
     param = params;
 
-    pair<vector<RE> , vector<RE>> toCheck = {s->toRegex(param[0],param[1],param[2],param[3],param[4],-1) , k->toRegex(param[0],param[1],param[2],param[3],param[4],-1)};
+    pair<vector<RE> , vector<RE>> toCheck = {s->toRegex(param[0],param[1],param[2],param[3],param[4],-1) , k->toRegex(param[0],param[1],param[2],param[3],param[4],-1)}; //TODO de -1 zorgt voor en infinte loop
     vector<double> temp = s->similar( toCheck , 0 ,0); //Run Similarity Check
 
     double result = 0;

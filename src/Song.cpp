@@ -8,14 +8,14 @@
 struct Vectors_Params{
 public:
     //timestamp, note on, instrument, note, velocity, pattern
-    //vector<vector<int>> vectors={{1,1,1,1,0,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
+    vector<vector<int>> vectors={{1,1,1,1,0,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
     //vectors={{1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4}};
 
     //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
     //                             {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3}};
-    vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
-                                {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3},
-                                 {1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4},{0,1,0,1,5,1}};
+    //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
+    //                            {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3},
+    //                             {1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4},{0,1,0,1,5,1}};
 };
 Vectors_Params PARAMS;
 
@@ -157,7 +157,7 @@ vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
         if (it->first.second){
             for(Note* note: it->second){
-                string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity, 0);
+                string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity, pattern);
                 temp+=z;
                 count++;
                 if(count==pattern){
@@ -262,9 +262,10 @@ double Song::similarity(Song &song, bool complement, bool reverse) { // TODO com
     logs.push_back( m );
 
     double result;
-    double WNFAresult;
+    double WNFAresult; // TODO WNFA result moet nog geimplemeteerd worden
     bool succes = false;
     vector<vector<double>> results;
+    vector<vector<double>> WNFAresults;
     
     //Do different checks on different Regex's
     for(const vector<int> &v: PARAMS.vectors){
