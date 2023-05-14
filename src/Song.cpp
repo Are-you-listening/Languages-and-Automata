@@ -8,7 +8,7 @@
 struct Vectors_Params{
 public:
     //timestamp, note on, instrument, note, velocity, pattern
-    vector<vector<int>> vectors={{0,1,0,1,5,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
+    vector<vector<int>> vectors={{100,10,10,3,100,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
     //vectors={{1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4}};
 
     //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
@@ -184,6 +184,10 @@ vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b
 
 double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+    if(d.size()>s.size()){ // TODO dit moet aangepast worden.
+        return 0;
+    }
+    
     REQUIRE(d.size()<=s.size(), "Indices should be always valid");
 
     bool succeeded = false;
@@ -258,6 +262,7 @@ double Song::similarity(Song &song, bool complement, bool reverse) { // TODO com
     logs.push_back( m );
 
     double result;
+    double WNFAresult;
     bool succes = false;
     vector<vector<double>> results;
     
