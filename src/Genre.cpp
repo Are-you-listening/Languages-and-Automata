@@ -29,10 +29,12 @@ DFA Genre::toProductAutomata() {
         vector<RE> t = members[i]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
         ENFA a = t[0].toENFA();
         DFA s = a.toDFA();
-        //s = s.minimize();
         ProductAutomata.second = DFA(ProductAutomata.second, s, 0); //Extend ProductAutomata
     }
     ProductAutomata.first = members.size();
+
+    ProductAutomata.second.minimize(); //So we will use less space
+
     return ProductAutomata.second;
 }
 
@@ -78,7 +80,7 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     ENFA a2 = t2[0].toENFA();
     DFA z2 = a.toDFA();
 
-    ProductAutomata = {2,DFA(z,z2,0)}; //Construct First ProductAutomata
+    ProductAutomata = {2,DFA(z,z2,0).minimize()}; //Construct First ProductAutomata
 
     string log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}
