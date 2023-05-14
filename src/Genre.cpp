@@ -29,7 +29,7 @@ DFA Genre::toProductAutomata() {
         vector<RE> t = members[i]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
         ENFA a = t[0].toENFA();
         DFA s = a.toDFA();
-        s = s.minimize();
+        //s = s.minimize();
         ProductAutomata.second = DFA(ProductAutomata.second, s, 0); //Extend ProductAutomata
     }
     ProductAutomata.first = members.size();
@@ -126,4 +126,8 @@ void Genre::switchConsoleOutput() {
     }else{
         console = true;
     }
+}
+
+DFA Genre::getProductAutomata() const {
+    return ProductAutomata.second;
 }
