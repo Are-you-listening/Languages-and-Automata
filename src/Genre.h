@@ -18,7 +18,7 @@ private:
     /**
      * \brief Toggle the Console Output
      */
-     bool console = false;
+     bool console;
 
     /**
      * \brief The name of this genre
@@ -84,7 +84,7 @@ public:
      * @param k
      * @param param
      */
-    Genre(Song* &s, Song* &k, const vector<int> &params, const string &name);
+    Genre(Song* &s, Song* &k, const vector<int> &params, const string &name, bool console);
 
     /**
      * \brief Output results to a .txt file

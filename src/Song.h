@@ -27,7 +27,7 @@ private:
     /**
      * \brief Toggle the Console Output
      */
-    bool console = false;
+    bool console;
 
     /**
      * \brief Title of the song
@@ -116,7 +116,7 @@ public:
      * \brief Constructor
      * @param noteMap
      */
-    Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap);
+    Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap, bool console);
 
     /**
      * \brief Empty Constructor
@@ -130,21 +130,15 @@ public:
      * \REQUIRE(FileExists(path) , "Given file not found");
      * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      */
-    Song(const string& path);
-    
-    /**
-     * \brief Generate a Song from a DFA
-     * @param s, a random DFA
-     */
-    Song(DFA &s);
-    
+    Song(const string& path, bool console);
+
     /**
      * \brief Generate a Song from a DFA , sets the title to the DFA's StartState
      * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * @param s, a random DFA
      * @param param, the list with used paramaters for Construction of Note Objects
      */
-    Song(DFA &s, vector<int> &param);
+    Song(DFA &s, vector<int> &param, bool console);
 
     /**
      * \brief Overloader Constructor (Creates a new object) Including new usages of memory!

@@ -58,10 +58,11 @@ bool Genre::inGenre(Song *&s) {
     return succes;
 }
 
-Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name) {
+Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, bool console) {
     REQUIRE(params.size()==6, "Params doesn't has all the paramaters");
 
     //Set Data
+    this->console = console;
     param = params;
     members={s,k};
     this->name = name;

@@ -18,20 +18,21 @@ int main() {
     NFA n(j);*/
 
     /*
-    Song song("midi_files/world-1-birabuto-remix-.mid");
-    Song song2("midi_files/world-1-birabuto-4-.mid");
-    song.switchConsoleOutput();
-    song.similarity(song2, 0, 0);
-     */
+    Song* song = new Song("midi_files/world-1-birabuto-remix-.mid");
+    Song* song2 = new Song("midi_files/world-1-birabuto-4-.mid");
+    //song->switchConsoleOutput();
+    //song->similarity(*song2, 0, 0);
 
-    /*
-    Song song3("midi_files/metal_crusher.mid");
-    Song song4("midi_files/metal_crusher.mid");
-    song3.setTitle("metal_crusher");
-    song3.switchConsoleOutput();
+    Song* song3 = new Song("midi_files/metal_crusher.mid");
+    Song* song4 = new Song("midi_files/metal_crusher.mid");
+    song3->setTitle("metal_crusher");
 
-    cout << song3.similarity(song4,0,0) << endl;
-    song3.output();*/
+    Genre k = Genre(song3, song4, {1,1,1,1,1},"Test");
+
+    k.switchConsoleOutput();
+    k.output();
+    k.addGenre(song4);
+    song3.switchConsoleOutput();*/
 
 
 
@@ -66,20 +67,18 @@ int main() {
     string c2="midi_files/";
     vector<Song*> songs;
     while(getline(Filelist,c)){
-        Song* song = new Song(c2+c);
-        song->switchConsoleOutput();
-        while(getline(Filelist2,c3)){ 
+        Song* song = new Song(c2+c,1);
+        while(getline(Filelist2,c3)){
             if(find(doubleComparison.begin(), doubleComparison.end(), make_pair(c,c3))!=doubleComparison.end()){
                 continue;
             } else {
                 doubleComparison.emplace_back(c,c3);
             }
-            Song* song2 = new Song(c2+c3);
+            Song* song2 = new Song(c2+c3,0);
             vector<int> V={1,1,1,1,0,1};
-            Genre genre = Genre(song,song2,V,c+"_compare_"+c3);
-            genre.switchConsoleOutput();
+            Genre genre = Genre(song,song2,V,c+"_compare_"+c3,1);
             DFA genreDFA=genre.getProductAutomata();
-            Song generated=Song(genreDFA,V);
+            Song generated=Song(genreDFA,V,0);
             string path="midi_output/"+c+"_compare_"+c3;
             generated.save(path);
             cout << "compare " << c << " with " << c3 << endl;

@@ -61,7 +61,7 @@ bool Song::ProperlyInitialized() const {
     return false;
 }
 
-Song::Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap) : note_map(noteMap) {
+Song::Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap, bool console) : note_map(noteMap), console(console) {
     fInitCheck = this;
     title = "Are you listening?";
 
@@ -73,6 +73,7 @@ Song::Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap) : note_
 }
 
 Song::Song() {
+    console = false;
     fInitCheck = this;
     title = "Are you listening?";
 
@@ -83,7 +84,7 @@ Song::Song() {
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
-Song::Song(const string &path) {
+Song::Song(const string &path, bool console) : console(console) {
     REQUIRE(FileExists(path) , "Given file not found");
 
     fInitCheck=this;
@@ -124,6 +125,7 @@ Song &Song::operator=(const Song &a) {
         map2[it->first]=temp;
     }
 
+    console = a.console;
     title = a.title;
     logs = a.logs;
     note_map = map2;
@@ -498,7 +500,7 @@ void Song::switchConsoleOutput() {
     }
 }
 
-Song::Song(DFA &s, vector<int> &param){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
+Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
     int index = 0; //Index ptr van param
     stack<char> tempstack; //Helper variable
     vector<vector<int>> info; //{ {possible time_stamps}, {possible durations}, {possible notes},  {possible velocity's}, {possible instruments} }
