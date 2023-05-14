@@ -57,14 +57,14 @@ string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rek
         s="(";
         for(int i=duration-(r_duration-1);  i<=duration+(r_duration-1); i++){
             if(i<=duration+(r_duration-1)-1){
-                s+=toChar(div(i,155).rem);
+                s+=toChar(lround((atan(1.5*i)/1.5)*155));
                 s+="+";
             } else {
                 s[s.size()-1] = ')';
             }
         }
     } else if (r_duration==1){
-        s=toChar(div(duration,155).rem);
+        s=toChar(lround((atan(1.5*duration)/1.5)*155));
         //s = toChar(duration);
     }else{
         s = "";
