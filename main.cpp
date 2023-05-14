@@ -5,6 +5,7 @@
 #include "src/DFA.h"
 #include "src/ENFA.h"
 #include "src/RE.h"
+#include "Genre.h"
 
 #include "NFA.h"
 
@@ -73,6 +74,12 @@ int main() {
                 doubleComparison.emplace_back(c,c3);
             }
             Song* song2 = new Song(c2+c3);
+            vector<int> V={1,1,1,1,0,1000};
+            Genre genre = Genre(song,song2,V);
+            DFA genreDFA=genre.toProductAutomata();
+            Song generated=Song(genreDFA,V);
+            string path="midi_output/"+c+"_compare_"+c3;
+            generated.save(path);
             cout << "compare " << c << " with " << c3 << endl;
             double matchprecentage = song->similarity(*song2,0,0);
             if (matchprecentage<25){

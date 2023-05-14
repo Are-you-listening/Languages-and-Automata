@@ -46,14 +46,6 @@ private:
      * \brief The paramaters (for Similarity) this genre is build on
      */
     vector<int> param;
-
-    /**
-     * \brief Generate a product automata for the current Genre's member-sub-regexes
-     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * @return Datatype containing the sub DFA's in productautomata
-     */
-    DFA toProductAutomata();
-
 public:
     /**
     * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
@@ -124,6 +116,13 @@ public:
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      */
     void switchConsoleOutput();
+
+    /**
+     * \brief Generate a product automata for the current Genre's member-sub-regexes
+     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * @return Datatype containing the sub DFA's in productautomata
+     */
+    DFA toProductAutomata(); // TODO ik heb dit verplaatst,dit moet besproken worden
 };
 
 #endif //TOG_GENRE_H
