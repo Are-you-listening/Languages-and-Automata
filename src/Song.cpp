@@ -3,7 +3,6 @@
 //
 
 #include "Song.h"
-#include "midiparser/midiExporter.h"
 
 struct Vectors_Params{
 public:
@@ -61,7 +60,7 @@ bool Song::ProperlyInitialized() const {
     return false;
 }
 
-Song::Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap, bool console) : note_map(noteMap), console(console) {
+Song::Song(const map<pair<unsigned int, bool>, vector<Note *>> &noteMap, bool console) : console(console), note_map(noteMap) {
     fInitCheck = this;
     title = "Are you listening?";
 
@@ -96,6 +95,8 @@ Song::Song(const string &path, bool console) : console(console) {
 
     MidiParser m(path);
     note_map = m.getNoteMap();
+
+    //TODO This is not used??
     int count = 0;
     for(const auto &entry: note_map){
         count += entry.second.size();
@@ -131,6 +132,7 @@ Song &Song::operator=(const Song &a) {
     note_map = map2;
     fInitCheck = this; //Make actual new object
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+    return *this;
 }
 
 Song::~Song(){
@@ -196,7 +198,7 @@ double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
     bool succeeded = false;
     int succes = 0;
 
-    for(int i = 0; i<d.size(); i++){ // Given song
+    for(long unsigned int i = 0; i<d.size(); i++){ // Given song
         string test=s[i].re;
         bool b = d[i].accepts(test); //Addition Anas
         if(b){succes++;}
@@ -215,8 +217,8 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
 
-    for(int i = 0; i<d.size(); i++){ // Given song
-        for(int j = 0; j<s.size(); j++){
+    for(long unsigned int i = 0; i<d.size(); i++){ // Given song
+        for(long unsigned int j = 0; j<s.size(); j++){
             string test=s[j].re;
             bool b = d[i].accepts(test); //Addition Anas
             if(b){succes++;}
@@ -237,8 +239,8 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     double succes = 0; //Counter to keep the amount of time the test passes
     double count = 0; //Counter to keep Nr of Operations
 
-    for(int i = 0; i<d.size(); i++){ // Given song
-        for(int j = 0; j<s.size(); j++){
+    for(long unsigned int i = 0; i<d.size(); i++){ // Given song
+        for(long unsigned int j = 0; j<s.size(); j++){
             string test=s[j].re;
             bool b = d[i].accepts(test); //Addition Anas
 
@@ -473,10 +475,10 @@ const string &Song::getTitle() const {
     return title;
 }
 
-void Song::setTitle(const string &title) {
+void Song::setTitle(const string &name) {
     REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    Song::title = title;
-    ENSURE(Song::title == title , "Setter didn't work properly");
+    title = name;
+    ENSURE(title == name , "Setter didn't work properly");
 }
 
 void Song::save(const string &path) {
@@ -497,7 +499,7 @@ void Song::switchConsoleOutput() {
 }
 
 Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
-    int index = 0; //Index ptr van param
+    long unsigned int index = 0; //Index ptr van param
     stack<char> tempstack; //Helper variable
     vector<vector<int>> info; //{ {possible time_stamps}, {possible durations}, {possible notes},  {possible velocity's}, {possible instruments} }
     vector<int> options = {}; //Posssible values
@@ -528,9 +530,9 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
             //Make notes
             vector<vector<int>> notes = makeNotes(info);
 
-            for(vector<int> &m: notes){ //Create the actual objects
-                Note* e = new Note(m[0],m[1],m[2],m[3],m[4]);
-                note_map[{m[1],m[0]}].push_back(e);
+            for(vector<int> &f: notes){ //Create the actual objects
+                Note* e = new Note(f[0],f[1],f[2],f[3],f[4]);
+                note_map[{f[1],f[0]}].push_back(e);
             }
 
             index = 0; //Reset Index

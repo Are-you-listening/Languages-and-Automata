@@ -142,7 +142,7 @@ vector<vector<int>> makeNotes(const vector<vector<int>> &info){
          notes.push_back({k});
      }
 
-     for(int i=index+1; i<info.size(); i++) { //Add all possible, not yet created, options
+     for(long unsigned int i=index+1; i<info.size(); i++) { //Add all possible, not yet created, options
          vector<vector<int>> notes2;
          for (int m: info[i]) { //Voor elke variatie
              for(auto s: notes){

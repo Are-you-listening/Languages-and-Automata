@@ -30,7 +30,7 @@ string NameConvert(vector<string> &a){
 
     string t = "{";
 
-    for(int i=0; i<a.size()-1;i++){
+    for(long unsigned int i=0; i<a.size()-1;i++){
         t+=a[i]+", ";
     }
 
@@ -62,7 +62,7 @@ bool Find(vector<State*> &a, State* &k){
 string NameConvert2(vector<string> &a) {
     string t;
 
-    for(int i=0; i<a.size()-1;i++){
+    for(long unsigned int i=0; i<a.size()-1;i++){
         t+=a[i]+",";
     }
 

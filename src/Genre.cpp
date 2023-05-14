@@ -25,7 +25,7 @@ DFA Genre::toProductAutomata() {
     logs.push_back(log);
 
     //Loop over each Song
-    for(int i = ProductAutomata.first; i<members.size(); i++) {
+    for(long unsigned int i = ProductAutomata.first; i<members.size(); i++) {
         vector<RE> t = members[i]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
         ENFA a = t[0].toENFA();
         DFA s = a.toDFA();

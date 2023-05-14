@@ -236,11 +236,11 @@ public:
 
     /**
      * \brief Setter
-     * \ENSURE(Song::title == title , "Setter didn't work properly");
+     * \ENSURE(title == name; , "Setter didn't work properly");
      * \REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * @param title
+     * @param name
      */
-    void setTitle(const string &title);
+    void setTitle(const string &name);
 
     /**
      * \brief Export this Song back to a .mid File
