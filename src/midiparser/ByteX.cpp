@@ -36,9 +36,10 @@ string ByteX::toHex() const {
 int ByteX::getByte(int index) const{
     unsigned int output = value;
     for (int i = 0; i < length-1-index; i++){
+
         output = output >> 8;
     }
-    return int(static_cast<unsigned char>(output));
+    return (output % 256);
 }
 
 bool ByteX::equalsHex(const string &hex_value, int index) const {

@@ -7,9 +7,9 @@ Gui::Gui() {
 
     window =XCreateSimpleWindow(display,
                                 DefaultRootWindow(display),
-                                0, 0, 1000, 1000, 0, 0, 0);
+                                0, 0, 1600, 1000, 0, 0, 0);
 
-    XSetStandardProperties(display, window, "Are You Listening", NULL, None, NULL, 0, NULL);
+    XSetStandardProperties(display, window, "I am Listening", NULL, None, NULL, 0, NULL);
     XSelectInput(display, window, ExposureMask | ButtonPressMask);
     graphics_content=XCreateGC(display, window, 0, NULL);
 

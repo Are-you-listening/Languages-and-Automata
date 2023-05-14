@@ -107,6 +107,7 @@ Song::Song(const string &path, bool console) : console(console) {
     logs.push_back(log);
 
     //checkWNFA(toRegex(0, 0, 0, 1, 0, -1)[0]);
+    midiExporter e("out.mid", note_map);
 
 
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
