@@ -376,7 +376,7 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
 
     pair<vector<RE>,vector<RE>> toCheck2 = sort(toCheck);
     d = convert(toCheck.first,complement,reverse);
-    cout << toCheck2.first.size() << " " << toCheck2.second.size() << endl;
+    //cout << toCheck2.first.size() << " " << toCheck2.second.size() << endl;
     results.push_back( checkTibo(d , toCheck.second ) );
 
     //Check Kars
