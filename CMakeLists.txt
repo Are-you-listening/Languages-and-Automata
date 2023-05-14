@@ -84,7 +84,7 @@ set(DEBUG_SOURCE_FILES
 
         testing/testing.cpp
 
-        )
+        src/gui/Gui.cpp src/gui/Gui.h)
 ################################################################
 # Create RELEASE target
 add_executable(Tog ${RELEASE_SOURCE_FILES} ${TA-LIB} )

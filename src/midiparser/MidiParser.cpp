@@ -86,7 +86,7 @@ bool MidiParser::readComponent() {
      * */
     ByteX basic_data = byteRead(2);
 
-    if(basic_data.getNibble(0, true) == status_running){
+    if(!basic_data.getMSB(0) && status_running != -1){
         /**
         * this if statement is for support of running status
         * */
@@ -209,26 +209,6 @@ bool MidiParser::readComponent() {
         byteRead(1);
 
 
-    }else if(!basic_data.getMSB(0) && status_running != -1){
-        unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
-        bool note_on = basic_data.getByte(1) != 0  && start;
-        Note* current_note = new Note(time, note_on, basic_data.getByte(0), basic_data.getByte(1), instrument);
-        addNote(time, note_on, current_note);
-
-        if(note_duration.find((channel << 8) + basic_data.getByte(0)) != note_duration.end()){
-            Note* n = note_duration.at((channel << 8) + basic_data.getByte(0));
-            unsigned int duration = current_note->getTimeStamp() - n->getTimeStamp();
-            n->setDuration(duration);
-            note_duration.erase((channel << 8) + basic_data.getByte(0));
-        }
-
-        if (note_on){
-            note_duration[(channel << 8) + basic_data.getByte(0)] = current_note;
-        }
-        /**
-         * checks for data byte
-         * these will just be ignored if occured
-         * */
     }else if(!basic_data.getMSB(0)){
         /**
          * checks for data byte
