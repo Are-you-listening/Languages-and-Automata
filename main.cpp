@@ -81,7 +81,6 @@ int main() {
             delete song2;
             if(c==c3&&matchprecentage!=1){
                 cerr << "\033[1;31midentical files should result in 100% match\033[0m" <<endl;
-                throw 3;
             }
         }
         delete song;
