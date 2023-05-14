@@ -58,7 +58,8 @@ int main() {
     WNFA w("tiboEnv/WNFA_balance_test.json");
     double weight =  w.weightedaccepts("abcd");
      */
-    
+
+
     vector<pair<string,string>> doubleComparison; // TODO dit crasht bij compare (Alex2nd).mid with DKC_Factory-KM.mid
     ifstream Filelist("filelist.txt"); // TODO systeem blijft vaststeken bij [14-05-2023 17:52:22] Created the new Genre: (Alex2nd).mid_compare_(metalslug1).mid , based on (Alex2nd).mid and (metalslug1).mid
     ifstream Filelist2("filelist.txt");
@@ -84,17 +85,7 @@ int main() {
             string path="midi_output/"+c+"_compare_"+c3;
             generated.save(path);
             double matchprecentage = song->similarity(*song2,0,0);
-            /*
-            if (matchprecentage<25){
-                cout << "\033[1;31m match precentage: \033[0m" << "\033[1;31m" << matchprecentage << "\033[0m" <<endl; //TODO dit zou gecombineerd moeten worden met de log;
-            } else if (matchprecentage<50){
-                cout << "\033[1;33m match precentage: \033[0m" << "\033[1;33m" << matchprecentage << "\033[0m" <<endl;
-            } else if (matchprecentage<90){
-                cout << "\033[1;32m match precentage: \033[0m" << "\033[1;32m" << matchprecentage << "\033[0m" <<endl;
-            } else {
-                cout << "\033[1;42m\033[1;1m\033[1;35m match precentage: \033[0m" << "\033[1;42m\033[1;1m\033[1;35m" << matchprecentage << "\033[0m" <<endl;
-            }
-             */
+
             delete song2;
             if(c==c3&&matchprecentage!=1){
                 cerr << "\033[1;31midentical files should result in 100% match\033[0m" <<endl;
@@ -103,5 +94,6 @@ int main() {
         delete song;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
+
     return 0;
 }

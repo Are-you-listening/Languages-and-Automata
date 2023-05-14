@@ -283,7 +283,19 @@ double Song::similarity(Song &song, bool complement, bool reverse) { // TODO com
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
-    m = getCurrTime()+" Comparition ended, showing a matchpercentage off: "+ to_string(result*100) + " %\n\n";
+    string formatted;
+    result*=100;
+    if (result<25){
+        formatted = "\033[1;31m" + to_string(result) + "\033[0m";
+    } else if (result<50){
+        formatted = "\033[1;33m" + to_string(result) + "\033[0m";
+    } else if (result<90){
+        formatted = "\033[1;32m" + to_string(result) + "\033[0m";
+    } else {
+        formatted = "\033[1;42m\033[1;1m\033[1;35m" + to_string(result) + "\033[0m" ;
+    }
+
+    m = getCurrTime()+" Comparition ended, showing a matchpercentage off: "+ formatted + " %\n\n";
     if(console){cout << m;}
     logs.push_back(m);
 
