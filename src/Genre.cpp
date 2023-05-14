@@ -30,11 +30,12 @@ DFA Genre::toProductAutomata() {
         vector<RE> t = s->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
         ENFA a = t[0].toENFA();
         DFA m = a.toDFA();
-        m = m.minimize();
+        //m = m.minimize();
         if (temp.size() == 0) {
             temp.push_back(m);
         } else {
-            temp[0] = DFA(temp[0], m, 0); //Make or extend ProductAutomata
+            DFA l = temp[0];
+            temp[0] = DFA(l, m, 0); //Make or extend ProductAutomata
         }
     }
     return temp[0];
@@ -62,23 +63,23 @@ bool Genre::inGenre(Song *&s) {
     return succes;
 }
 
-Genre::Genre(Song *&s, Song *&k, const vector<int> &params) {
+Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name) {
     param = params;
 
-    pair<vector<RE> , vector<RE>> toCheck = {s->toRegex(param[0],param[1],param[2],param[3],param[4],-1) , k->toRegex(param[0],param[1],param[2],param[3],param[4],-1)}; //TODO de -1 zorgt voor en infinte loop
+    pair<vector<RE> , vector<RE>> toCheck = {s->toRegex(param[0],param[1],param[2],param[3],param[4],param[5]) , k->toRegex(param[0],param[1],param[2],param[3],param[4],param[5])};
     vector<double> temp = s->similar( toCheck , 0 ,0); //Run Similarity Check
 
     double result = 0;
-    for(double &m: temp){
+    for(double &m: temp){ //TODO: apply Magimathical formula
         result+=m;
     }
 
     //Set Data
     limit = result/temp.size();
     members={s,k};
-    name = s->getTitle() + "_and_"+k->getTitle()+"_Genre";
+    this->name = name;
     fInitCheck = this;
-    string log = getCurrTime() + " Created the new Genre: "+name+" , constructed on a "+to_string(limit)+" match %.\n\n";
+    string log = getCurrTime() + " Created the new Genre: "+name+" , constructed on a "+to_string(limit*100)+" match %.\n\n";
     if(console){cout << log;}
     logs.push_back(log);
     ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");

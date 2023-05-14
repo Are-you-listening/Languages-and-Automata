@@ -86,7 +86,7 @@ public:
      * @param k
      * @param param
      */
-    Genre(Song* &s, Song* &k, const vector<int> &params);
+    Genre(Song* &s, Song* &k, const vector<int> &params, const string &name);
 
     /**
      * \brief Output results to a .txt file
