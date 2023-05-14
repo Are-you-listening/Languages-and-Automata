@@ -68,6 +68,7 @@ int main() {
     vector<Song*> songs;
     while(getline(Filelist,c)){
         Song* song = new Song(c2+c,1);
+        song->setTitle(c);
         while(getline(Filelist2,c3)){
             if(find(doubleComparison.begin(), doubleComparison.end(), make_pair(c,c3))!=doubleComparison.end()){
                 continue;
@@ -75,14 +76,15 @@ int main() {
                 doubleComparison.emplace_back(c,c3);
             }
             Song* song2 = new Song(c2+c3,0);
+            song->setTitle(c3);
             vector<int> V={1,1,1,1,0,1};
             Genre genre = Genre(song,song2,V,c+"_compare_"+c3,1);
             DFA genreDFA=genre.getProductAutomata();
             Song generated=Song(genreDFA,V,0);
             string path="midi_output/"+c+"_compare_"+c3;
             generated.save(path);
-            cout << "compare " << c << " with " << c3 << endl;
             double matchprecentage = song->similarity(*song2,0,0);
+            /*
             if (matchprecentage<25){
                 cout << "\033[1;31m match precentage: \033[0m" << "\033[1;31m" << matchprecentage << "\033[0m" <<endl; //TODO dit zou gecombineerd moeten worden met de log;
             } else if (matchprecentage<50){
@@ -92,11 +94,11 @@ int main() {
             } else {
                 cout << "\033[1;42m\033[1;1m\033[1;35m match precentage: \033[0m" << "\033[1;42m\033[1;1m\033[1;35m" << matchprecentage << "\033[0m" <<endl;
             }
+             */
             delete song2;
             if(c==c3&&matchprecentage!=1){
                 cerr << "\033[1;31midentical files should result in 100% match\033[0m" <<endl;
             }
-            cout << endl;
         }
         delete song;
     }

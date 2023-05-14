@@ -410,7 +410,7 @@ map<int,unsigned int> Song::countNotes() {
     return counts;
 }
 
-[[nodiscard]] double Song::noteCountSimilarity(Song &s) {
+[[nodiscard]] double Song::noteCountSimilarity(Song &s) { //TODO dit moet nog in similarity gestoken worden
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string m = getCurrTime()+" Applying" + '"' + "noteCountSimilarity" + '"' +" on Song: " + title + " and Song: " + s.getTitle() + "\n";
