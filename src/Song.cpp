@@ -327,27 +327,32 @@ double Song::magimathical(vector<vector<double>> &results) {
         int c=1;
         int d=1;
         int e=1;
+        int V0=(*v)[0];
+        int V1=(*v)[1];
+        int V2=(*v)[2];
+        int V3=(*v)[3];
+        int V4=(*v)[4];
         if((*v)[4]==0){
             a=0;
-            (*v)[4]=1;
+            V4=1;
         }
         if((*v)[3]==0){
             b=0;
-            (*v)[3]=1;
+            V3=1;
         }
         if((*v)[2]==0){
             c=0;
-            (*v)[2]=1;
+            V2=1;
         }
         if((*v)[1]==0){
             d=0;
-            (*v)[1]=1;
+            V1=1;
         }
         if((*v)[0]==0){
             e=0;
-            (*v)[0]=1;
+            V0=1;
         }
-        double boolparam = (40.0/(*v)[0])*e + (17.0/(*v)[1])*d + (6.0/(*v)[2])*c + (17.0/(*v)[3])*b + (20.0/(*v)[4])*a + pow(5,(*v)[5]); //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
+        double boolparam = (40.0/V0)*e + (17.0/V1)*d + (6.0/V2)*c + (17.0/V3)*b + (20.0/V4)*a + pow(5,(*v)[5]); //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
         for(vector<vector<double>>::iterator it=results.begin(); it!=results.end(); it++){
             result+=(boolparam*(0.7*(*it)[0]+0.2*(*it)[1]+0.1*(*it)[2]))/results[0].size();
         }

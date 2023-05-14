@@ -57,6 +57,7 @@ int main() {
     double weight =  w.weightedaccepts("abcd");
      */
     
+    vector<pair<string,string>> doubleComparison;
     ifstream Filelist("filelist.txt");
     ifstream Filelist2("filelist.txt");
     string c;
@@ -66,6 +67,11 @@ int main() {
     while(getline(Filelist,c)){
         Song* song = new Song(c2+c);
         while(getline(Filelist2,c3)){ 
+            if(find(doubleComparison.begin(), doubleComparison.end(), make_pair(c,c3))!=doubleComparison.end()){
+                continue;
+            } else {
+                doubleComparison.emplace_back(c,c3);
+            }
             Song* song2 = new Song(c2+c3);
             cout << "compare " << c << " with " << c3 << endl;
             double matchprecentage = song->similarity(*song2,0,0);
