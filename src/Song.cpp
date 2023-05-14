@@ -279,7 +279,7 @@ double Song::similarity(Song &song, bool complement, bool reverse) { // TODO com
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
-    m = getCurrTime()+" Comparition ended, showing a matchpercentage off: "+ to_string(result) + " %\n\n";
+    m = getCurrTime()+" Comparition ended, showing a matchpercentage off: "+ to_string(result*100) + " %\n\n";
     if(console){cout << m;}
     logs.push_back(m);
 
@@ -433,7 +433,7 @@ map<int,unsigned int> Song::countNotes() {
     if(result<=1 && result>=0){succeed = true;}
     ENSURE(succeed, "Percentage must be between 0 and 1");
 
-    m = getCurrTime()+" Comparition ended, "+"showing a matchpercentage off: "+ to_string(result) + "%\n";
+    m = getCurrTime()+" Comparition ended, "+"showing a matchpercentage off: "+ to_string(result*100) + "%\n";
     logs.push_back(m);
 
     return result;
