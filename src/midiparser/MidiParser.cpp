@@ -94,7 +94,7 @@ bool MidiParser::readComponent() {
         bool note_on = basic_data.getByte(1) != 0 && start;
         Note* current_note = new Note(time, note_on, basic_data.getByte(0), basic_data.getByte(1), instrument);
         addNote(time, note_on, current_note);
-        cout << "note " << basic_data.toHex() << " " << time << "i: "<< link_channel[channel] << endl;
+        //cout << "note " << basic_data.toHex() << " " << time << "i: "<< link_channel[channel] << endl;
         if(note_duration.find((channel << 8) + basic_data.getByte(0)) != note_duration.end()){
             Note* n = note_duration.at((channel << 8) + basic_data.getByte(0));
             unsigned int duration = current_note->getTimeStamp() - n->getTimeStamp();
@@ -228,7 +228,7 @@ bool MidiParser::readComponent() {
         bool note_on = velocity.getValue() != 0 && basic_data.getNibble(0, true) == 9;
         status_running = basic_data.getNibble(1, true);
         start = note_on;
-        cout << "note " << basic_data.toHex() << " " << time << "v: " << velocity.getValue()<< "i: "<< link_channel[basic_data.getNibble(1, false)] << endl;
+        //cout << "note " << basic_data.toHex() << " " << time << "v: " << velocity.getValue()<< "i: "<< link_channel[basic_data.getNibble(1, false)] << endl;
         Note* current_note =  new Note(time, note_on, basic_data.getByte(1), velocity.getValue(), link_channel[basic_data.getNibble(0, false)]);
         addNote(time, note_on, current_note);
         channel = basic_data.getNibble(0, false);
