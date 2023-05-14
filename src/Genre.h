@@ -5,8 +5,6 @@
 #ifndef TOG_GENRE_H
 #define TOG_GENRE_H
 
-#include <map>
-
 #include "Song.h"
 #include "DFA.h"
 
@@ -80,6 +78,7 @@ public:
 
     /**
      * \brief Create a Genre based on 2 Song's and a given set of paramaters.
+     * \REQUIRE(params.size()==6, "Params doesn't has all the paramaters");
      * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @param s
      * @param k
