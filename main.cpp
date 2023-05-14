@@ -17,7 +17,7 @@ int main() {
     NFA n(j);*/
 
     /*
-    Song song("midi_files/world-1-birabuto-remix-.mid"); //TODO iets verandert output boven converting Regex's to DFA's en ik weet niet zo goed voor wat die waarde nu staat, zeer raar.
+    Song song("midi_files/world-1-birabuto-remix-.mid");
     Song song2("midi_files/world-1-birabuto-4-.mid");
     song.switchConsoleOutput();
     song.similarity(song2, 0, 0);
