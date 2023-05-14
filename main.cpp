@@ -59,8 +59,8 @@ int main() {
     double weight =  w.weightedaccepts("abcd");
      */
     
-    vector<pair<string,string>> doubleComparison;
-    ifstream Filelist("filelist.txt");
+    vector<pair<string,string>> doubleComparison; // TODO dit crasht bij compare (Alex2nd).mid with DKC_Factory-KM.mid
+    ifstream Filelist("filelist.txt"); // TODO systeem blijft vaststeken bij [14-05-2023 17:52:22] Created the new Genre: (Alex2nd).mid_compare_(metalslug1).mid , based on (Alex2nd).mid and (metalslug1).mid
     ifstream Filelist2("filelist.txt");
     string c;
     string c3;
