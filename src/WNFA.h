@@ -28,7 +28,7 @@ public:
 
     void addState(string name, bool start, bool endState);
 
-    pair<weightedNode*, bool> getWeightedState(string name);
+    pair<weightedNode*, bool> getWeightedState(string name) const;
 
     bool isStartState(string name);
 

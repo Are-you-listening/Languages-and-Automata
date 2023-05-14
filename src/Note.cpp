@@ -63,9 +63,11 @@ string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rek
                 s[s.size()-1] = ')';
             }
         }
-    } else{
+    } else if (r_duration==1){
         s=toChar(div(duration,155).rem);
         //s = toChar(duration);
+    }else{
+        s = "";
     }
     return s;
 }
@@ -110,14 +112,20 @@ string Note::RoundInstrument(int r_instrument) const {
 
         s[s.size()-1] = ')';
         return s;
-    }else{
+    }else if (r_instrument == 1){
         string s = "";
-        s += toChar(instrument*r_instrument);
+        s += toChar(instrument);
         return s;
+    }else{
+        return "";
     }
 }
 
 string Note::RoundNote(int r_note, int r_octaaf) const { // TODO deze functie moet zeker nog een keer besproken worken. octaaf is redelijk belangerijk
+
+    if (r_note == 0 && r_octaaf == 0){
+        return "";
+    }
 
     if (r_note < 2 && r_octaaf < 2){
         string s = "";

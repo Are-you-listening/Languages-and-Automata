@@ -35,6 +35,10 @@ const string &State::getName() const {
     return name;
 }
 
+const map<const char, vector<string>> &State::getTransition() const {
+    return transition;
+}
+
 
 
 

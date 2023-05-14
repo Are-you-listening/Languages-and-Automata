@@ -14,7 +14,9 @@
 #include "midiparser/midiExporter.h"
 #include "RE.h"
 #include "Note.h"
-
+#include "NFA.h"
+#include "WNFA.h"
+#include "ENFA.h"
 using namespace std;
 
 /**
@@ -95,7 +97,7 @@ private:
      * @param t
      * @return
      */
-    double checkWNFA(RE &t) const;
+    double checkWNFA(RE &r);
 
     /**
      * \brief Magimathical Formula Anas

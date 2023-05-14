@@ -10,7 +10,6 @@
 
 int main() {
     Song song("midi_files/world-1-birabuto-4-.mid");
-    song.save("out.mid");
     /*
     Song song("midi_files/world-1-birabuto-4-.mid");
     RE r = song.toRegex(0, 0, 1, 1, 0, 1)[0];

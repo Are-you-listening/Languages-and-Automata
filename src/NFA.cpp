@@ -252,12 +252,20 @@ NFA::NFA(const json &j) {
 WNFA NFA::toWNFA(){
     WNFA result = WNFA();
     result.alfabet = Alphabet;
-    
+    State* start_state;
     // maak de staten van de WNFA aan
     for (pair<string, State*> state_pair : Q){
         result.addState(state_pair.first, state_pair.second->getStarting(), state_pair.second->getAnEnd());
+        if (state_pair.second->getStarting()){
+
+            start_state = state_pair.second;
+        }
     }
-    
+
+    vector<weightedNode*> v = {result.startState};
+    adaptDistance(v, start_state, (int) Q.size()-1, 0, -0.2, result);
+
+
     // voeg de transities uit de NFA toe aan de WNFA
     for (weightedNode* state : result.states){
         for (string temp : result.alfabet){
@@ -265,10 +273,12 @@ WNFA NFA::toWNFA(){
             for (const auto& transition : Q.find(state->getName())->second->DoTransition(symbol)){
                 state->addconnection(result.getWeightedState(transition).first, symbol, 1);
             }
+
         }
     }
 
     // voeg nieuwe transities toe die enkel in de WNFA aanwezig zijn
+    /*
     for (string temp : result.alfabet) {
         char symbol = temp[0];
 
@@ -283,6 +293,38 @@ WNFA NFA::toWNFA(){
                 firststate->addconnection(secondstate, symbol, 0);
             }
         }
-    }
+    }*/
     return result;
+}
+
+void NFA::adaptDistance(vector<weightedNode*>& original, State* s, int distance, int index, double weight, const WNFA& result){
+    map<const char, vector<string>> transition_map = s->getTransition();
+    for (auto entry: transition_map){
+        vector<State*> current_states;
+        for (auto s: entry.second){
+            State* st = Q.find(s)->second;
+            weightedNode* w = result.getWeightedState(st->getName()).first;
+
+                for (int i=0; i < original.size(); i++){
+                    weightedNode* o = original[i];
+                    if (index-i > 0){
+                        o->addconnection(w, entry.first, (index-i)*weight+1);
+                    }
+
+                }
+
+                original.push_back(w);
+                //cout << w->name << " "<< distance << endl;
+
+            if (distance > 1){
+                adaptDistance(original, st, distance - 1, index+1, weight, result);
+                //adaptDistance(result.getWeightedState(st->getName()).first, st, distance - 1, 0, weight, result);
+
+            }
+
+
+        }
+
+    }
+
 }

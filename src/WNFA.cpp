@@ -57,7 +57,7 @@ void WNFA::addState(string name, bool start, bool endState) {
     }
 }
 
-pair<weightedNode *, bool> WNFA::getWeightedState(string name) {
+pair<weightedNode *, bool> WNFA::getWeightedState(string name) const{
     for (weightedNode* state : states){
         if (state->getName() == name){
             return make_pair(state, true);

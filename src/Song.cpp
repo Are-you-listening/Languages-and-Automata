@@ -103,16 +103,8 @@ Song::Song(const string &path) {
     if(console){cout << log;}
     logs.push_back(log);
 
-    for (auto e: note_map){
-        if (e.first.second){
-            for (auto v: e.second){
-                if (v->getDuration() == -1){
-                    cout << "he" << endl;
-                    throw 1;
-                }
-            }
-        }
-    }
+    checkWNFA(toRegex(0, 0, 0, 1, 0, -1)[0]);
+
 
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
@@ -150,7 +142,7 @@ Song::~Song(){
     }
 }
 
-vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern) {
+vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern){
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     char epsilon='*';
@@ -163,19 +155,22 @@ vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b
     logs.push_back(log);
 
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
-        for(Note* note: it->second){
-            string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity, 0);
-            temp+=z;
-            count++;
-            if(count==pattern){
-                //DO ACTUAL MERGE/MAKE REGEX
-                RE regex(temp,epsilon);
-                regex_list.push_back(regex);
-                count=0;
-                temp.clear();
-                temp = "";
+        if (it->first.second){
+            for(Note* note: it->second){
+                string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity, 0);
+                temp+=z;
+                count++;
+                if(count==pattern){
+                    //DO ACTUAL MERGE/MAKE REGEX
+                    RE regex(temp,epsilon);
+                    regex_list.push_back(regex);
+                    count=0;
+                    temp.clear();
+                    temp = "";
+                }
             }
         }
+
     }
 
     if (count != 0){
@@ -558,6 +553,24 @@ Song::Song(DFA &s, vector<int> &param){ //param = {int r_time_stamp, int r_durat
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
-double Song::checkWNFA(RE &t) const {
+double Song::checkWNFA(RE &r){
+    /**
+     * format indexes:
+     * 0: accepted note line
+     * 1: self loop start
+     * 2: self loop end
+     * 3: self loop erverywhere else
+     * 4: arrow to the next state
+     * */
+
+    RE wr = toRegex(0, 0, 0, 1, 0, -1)[0];
+    ENFA e = wr.toENFA();
+    json j = e.getJsonNfa();
+    NFA n(j);
+    WNFA w = n.toWNFA();
+    //cout << w.weightedaccepts(wr.re.substr(0, 3)) << endl;
+    //double v = w.weightedaccepts(r.re);
+    //cout << v << endl;
+
     return 0;
 };

@@ -30,6 +30,8 @@ public:
     State(const string &name, const bool starting, const bool anEnd);
 
     const string &getName() const;
+
+    const map<const char, vector<string>> &getTransition() const;
 };
 
 

@@ -33,6 +33,7 @@ private:
     //Check up on alle names volgorde
     string SortNames(string &a, string &b) const;
     string SortName(string &a) const;
+    void adaptDistance(vector<weightedNode*>& original, State* s, int distance, int index, double weight, const WNFA& result);
 
 public:
     //Creates an DFA Object AND outputs a json file of that DFA
