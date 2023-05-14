@@ -76,7 +76,7 @@ int main() {
                 doubleComparison.emplace_back(c,c3);
             }
             Song* song2 = new Song(c2+c3,0);
-            song->setTitle(c3);
+            song2->setTitle(c3);
             vector<int> V={1,1,1,1,0,1};
             Genre genre = Genre(song,song2,V,c+"_compare_"+c3,1);
             DFA genreDFA=genre.getProductAutomata();
