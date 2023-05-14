@@ -157,7 +157,7 @@ vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
         if (it->first.second){
             for(Note* note: it->second){
-                string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity, pattern);
+                string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity);
                 temp+=z;
                 count++;
                 if(count==pattern){

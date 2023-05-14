@@ -9,7 +9,7 @@ note_value(note), instrument(instrument), duration(duration), velocity(velocity)
     Note::duration = -1;
 }
 
-[[nodiscard]] string Note::getRE(int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf) const{
+[[nodiscard]] string Note::getRE(int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity) const{
     string s = "";
     s += RoundTime_stamp(r_time_stamp);
     s += RoundDuration(r_duration);
