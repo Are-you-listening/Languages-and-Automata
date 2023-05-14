@@ -71,15 +71,6 @@ public:
     bool inGenre(Song* &s);
 
     /**
-     * \brief Simple constructor
-     * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * @param members
-     * @param limit
-     * @param param
-     */
-    Genre(const vector<Song *> &members,const vector<int> &param, string &name);
-
-    /**
      * \brief Create a Genre based on 2 Song's and a given set of paramaters.
      * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @param s

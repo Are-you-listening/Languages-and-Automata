@@ -76,15 +76,6 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name) 
     ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
-Genre::Genre(const vector<Song *> &members,const vector<int> &param, string &name) : members(members),
-                                                                                            param(param), name(name) {
-    fInitCheck=this;
-    string log = getCurrTime() + " Loaded the Genre: "+name+".\n\n"; //TODO Remove this constructor, not used anymore
-    if(console){cout << log;}
-    logs.push_back(log);
-    ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-}
-
 void Genre::output() const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
