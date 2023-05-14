@@ -7,12 +7,8 @@
 #include "src/RE.h"
 
 #include "NFA.h"
-#include "gui/Gui.h"
 
 int main() {
-    Gui g;
-    g.start();
-    //Song song("midi_files/world-1-birabuto-4-.mid");
     /*
     Song song("midi_files/world-1-birabuto-4-.mid");
     RE r = song.toRegex(0, 0, 1, 1, 0, 1)[0];
@@ -60,7 +56,7 @@ int main() {
     WNFA w("tiboEnv/WNFA_balance_test.json");
     double weight =  w.weightedaccepts("abcd");
      */
-    /*
+    
     ifstream Filelist("filelist.txt");
     ifstream Filelist2("filelist.txt");
     string c;
@@ -69,12 +65,12 @@ int main() {
     vector<Song*> songs;
     while(getline(Filelist,c)){
         Song* song = new Song(c2+c);
-        while(getline(Filelist2,c3)){
+        while(getline(Filelist2,c3)){ 
             Song* song2 = new Song(c2+c3);
             cout << "compare " << c << " with " << c3 << endl;
             double matchprecentage = song->similarity(*song2,0,0);
             if (matchprecentage<25){
-                cout << "\033[1;32m match precentage: \033[0m" << "\033[1;31m" << matchprecentage << "\033[0m" <<endl;
+                cout << "\033[1;32m match precentage: \033[0m" << "\033[1;31m" << matchprecentage << "\033[0m" <<endl; //TODO dit zou gecombineerd moeten worden met de log;
             } else if (matchprecentage<50){
                 cout << "\033[1;32m match precentage: \033[0m" << "\033[1;33m" << matchprecentage << "\033[0m" <<endl;
             } else if (matchprecentage<90){
@@ -91,6 +87,5 @@ int main() {
         delete song;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
-     */
     return 0;
 }
