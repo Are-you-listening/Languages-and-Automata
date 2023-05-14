@@ -103,7 +103,7 @@ Song::Song(const string &path) {
     if(console){cout << log;}
     logs.push_back(log);
 
-    checkWNFA(toRegex(0, 0, 0, 1, 0, -1)[0]);
+    //checkWNFA(toRegex(0, 0, 0, 1, 0, -1)[0]);
 
 
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");

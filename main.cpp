@@ -7,9 +7,12 @@
 #include "src/RE.h"
 
 #include "NFA.h"
+#include "gui/Gui.h"
 
 int main() {
-    Song song("midi_files/world-1-birabuto-4-.mid");
+    Gui g;
+    g.start();
+    //Song song("midi_files/world-1-birabuto-4-.mid");
     /*
     Song song("midi_files/world-1-birabuto-4-.mid");
     RE r = song.toRegex(0, 0, 1, 1, 0, 1)[0];

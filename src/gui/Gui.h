@@ -8,11 +8,27 @@
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
 
+#ifdef __unix__
 #include <cstdio>
 #include <cstdlib>
+#endif
+
+#ifdef _WIN32
+#include <stdio.h>
+#include <stdlib.h>
+#endif
+
 
 class Gui {
+public:
+    Gui();
+    void start();
 
+public:
+private:
+    Display* display;
+    Window window;
+    GC graphics_content;
 };
 
 
