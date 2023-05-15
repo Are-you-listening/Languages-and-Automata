@@ -13,10 +13,7 @@
 #include <cstdlib>
 #endif
 
-#ifdef _WIN32
-#include <stdio.h>
-#include <stdlib.h>
-#endif
+
 
 
 class Gui {

@@ -97,7 +97,9 @@ bool MidiParser::readComponent() {
         //cout << "note " << basic_data.toHex() << " " << time << "i: "<< link_channel[channel] << endl;
         if(note_duration.find((channel << 8) + basic_data.getByte(0)) != note_duration.end()){
             Note* n = note_duration.at((channel << 8) + basic_data.getByte(0));
-            unsigned int duration = current_note->getTimeStamp() - n->getTimeStamp();
+
+            int duration = current_note->getTimeStamp() - n->getTimeStamp();
+
             n->setDuration(duration);
             note_duration.erase((channel << 8) + basic_data.getByte(0));
         }
@@ -159,7 +161,9 @@ bool MidiParser::readComponent() {
 
             for(auto entry: note_duration){
                 unsigned int time_stamp = entry.second->getTimeStamp();
-                entry.second->setDuration(delta_time_counter-time_stamp);
+
+                //entry.second->setDuration(delta_time_counter-time_stamp);
+                entry.second->setDuration(1000);
             }
 
             return false;
@@ -236,7 +240,10 @@ bool MidiParser::readComponent() {
 
         if(note_duration.find((channel << 8) + basic_data.getByte(1)) != note_duration.end()){
             Note* n = note_duration.at((channel << 8) + basic_data.getByte(1));
-            unsigned int duration = current_note->getTimeStamp() - n->getTimeStamp();
+
+
+
+            int duration = current_note->getTimeStamp() - n->getTimeStamp();
             n->setDuration(duration);
             note_duration.erase((channel << 8) + basic_data.getByte(1));
         }

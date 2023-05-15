@@ -78,9 +78,9 @@ set(MAIN_SRC
         lib/Utils.cpp
         src/gui/Gui.cpp
         src/gui/Gui.h
-        )
+        src/gui/SongListWidget.cpp src/gui/SongListWidget.h)
 
-set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
+set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp src/gui/SongWidget.cpp src/gui/SongWidget.h)
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES
