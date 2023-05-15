@@ -163,7 +163,7 @@ bool MidiParser::readComponent() {
                 unsigned int time_stamp = entry.second->getTimeStamp();
 
                 //entry.second->setDuration(delta_time_counter-time_stamp);
-                entry.second->setDuration(1000);
+                entry.second->setDuration(400);
             }
 
             return false;
