@@ -59,7 +59,7 @@ int main() {
     double weight =  w.weightedaccepts("abcd");
      */
 
-
+    
     vector<pair<string,string>> doubleComparison; // TODO dit crasht bij compare (Alex2nd).mid with DKC_Factory-KM.mid
     ifstream Filelist("filelist.txt"); // TODO systeem blijft vaststeken bij [14-05-2023 17:52:22] Created the new Genre: (Alex2nd).mid_compare_(metalslug1).mid , based on (Alex2nd).mid and (metalslug1).mid
     ifstream Filelist2("filelist.txt");
@@ -79,21 +79,18 @@ int main() {
             Song* song2 = new Song(c2+c3,0);
             song2->setTitle(c3);
             vector<int> V={1,1,1,1,0,1};
+            /*
             Genre genre = Genre(song,song2,V,c+"_compare_"+c3,1);
             DFA genreDFA=genre.getProductAutomata();
             Song generated=Song(genreDFA,V,0);
             string path="midi_output/"+c+"_compare_"+c3;
             generated.save(path);
-            double matchprecentage = song->similarity(*song2,0,0);
-
+             */
+            song->similarity(*song2,0,0);
             delete song2;
-            if(c==c3&&matchprecentage!=1){
-                cerr << "\033[1;31midentical files should result in 100% match\033[0m" <<endl;
-            }
         }
         delete song;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
-
     return 0;
 }

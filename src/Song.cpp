@@ -204,8 +204,10 @@ double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
         bool b = d[i].accepts(test); //Addition Anas
         if(b){succes++;}
     };
-
     double result = (double) succes/d.size();
+    if(d.size()==0){
+        result=0;
+    }
     if(result>=0 && result<=1){succeeded = true;} //Result bust me a percentage
 
     ENSURE(succeeded, "Operation did not work properly");
@@ -227,6 +229,10 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
     }
 
     double result = succes / (double) (d.size() * s.size()) ;
+    if(d.size()==0 || s.size()==0){
+        result=0;
+    }
+    
     if(result>=0 && result<=1){succeeded = true;} //Result bust me a percentage
 
     ENSURE(succeeded, "Operation did not work properly");
@@ -254,6 +260,9 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     }
 
     double result = succes / count ;
+    if(count==0){
+        result=0;
+    }
     if(result>=0 && result<=1){succeeded = true;}
 
     ENSURE(succeeded, "Operation did not work properly");
