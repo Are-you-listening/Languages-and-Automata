@@ -90,7 +90,7 @@ bool MidiParser::readComponent() {
         /**
         * this if statement is for support of running status
         * */
-        unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
+        unsigned int time = time_pre_calc+delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
         bool note_on = basic_data.getByte(1) != 0 && start;
         Note* current_note = new Note(time, note_on, basic_data.getByte(0), basic_data.getByte(1), instrument);
         addNote(time, note_on, current_note);
@@ -144,6 +144,8 @@ bool MidiParser::readComponent() {
              * */
             ByteX value = byteRead(1);
             if (value.equalsHex("03", 0)){
+                time_pre_calc = time_pre_calc+delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
+                delta_time_counter = 0;
                 ms_per_quarter_note = byteRead(3).getValue();
             }
 
@@ -228,7 +230,7 @@ bool MidiParser::readComponent() {
          * the note will also be stored in the note_map
          * **/
         ByteX velocity = byteRead(1);
-        unsigned int time = delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
+        unsigned int time = time_pre_calc+delta_time_counter*(ms_per_quarter_note/ticks_per_quarter_note)/1000;
         bool note_on = velocity.getValue() != 0 && basic_data.getNibble(0, true) == 9;
         status_running = basic_data.getNibble(1, true);
         start = note_on;

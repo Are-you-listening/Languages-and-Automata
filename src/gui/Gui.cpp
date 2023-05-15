@@ -40,6 +40,15 @@ void Gui::start() {
                 song_list.draw(display, window,graphics_content);
             }
 
+            if (button == 1){
+                SongWidget* s_widget =song_list.select(mouse_x, mouse_y);
+                song_list.draw(display, window,graphics_content);
+
+                if (s_widget != nullptr){
+                    s_widget->setPos(600, 600);
+                    s_widget->draw(display, window,graphics_content);
+                }
+            }
 
         }
 

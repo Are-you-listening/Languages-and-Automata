@@ -37,8 +37,6 @@ void SongListWidget::doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool
         }
     }
 
-    cout << index << " " << index_offset << endl;
-
 }
 
 bool SongListWidget::inWidget(unsigned int mouse_x, unsigned int mouse_y) {
@@ -59,11 +57,26 @@ void SongListWidget::drawSongs(Display *display, Window window, GC graphics_cont
     for (int i=0; i< songs.size(); i++){
         SongWidget* song_widget = songs[i];
         int offset = index*80+index_offset+ i*100;
-        bool skip = song_widget->getY()+offset < 0 || song_widget->getY()+offset >= height;
+        bool skip = (int) song_widget->getY()+offset+80 < 0 || (int) song_widget->getY()+offset >= (int) height;
         if (!skip){
             song_widget->draw(display, window, graphics_content, offset, x+10, height+x-10);
         }
 
     }
 
+}
+
+SongWidget *SongListWidget::select(unsigned int mouse_x, unsigned int mouse_y) {
+    if (inWidget(mouse_x, mouse_y)){
+        for (int i=0; i< songs.size(); i++){
+            SongWidget* song_widget = songs[i];
+            int offset = index*80+index_offset+ i*100;
+            if (song_widget->isClicked(mouse_x, mouse_y, offset, x+10, height+x-10)){
+                cout << "clicked" << endl;
+                songs.erase(next(songs.begin(), i));
+                return song_widget;
+            }
+        }
+    }
+    return nullptr;
 }

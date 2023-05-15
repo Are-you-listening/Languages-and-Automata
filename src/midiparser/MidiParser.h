@@ -92,6 +92,7 @@ private:
      * */
     unsigned int track_amount = 0;
     long unsigned int delta_time_counter = 0;
+    long unsigned int time_pre_calc = 0;
     unsigned int ms_per_quarter_note = 0;
     unsigned int ticks_per_quarter_note = 0;
 
@@ -118,7 +119,6 @@ private:
     int instrument = -1;
     int channel = -1;
     bool start = false;
-    
     map<unsigned int, Note*> note_duration;
 };
 
