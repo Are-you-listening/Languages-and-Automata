@@ -438,19 +438,20 @@ map<int,unsigned int> Song::countNotes() {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string m = getCurrTime()+" Applying" + '"' + "noteCountSimilarity" + '"' +" on Song: " + title + " and Song: " + s.getTitle() + "\n";
+    if(console){cout << m;}
     logs.push_back( m );
 
     map<int,unsigned int> count = this->countNotes();
     map<int,unsigned int> scount = s.countNotes();
 
-    unsigned int succes = 0;
+    double succes = 0.0;
     unsigned int occurences = count.size();
     bool succeed = false;
 
     for(auto k = count.begin(); k!=count.end(); k++){
         if( scount.find(k->first)!=scount.end()){ //Sharing a note
             if(scount[k->first]==k->second){
-                succes++;
+                succes+=1;
             }
         }
     }
@@ -460,6 +461,7 @@ map<int,unsigned int> Song::countNotes() {
     ENSURE(succeed, "Percentage must be between 0 and 1");
 
     m = getCurrTime()+" Comparition ended, "+"showing a matchpercentage off: "+ to_string(result*100) + "%\n";
+    if(console){cout << m;}
     logs.push_back(m);
 
     return result;
