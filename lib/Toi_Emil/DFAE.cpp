@@ -36,26 +36,57 @@ bool pluswithoutbrackets(const string &input){
 }
 
 bool comesbefore(string str1, string str2) {
-    char firstChar1 = '\0';
-    char firstChar2 = '\0';
-    for (int i = 0; i < str1.size(); i++) {
-        if (isalnum(str1[i])) {
-            firstChar1 = str1[i];
-            break;
+    //char firstChar1 = '\0';
+    //char firstChar2 = '\0';
+    //for (int i = 0; i < str1.size(); i++) {
+    //    if (isalnum(str1[i])) {
+    //        firstChar1 = str1[i];
+    //        break;
+    //    }
+    //}
+    //for (int i = 0; i < str2.size(); i++) {
+    //    if (isalnum(str2[i])) {
+    //        firstChar2 = str2[i];
+    //        if (firstChar1 != firstChar2){
+    //            break;
+    //        }
+    //    }
+    //}
+    //
+    //if (tolower(firstChar1) < tolower(firstChar2)) {
+    //    return true;
+    //} else {
+    //    return false;
+    //}
+    
+    int i = 0;
+    int j = 0;
+    
+    while (i < str1.length() && j < str2.length()){
+        if (!isalnum(str1[i])){
+            i++;
+            continue;
         }
-    }
-    for (int i = 0; i < str2.size(); i++) {
-        if (isalnum(str2[i])) {
-            firstChar2 = str2[i];
-            if (firstChar1 != firstChar2){
-                break;
-            }
+        
+        if (!isalnum(str2[j])){
+            j++;
+            continue;
         }
-    }
-    if (tolower(firstChar1) < tolower(firstChar2)) {
-        return true;
-    } else {
-        return false;
+        
+        if (::tolower(str1[i]) < ::tolower(str2[j])){
+            return true;
+        } else if (::tolower(str1[i]) > ::tolower(str2[j])){
+            return false;
+        }
+        i++;
+        j++;
+        if (i == str1.length() && j != str2.length()){
+            return true;
+        } else if (i != str1.length() && j == str2.length()){
+            return false;
+        } else if (i == str1.length() && j == str2.length()){
+            return false;
+        }
     }
 }
 
@@ -125,37 +156,40 @@ void DFAE::eliminateState(std::string eliminatedstate) {
 
 
 REE DFAE::toREE() {
-    //copy the current DFAE and move the connections to regexconnections, before eliminating any states
+    
     bool sorted;
-    do {
-        for (auto it = states.begin(); it != states.end().operator--(); it++) {
-            auto next = it.operator++();
-            it.operator--();
-            if (comesbefore((*next)->getName(), (*it)->getName())) {
-                sorted = false;
-                auto *temp = *next;
-                *next = *it;
-                *it = temp;
-            } else {
-                sorted = true;
+    if (not states.empty()) {
+        do {
+            for (auto it = states.begin(); it != states.end().operator--(); it++) {
+                auto next = it.operator++();
+                it.operator--();
+                if (comesbefore((*next)->getName(), (*it)->getName())) {
+                    sorted = false;
+                    auto *temp = *next;
+                    *next = *it;
+                    *it = temp;
+                } else {
+                    sorted = true;
+                }
             }
-        }
-    } while (not sorted);
-    do {
-        for (auto it = endStates.begin(); it != endStates.end().operator--(); it++) {
-            auto next = it.operator++();
-            it.operator--();
-            if (comesbefore((*next)->getName(), (*it)->getName())) {
-                sorted = false;
-                auto *temp = *next;
-                *next = *it;
-                *it = temp;
-            } else {
-                sorted = true;
+        } while (not sorted);
+    }
+    if (not endStates.empty()) {
+        do {
+            for (auto it = endStates.begin(); it != endStates.end().operator--(); it++) {
+                auto next = it.operator++();
+                it.operator--();
+                if (comesbefore((*next)->getName(), (*it)->getName())) {
+                    sorted = false;
+                    auto *temp = *next;
+                    *next = *it;
+                    *it = temp;
+                } else {
+                    sorted = true;
+                }
             }
-        }
-    } while (not sorted);
-
+        } while (not sorted);
+    }
     for (auto &state : states){
         for (const auto& connection : state->connections){
             string tempstring;
@@ -271,6 +305,9 @@ REE DFAE::toREE() {
             finalregex += "+" + regex;
         }
         count ++;
+    }
+    for (auto state : states){
+        state->regexconnections.clear();
     }
     return REE(finalregex);
 }
