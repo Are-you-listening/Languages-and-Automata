@@ -79,7 +79,6 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     vector<RE> t2 = members[1]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
     ENFA a2 = t2[0].toENFA();
     DFA z2 = a2.toDFA();
-    
     //Merge the 2 Alphabets
     set<string> Difference;
     set<string> Difference2;
