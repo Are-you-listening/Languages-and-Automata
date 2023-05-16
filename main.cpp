@@ -16,7 +16,8 @@ int main() {
     Genre genre = Genre(song3, song4, V2, "_compare_", 1);
     DFA genreDFA=genre.getProductAutomata(); // TODO hier wordt er een rare DFA gegenereerd.
     Song generated=Song(genreDFA,V2,1); // TODO STATE ELIM komt in een infinite loop na het tweede keer oproepen ervan.
-    
+    Song generated2=Song(genreDFA,V2,1);
+
     /*
     Song song("midi_files/world-1-birabuto-4-.mid");
     RE r = song.toRegex(0, 0, 1, 1, 0, 1)[0];
@@ -67,7 +68,7 @@ int main() {
      */
 
     
-    vector<pair<string,string>> doubleComparison; 
+    vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
     ifstream Filelist("filelist.txt"); 
     string c;
     string c2="midi_files/";
