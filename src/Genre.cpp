@@ -78,8 +78,8 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     //Other DFA
     vector<RE> t2 = members[1]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
     ENFA a2 = t2[0].toENFA();
-    DFA z2 = a.toDFA();
-
+    DFA z2 = a2.toDFA();
+    
     ProductAutomata = {2,DFA(z,z2,0).minimize()}; //Construct First ProductAutomata // TODO hier gebeurd er iets fout, ik weet ook niet meer als dit 0 of 1 moet zijn
 
     string log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
