@@ -120,7 +120,9 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
         }
     }
     
-    ProductAutomata = {2,DFA(z,z2,0).minimize()}; //Construct First ProductAutomata // TODO hier gebeurd er iets fout, ik weet ook niet meer als dit 0 of 1 moet zijn
+    DFA kees = DFA(z,z2,1);
+    
+    ProductAutomata = {2,DFA(z,z2,0).minimize()}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO hier gebeurd er iets fout, ik weet ook niet meer als dit 0 of 1 moet zijn
 
     string log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}
