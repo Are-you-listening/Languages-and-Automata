@@ -163,8 +163,12 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     DFA::alphabet=dfa1.alphabet;
     DFA::alphabet.insert(dfa2.alphabet.begin(),dfa2.alphabet.end());
     startstate->name="("+dfa1.startingState->name+","+dfa2.startingState->name+")";
-    if(dfa1.startingState->accepting && dfa2.startingState->accepting){
+    if(dfa1.startingState->accepting && dfa2.startingState->accepting && c ){
         startstate->accepting= true;
+    } else if((dfa1.startingState->accepting || dfa2.startingState->accepting) && !c) {
+        startstate->accepting=true;
+    } else{
+        startstate->accepting = false;
     }
     DFA::states.push_back(startstate);
     DFA::startingState=startstate;
