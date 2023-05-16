@@ -15,7 +15,7 @@ int main() {
     vector<int> V2={1,1,1,1,0,1};
     Genre genre = Genre(song3, song4, V2, "_compare_", 1);
     DFA genreDFA=genre.getProductAutomata(); // TODO hier wordt er een rare DFA gegenereerd.
-    Song generated=Song(genreDFA,V2,1);
+    Song generated=Song(genreDFA,V2,1); // TODO STATE ELIM komt in een infinite loop na het tweede keer oproepen ervan.
     
     /*
     Song song("midi_files/world-1-birabuto-4-.mid");
