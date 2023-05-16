@@ -14,7 +14,7 @@ note_value(note), instrument(instrument), duration(duration), velocity(velocity)
     s += RoundTime_stamp(r_time_stamp);
     s += RoundDuration(r_duration);
     s += RoundInstrument(r_instrument);
-    s += RoundNote(r_note,1);
+    s += RoundNote(r_note%12,r_note/12);
     s += RoundVelocity(r_velocity);
     return s;
 }
@@ -144,6 +144,7 @@ string Note::RoundNote(int r_note, int r_octaaf) const { // TODO deze functie mo
                 value = 0;
             }
             if (value > 255){
+                cerr <<"oei"<<endl;
                 throw "oei";
             }
 

@@ -15,7 +15,7 @@ public:
     //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
     //                            {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3},
     //                             {1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4},{0,1,0,1,5,1}};
-    vector<vector<int>> vectors={{0,1,0,1,0,1}};
+    vector<vector<int>> vectors={{0,1,0,1,0,1},{8,1,0,2,0,1},{0,0,0,2,0,2},{1,1,1,1,1,1},{1,1,0,1,0,1},{0,8,0,7,0,4}}; // TODO een no
 };
 Vectors_Params PARAMS;
 
@@ -305,7 +305,7 @@ double Song::similarity(Song &song, bool complement, bool reverse) { // TODO com
         formatted = "\033[1;42m\033[1;1m\033[1;35m" + to_string(result) + "\033[0m" ;
     }
 
-    m = getCurrTime()+" Comparition ended, showing a matchpercentage off: "+ formatted + " %\n\n";
+    m = getCurrTime()+" Comparison ended, showing a match-percentage off: "+ formatted + " %\n\n";
     if(console){cout << m;}
     logs.push_back(m);
 
