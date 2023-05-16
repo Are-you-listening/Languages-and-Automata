@@ -60,16 +60,16 @@ int main() {
      */
 
     
-    vector<pair<string,string>> doubleComparison; // TODO dit crasht bij compare (Alex2nd).mid with DKC_Factory-KM.mid
-    ifstream Filelist("filelist.txt"); // TODO systeem blijft vaststeken bij [14-05-2023 17:52:22] Created the new Genre: (Alex2nd).mid_compare_(metalslug1).mid , based on (Alex2nd).mid and (metalslug1).mid
-    ifstream Filelist2("filelist.txt");
+    vector<pair<string,string>> doubleComparison; 
+    ifstream Filelist("filelist.txt"); 
     string c;
-    string c3;
     string c2="midi_files/";
     vector<Song*> songs;
     while(getline(Filelist,c)){
         Song* song = new Song(c2+c,1);
         song->setTitle(c);
+        ifstream Filelist2("filelist.txt");
+        string c3;
         while(getline(Filelist2,c3)){
             if(find(doubleComparison.begin(), doubleComparison.end(), make_pair(c,c3))!=doubleComparison.end()){
                 continue;
@@ -79,13 +79,11 @@ int main() {
             Song* song2 = new Song(c2+c3,0);
             song2->setTitle(c3);
             vector<int> V={1,1,1,1,0,1};
-            /*
             Genre genre = Genre(song,song2,V,c+"_compare_"+c3,1);
             DFA genreDFA=genre.getProductAutomata();
             Song generated=Song(genreDFA,V,0);
             string path="midi_output/"+c+"_compare_"+c3;
             generated.save(path);
-             */
             song->similarity(*song2,0,0);
             delete song2;
         }
