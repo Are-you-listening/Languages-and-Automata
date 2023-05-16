@@ -97,7 +97,7 @@ private:
      * @param t
      * @return
      */
-    double checkWNFA(RE &r);
+    double checkWNFA(RE &r , RE &s);
 
     /**
      * \brief Magimathical Formula Anas

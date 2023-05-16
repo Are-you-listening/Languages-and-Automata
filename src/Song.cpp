@@ -590,7 +590,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
-double Song::checkWNFA(RE &r){
+double Song::checkWNFA(RE &r, RE &s){
     /**
      * format indexes:
      * 0: accepted note line
