@@ -52,13 +52,28 @@ bool SongWidget::isClicked(unsigned int mouse_x, unsigned int mouse_y, int offse
     return in_x && in_y;
 }
 
+void SongWidget::setPosMouse(unsigned int x, unsigned int y) {
+    SongWidget::old_x = SongWidget::x;
+    SongWidget::old_y = SongWidget::y;
+
+    SongWidget::x = x-width/2;
+    SongWidget::y = y-height/2;
+}
+
+void SongWidget::draw(Display *display, Window window, GC graphics_content, bool keep) {
+    if(!keep){
+        XClearArea(display, window, old_x, old_y, width, height, 0);
+    }
+    XSetForeground(display,graphics_content, 900000);
+    XFillRectangle(display, window, graphics_content, x, y, width, height);
+}
+
 void SongWidget::setPos(unsigned int x, unsigned int y) {
     SongWidget::x = x;
     SongWidget::y = y;
 }
 
-void SongWidget::draw(Display *display, Window window, GC graphics_content) {
-    XSetForeground(display,graphics_content, 900000);
-    XFillRectangle(display, window, graphics_content, x, y, width, height);
+void SongWidget::clear(Display *display, Window window) {
+    XClearArea(display, window, old_x, old_y, width, height, 0);
 }
 

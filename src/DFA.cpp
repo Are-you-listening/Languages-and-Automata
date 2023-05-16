@@ -163,7 +163,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     DFA::alphabet=dfa1.alphabet;
     DFA::alphabet.insert(dfa2.alphabet.begin(),dfa2.alphabet.end());
     startstate->name="("+dfa1.startingState->name+","+dfa2.startingState->name+")";
-    if(dfa1.startingState->accepting && dfa2.startingState->accepting && c ){
+    if(dfa1.startingState->accepting && dfa2.startingState->accepting && c){
         startstate->accepting= true;
     } else if((dfa1.startingState->accepting || dfa2.startingState->accepting) && !c) {
         startstate->accepting=true;
@@ -172,12 +172,15 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     }
     DFA::states.push_back(startstate);
     DFA::startingState=startstate;
+
+    vector<tuple<state*, state*, state*>> current_states = {make_tuple(startstate, dfa1.startingState, dfa2.startingState)};
+    vector<tuple<state*, state*, state*>> new_states;
     while (a){
+        cout << get<0>(current_states[0])->name << endl;
         a=false;
-        vector<state*> TOBEADDED;
-        vector<state*> TOBEADDEDEND;
-        for(vector<state*>::const_iterator it=DFA::states.begin(); it!=DFA::states.end(); it++){
+        for(auto tup: current_states){
             for(set<string>::const_iterator it2=DFA::alphabet.begin(); it2!=DFA::alphabet.end(); it2++){
+                /*
                 string state1_string;
                 string state2_string;
                 bool b1=true;
@@ -196,7 +199,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
                 }
                 state* state1;
                 state* state2;
-                state* temp;
+
                 for(vector<state*>::const_iterator it3=dfa1.states.begin(); it3!=dfa1.states.end(); it3++){
                     if ((*it3)->name==state1_string){
                         state1 = (*it3);
@@ -206,7 +209,12 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
                     if ((*it3)->name==state2_string){
                         state2 = (*it3);
                     }
-                }
+                }*/
+
+                state* temp;
+                state* state1 = get<1>(tup);
+                state* state2 = get<2>(tup);
+
                 bool b2=false;
                 string name= "(" + state1->states[(*it2)]->name + "," + state2->states[(*it2)]->name + ")";
                 for(vector<state*>::const_iterator it3=DFA::states.begin(); it3!=DFA::states.end(); it3++){
@@ -220,42 +228,43 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
                     temp->name = name;
                     if ((state1->states[(*it2)]->accepting && state2->states[(*it2)]->accepting && c) || (state1->states[(*it2)]->accepting || state2->states[(*it2)]->accepting && !c)) {
                         temp->accepting = true;
-                        bool b3=true;
-                        for(vector<state*>::const_iterator it3=TOBEADDEDEND.begin(); it3!=TOBEADDEDEND.end(); it3++){
-                            if (name==(*it3)->name){
-                                b3= false;
-                            }
-                        }
-                        if(b3){
-                            TOBEADDEDEND.push_back(temp);
+                        if (find(DFA::endstates.begin(),DFA::endstates.end(),temp)==DFA::endstates.end()) {
+                            DFA::endstates.push_back(temp);
+                            new_states.push_back(make_tuple(temp, state1->states[(*it2)], state2->states[(*it2)]));
                         }
                     }
-                    bool b4=true;
-                    for(vector<state*>::const_iterator it3=TOBEADDED.begin(); it3!=TOBEADDED.end(); it3++){
-                        if (name==(*it3)->name){
-                            b4= false;
-                        }
-                    }
-                    if(b4){
-                        TOBEADDED.push_back(temp);
+
+                    if (find(DFA::states.begin(),DFA::states.end(),temp)==DFA::states.end()){
+                        DFA::states.push_back(temp);
+                        new_states.push_back(make_tuple(temp, state1->states[(*it2)], state2->states[(*it2)]));
+                        a=true;
                     }
                 }
-                if ((*it)->states.find((*it2)) == (*it)->states.end()){
-                    (*it)->addTransitionFunction((*it2),temp);
+                if (get<0>(tup)->states.find((*it2)) == get<0>(tup)->states.end()){
+                    get<0>(tup)->addTransitionFunction((*it2),temp);
                 }
             }
         }
+
+        if (new_states.size() == 0){
+            break;
+        }
+        current_states.clear();
+        current_states = new_states;
+        new_states.clear();
+        /*
         for(vector<state*>::const_iterator it=TOBEADDED.begin(); it!=TOBEADDED.end(); it++){
             if (find(DFA::states.begin(),DFA::states.end(),(*it))==DFA::states.end()){
                 DFA::states.push_back((*it));
                 a=true;
             }
-        }
+        }*/
+        /*
         for(vector<state*>::const_iterator it=TOBEADDEDEND.begin(); it!=TOBEADDEDEND.end(); it++){
             if (find(DFA::endstates.begin(),DFA::endstates.end(),(*it))==DFA::endstates.end()) {
                 DFA::endstates.push_back((*it));
             }
-        }
+        }*/
     }
 }
 

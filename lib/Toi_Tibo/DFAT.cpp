@@ -535,7 +535,7 @@ nlohmann::json DFAT::getJson() const {
     nlohmann::json data = nlohmann::json::parse(R"({})");
     data["type"] = "DFA";
     for (auto a: alfabet){
-        string s;
+        string s = "";
         s += a;
         data["alphabet"].push_back( s);
     }

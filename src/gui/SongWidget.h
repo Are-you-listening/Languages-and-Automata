@@ -18,14 +18,16 @@ class SongWidget {
 public:
     SongWidget(unsigned int x, unsigned int y, unsigned int width, unsigned int height, Song *song);
     void draw(Display* display, Window window, GC graphics_content, int offset, unsigned int min_height, unsigned int max_height);
-    void draw(Display* display, Window window, GC graphics_content);
+    void draw(Display* display, Window window, GC graphics_content, bool keep =true);
     pair<unsigned int, unsigned int> getPositionY(int offset, unsigned int min_height, unsigned int max_height);
     bool isClicked(unsigned int mouse_x, unsigned int mouse_y, int offset, unsigned int min_height, unsigned int max_height);
 
     unsigned int getX() const;
 
     unsigned int getY() const;
+    void setPosMouse(unsigned int x, unsigned int y);
     void setPos(unsigned int x, unsigned int y);
+    void clear(Display* display, Window window);
 
 public:
 
@@ -35,6 +37,10 @@ private:
     unsigned int width;
     unsigned int height;
     Song* song;
+
+    unsigned int old_x;
+    unsigned int old_y;
+
 
 };
 
