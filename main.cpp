@@ -10,6 +10,13 @@
 #include "NFA.h"
 
 int main() {
+    Song* song3=new Song("midi_files/(Alex2nd).mid",1);
+    Song* song4=new Song("midi_files/(metalslug1) (1).mid",0);
+    vector<int> V2={1,1,1,1,0,1};
+    Genre genre = Genre(song3, song4, V2, "_compare_", 1);
+    DFA genreDFA=genre.getProductAutomata(); // TODO hier wordt er een rare DFA gegenereerd.
+    Song generated=Song(genreDFA,V2,1);
+    
     /*
     Song song("midi_files/world-1-birabuto-4-.mid");
     RE r = song.toRegex(0, 0, 1, 1, 0, 1)[0];
@@ -81,7 +88,7 @@ int main() {
             vector<int> V={1,1,1,1,0,1};
             Genre genre = Genre(song,song2,V,c+"_compare_"+c3,1);
             DFA genreDFA=genre.getProductAutomata();
-            Song generated=Song(genreDFA,V,0);
+            Song generated=Song(genreDFA,V,1);
             string path="midi_output/"+c+"_compare_"+c3;
             generated.save(path);
             song->similarity(*song2,0,0);
