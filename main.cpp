@@ -9,6 +9,9 @@
 
 #include "NFA.h"
 int main() {
+    Song* song3=new Song("midi_files/(Alex2nd).mid",1);
+    Song* song4=new Song("midi_files/(metalslug1) (1).mid",0);
+    song3->similarity(*song4, 0, 0);
     /*
     Song* song3=new Song("midi_files/(Alex2nd).mid",1);
     Song* song4=new Song("midi_files/(metalslug1) (1).mid",0);
