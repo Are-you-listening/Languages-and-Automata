@@ -78,7 +78,7 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     this->name = name;
     fInitCheck = this;
 
-    string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit*100) +  " minimum match %\n\n";
+    string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit) +  " minimum match %\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
@@ -131,7 +131,16 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
         }
     }
 
+    log = getCurrTime() + " Started Product Automata Construction..\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
     DFA prod = DFA(z,z2,0);
+
+    log = getCurrTime() + " Minimizing our beautifull product..\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
     ProductAutomata = {2,prod.minimize()}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO minimise zou hier terug moeten 
 
     log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
