@@ -92,7 +92,7 @@ double WNFA::weightedaccepts(string input) {
             largestpath = state.first;
         }
     }
-    return largestpath;
+    return largestpath/input.size();
 }
 
 void WNFA::print() {
