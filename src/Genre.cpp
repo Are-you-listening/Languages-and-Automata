@@ -67,8 +67,13 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     this->console = console;
     param = params;
     members={s,k};
+    this->limit=s->similarity(*k,0,0);
     this->name = name;
     fInitCheck = this;
+
+    string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit*100) +  " minimum match %\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
 
     //Create Seperate DFA's
     vector<RE> t = members[0]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
@@ -122,8 +127,7 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     DFA prod = DFA(z,z2,0);
     ProductAutomata = {2,prod}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO hier gebeurd er iets fout, ik weet ook niet meer als dit 0 of 1 moet zijn
 
-
-    string log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
+    log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 

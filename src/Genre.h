@@ -46,6 +46,11 @@ private:
     vector<int> param;
 
     /**
+     * \brief The minimum amount a new Song has to have to be added to the Genre
+     */
+    double limit;
+
+    /**
      * \brief Generate a product automata for the current Genre's member-sub-regexes
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @return Datatype containing the sub DFA's in productautomata
@@ -76,14 +81,16 @@ public:
      */
     bool inGenre(Song* &s);
 
-    /**
-     * \brief Create a Genre based on 2 Song's and a given set of paramaters.
-     * \REQUIRE(params.size()==6, "Params doesn't has all the paramaters");
-     * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * @param s
-     * @param k
-     * @param param
-     */
+     /**
+      * brief Create a Genre based on 2 Song's and a given set of paramaters. The minimum match % (required for new songs) will be initialised on the Similarity % between k & s
+      * \REQUIRE(params.size()==6, "Params doesn't has all the paramaters");
+      * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+      * @param s
+      * @param k
+      * @param params
+      * @param name
+      * @param console
+      */
     Genre(Song* &s, Song* &k, const vector<int> &params, const string &name, bool console);
 
     /**
