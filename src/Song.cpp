@@ -148,7 +148,7 @@ Song::~Song(){
     }
 }
 
-vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern){
+vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern){ //When int>1 -> activate round
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     char epsilon='*';
@@ -176,7 +176,6 @@ vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b
                 }
             }
         }
-
     }
 
     if (count != 0){

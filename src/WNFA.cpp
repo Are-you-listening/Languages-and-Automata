@@ -55,7 +55,6 @@ pair<weightedNode *, bool> WNFA::getWeightedState(string name) const{
         return make_pair(nullptr, false);
     }
     return make_pair(result->second, true);
-
 }
 
 double WNFA::weightedaccepts(string input) {

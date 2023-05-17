@@ -13,6 +13,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+
 using namespace std;
 using json = nlohmann::json;
 
@@ -38,6 +39,13 @@ public:
     
     WNFA();
     WNFA(const string &filename);
+    
+    /**
+     * \brief 
+     * REQUIRE: Alphabet is compatible with the input string
+     * @param input 
+     * @return 
+     */
     double weightedaccepts(string input);
     void print();
 };

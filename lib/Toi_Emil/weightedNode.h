@@ -17,5 +17,4 @@ public:
     explicit weightedNode(const string &name);
 };
 
-
 #endif //DFA_WEIGHTEDNODE_H
