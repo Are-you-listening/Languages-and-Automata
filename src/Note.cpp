@@ -35,7 +35,7 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
             if (temp > 155){
                 temp = 155;
             }
-            s+=toChar(temp); //TODO deze div is temp en moet verandert worden, hetzelfde geld voor de andere divs.
+            s+=toChar(temp); 
             s+="+";
         }
         s[s.size()-1] = ')';

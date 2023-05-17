@@ -38,6 +38,6 @@ int main() {
         }
         delete song;
     }
-    Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
+    Filelist.close();
     return 0;
 }
