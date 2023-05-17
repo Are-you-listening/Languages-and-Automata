@@ -267,11 +267,11 @@ WNFA NFA::toWNFA(){
 
 
     // voeg de transities uit de NFA toe aan de WNFA
-    for (weightedNode* state : result.states){
+    for (pair<string, weightedNode*> state : result.states){
         for (string temp : result.alfabet){
             char symbol = temp[0];
-            for (const auto& transition : Q.find(state->getName())->second->DoTransition(symbol)){
-                state->addconnection(result.getWeightedState(transition).first, symbol, 1);
+            for (const auto& transition : Q.find(state.second->getName())->second->DoTransition(symbol)){
+                state.second->addconnection(result.getWeightedState(transition).first, symbol, 1);
             }
 
         }

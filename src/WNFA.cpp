@@ -67,19 +67,19 @@ pair<weightedNode *, bool> WNFA::getWeightedState(string name) const{
 }
 
 double WNFA::weightedaccepts(string input) {
-    vector<pair<double, weightedNode*>> currentstates = {make_pair(0.0, this->startState)};
+    set<pair<double, weightedNode*>> currentstates = {make_pair(0.0, this->startState)};
 
-    for (char symbol : input){
-        string temp = string(1, symbol);
-        if (std::find(alfabet.begin(), alfabet.end(), temp) == alfabet.end()){
+    for (const char& symbol : input){
+        if (std::find(alfabet.begin(), alfabet.end(), string(1, symbol)) == alfabet.end()){
             cerr << "Symbol " << symbol << " not in alphabet" << endl;
             return -1.0;
         }
-        vector<pair<double, weightedNode*>> tempstates;
-        for (pair<double, weightedNode*> state : currentstates){
-            for (auto connection : state.second->getweightedconnections()){
+
+        set<pair<double, weightedNode*>> tempstates;
+        for (const pair<double, weightedNode*>& state : currentstates){
+            for (const auto& connection : state.second->getweightedconnections()){
                 if (get<1>(connection).find(symbol) != get<1>(connection).end()){
-                    tempstates.emplace_back(state.first + get<2>(connection), get<0>(connection));
+                    tempstates.emplace(state.first + get<2>(connection), get<0>(connection));
                 }
             }
         }
@@ -87,10 +87,8 @@ double WNFA::weightedaccepts(string input) {
     }
 
     double largestpath = 0.0;
-    for (pair<double, weightedNode*> state : currentstates){
-        if (state.first > largestpath){
-            largestpath = state.first;
-        }
+    for (const pair<double, weightedNode*>& state : currentstates){
+        largestpath = max(largestpath, state.first);
     }
     return largestpath/input.size();
 }

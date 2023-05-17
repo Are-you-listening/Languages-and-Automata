@@ -18,9 +18,9 @@ using json = nlohmann::json;
 
 class WNFA {
 public:
-    list<weightedNode*> states;
+    map<string, weightedNode*> states;
     weightedNode* startState = nullptr;
-    list<weightedNode*> endStates = {};
+    map<string, weightedNode*> endStates = {};
     string type;
     vector<string> alfabet;
 
