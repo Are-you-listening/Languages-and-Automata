@@ -276,8 +276,8 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
     if(console){cout << m;}
     logs.push_back( m );
 
-    double result; // TODO mischien moeten wij nog een grotere functie maken die dit oproept voor WNFA ermee te vergelijken.
-    double WNFAresult; // TODO WNFA result moet nog geimplemeteerd worden
+    double result;
+    double WNFAresult;
     bool succes = false;
     vector<vector<double>> results;
     vector<vector<double>> WNFAresults;
@@ -289,7 +289,10 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
         results.push_back( similar(toCheck,complement,reverse) ); // 0,1,0,1,0, 1,0
     }
     
-    result = magimathical(results);
+    //Check Notes
+    WNFAresult = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
+    
+    result = (magimathical(results)+WNFAresult)/2; // TODO mischien parameter adden.
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
@@ -592,7 +595,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
-double Song::checkWNFA(RE &r, RE &s){
+double Song::checkWNFA(RE &r,RE &s){
     /**
      * format indexes:
      * 0: accepted note line
@@ -601,15 +604,10 @@ double Song::checkWNFA(RE &r, RE &s){
      * 3: self loop erverywhere else
      * 4: arrow to the next state
      * */
-
-    RE wr = toRegex(0, 0, 0, 1, 0, -1)[0];
-    ENFA e = wr.toENFA();
+    
+    ENFA e = r.toENFA();
     json j = e.getJsonNfa();
     NFA n(j);
     WNFA w = n.toWNFA();
-    //cout << w.weightedaccepts(wr.re.substr(0, 3)) << endl;
-    //double v = w.weightedaccepts(r.re);
-    //cout << v << endl;
-
-    return 0;
+    return w.weightedaccepts(s.re);
 };
