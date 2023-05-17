@@ -8,10 +8,7 @@
 #include "Genre.h"
 
 #include "NFA.h"
-#include "gui/Gui.h"
 int main() {
-    Gui g;
-    g.start();
     /*
     Song* song3=new Song("midi_files/(Alex2nd).mid",1);
     Song* song4=new Song("midi_files/(metalslug1) (1).mid",0);
