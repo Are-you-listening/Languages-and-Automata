@@ -45,10 +45,17 @@ bool Genre::inGenre(Song *&s) {
     if(console){cout << log;}
     logs.push_back(log);
 
+    bool succes = false;
     DFA m = toProductAutomata();
     vector<RE> st = s->toRegex(param[0],param[1],param[2],param[3],param[4],-1);
 
-    bool succes = m.accepts(st[0].re);
+    //Generate a Song and check how much similar it is with the given song
+    Song k = Song(ProductAutomata.second, param, console);
+    if(k.similarity(*s,0,0)>=limit){
+        succes = true;
+    }
+
+    //bool succes = m.accepts(st[0].re);
     if(succes){
         log = getCurrTime() + " Found matching results on the characteristics on this Genre!\n\n";
     }else{
@@ -67,8 +74,13 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     this->console = console;
     param = params;
     members={s,k};
+    this->limit=s->similarity(*k,0,0);
     this->name = name;
     fInitCheck = this;
+
+    string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit*100) +  " minimum match %\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
 
     //Create Seperate DFA's
     vector<RE> t = members[0]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
@@ -122,8 +134,7 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     DFA prod = DFA(z,z2,0);
     ProductAutomata = {2,prod.minimize()}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO minimise zou hier terug moeten 
 
-
-    string log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
+    log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
