@@ -37,33 +37,24 @@ WNFA::WNFA(const string &filename) {
 
 WNFA::WNFA() {}
 
-pair<weightedNode *, bool> WNFA::getweightedState(string name) {
-    for (weightedNode* state : states){
-        if (state->getName() == name){
-            return make_pair(state, true);
-        }
-    }
-    return make_pair(nullptr, false);
-}
-
 void WNFA::addState(string name, bool start, bool endState) {
     weightedNode* n = new weightedNode(name);
-    states.push_back(n);
+    states[name] = n;
     if (start){
         startState = n;
     }
     if (endState){
-        endStates.push_back(n);
+        endStates[name] = n;
     }
 }
 
 pair<weightedNode *, bool> WNFA::getWeightedState(string name) const{
-    for (weightedNode* state : states){
-        if (state->getName() == name){
-            return make_pair(state, true);
-        }
+    auto result = states.find(name);
+    if (result == states.end()){
+        return make_pair(nullptr, false);
     }
-    return make_pair(nullptr, false);
+    return make_pair(result->second, true);
+
 }
 
 double WNFA::weightedaccepts(string input) {
@@ -101,17 +92,17 @@ void WNFA::print() {
     }
     for (auto state: states) {  // add all the states
         json temp;
-        temp["name"] = state->getName();
-        temp["starting"] = isStartState(state->getName());
-        temp["accepting"] = isEndState(state->getName());
+        temp["name"] = state.second->getName();
+        temp["starting"] = isStartState(state.second->getName());
+        temp["accepting"] = isEndState(state.second->getName());
         Jout["states"].push_back(temp);
     }
 
     for (auto state: states) {  // add all the transitions
-        for (const auto& transition: state->getweightedconnections()) {
+        for (const auto& transition: state.second->getweightedconnections()) {
             for (auto symbol: get<1>(transition)) {
                 json temp;
-                temp["from"] = state->getName();
+                temp["from"] = state.second->getName();
                 temp["to"] = get<0>(transition)->getName();
                 temp["input"] = string(1, symbol);
                 temp["weight"] = get<2>(transition);
@@ -123,13 +114,11 @@ void WNFA::print() {
 }
 
 pair<Node*, bool> WNFA::getState(string name) {
-
-    for (Node* state : states){
-        if (state->getName() == name){
-            return make_pair(state, true);
-        }
+    auto result = states.find(name);
+    if (result == states.end()){
+        return make_pair(nullptr, false);
     }
-    return make_pair(nullptr, false);
+    return make_pair(result->second, true);
 }
 
 bool WNFA::isStartState(string name) {
@@ -141,10 +130,8 @@ bool WNFA::isStartState(string name) {
 }
 
 bool WNFA::isEndState(string name) {
-    for (auto state : endStates){
-        if (state == getState(name).first){
-            return true;
-        }
+    if (endStates.find(name) != endStates.end()){
+        return true;
     }
     return false;
 }
