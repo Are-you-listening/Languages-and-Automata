@@ -65,7 +65,7 @@ double WNFA::weightedaccepts(string input) {
             cerr << "Symbol " << symbol << " not in alphabet" << endl;
             return -1.0;
         }
-
+        
         set<pair<double, weightedNode*>> tempstates;
         for (const pair<double, weightedNode*>& state : currentstates){
             for (const auto& connection : state.second->getweightedconnections()){

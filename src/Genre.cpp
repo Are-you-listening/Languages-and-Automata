@@ -130,7 +130,7 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
             (*it2)->addTransitionFunction((*it),deadstate);
         }
     }
-
+    
     DFA prod = DFA(z,z2,0);
     ProductAutomata = {2,prod.minimize()}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO minimise zou hier terug moeten 
 
