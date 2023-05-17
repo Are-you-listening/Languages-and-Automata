@@ -43,15 +43,15 @@ public:
      */
     [[nodiscard]] string getRE(int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity) const;
 
-    int getNoteValue() const;
+    [[nodiscard]] int getNoteValue() const;
 
-    unsigned int getInstrument() const;
+    [[nodiscard]] unsigned int getInstrument() const;
 
-    unsigned int getTimeStamp() const;
+    [[nodiscard]] unsigned int getTimeStamp() const;
 
-    int getVelocity() const;
+    [[nodiscard]] int getVelocity() const;
 
-    int getDuration() const;
+    [[nodiscard]] int getDuration() const;
 
     void setDuration(int duration);
 
@@ -62,10 +62,10 @@ private:
     int velocity;
     int duration=-1;
 
-    string RoundInstrument(int r_instrument) const;
-    string RoundNote(int r_note, int r_octaaf) const;
-    string RoundTime_stamp(int r_time_stamp) const;
-    string RoundDuration(int r_duration) const;
-    string RoundVelocity(int r_velocity) const;
+    [[nodiscard]] string RoundInstrument(int r_instrument) const;
+    [[nodiscard]] string RoundNote(int r_note, int r_octaaf) const;
+    [[nodiscard]] string RoundTime_stamp(int r_time_stamp) const;
+    [[nodiscard]] string RoundDuration(int r_duration) const;
+    [[nodiscard]] string RoundVelocity(int r_velocity) const;
 };
 #endif //MIDIPARSER_NOTE_H
