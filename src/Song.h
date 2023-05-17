@@ -17,6 +17,7 @@
 #include "NFA.h"
 #include "WNFA.h"
 #include "ENFA.h"
+
 using namespace std;
 
 /**
@@ -83,7 +84,7 @@ private:
     double checkKars(vector<DFA> &d, vector<RE> &s) const;
 
     /**
-     * \brief Cross check the similarity but more accuractly?
+     * \brief Cross check the similarity but more accurately?
      * \REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * \ENSURE(succeeded, "Operation did not work properly");
      * @param d
@@ -110,7 +111,7 @@ public:
     * \brief Checks if an item is properly initialised
      * @return succes, bool deciding the succes of the operation
     */
-    bool ProperlyInitialized() const;
+    [[nodiscard]] bool ProperlyInitialized() const;
 
     /**
      * \brief Constructor
@@ -136,12 +137,12 @@ public:
      * \brief Generate a Song from a DFA , sets the title to the DFA's StartState
      * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * @param s, a random DFA
-     * @param param, the list with used paramaters for Construction of Note Objects
+     * @param param, the list with used parameters for Construction of Note Objects
      */
     Song(DFA &s, vector<int> &param, bool console);
 
     /**
-     * \brief Overloader Constructor (Creates a new object) Including new usages of memory!
+     * \brief Overload Constructor (Creates a new object) Including new usages of memory!
      * \REQUIRE(a.ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * \ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * @param a
@@ -162,7 +163,7 @@ public:
      * @param instrument , bool deciding if this Note-parameter should be used
      * @param note , bool deciding if this Note-parameter should be used
      * @param velocity , bool deciding if this Note-parameter should be used
-     * @param pattern, int deciding the complexixity of the constructed Regex
+     * @param pattern, int deciding the complexity of the constructed Regex
      * @return vector<RE> rex
      */
     [[nodiscard]] vector<RE> toRegex(int time_stamp, int duration, int instrument, int note_b, int velocity, int pattern);
@@ -170,7 +171,7 @@ public:
     /**
      * \brief Count the amount of notes (per type) of a Song
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * @return map<int,unsigned int> map[Note]=occurences
+     * @return map<int,unsigned int> map[Note]=occurrences
      */
     [[nodiscard]] map<int,unsigned int> countNotes();
 
@@ -197,7 +198,7 @@ public:
     [[nodiscard]] double similarity(Song &song,bool complement, bool reverse);
 
     /**
-     * \brief Check the occurences of the Notes and its similarity towards the notes of this object
+     * \brief Check the occurrences of the Notes and its similarity towards the notes of this object
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * \ENSURE(succeed, "Percentage must be between 0 and 1");
      * @return
@@ -232,7 +233,7 @@ public:
      * \REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @return
      */
-    const string &getTitle() const;
+    [[nodiscard]] const string &getTitle() const;
 
     /**
      * \brief Setter

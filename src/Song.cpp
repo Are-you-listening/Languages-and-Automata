@@ -99,7 +99,7 @@ Song::Song(const string &path, bool console) : console(console) {
     
     int count = 0;
     for(const auto &entry: note_map){
-        count += entry.second.size();
+        count += (int) entry.second.size();
     }
 
     log = getCurrTime() + " Initialising new Song Object...\n\n";
@@ -137,7 +137,7 @@ Song &Song::operator=(const Song &a) {
 }
 
 Song::~Song(){
-    string log = getCurrTime() + " Destructor called, cleaning up the rubish!\n\n";
+    string log = getCurrTime() + " Destructor called, cleaning up the rubbish!\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
@@ -180,7 +180,7 @@ vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b
     }
 
     if (count != 0){
-        //Add the resting regex parts in case we didn't got a full pattern run
+        //Add the resting regex parts in case we didn't get a full pattern run
         RE regex(temp,epsilon);
         regex_list.push_back(regex);
     }
@@ -203,9 +203,9 @@ double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
         string test=s[i].re;
         bool b = d[i].accepts(test); //Addition Anas
         if(b){succes++;}
-    };
-    double result = (double) succes/d.size();
-    if(d.size()==0){
+    }
+    double result = (double) succes/((double)d.size());
+    if(d.empty()){
         result=0;
     }
     if(result>=0 && result<=1){succeeded = true;} //Result bust me a percentage
@@ -229,7 +229,7 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
     }
 
     double result = succes / (double) (d.size() * s.size()) ;
-    if(d.size()==0 || s.size()==0){
+    if(d.empty() || s.empty()){
         result=0;
     }
     
@@ -277,10 +277,9 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
     logs.push_back( m );
 
     double result;
-    double WNFAresult;
+    double WNFA_result;
     bool succes = false;
     vector<vector<double>> results;
-    vector<vector<double>> WNFAresults;
     
     //Do different checks on different Regex's
     for(const vector<int> &v: PARAMS.vectors){
@@ -290,9 +289,9 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
     }
     
     //Check Notes
-    WNFAresult = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
+    WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
     
-    result = (magimathical(results)+WNFAresult)/2; // TODO mischien parameter adden.
+    result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
@@ -385,10 +384,10 @@ double Song::magimathical(vector<vector<double>> &results) {
         }
         double boolparam = (40.0/V0)*e + (17.0/V1)*d + (6.0/V2)*c + (17.0/V3)*b + (20.0/V4)*a + pow(5,(*v)[5]); //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
         for(vector<vector<double>>::iterator it=results.begin(); it!=results.end(); it++){
-            result+=(boolparam*(0.7*(*it)[0]+0.2*(*it)[1]+0.1*(*it)[2]))/results[0].size();
+            result+=(boolparam*(0.7*(*it)[0]+0.2*(*it)[1]+0.1*(*it)[2]))/((double)results[0].size());
         }
     }
-    result=result/results.size();
+    result=result/((double)results.size());
     if (result>1){
         result=1;
     }
@@ -403,7 +402,6 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
 
     pair<vector<RE>,vector<RE>> toCheck2 = sort(toCheck);
     d = convert(toCheck.first,complement,reverse);
-    //cout << toCheck2.first.size() << " " << toCheck2.second.size() << endl;
     results.push_back( checkTibo(d , toCheck.second ) );
 
     //Check Kars
@@ -448,7 +446,7 @@ map<int,unsigned int> Song::countNotes() {
     map<int,unsigned int> scount = s.countNotes();
 
     double succes = 0.0;
-    unsigned int occurences = count.size();
+    unsigned int occurrences = count.size();
     bool succeed = false;
 
     for(auto k = count.begin(); k!=count.end(); k++){
@@ -459,11 +457,11 @@ map<int,unsigned int> Song::countNotes() {
         }
     }
 
-    double result = succes/occurences;
+    double result = succes/occurrences;
     if(result<=1 && result>=0){succeed = true;}
     ENSURE(succeed, "Percentage must be between 0 and 1");
 
-    m = getCurrTime()+" Comparition ended, "+"showing a matchpercentage off: "+ to_string(result*100) + "%\n";
+    m = getCurrTime()+" Comparison ended, "+"showing a matchpercentage off: "+ to_string(result*100) + "%\n";
     if(console){cout << m;}
     logs.push_back(m);
 
@@ -488,7 +486,7 @@ void Song::output() const {
 
     out << "Date of report: "+getCurrTime()+"\n\n";
 
-    for(string k: logs){
+    for(const string &k: logs){
         out << k;
     }
 
@@ -517,7 +515,7 @@ void Song::save(const string &path) {
 
     midiExporter exp(path, note_map);
     
-    //ENSURE FILEXISTS
+    //TODO ENSURE FIL EXISTS
 }
 
 void Song::switchConsoleOutput() {
@@ -529,7 +527,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
     long unsigned int index = 0; //Index ptr van param
     stack<char> tempstack; //Helper variable
     vector<vector<int>> info; //{ {possible time_stamps}, {possible durations}, {possible notes},  {possible velocity's}, {possible instruments} }
-    vector<int> options = {}; //Posssible values
+    vector<int> options = {}; //Possible values
 
     //Start up
     fInitCheck = this; // TODO soms wordt er een plus gehanteerd voor meerdere noten op een tijdstip, mischien moeten wij plus zo hanteren als da niet groter is dan een bepaalde waarde.
@@ -578,7 +576,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
                 options.clear(); //Reset options
                 tempstack.pop();
             }else if(m=='*'){
-                cerr << "Honeseltely no clue what to do with Kleene Star, which lenght should I take?" << endl;
+                cerr << "Honestly no clue what to do with Kleene Star, which length should I take?" << endl;
             }else{
                 options.push_back(toChar(m));
                 if(tempstack.empty()){
@@ -601,7 +599,7 @@ double Song::checkWNFA(RE &r,RE &s){
      * 0: accepted note line
      * 1: self loop start
      * 2: self loop end
-     * 3: self loop erverywhere else
+     * 3: self loop everywhere else
      * 4: arrow to the next state
      * */
     
@@ -610,4 +608,4 @@ double Song::checkWNFA(RE &r,RE &s){
     NFA n(j);
     WNFA w = n.toWNFA();
     return w.weightedaccepts(s.re);
-};
+}

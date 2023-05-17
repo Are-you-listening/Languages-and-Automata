@@ -9,7 +9,7 @@ void Genre::addGenre(Song *&s) {
     string log;
     if(inGenre(s)){
         members.push_back(s);
-        log = getCurrTime()+ " Succesfully added " + s->getTitle() + " to the Genre!\n\n";
+        log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
     }else{
         log = getCurrTime()+ " Could not add this Song the Genre.\n\n";
     }
@@ -26,12 +26,12 @@ DFA Genre::toProductAutomata() {
 
     //Loop over each Song
     for(long unsigned int i = ProductAutomata.first; i<members.size(); i++) {
-        vector<RE> t = members[i]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
+        vector<RE> t = members[i]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
         ENFA a = t[0].toENFA();
         DFA s = a.toDFA();
-        ProductAutomata.second = DFA(ProductAutomata.second, s, 0); //Extend ProductAutomata
+        ProductAutomata.second = DFA(ProductAutomata.second, s, false); //Extend ProductAutomata
     }
-    ProductAutomata.first = members.size();
+    ProductAutomata.first = (int) members.size();
 
     ProductAutomata.second.minimize(); //So we will use less space
 
@@ -51,7 +51,7 @@ bool Genre::inGenre(Song *&s) {
 
     //Generate a Song and check how much similar it is with the given song
     Song k = Song(ProductAutomata.second, param, console);
-    if(k.similarity(*s,0,0)>=limit){
+    if(k.similarity(*s,false, false)>=limit){
         succes = true;
     }
 
@@ -74,21 +74,21 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     this->console = console;
     param = params;
     members={s,k};
-    this->limit=s->similarity(*k,0,0);
+    this->limit=s->similarity(*k,false,false);
     this->name = name;
     fInitCheck = this;
 
-    string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit*100) +  " minimum match %\n\n";
+    string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit) +  " minimum match %\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
-    //Create Seperate DFA's
-    vector<RE> t = members[0]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
+    //Create Separate DFA's
+    vector<RE> t = members[0]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
     ENFA a = t[0].toENFA();
     DFA z = a.toDFA();
     
     //Other DFA
-    vector<RE> t2 = members[1]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1 so we can generate 1 big Regex
+    vector<RE> t2 = members[1]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
     ENFA a2 = t2[0].toENFA();
     DFA z2 = a2.toDFA();
     //Merge the 2 Alphabets
@@ -130,8 +130,17 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
             (*it2)->addTransitionFunction((*it),deadstate);
         }
     }
-    
-    DFA prod = DFA(z,z2,0);
+
+    log = getCurrTime() + " Started Product Automata Construction..\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
+    DFA prod = DFA(z,z2, false);
+
+    log = getCurrTime() + " Minimizing our beautiful product..\n\n";
+    if(console){cout << log;}
+    logs.push_back(log);
+
     ProductAutomata = {2,prod.minimize()}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO minimise zou hier terug moeten 
 
     log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
@@ -159,29 +168,18 @@ void Genre::output() const {
 
     out << "Date of report: "+getCurrTime()+"\n\n";
 
-    for(string k: logs){
+    for(const string &k: logs){
         out << k;
     }
 
     out.close();
 }
 
-bool Genre::ProperlyInitialized() const {
+[[nodiscard]] bool Genre::ProperlyInitialized() const {
     if(fInitCheck== this){
         return true;
     }
     return false;
-}
-
-const string &Genre::getName() const {
-    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    return name;
-}
-
-void Genre::setName(const string &name) {
-    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    Genre::name = name;
-    ENSURE(Genre::name == name , "Setter didn't work properly");
 }
 
 void Genre::switchConsoleOutput() {
@@ -189,6 +187,6 @@ void Genre::switchConsoleOutput() {
     console = !console;
 }
 
-DFA Genre::getProductAutomata() const {
+[[nodiscard]] DFA Genre::getProductAutomata() const {
     return ProductAutomata.second;
 }
