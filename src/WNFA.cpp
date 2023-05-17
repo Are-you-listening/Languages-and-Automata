@@ -25,8 +25,8 @@ WNFA::WNFA(const string &filename) {
 
     set<json> newtransitions = j["transitions"];
     for (auto transition : newtransitions) {
-        weightedNode *state1 = getweightedState(transition["from"]).first;
-        weightedNode *state2 = getweightedState(transition["to"]).first;
+        weightedNode *state1 = getWeightedState(transition["from"]).first;
+        weightedNode *state2 = getWeightedState(transition["to"]).first;
         string inputsymbol = transition["input"];
         double weight = transition["weight"];
         for (auto symbol: inputsymbol) {
