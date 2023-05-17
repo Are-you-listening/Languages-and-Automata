@@ -119,12 +119,9 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
         }
     }
 
-    cout << "here" << endl;
-    DFA kees = DFA(z,z2,0);
-    ProductAutomata = {2,kees}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO hier gebeurd er iets fout, ik weet ook niet meer als dit 0 of 1 moet zijn
+    DFA prod = DFA(z,z2,0);
+    ProductAutomata = {2,prod}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO hier gebeurd er iets fout, ik weet ook niet meer als dit 0 of 1 moet zijn
 
-    cout << "pa; " << kees.accepts(t[0].re) << endl;
-    cout << "pa2; " << kees.accepts(t2[0].re) << endl;
 
     string log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}

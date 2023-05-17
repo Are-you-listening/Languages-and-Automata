@@ -170,79 +170,45 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     } else{
         startstate->accepting = false;
     }
-    DFA::states.push_back(startstate);
     DFA::startingState=startstate;
-
-    vector<tuple<state*, state*, state*>> current_states = {make_tuple(startstate, dfa1.startingState, dfa2.startingState)};
-    vector<tuple<state*, state*, state*>> new_states;
+    set<state*> check_states = {startstate};
+    set<tuple<state*, state*, state*>> current_states = {make_tuple(startstate, dfa1.startingState, dfa2.startingState)};
+    set<tuple<state*, state*, state*>> new_states;
+    set<string> current_names = {startstate->name};
+    set<string> new_names;
     while (a){
-        cout << get<0>(current_states[0])->name << endl;
+        //cout << get<0>(*current_states.begin())->name << " " << current_states.size() << endl;
         a=false;
         for(auto tup: current_states){
             for(set<string>::const_iterator it2=DFA::alphabet.begin(); it2!=DFA::alphabet.end(); it2++){
-                /*
-                string state1_string;
-                string state2_string;
-                bool b1=true;
-                for(string::iterator it3=(*it)->name.begin()+1; it3!=(*it)->name.end(); it3++){
-                    if ((*it3)==','){
-                        b1= false;
-                    } else {
-                        if(b1){
-                            state1_string.push_back((*it3));
-                        } else {
-                            if ((*it3)!=')'){
-                                state2_string.push_back((*it3));
-                            }
-                        }
-                    }
-                }
-                state* state1;
-                state* state2;
-
-                for(vector<state*>::const_iterator it3=dfa1.states.begin(); it3!=dfa1.states.end(); it3++){
-                    if ((*it3)->name==state1_string){
-                        state1 = (*it3);
-                    }
-                }
-                for(vector<state*>::const_iterator it3=dfa2.states.begin(); it3!=dfa2.states.end(); it3++){
-                    if ((*it3)->name==state2_string){
-                        state2 = (*it3);
-                    }
-                }*/
 
                 state* temp;
                 state* state1 = get<1>(tup);
                 state* state2 = get<2>(tup);
 
-                bool b2=false;
                 string name= "(" + state1->states[(*it2)]->name + "," + state2->states[(*it2)]->name + ")";
-                for(vector<state*>::const_iterator it3=DFA::states.begin(); it3!=DFA::states.end(); it3++){
-                    if ((*it3)->name==name){
-                        b2=true;
-                        temp=(*it3);
-                    }
+
+                temp = new state();
+                temp->name = name;
+                if ((state1->states[(*it2)]->accepting && state2->states[(*it2)]->accepting && c) || (state1->states[(*it2)]->accepting || state2->states[(*it2)]->accepting && !c)) {
+                    temp->accepting = true;
+
                 }
-                if(!b2){
-                    temp = new state();
-                    temp->name = name;
-                    if ((state1->states[(*it2)]->accepting && state2->states[(*it2)]->accepting && c) || (state1->states[(*it2)]->accepting || state2->states[(*it2)]->accepting && !c)) {
-                        temp->accepting = true;
-                        if (find(DFA::endstates.begin(),DFA::endstates.end(),temp)==DFA::endstates.end()) {
-                            DFA::endstates.push_back(temp);
-                            new_states.push_back(make_tuple(temp, state1->states[(*it2)], state2->states[(*it2)]));
-                        }
+
+                if (new_names.find(name) == new_names.end() && current_names.find(name) == current_names.end()){
+                    check_states.insert(temp);
+                    new_states.insert(make_tuple(temp, state1->states[(*it2)], state2->states[(*it2)]));
+                    new_names.insert(name);
+
+                    if (temp->accepting){
+                        DFA::endstates.push_back(temp);
                     }
 
-                    if (find(DFA::states.begin(),DFA::states.end(),temp)==DFA::states.end()){
-                        DFA::states.push_back(temp);
-                        new_states.push_back(make_tuple(temp, state1->states[(*it2)], state2->states[(*it2)]));
-                        a=true;
-                    }
+                    a=true;
                 }
-                if (get<0>(tup)->states.find((*it2)) == get<0>(tup)->states.end()){
-                    get<0>(tup)->addTransitionFunction((*it2),temp);
-                }
+
+
+                get<0>(tup)->addTransitionFunction((*it2),temp);
             }
         }
 
@@ -250,22 +216,15 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
             break;
         }
         current_states.clear();
+        current_names.clear();
         current_states = new_states;
+        current_names = new_names;
         new_states.clear();
-        /*
-        for(vector<state*>::const_iterator it=TOBEADDED.begin(); it!=TOBEADDED.end(); it++){
-            if (find(DFA::states.begin(),DFA::states.end(),(*it))==DFA::states.end()){
-                DFA::states.push_back((*it));
-                a=true;
-            }
-        }*/
-        /*
-        for(vector<state*>::const_iterator it=TOBEADDEDEND.begin(); it!=TOBEADDEDEND.end(); it++){
-            if (find(DFA::endstates.begin(),DFA::endstates.end(),(*it))==DFA::endstates.end()) {
-                DFA::endstates.push_back((*it));
-            }
-        }*/
+        new_names.clear();
     }
+
+
+    std::copy(check_states.begin(),check_states.end(), std::back_inserter(DFA::states));
 }
 
 DFA DFA::minimize() {
