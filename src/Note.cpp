@@ -14,7 +14,7 @@ note_value(note), instrument(instrument), duration(duration), velocity(velocity)
     s += RoundTime_stamp(r_time_stamp);
     s += RoundDuration(r_duration);
     s += RoundInstrument(r_instrument);
-    s += RoundNote(r_note%12,r_note/12);
+    s += RoundNote(r_note%12,1+r_note/12);
     s += RoundVelocity(r_velocity);
     return s;
 }

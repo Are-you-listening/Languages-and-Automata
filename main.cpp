@@ -9,6 +9,13 @@
 
 #include "NFA.h"
 int main() {
+    Song* song1 = new Song("midi_files/(Alex2nd).mid", false);
+    RE r = song1->toRegex(1, 1, 2, 2, 1, -1)[0];
+    ENFA e = r.toENFA();
+    DFA d = e.toDFA();
+    //cout <<d.accepts(r.re) << endl;
+
+    /*
     vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
     ifstream Filelist("filelist.txt"); 
     string c;
@@ -39,5 +46,6 @@ int main() {
         delete song;
     }
     Filelist.close();
+     */
     return 0;
 }

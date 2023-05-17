@@ -36,27 +36,24 @@ set<string> ENFAT::Eclose(const string &state, const set<string>& found) {
     /**
      * indien de statt geen transities heeft
      * */
-    if (transition_map.find(state) == transition_map.end()){
+    if (epsilon_transition_map.find(state) == epsilon_transition_map.end()){
         return output;
     }
 
     /**
      * checkt welke staten we allemaal kunnen bereiken volgens een epsilon transitie
      * */
-    map<char, set<string>> m = transition_map.at(state);
-        if (m.find(epsilon) != m.end()){
-            set<string> new_found;
-            new_found.insert(found.begin(), found.end());
-            new_found.insert(m.at(epsilon).begin(), m.at(epsilon).end());
-            for (string s : m.at(epsilon)){
-                if (find(found.begin(), found.end(), s) == found.end()){
-                    set<string> rec_set = Eclose(s, new_found);
-                    output.insert(rec_set.begin(), rec_set.end());
-                }
-
-            }
-
+    set<string> new_found;
+    new_found.insert(found.begin(), found.end());
+    set<string> targets = epsilon_transition_map.at(state);
+    new_found.insert(targets.begin(), targets.end());
+    for (string s : targets){
+        if (find(found.begin(), found.end(), s) == found.end()){
+            set<string> rec_set = Eclose(s, new_found);
+            output.insert(rec_set.begin(), rec_set.end());
         }
+
+    }
     return output;
 }
 
@@ -91,7 +88,7 @@ DFA ENFAT::toDFA() {
 
             new_transition_map[set_to_string(current)][a] = set_to_string(new_pos);
 
-            if (find(finished.begin(), finished.end(), new_pos) == finished.end() && find(state_queue.begin(), state_queue.end(), new_pos) == state_queue.end()){
+            if (find(finished.begin(), finished.end(), new_pos) == finished.end()){
                 state_queue.insert(new_pos);
             }
         }
@@ -270,17 +267,30 @@ void ENFAT::load(const json &data) {
         string from = data["transitions"][i]["from"].get<std::string>();
         char input = data["transitions"][i]["input"].get<std::string>()[0];
 
-        set<string> to;
-        if (transition_map.find(from) != transition_map.end() && transition_map.at(from).find(input) != transition_map.at(from).end()){
-            to = transition_map.at(from).at(input);
+        if(input == epsilon){
+            set<string> to;
+            if (epsilon_transition_map.find(from) != epsilon_transition_map.end()){
+                to = epsilon_transition_map.at(from);
+            }
+
+            string temp_to = data["transitions"][i]["to"].get<std::string>();
+
+            to.insert(temp_to);
+
+            epsilon_transition_map[from] = to;
+        }else{
+            set<string> to;
+            if (transition_map.find(from) != transition_map.end() && transition_map.at(from).find(input) != transition_map.at(from).end()){
+                to = transition_map.at(from).at(input);
+            }
+
+            string temp_to = data["transitions"][i]["to"].get<std::string>();
+
+            to.insert(temp_to);
+
+            transition_map[from][input] = to;
         }
 
-        string temp_to = data["transitions"][i]["to"].get<std::string>();
-        //cout << "t " << from << " " << input << " " << temp_to << endl;
-
-        to.insert(temp_to);
-
-        transition_map[from][input] = to;
     }
 }
 

@@ -25,6 +25,7 @@ private:
     set<string> states;
     set<char> alfabet;
     map<string , map<char, set<string>>> transition_map;
+    map<string , set<string>> epsilon_transition_map;
     string start_state;
     set<string> end_states;
     char epsilon;
