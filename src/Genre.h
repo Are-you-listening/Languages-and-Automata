@@ -41,7 +41,7 @@ private:
     vector<Song*> members;
 
     /**
-     * \brief The paramaters (for Similarity) this genre is build on
+     * \brief The parameters (for Similarity) this genre is build on
      */
     vector<int> param;
 
@@ -53,7 +53,7 @@ private:
     /**
      * \brief Generate a product automata for the current Genre's member-sub-regexes
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * @return Datatype containing the sub DFA's in productautomata
+     * @return Datatype containing the sub DFA's in product-automata
      */
     DFA toProductAutomata();
 
@@ -63,7 +63,7 @@ public:
     * \brief Checks if an item is properly initialised
      * @return succes, bool deciding the succes of the operation
     */
-    bool ProperlyInitialized() const;
+    [[nodiscard]] bool ProperlyInitialized() const;
 
     /**
      * \brief In case the match % <= limit, add to this Genre
@@ -82,8 +82,8 @@ public:
     bool inGenre(Song* &s);
 
      /**
-      * brief Create a Genre based on 2 Song's and a given set of paramaters. The minimum match % (required for new songs) will be initialised on the Similarity % between k & s
-      * \REQUIRE(params.size()==6, "Params doesn't has all the paramaters");
+      * brief Create a Genre based on 2 Song's and a given set of parameters. The minimum match % (required for new songs) will be initialised on the Similarity % between k & s
+      * \REQUIRE(params.size()==6, "Params doesn't has all the parameters");
       * \ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
       * @param s
       * @param k
@@ -102,21 +102,6 @@ public:
     void output() const;
 
     /**
-     * \brief Simple getter
-     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * @return
-     */
-    const string &getName() const;
-
-    /**
-     * \brief Simple setter
-     * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-     * \ENSURE(Genre::name == name , "Setter didn't work properly");
-     * @param name
-     */
-    void setName(const string &name);
-
-    /**
      * \brief Turn the console output on/off
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      */
@@ -126,7 +111,7 @@ public:
      * \brief Retrieve the current ProductAutomata
      * @return
      */
-    DFA getProductAutomata() const;
+    [[nodiscard]] DFA getProductAutomata() const;
 };
 
 #endif //TOG_GENRE_H
