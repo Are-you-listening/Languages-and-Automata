@@ -64,7 +64,8 @@ DFA ENFAT::toDFA() {
     set<string> DFA_start_state;
     DFA_start_state = Eclose(start_state);
     set<set<string>> state_queue;
-    set<set<string>> finished ={};
+    //set<set<string>> finished ={};
+    map<string, set<string>> finished;
 
     /**
      * maak een DFA-format transitiediagram
@@ -76,32 +77,39 @@ DFA ENFAT::toDFA() {
         for (char a: alfabet){
             set<string> new_pos;
             for (const string &s: current){
-                if (transition_map.find(s) == transition_map.end() || transition_map.at(s).find(a) == transition_map.at(s).end()){
+                auto it = transition_map.find(s);
+                if (transition_map.find(s) == transition_map.end()){
                     continue;
                 }
-                set<string> targets = transition_map.at(s).at(a);
+                map<char, set<string>> temp = it->second;
+                if (temp.find(a) == temp.end()){
+                    continue;
+                }
+                set<string> targets = temp.at(a);
                 for (const string& t: targets){
                     set<string> eq = Eclose(t);
                     new_pos.insert(eq.begin(), eq.end());
                 }
             }
 
-            new_transition_map[set_to_string(current)][a] = set_to_string(new_pos);
-
-            if (find(finished.begin(), finished.end(), new_pos) == finished.end()){
+            string new_pos_string = set_to_string(new_pos);
+            new_transition_map[set_to_string(current)][a] = new_pos_string;
+            //if (find(finished.begin(), finished.end(), new_pos) == finished.end()){
+            if (finished.find(new_pos_string) == finished.end()){
                 state_queue.insert(new_pos);
             }
         }
 
         state_queue.erase(current);
-        finished.insert(current);
+        finished[set_to_string(current)] = current;
 
     }
     /**
      * check voor de nieuwe eindstaten
      * */
     set<string> end_states_string;
-    for (set<string> f: finished){
+    for (auto fv: finished){
+        auto f = fv.second;
         for (const string& end: end_states){
             if (find(f.begin(), f.end(), end) != f.end()){
                 end_states_string.insert(set_to_string(f));
@@ -112,8 +120,10 @@ DFA ENFAT::toDFA() {
     /**
      * convert set<string> naar string format
      * */
+
     set<string> states_string;
-    for (set<string> f: finished){
+    for (auto fv: finished){
+        auto f = fv.second;
         states_string.insert(set_to_string(f));
     }
 
