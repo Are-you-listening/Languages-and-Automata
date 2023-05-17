@@ -128,7 +128,7 @@ string Note::RoundInstrument(int r_instrument) const {
 
 string Note::RoundNote(int r_note, int r_octaaf) const { // TODO deze functie moet zeker nog een keer besproken worken. octaaf is redelijk belangerijk
 
-    if (r_note == 0 && r_octaaf == 0){
+    if (r_note == 0 && r_octaaf == 0){ // TODO deze stuk zou teug herbekeken moeten worden
         return "";
     }
 

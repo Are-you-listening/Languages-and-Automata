@@ -15,7 +15,7 @@ public:
     //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
     //                            {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3},
     //                             {1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4},{0,1,0,1,5,1}};
-    vector<vector<int>> vectors={{0,1,0,1,0,1},{8,1,0,2,0,1},{0,0,0,2,0,2},{1,1,1,1,1,1},{1,1,0,1,0,1},{0,8,0,7,0,4}}; // TODO een no
+    vector<vector<int>> vectors={{0,1,0,1,0,1},{8,1,0,2,0,1},{0,0,0,2,0,2},{1,1,1,1,1,1},{1,1,0,1,0,1},{0,8,0,8,0,4}}; // TODO een no
 };
 Vectors_Params PARAMS;
 
@@ -269,7 +269,7 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::similarity(Song &song, bool complement, bool reverse) { // TODO complement en reverse zouden technisch hier niet mogen staan, dit zullen we moeten bespreken.
+double Song::similarity(Song &song, bool complement, bool reverse) { 
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     
     string m = getCurrTime()+" Applying " + '"' + "similarity (" + to_string(complement) + ") (" + to_string(reverse) + ")" +  '"' +" on Song: " + title + " and Song: " + song.getTitle() + "\n";
@@ -434,7 +434,7 @@ map<int,unsigned int> Song::countNotes() {
     return counts;
 }
 
-[[nodiscard]] double Song::noteCountSimilarity(Song &s) { //TODO dit moet nog in similarity gestoken worden
+[[nodiscard]] double Song::noteCountSimilarity(Song &s) { 
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string m = getCurrTime()+" Applying" + '"' + "noteCountSimilarity" + '"' +" on Song: " + title + " and Song: " + s.getTitle() + "\n";

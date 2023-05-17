@@ -9,15 +9,6 @@
 
 #include "NFA.h"
 int main() {
-
-    Song* song3=new Song("midi_files/(Alex2nd).mid",1);
-    Song* song4=new Song("midi_files/(metalslug1) (1).mid",0);
-    vector<int> V2={1,1,1,1,0,1};
-    Genre genre = Genre(song3, song4, V2, "_compare_", 1);
-    DFA genreDFA=genre.getProductAutomata();
-
-
-    /*
     vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
     ifstream Filelist("filelist.txt"); 
     string c;
@@ -37,19 +28,16 @@ int main() {
             Song* song2 = new Song(c2+c3,0);
             song2->setTitle(c3);
             vector<int> V={1,1,1,1,0,1};
-
             Genre genre = Genre(song,song2,V,c+"_compare_"+c3,1);
             DFA genreDFA=genre.getProductAutomata();
             Song generated=Song(genreDFA,V,1);
             string path="midi_output/"+c+"_compare_"+c3;
             generated.save(path);
-
             song->similarity(*song2,0,0);
             delete song2;
         }
         delete song;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
-     */
     return 0;
 }
