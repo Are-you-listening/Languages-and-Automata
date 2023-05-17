@@ -4,10 +4,9 @@
 
 #include "SongListWidget.h"
 #include "cmath"
-SongListWidget::SongListWidget(unsigned int x, unsigned int y, unsigned int width, unsigned int height): x(x), y(y), width(width), height(height) {
-    Song* song = new Song("midi_files/world-1-birabuto-4-.mid", false);
-    for (int i=0; i<30; i++){
-        SongWidget* w = new SongWidget(x+10, y+10, width-20, 80, song);
+SongListWidget::SongListWidget(unsigned int x, unsigned int y, unsigned int width, unsigned int height, const vector<Song*>& songs_in): x(x), y(y), width(width), height(height) {
+    for (int i=0; i<songs_in.size(); i++){
+        SongWidget* w = new SongWidget(x+10, y+10, width-20, 80, songs_in[i]);
         songs.push_back(w);
     }
 
@@ -85,4 +84,8 @@ void SongListWidget::addSong(SongWidget *song_widget) {
     song_widget->setPos(x+10, y+10);
     songs.push_back(song_widget);
 
+}
+
+vector<SongWidget *> SongListWidget::getSongs() {
+    return songs;
 }

@@ -28,6 +28,21 @@ set(MIDIPASER_SRC
         src/midiparser/midiExporter.cpp
         src/midiparser/midiExporter.h)
 
+set(GUI_SRC
+
+        src/gui/Gui.cpp
+        src/gui/Gui.h
+        src/gui/SongListWidget.cpp
+        src/gui/SongListWidget.h
+        src/gui/Button.cpp
+        src/gui/Button.h
+        src/gui/ButtonCompare.cpp
+        src/gui/ButtonCompare.h
+        src/gui/SongListWidgetSingle.cpp
+        src/gui/SongListWidgetSingle.h
+        src/gui/SongWidget.cpp
+        src/gui/SongWidget.h)
+
 set(MAIN_SRC
         src/Genre.h
         src/Genre.cpp
@@ -75,12 +90,9 @@ set(MAIN_SRC
         lib/Toi_Kars/State.cpp
 
         lib/Utils.h
-        lib/Utils.cpp
-        src/gui/Gui.cpp
-        src/gui/Gui.h
-        src/gui/SongListWidget.cpp src/gui/SongListWidget.h)
+        lib/Utils.cpp)
 
-set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp src/gui/SongWidget.cpp src/gui/SongWidget.h)
+set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES

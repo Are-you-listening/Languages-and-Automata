@@ -23,8 +23,8 @@ void Gui::start() {
     bool has_selected = false;
     SongWidget* selected = nullptr;
 
-    SongListWidget song_list(20, 20, 250, 800);
-    SongListWidget compare(400, 20, 250, 800);
+    SongListWidget song_list(20, 20, 250, 800, {new Song("midi_files/(metalslug1) (1).mid",0)});
+    SongListWidget compare(400, 20, 250, 800, {});
 
     vector<SongListWidget> song_groups = {song_list, compare};
 

@@ -14,6 +14,7 @@ void SongWidget::draw(Display *display, Window window, GC graphics_content, int 
     unsigned int using_y = p.first;
     unsigned int using_height = p.second;
 
+    draw_stack.push({x, using_y, width, using_height});
     XFillRectangle(display, window, graphics_content, x, using_y, width, using_height);
 }
 
@@ -62,9 +63,10 @@ void SongWidget::setPosMouse(unsigned int x, unsigned int y) {
 
 void SongWidget::draw(Display *display, Window window, GC graphics_content, bool keep) {
     if(!keep){
-        XClearArea(display, window, old_x, old_y, width, height, 0);
+        clear(display, window);
     }
     XSetForeground(display,graphics_content, 900000);
+    draw_stack.push({x, y, width, height});
     XFillRectangle(display, window, graphics_content, x, y, width, height);
 }
 
@@ -74,6 +76,15 @@ void SongWidget::setPos(unsigned int x, unsigned int y) {
 }
 
 void SongWidget::clear(Display *display, Window window) {
-    XClearArea(display, window, old_x, old_y, width, height, 0);
+    while (!draw_stack.empty()){
+        vector<unsigned int> v = draw_stack.top();
+        draw_stack.pop();
+        XClearArea(display, window, v[0], v[1], v[2], v[3], 0);
+    }
+
+}
+
+Song *SongWidget::getSong() const {
+    return song;
 }
 

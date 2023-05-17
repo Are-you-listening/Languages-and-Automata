@@ -143,9 +143,8 @@ string Note::RoundNote(int r_note, int r_octaaf) const { // TODO deze functie mo
             if (value < 0){
                 value = 0;
             }
-            if (value > 255){
-                cerr <<"oei"<<endl;
-                throw "oei";
+            if (value > 155){
+                value = 155;
             }
 
             s += toChar(value);

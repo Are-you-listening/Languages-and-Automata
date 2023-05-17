@@ -29,7 +29,8 @@ public:
     void setPos(unsigned int x, unsigned int y);
     void clear(Display* display, Window window);
 
-public:
+    Song *getSong() const;
+
 
 private:
     unsigned int x;
@@ -40,6 +41,7 @@ private:
 
     unsigned int old_x;
     unsigned int old_y;
+    stack<vector<unsigned int>> draw_stack;
 
 
 };
