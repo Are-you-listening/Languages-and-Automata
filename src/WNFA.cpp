@@ -190,12 +190,10 @@ WDFA WNFA::toWDFA() {
             if ( result.states.find(temp) == result.states.end() ){ //Als de huidige state nog niet in de WDFA zit
                 toProcess.push(otherstate.first); //Add to process
                 result.addState(temp, false, true); //Add the new state (Every state in the WNFA is an accepting state)
-                cout << "a" << endl;
             }
             (result.getState(processing_str).first)->addconnection(result.getState(temp).first, symbol, weight); //Add a connection from State:Processing to the newly created State:temp
         }
         toProcess.pop();
-        cout << "t";
     }
     return result;
 }
