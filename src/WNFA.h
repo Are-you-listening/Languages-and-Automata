@@ -16,12 +16,14 @@
 #include "json.hpp"
 #include "WDFA.h"
 #include "weightedNode.h"
+#include "../lib/Utils.h"
 
 using namespace std;
 using json = nlohmann::json;
 
 class WNFA {
-    pair<string, double> WSSC_helper(const string& currentstate, const char& input);
+    //Get reachable states (eq class string) + biggest weight
+    pair< map<string,weightedNode*> , double> WSSC_helper(const map<string,weightedNode*> &currentstates, const char& input);
     vector<string> splitString(const string& str);
 public:
     map<string, weightedNode*> states;
@@ -32,13 +34,11 @@ public:
 
     void addState(string name, bool start, bool endState);
 
-    pair<weightedNode*, bool> getWeightedState(string name) const;
-
     bool isStartState(string name);
 
     bool isEndState(string name);
 
-    pair<weightedNode*, bool> getState(string name);
+    pair<weightedNode*, bool> getState(string name) const;
     
     WNFA();
     WNFA(const string &filename);

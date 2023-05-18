@@ -20,17 +20,13 @@ using json = nlohmann::json;
 
 class WDFA {
 public:
-    list<weightedNode*> states;
+    map<string,weightedNode*> states;
     weightedNode* startState = nullptr;
     list<weightedNode*> endStates = {};
     string type;
     vector<string> alfabet;
 
-    pair<weightedNode *, bool> getweightedState(string name);
-
     void addState(string name, bool start, bool endState);
-
-    pair<weightedNode*, bool> getWeightedState(string name);
 
     bool isStartState(string name);
 

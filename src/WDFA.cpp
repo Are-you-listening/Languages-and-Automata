@@ -25,8 +25,8 @@ WDFA::WDFA(const string &filename) {
 
     set<json> newtransitions = j["transitions"];
     for (auto transition : newtransitions) {
-        weightedNode *state1 = getweightedState(transition["from"]).first;
-        weightedNode *state2 = getweightedState(transition["to"]).first;
+        weightedNode *state1 = getState(transition["from"]).first;
+        weightedNode *state2 = getState(transition["to"]).first;
         string inputsymbol = transition["input"];
         double weight = transition["weight"];
         for (auto symbol: inputsymbol) {
@@ -37,33 +37,15 @@ WDFA::WDFA(const string &filename) {
 
 WDFA::WDFA(): type("WDFA") {}
 
-pair<weightedNode *, bool> WDFA::getweightedState(string name) {
-    for (weightedNode* state : states){
-        if (state->getName() == name){
-            return make_pair(state, true);
-        }
-    }
-    return make_pair(nullptr, false);
-}
-
 void WDFA::addState(string name, bool start, bool endState) {
     weightedNode* n = new weightedNode(name);
-    states.push_back(n);
+    states[n->getName()]=n;
     if (start){
         start = n;
     }
     if (endState){
         endStates.push_back(n);
     }
-}
-
-pair<weightedNode *, bool> WDFA::getWeightedState(string name) {
-    for (weightedNode* state : states){
-        if (state->getName() == name){
-            return make_pair(state, true);
-        }
-    }
-    return make_pair(nullptr, false);
 }
 
 double WDFA::weightedaccepts(string input) {
@@ -90,16 +72,16 @@ void WDFA::print() {
     }
     for (auto state: states) {  // add all the states
         json temp;
-        temp["name"] = state->getName();
-        temp["starting"] = isStartState(state->getName());
-        temp["accepting"] = isEndState(state->getName());
+        temp["name"] = state.first;
+        temp["starting"] = isStartState(state.first);
+        temp["accepting"] = isEndState(state.first);
         Jout["states"].push_back(temp);
     }
 
     for(auto state: states) {  // add all the transitions
-        for(const auto &transition: state->getweightedconnections()) {
+        for(const auto &transition: state.second->getweightedconnections()) {
             json temp;
-            temp["from"] = state->getName();
+            temp["from"] = state.second->getName();
             temp["to"] = transition.second[0].second->getName();
             temp["input"] = string(1, transition.first);
             temp["weight"] = transition.second[0].first;
@@ -110,12 +92,11 @@ void WDFA::print() {
 }
 
 pair<weightedNode *, bool> WDFA::getState(string name) {
-    for (weightedNode* state : states){
-        if (state->getName() == name){
-            return make_pair(state, true);
-        }
+    auto result = states.find(name);
+    if (result == states.end()){
+        return make_pair(nullptr, false);
     }
-    return make_pair(nullptr, false);
+    return make_pair(result->second, true);
 }
 
 bool WDFA::isStartState(string name) {

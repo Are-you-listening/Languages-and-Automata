@@ -17,6 +17,8 @@
 #include <iostream>
 #include <ctime>
 
+#include "weightedNode.h"
+
 using namespace std;
 
 bool DirectoryExists(const std::string dirname);
@@ -61,5 +63,7 @@ int toInt(const char x);
  * @return a list with the Notes (and its params)
  */
 vector<vector<int>> makeNotes(const vector<vector<int>> &info);
+
+string NodesToString(const map<string,weightedNode*> &s);
 
 #endif
