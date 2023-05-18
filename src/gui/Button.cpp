@@ -15,6 +15,22 @@ bool Button::isClicked(unsigned int mouse_x, unsigned int mouse_y) {
 }
 
 void Button::draw(Display *display, Window window, GC graphics_content) {
-    XSetForeground(display,graphics_content, 255 << 16);
+    XSetForeground(display,graphics_content, (255 << 16) + 255);
     XFillRectangle(display, window, graphics_content, x, y, width, height);
+}
+
+unsigned int Button::getX() const {
+    return x;
+}
+
+unsigned int Button::getY() const {
+    return y;
+}
+
+unsigned int Button::getWidth() const {
+    return width;
+}
+
+unsigned int Button::getHeight() const {
+    return height;
 }

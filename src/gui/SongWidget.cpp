@@ -5,7 +5,9 @@
 #include "SongWidget.h"
 
 SongWidget::SongWidget(unsigned int x, unsigned int y, unsigned int width, unsigned int height, Song *song) :
-x(x), y(y), width(width), height(height), song(song) {}
+x(x), y(y), width(width), height(height), song(song) {
+
+}
 
 void SongWidget::draw(Display *display, Window window, GC graphics_content, int offset,  unsigned int min_height, unsigned int max_height) {
     XSetForeground(display,graphics_content, 900000);
@@ -15,7 +17,19 @@ void SongWidget::draw(Display *display, Window window, GC graphics_content, int 
     unsigned int using_height = p.second;
 
     draw_stack.push({x, using_y, width, using_height});
+
     XFillRectangle(display, window, graphics_content, x, using_y, width, using_height);
+
+
+    XFontStruct* font_info = XLoadQueryFont(display, "-Sony-Fixed-Medium-R-Normal--24-170-100-100-C-120-JISX0201.1976-0");
+    XSetForeground(display,graphics_content, 0);
+    XSetFont(display, graphics_content, font_info->fid);
+    XDrawString(display, window, graphics_content, x+10, using_y+40, &song->getTitle()[0], 18);
+
+    XSetForeground(display,graphics_content, 900000);
+
+
+    XFlush(display);
 }
 
 unsigned int SongWidget::getX() const {
@@ -68,6 +82,11 @@ void SongWidget::draw(Display *display, Window window, GC graphics_content, bool
     XSetForeground(display,graphics_content, 900000);
     draw_stack.push({x, y, width, height});
     XFillRectangle(display, window, graphics_content, x, y, width, height);
+
+    //complement_button->draw(display, window, graphics_content);
+    //reverse_button->draw(display, window, graphics_content);
+
+    XFlush(display);
 }
 
 void SongWidget::setPos(unsigned int x, unsigned int y) {

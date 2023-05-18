@@ -8,7 +8,7 @@
 #include <map>
 #include <vector>
 #include <string>
-
+#include "string"
 using namespace std;
 
 class weightedNode{

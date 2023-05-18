@@ -37,6 +37,9 @@ private:
 protected:
     vector<SongWidget*> getSongs();
 
+
+
+
 };
 
 

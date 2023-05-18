@@ -191,16 +191,11 @@ Song::~Song(){
 
 double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
-    if(d.size()>s.size()){ // TODO dit moet aangepast worden.
-        return 0;
-    }
-    
-    REQUIRE(d.size()<=s.size(), "Indices should be always valid");
 
     bool succeeded = false;
     int succes = 0;
 
-    for(long unsigned int i = 0; i<d.size(); i++){ // Given song
+    for(long unsigned int i = 0; i<min(d.size(), s.size()); i++){ // Given song
         string test=s[i].re;
         bool b = d[i].accepts(test); //Addition Anas
         if(b){succes++;}

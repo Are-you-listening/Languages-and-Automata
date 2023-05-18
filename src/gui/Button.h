@@ -18,12 +18,23 @@ public:
     Button(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
     bool isClicked(unsigned int mouse_x, unsigned int mouse_y);
     virtual void click() = 0;
-    void draw(Display* display, Window window, GC graphics_content);
+    virtual void draw(Display* display, Window window, GC graphics_content);
+
+
+
 private:
     unsigned int x;
     unsigned int y;
     unsigned int width;
     unsigned int height;
+protected:
+    unsigned int getX() const;
+
+    unsigned int getY() const;
+
+    unsigned int getWidth() const;
+
+    unsigned int getHeight() const;
 
 };
 

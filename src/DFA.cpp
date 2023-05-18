@@ -251,6 +251,7 @@ DFA DFA::minimize() {
     json data = getJson();
     DFAT temp;
     temp.load(data);
+    temp = temp.minimize();
 
     DFA final;
     final.load(temp.getJson());

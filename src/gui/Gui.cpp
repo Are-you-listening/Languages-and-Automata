@@ -3,6 +3,7 @@
 #include "SongListWidget.h"
 #include "ButtonCompare.h"
 #include "SongListWidgetSingle.h"
+#include "ButtonBool.h"
 Gui::Gui() {
     display = XOpenDisplay((char *)0);
 
@@ -25,12 +26,18 @@ void Gui::start() {
     bool has_selected = false;
     SongWidget* selected = nullptr;
 
-    SongListWidget* song_list = new SongListWidget(20, 20, 250, 700, {new Song("midi_files/world-1-birabuto-remix-.mid",0), new Song("midi_files/world-1-birabuto-4-.mid",0)});
+    SongListWidget* song_list = new SongListWidget(20, 20, 250, 700, {new Song("midi_files/world-1-birabuto-remix-.mid",0), new Song("midi_files/world-1-birabuto-4-.mid",0),
+                                                                      new Song("midi_files/HarryPotterPrologue(3).mid",0)});
     SongListWidget* compare = new SongListWidget(400, 20, 250, 700, {});
     SongListWidgetSingle* single_song = new SongListWidgetSingle(400, 750, 250, 100, 1);
-    ButtonCompare* compare_button = new ButtonCompare(400, 860, 250, 100, compare, single_song);
+
+    ButtonBool* complement_button = new ButtonBool(660, 860, 49, 49, false);
+    ButtonBool* reverse_button = new ButtonBool(660, 911, 49, 49, false);
+
+    ButtonCompare* compare_button = new ButtonCompare(400, 860, 250, 100, compare, single_song, complement_button, reverse_button);
+
     vector<SongListWidget*> song_groups = {song_list, compare, single_song};
-    vector<Button*> buttons = {compare_button};
+    vector<Button*> buttons = {compare_button, complement_button, reverse_button};
 
 
     XEvent event;

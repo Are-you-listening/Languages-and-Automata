@@ -10,6 +10,7 @@ SongListWidget::SongListWidget(unsigned int x, unsigned int y, unsigned int widt
         songs.push_back(w);
     }
 
+
 }
 
 void SongListWidget::doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool up) {

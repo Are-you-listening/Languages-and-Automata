@@ -136,7 +136,6 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     logs.push_back(log);
 
     DFA prod = DFA(z,z2, false);
-
     log = getCurrTime() + " Minimizing our beautiful product..\n\n";
     if(console){cout << log;}
     logs.push_back(log);
