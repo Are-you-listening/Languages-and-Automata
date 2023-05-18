@@ -55,22 +55,20 @@ string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rek
     string s; //1
     if(r_duration>1){
         s="(";
-        for(int i=duration-(r_duration-1);  i<=duration+(r_duration-1); i++){
-            if(i<=duration+(r_duration-1)-1){
-                int v = lround((atan(1.5*(i/1000.0))/1.5)*155);
-                if (v < 0){
-                    v = 0;
-                }else if (v > 155){
-                    v = 155;
-                }
-                s+=toChar(v);
-                s+="+";
-            } else {
-                s[s.size()-1] = ')';
+        double temp_duration = lround((atan(1.5*(duration/1000.0))/1.5)*155);
+        for(int i=temp_duration-(r_duration-1);  i<=temp_duration+(r_duration-1); i++){
+            int v = i;
+            if (v < 0){
+                v = 0;
+            }else if (v > 155){
+                v = 155;
             }
+            s+=toChar(v);
+            s+="+";
         }
+        s[s.size()-1] = ')';
     } else if (r_duration==1){
-        s=toChar(lround((atan(1.5*duration/1000.0))/1.5)*155);
+        s=toChar( lround((atan(1.5*(double) duration/1000.0)/1.5)*155));
     }else{
         s = "";
     }

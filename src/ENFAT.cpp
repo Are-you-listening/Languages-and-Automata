@@ -36,7 +36,8 @@ set<string> ENFAT::Eclose(const string &state, const set<string>& found) {
     /**
      * indien de statt geen transities heeft
      * */
-    if (epsilon_transition_map.find(state) == epsilon_transition_map.end()){
+    map<string, set<string>>::iterator it = epsilon_transition_map.find(state);
+    if (it == epsilon_transition_map.end()){
         return output;
     }
 
@@ -45,9 +46,9 @@ set<string> ENFAT::Eclose(const string &state, const set<string>& found) {
      * */
     set<string> new_found;
     new_found.insert(found.begin(), found.end());
-    set<string> targets = epsilon_transition_map.at(state);
+    set<string> targets = it->second;
     new_found.insert(targets.begin(), targets.end());
-    for (string s : targets){
+    for (const string &s : targets){
         if (find(found.begin(), found.end(), s) == found.end()){
             set<string> rec_set = Eclose(s, new_found);
             output.insert(rec_set.begin(), rec_set.end());
@@ -78,7 +79,7 @@ DFA ENFAT::toDFA() {
             set<string> new_pos;
             for (const string &s: current){
                 auto it = transition_map.find(s);
-                if (transition_map.find(s) == transition_map.end()){
+                if (it == transition_map.end()){
                     continue;
                 }
                 map<char, set<string>> temp = it->second;
@@ -104,6 +105,7 @@ DFA ENFAT::toDFA() {
         finished[set_to_string(current)] = current;
 
     }
+    cout << "he" << endl;
     /**
      * check voor de nieuwe eindstaten
      * */

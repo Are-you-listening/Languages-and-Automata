@@ -10,7 +10,7 @@
 #include "NFA.h"
 int main() {
     Song* song1 = new Song("midi_files/(Alex2nd).mid", false);
-    RE r = song1->toRegex(1, 1, 2, 2, 1, -1)[0];
+    RE r = song1->toRegex(1, 2, 5, 5, 1, -1)[0];
     RE r2 = song1->toRegex(1, 1, 1, 1, 1, -1)[0];
     ENFA e = r.toENFA();
     DFA d = e.toDFA();
