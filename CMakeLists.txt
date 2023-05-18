@@ -29,19 +29,7 @@ set(MIDIPASER_SRC
         src/midiparser/midiExporter.h)
 
 set(GUI_SRC
-
-        src/gui/Gui.cpp
-        src/gui/Gui.h
-        src/gui/SongListWidget.cpp
-        src/gui/SongListWidget.h
-        src/gui/Button.cpp
-        src/gui/Button.h
-        src/gui/ButtonCompare.cpp
-        src/gui/ButtonCompare.h
-        src/gui/SongListWidgetSingle.cpp
-        src/gui/SongListWidgetSingle.h
-        src/gui/SongWidget.cpp
-        src/gui/SongWidget.h)
+        )
 
 set(MAIN_SRC
         src/Genre.h
@@ -106,6 +94,3 @@ add_executable(Tog ${RELEASE_SOURCE_FILES} ${TA-LIB} )
 # Create DEBUG target
 add_executable(testing_tool ${DEBUG_SOURCE_FILES} ${TA-LIB})
 ################################################################
-
-target_link_libraries(Tog -lX11)
-target_link_libraries(testing_tool -lX11)

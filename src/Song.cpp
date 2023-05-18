@@ -383,7 +383,7 @@ double Song::magimathical(vector<vector<double>> &results) {
         }
         double boolparam = (40.0/V0)*e + (17.0/V1)*d + (6.0/V2)*c + (17.0/V3)*b + (20.0/V4)*a + pow(5,(*v)[5]); //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
         for(vector<vector<double>>::iterator it=results.begin(); it!=results.end(); it++){
-            result+=(boolparam*(0.7*(*it)[0]+0.2*(*it)[1]+0.1*(*it)[2]))/((double)results[0].size());
+            result+=(boolparam*(0.7*(*it)[0]+0.25*(*it)[1]+0.05*(*it)[2]))/((double)results[0].size());
         }
     }
     result=result/((double)results.size());
@@ -606,5 +606,6 @@ double Song::checkWNFA(RE &r,RE &s){
     json j = e.getJsonNfa();
     NFA n(j);
     WNFA w = n.toWNFA();
-    return w.weightedaccepts(s.re);
+    WDFA d = w.toWDFA();
+    return d.weightedaccepts(s.re);
 }
