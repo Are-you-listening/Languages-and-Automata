@@ -278,16 +278,19 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     vector<vector<double>> results;
     
     //Do different checks on different Regex's
-    for(const vector<int> &v: PARAMS.vectors){
+    /*for(const vector<int> &v: PARAMS.vectors){
         //No roundings
         pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]), this->toRegex(min(v[0], 1), min(v[1], 1), min(v[2], 1), min(v[3], 1), min(v[4], 1), v[5]) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
         results.push_back( similar(toCheck,complement,reverse) ); // 0,1,0,1,0, 1,0
-    }
+    }*/
     
     //Check Notes
-    //WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
+    WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
     
     result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
+
+    result = WNFA_result;
+
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
@@ -545,6 +548,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
     log = getCurrTime() + " Started decoding...\n\n";
     if(console){cout << log;}
     logs.push_back(log);
+
     //For each element of the RE
     for(string::iterator it=k.re.begin(); it!=k.re.end(); it++){
         vector<unsigned int> note_values;
@@ -565,7 +569,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
             if((*it)=='*'){
                 cerr << "kleene star in regex" << endl;
                 throw std::exception();
-            } else {
+            }else {
                 for(vector<int>::iterator it2=param.begin(); it2!=param.end(); it2++){
                     if(*it==true){
                         note_values.push_back(toInt(*it));

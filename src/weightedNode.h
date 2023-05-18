@@ -16,8 +16,6 @@ class weightedNode{
 
     string name;
 
-    bool ending;
-
 public:
     void addconnection(weightedNode *otherState, char symbol, double weight);
 
@@ -29,7 +27,7 @@ public:
      */
     weightedNode(const string &name);
 
-    const string &getName() const;
+    [[nodiscard]] const string &getName() const;
 
     /**
      * \brief Returns the reachable states with an input from this state
@@ -37,6 +35,8 @@ public:
      * @return
      */
     vector<pair< double,weightedNode* >> accepts(const char &input);
+
+    virtual ~weightedNode();
 };
 
 #endif //DFA_WEIGHTEDNODE_H

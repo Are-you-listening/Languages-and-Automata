@@ -41,7 +41,7 @@ void WDFA::addState(string name, bool start, bool endState) {
     weightedNode* n = new weightedNode(name);
     states[n->getName()]=n;
     if (start){
-        start = n;
+        startState = n;
     }
     if (endState){
         endStates.push_back(n);

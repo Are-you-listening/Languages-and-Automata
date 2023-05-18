@@ -25,6 +25,7 @@ class WNFA {
     //Get reachable states (eq class string) + biggest weight
     pair< map<string,weightedNode*> , double> WSSC_helper(const map<string,weightedNode*> &currentstates, const char& input);
     vector<string> splitString(const string& str);
+
 public:
     map<string, weightedNode*> states;
     weightedNode* startState = nullptr;
@@ -32,7 +33,7 @@ public:
     string type;
     vector<string> alfabet;
 
-    void addState(string name, bool start, bool endState);
+    void addState(const string& name, bool start, bool endState);
 
     bool isStartState(string name);
 

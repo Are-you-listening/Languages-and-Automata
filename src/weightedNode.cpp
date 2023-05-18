@@ -4,7 +4,7 @@
 #include "weightedNode.h"
 
 void weightedNode::addconnection(weightedNode *otherState, char symbol, double weight) {
-    connections[symbol].push_back( make_pair(weight,otherState) );
+    connections[symbol].emplace_back(weight,otherState );
 }
 
 const map<char,vector<pair< double,weightedNode* >> > & weightedNode::getweightedconnections() const {
@@ -14,13 +14,13 @@ const map<char,vector<pair< double,weightedNode* >> > & weightedNode::getweighte
 weightedNode::weightedNode(const string &name): name(name){}
 
 vector<pair<double, weightedNode * >> weightedNode::accepts(const char &input) {
-    if(connections.find(input)!=connections.end()){
-        return connections[input];
-    }else{
-        return {};
-    }
+    return connections[input];
 }
 
 const string &weightedNode::getName() const {
     return name;
+}
+
+weightedNode::~weightedNode() {
+    delete this;
 }
