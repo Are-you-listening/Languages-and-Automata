@@ -45,7 +45,7 @@ vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) {
     return tt;
 }
 
-pair<vector<RE>, vector<RE>> Song::sort(const pair<vector<RE>, vector<RE>> &t) const {
+[[nodiscard]] pair<vector<RE>, vector<RE>> Song::sort(const pair<vector<RE>, vector<RE>> &t) const {
     pair<vector<RE>, vector<RE>> k = t;
     if(t.first.size()>t.second.size()){
         k = {t.second, t.first};
@@ -53,7 +53,7 @@ pair<vector<RE>, vector<RE>> Song::sort(const pair<vector<RE>, vector<RE>> &t) c
     return k;
 }
 
-bool Song::ProperlyInitialized() const {
+[[nodiscard]] bool Song::ProperlyInitialized() const {
     if(fInitCheck==this){
         return true;
     }
@@ -106,6 +106,8 @@ Song::Song(const string &path, bool console) : console(console) {
     if(console){cout << log;}
     logs.push_back(log);
 
+    //TODO Retrieve title from path!
+
     //checkWNFA(toRegex(0, 0, 0, 1, 0, -1)[0]);
     //midiExporter e("out.mid", note_map);
 
@@ -148,7 +150,7 @@ Song::~Song(){
     }
 }
 
-vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern){ //When int>1 -> activate round
+[[nodiscard]] vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern){ //When int>1 -> activate round
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     char epsilon='*';
@@ -268,7 +270,7 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::similarity(Song &song, bool complement, bool reverse) { 
+[[nodiscard]] double Song::similarity(Song &song, bool complement, bool reverse) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     
     string m = getCurrTime()+" Applying " + '"' + "similarity (" + to_string(complement) + ") (" + to_string(reverse) + ")" +  '"' +" on Song: " + title + " and Song: " + song.getTitle() + "\n";
@@ -413,7 +415,7 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     return results;
 }
 
-map<int,unsigned int> Song::countNotes() {
+[[nodiscard]] map<int,unsigned int> Song::countNotes() {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     map<int,unsigned int> counts; // map[Note]=occurrences
@@ -494,7 +496,7 @@ void Song::output() const {
     ENSURE(FileExists(file),"No log file has been created");
 }
 
-const string &Song::getTitle() const {
+[[nodiscard]] const string &Song::getTitle() const {
     REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     return title;
 }
@@ -577,7 +579,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
             }else if(m=='*'){
                 cerr << "Honestly no clue what to do with Kleene Star, which length should I take?" << endl;
             }else{
-                options.push_back(toChar(m));
+                options.push_back(toInt(m));
                 if(tempstack.empty()){
                     index++;
                 }
