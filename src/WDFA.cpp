@@ -69,17 +69,14 @@ pair<weightedNode *, bool> WDFA::getWeightedState(string name) {
 double WDFA::weightedaccepts(string input) {
     weightedNode* currentState = startState;
     double result = 0.0;
-    for (char symbol : input){
-        string symbol_str = string(1, symbol);
-        for (auto connection : currentState->weightedNode::getweightedconnections()){
-            if (get<1>(connection).find(symbol) != get<1>(connection).end()){
-                result += get<2>(connection);
-                currentState = get<0>(connection);
-                break;
-            } else {
-                result+=-1.0;
-                continue;
-            }
+    for (const char &symbol : input){ //Loop on every character of the string
+        auto nextStates = currentState->accepts(symbol); //Get the reachable states with this symbol
+
+        if(nextStates.empty()){ //No transitions
+            result-=1.0;
+        }else{ //The state accepted this symbol
+            result+=nextStates[0].first; //If this is a correct DFA, there is only 1 reachable state by this input
+            currentState = nextStates[0].second;
         }
     }
     return result/input.size();
@@ -99,16 +96,14 @@ void WDFA::print() {
         Jout["states"].push_back(temp);
     }
 
-    for (auto state: states) {  // add all the transitions
-        for (const auto& transition: state->getweightedconnections()) {
-            for (auto symbol: get<1>(transition)) {
-                json temp;
-                temp["from"] = state->getName();
-                temp["to"] = get<0>(transition)->getName();
-                temp["input"] = string(1, symbol);
-                temp["weight"] = get<2>(transition);
-                Jout["transitions"].push_back(temp);
-            }
+    for(auto state: states) {  // add all the transitions
+        for(const auto &transition: state->getweightedconnections()) {
+            json temp;
+            temp["from"] = state->getName();
+            temp["to"] = transition.second[0].second->getName();
+            temp["input"] = string(1, transition.first);
+            temp["weight"] = transition.second[0].first;
+            Jout["transitions"].push_back(temp);
         }
     }
     cout << setw(4) << Jout << endl;

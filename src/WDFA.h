@@ -5,7 +5,7 @@
 #ifndef WNFA_WDFA_H
 #define WNFA_WDFA_H
 
-#include "Toi_Emil/weightedNode.h"
+#include "weightedNode.h"
 #include <list>
 #include <string>
 #include <set>
