@@ -155,3 +155,16 @@ vector<vector<int>> makeNotes(const vector<vector<int>> &info){
 
     return notes;
 }
+
+string NodesToString(const map<string,weightedNode*> &s){
+    string result = "{";
+    auto it = s.begin();
+    auto itr = s.end();
+    itr--; //it is now 1 step before temp.end() = last state
+    while(it!=itr){
+        result += it->first+",";
+        it++;
+    }
+    result+=itr->first+ "}"; //Add last state (no "," )
+    return result;
+}

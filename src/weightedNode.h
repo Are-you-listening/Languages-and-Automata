@@ -15,6 +15,8 @@ class weightedNode{
 
     string name;
 
+    bool ending;
+
 public:
     void addconnection(weightedNode *otherState, char symbol, double weight);
 

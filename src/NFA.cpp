@@ -271,7 +271,7 @@ WNFA NFA::toWNFA(){
         for (string temp : result.alfabet){
             char symbol = temp[0];
             for (const auto& transition : Q.find(state.second->getName())->second->DoTransition(symbol)){
-                state.second->addconnection(result.getWeightedState(transition).first, symbol, 1);
+                state.second->addconnection(result.getState(transition).first, symbol, 1);
             }
         }
     }
@@ -302,7 +302,8 @@ void NFA::adaptDistance(vector<weightedNode*>& original, State* s, int distance,
         vector<State*> current_states;
         for (auto s: entry.second){
             State* st = Q.find(s)->second;
-            weightedNode* w = result.getWeightedState(st->getName()).first;
+
+            weightedNode* w = (result.getState(st->getName())).first;
 
                 for (int i=0; i < original.size(); i++){
                     weightedNode* o = original[i];

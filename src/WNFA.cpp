@@ -106,7 +106,7 @@ void WNFA::print() {
     cout << setw(4) << Jout << endl;
 }*/
 
-pair<weightedNode*, bool> WNFA::getState(string name) {
+pair<weightedNode*, bool> WNFA::getState(string name) const {
     auto result = states.find(name);
     if (result == states.end()){
         return make_pair(nullptr, false);
@@ -146,84 +146,56 @@ vector<string> WNFA::splitString(const string &str) {
     return tokens;
 }
 
-pair<string, double> WNFA::WSSC_helper(const string &currentstate, const char &input) {     // currentstate is van de vorm {a, b} met a en b staten in de NFA
-    vector<string> temp;
+pair< map<string,weightedNode*> , double> WNFA::WSSC_helper(const map<string,weightedNode*> &currentstates, const char &input) {     // currentstate is van de vorm {a, b} met a en b staten in de NFA
+    map<string,weightedNode*> to;
     double largestweight = 0.0;
-    for (const auto& state : splitString(currentstate)) { // splits de string op in een verzameling van staten
-        weightedNode* node = states.find(state)->second; //Should always find a state
+    for (auto& node : currentstates) { // Loop over elke staat
+        auto connections = node.second->accepts(input); //Find reachable states from node
 
-        auto connectedNodes = node->accepts(input);
-        if (!connectedNodes.empty()) { // als er een verbinding bestaat voor symbool 'input'
-            for (auto state: connectedNodes) {
-                if (std::find(temp.begin(), temp.end(), state.second->getName())== temp.end()) { // check of we al eens een verbinding naar de nieuwe staat hebben gemaakt
-                    temp.push_back(state.second->getName()); //Add the new state
-                }
+        if (!connections.empty()) { // als er een verbinding bestaat voor symbool 'input'
+            for (auto &state: connections) {
+                to[state.second->getName()]=state.second; //We should simply be able to overwrite the state with ittself if it already exists
                 largestweight = max(largestweight, state.first); //Change weight to the biggest
             }
         }
     }
 
-    sort(temp.begin(), temp.end());
+    //sort(to.begin(), to.end()); //TODO is de sort hier nodig? Map sort automatisch?
 
-    string result = "{";
-    for(int i =0; i<temp.size()-1; i++){
-        result += temp[i]+",";
-    }
-    result+=temp[temp.size()-1]+ "}"; //Add last state (no "," )
-
-    return make_pair(result, largestweight);
+    return make_pair(to, largestweight);
 }
 
 WDFA WNFA::toWDFA() {
     WDFA result;
 
     result.alfabet = alfabet;
-    string startstate = "{" + startState->getName() + "}";
+    map<string,weightedNode*> startstate;
+    startstate[startState->getName()] = startState;
 
-    queue<string> toProcess;
+    queue<map<string,weightedNode*>> toProcess;
     toProcess.push(startstate); //Add Start State for lazy evaluation
-    
-    if (endStates.find(startState->getName()) == endStates.end()){
-        result.addState(startstate, true, false);
-    } else {
-        result.addState(startstate, true, true);
-    }
+    result.addState("{" + startState->getName() + "}", true, true); //Add start state to DFA
     
     while(!toProcess.empty()){ //While there are states to proces
-        string processing = toProcess.front();
+        map<string,weightedNode*> processing = toProcess.front(); //current state
+        string processing_str = NodesToString(processing);
 
         for (const string& symbol_str : alfabet){
             const char& symbol = symbol_str[0];
 
-            pair<string, double> otherstate = WSSC_helper(processing, symbol);
-            string temp = otherstate.first;
+            auto otherstate = WSSC_helper(processing , symbol);
+            string temp = NodesToString(otherstate.first);
             double weight = otherstate.second;
             
-            if (! result.getState(temp).second){
-                toProcess.push(temp);
-                
-                bool accepting = false;
-                
-                vector<string> split = splitString(temp);
-                
-                for (const auto& state : split){
-                    if (endStates.find(state) != endStates.end()){
-                        accepting = true;
-                    }
-                }
-                result.addState(temp, false, accepting);
+            if ( result.states.find(temp) == result.states.end() ){ //Als de huidige state nog niet in de WDFA zit
+                toProcess.push(otherstate.first); //Add to process
+                result.addState(temp, false, true); //Add the new state (Every state in the WNFA is an accepting state)
+                cout << "a" << endl;
             }
-            result.getState(processing).first->addconnection(result.getState(temp).first, symbol, weight);
+            (result.getState(processing_str).first)->addconnection(result.getState(temp).first, symbol, weight); //Add a connection from State:Processing to the newly created State:temp
         }
         toProcess.pop();
+        cout << "t";
     }
     return result;
-}
-
-pair<weightedNode *, bool> WNFA::getWeightedState(string name) const{
-    auto result = states.find(name);
-    if (result == states.end()){
-        return make_pair(nullptr, false);
-    }
-    return make_pair(result->second, true);
 }
