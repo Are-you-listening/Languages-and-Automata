@@ -147,7 +147,7 @@ vector<string> WNFA::splitString(const string &str) {
 }
 
 pair<string, double> WNFA::WSSC_helper(const string &currentstate, const char &input) {     // currentstate is van de vorm {a, b} met a en b staten in de NFA
-    vector<weightedNode*> temp; //Gebruik pointers zodat we geen onnodige Node-names (string) copy's moeten bijhouden
+    vector<string> temp;
     double largestweight = 0.0;
     for (const auto& state : splitString(currentstate)) { // splits de string op in een verzameling van staten
         weightedNode* node = states.find(state)->second; //Should always find a state
@@ -155,22 +155,21 @@ pair<string, double> WNFA::WSSC_helper(const string &currentstate, const char &i
         auto connectedNodes = node->accepts(input);
         if (!connectedNodes.empty()) { // als er een verbinding bestaat voor symbool 'input'
             for (auto state: connectedNodes) {
-                if (std::find(temp.begin(), temp.end(), state.second)!= temp.end()) { // check of we al eens een verbinding naar de nieuwe staat hebben gemaakt
-                    temp.push_back(state.second);
+                if (std::find(temp.begin(), temp.end(), state.second->getName())== temp.end()) { // check of we al eens een verbinding naar de nieuwe staat hebben gemaakt
+                    temp.push_back(state.second->getName()); //Add the new state
                 }
                 largestweight = max(largestweight, state.first); //Change weight to the biggest
             }
         }
     }
 
-    //sort(temp.begin(), temp.end()); //We hoeven dit niet in te dienen in inginious, dus de naam volgorde maakt niet uit
-    //TODO Tibo, Emil pls tell me this is correct? - Kars
+    sort(temp.begin(), temp.end());
 
     string result = "{";
     for(int i =0; i<temp.size()-1; i++){
-        result += temp[i]->getName()+",";
+        result += temp[i]+",";
     }
-    result+=temp[temp.size()-1]->getName() + "}"; //Add last state (no "," )
+    result+=temp[temp.size()-1]+ "}"; //Add last state (no "," )
 
     return make_pair(result, largestweight);
 }

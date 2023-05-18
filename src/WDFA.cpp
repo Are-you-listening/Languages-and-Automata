@@ -110,7 +110,6 @@ void WDFA::print() {
 }
 
 pair<weightedNode *, bool> WDFA::getState(string name) {
-
     for (weightedNode* state : states){
         if (state->getName() == name){
             return make_pair(state, true);

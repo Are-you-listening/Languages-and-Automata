@@ -322,11 +322,6 @@ void NFA::adaptDistance(vector<weightedNode*>& original, State* s, int distance,
                 //adaptDistance(result.getWeightedState(st->getName()).first, st, distance - 1, 0, weight, result);
 
             }
-
-
         }
-
-
     }
-
 }
