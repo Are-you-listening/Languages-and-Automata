@@ -97,14 +97,19 @@ void DFAT::make_TFA() {
          * Basisgeval indien een state een eindstaat is en een andere niet -> distinguishable
          */
         for (it_2 = temp; it_2 != states.end(); it_2++){
-            if (is_end_state(*it_1) xor is_end_state(*it_2)){
+            string t1 = *it_1;
+            string t2 = *it_2;
+            if (t1 > t2){
+                swap(t1, t2);
+            }
 
+            if (is_end_state(t1) xor is_end_state(t2)){
                 /**
                  * voeg toe dat deze combinatie distinguishable is
                  * ook roepen we disqualified op om recursief andere combinaties mogelijk te markeren als distinguishable
                  * */
-                set_table_filling_map(*it_1, *it_2, true, table_filling_map);
-                disqualified(*it_1, *it_2, transition_map, table_filling_map, states);
+                set_table_filling_map(t1, t2, true, table_filling_map);
+                disqualified(t1, t2, transition_map, table_filling_map, states);
 
 
             }
@@ -126,7 +131,6 @@ void DFAT::disqualified(const string &state1, const string &state2, const map<st
      * */
 
     for (char a: alfabet){
-
 
         /**
          * bewaar een set met alle states die naar state1 en state2 gaan volgens char a
@@ -170,15 +174,10 @@ void DFAT::set_table_filling_map(const string &state1, const string &state2, boo
      * Bewaar state in TFA-map
      * */
     auto it1 = tfa_map.find(state1);
-    auto it2 = tfa_map.find(state2);
     if(it1 != tfa_map.end()) {
         map<string, bool> m = it1->second;
         m.insert({state2, b});
         tfa_map[state1] = m;
-    }else if(it2 != tfa_map.end()){
-        map<string, bool> m = it2->second;
-        m.insert({state1, b});
-        tfa_map[state2] = m;
     }else{
         map<string, bool> m;
         m.insert({state2, b});
@@ -190,7 +189,7 @@ bool DFAT::in_table_filling_map(const string &state1, const string &state2, bool
     /**
      * check dat er een state1, state2 combinatie bestaat met als waarde bool b
      * */
-     auto it = tfa_map.find(state1);
+    auto it = tfa_map.find(state1);
     if(it != tfa_map.end()) {
         map<string, bool> m = it->second;
         auto it2 = m.find(state2);
@@ -200,15 +199,6 @@ bool DFAT::in_table_filling_map(const string &state1, const string &state2, bool
         }
     }
 
-    it = tfa_map.find(state2);
-    if(it != tfa_map.end()){
-        map<string, bool> m = it->second;
-        auto it2 = m.find(state2);
-        if (it2 != m.end()){
-            bool bm = it2->second;
-            return bm == b;
-        }
-    }
     return false;
 }
 
@@ -264,26 +254,33 @@ DFAT DFAT::minimize() {
     for (it = states.begin(); it != states.end(); it++){
 
         for (it2 = states.begin(); it2 != it; it2++){
-
-            if (!in_table_filling_map(*it, *it2, true, table_filling_map)){
+            string t1 = *it;
+            string t2 = *it;
+            if (t1 > t2){
+                cout << "he2" << endl;
+                swap(t1, t2);
+            }
+            if (!in_table_filling_map(t1, t2, true, table_filling_map)){
 
                 /**
                  * voegt toe aan equivalentie relatie (indien meer dan 2)
                  * */
-                bool b1 = get_eq(*it, equivalence).second;
-                bool b2 = get_eq(*it2, equivalence).second;
+                bool b1 = get_eq(t1, equivalence).second;
+                bool b2 = get_eq(t2, equivalence).second;
 
                 if (b1 || b2){
-                    set<string> eq_1 = get_eq(*it, equivalence).first;
-                    add_eq(*it2, eq_1, equivalence);
+                    set<string> eq_1 = get_eq(t1, equivalence).first;
+                    add_eq(t2, eq_1, equivalence);
 
-                    set<string> eq_2 = get_eq(*it2, equivalence).first;
-                    add_eq(*it, eq_2, equivalence);
+                    set<string> eq_2 = get_eq(t2, equivalence).first;
+                    add_eq(t1, eq_2, equivalence);
 
                 }else{
-                    equivalence.push_back({*it, *it2});
+                    equivalence.push_back({t1, t2});
                 }
 
+            }else{
+                cout << "he" << endl;
             }
         }
     }
@@ -291,7 +288,7 @@ DFAT DFAT::minimize() {
     /**
      * De states dat een singleton zijn, worden hier toegevoegd aan de equivalentieverzameling
      * */
-    for (auto state: states){
+    for (auto& state: states){
         bool found = get_eq(state, equivalence).second;
 
         if (!found){
@@ -458,7 +455,6 @@ pair<set<string>, bool> DFAT::get_eq(const string &state, const vector<set<strin
 
     for (auto &v: equiv_vect){
         if (find(v.begin(), v.end(), state) != v.end()){
-
             return make_pair(v, true);
         }
     }
