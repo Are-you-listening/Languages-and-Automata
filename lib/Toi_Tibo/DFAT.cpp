@@ -135,17 +135,21 @@ void DFAT::disqualified(const string &state1, const string &state2, const map<st
         set<string> s1;
         set<string> s2;
         for (const string &state: p_states){
-            if (trans_map.at(state).at(a) == state1){
+            auto target = trans_map.at(state).at(a);
+            if (target == state1){
                 s1.insert(state);
             }
 
-            if (trans_map.at(state).at(a) == state2){
+            if (target == state2){
                 s2.insert(state);
             }
         }
 
-        for (const string &s1t: s1){
-            for (const string &s2t: s2){
+        for (string s1t: s1){
+            for (string s2t: s2){
+                if (s1t > s2t){
+                    swap(s1t, s2t);
+                }
                 if (!in_table_filling_map(s1t, s2t, true, tfa_map)){
                     /**
                      * bewaar en zichzelf oproepen recursief
@@ -165,12 +169,14 @@ void DFAT::set_table_filling_map(const string &state1, const string &state2, boo
     /**
      * Bewaar state in TFA-map
      * */
-    if(tfa_map.find(state1) != tfa_map.end()) {
-        map<string, bool> m = tfa_map.at(state1);
+    auto it1 = tfa_map.find(state1);
+    auto it2 = tfa_map.find(state2);
+    if(it1 != tfa_map.end()) {
+        map<string, bool> m = it1->second;
         m.insert({state2, b});
         tfa_map[state1] = m;
-    }else if(tfa_map.find(state2) != tfa_map.end()){
-        map<string, bool> m = tfa_map.at(state2);
+    }else if(it2 != tfa_map.end()){
+        map<string, bool> m = it2->second;
         m.insert({state1, b});
         tfa_map[state2] = m;
     }else{
@@ -184,17 +190,22 @@ bool DFAT::in_table_filling_map(const string &state1, const string &state2, bool
     /**
      * check dat er een state1, state2 combinatie bestaat met als waarde bool b
      * */
-    if(tfa_map.find(state1) != tfa_map.end()) {
-        map<string, bool> m = tfa_map.at(state1);
-        if (m.find(state2) != m.end()){
-            bool bm = m.at(state2);
+     auto it = tfa_map.find(state1);
+    if(it != tfa_map.end()) {
+        map<string, bool> m = it->second;
+        auto it2 = m.find(state2);
+        if (it2 != m.end()){
+            bool bm = it2->second;
             return bm == b;
         }
     }
-    if(tfa_map.find(state2) != tfa_map.end()){
-        map<string, bool> m = tfa_map.at(state2);
-        if (m.find(state1) != m.end()){
-            bool bm = m.at(state1);
+
+    it = tfa_map.find(state2);
+    if(it != tfa_map.end()){
+        map<string, bool> m = it->second;
+        auto it2 = m.find(state2);
+        if (it2 != m.end()){
+            bool bm = it2->second;
             return bm == b;
         }
     }

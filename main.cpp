@@ -9,11 +9,14 @@
 
 #include "NFA.h"
 int main() {
-    Song* song1 = new Song("midi_files/(Alex2nd).mid", false);
-    RE r = song1->toRegex(1, 2, 5, 5, 1, -1)[0];
+    Song* song1 = new Song("midi_files/amen-break-midi.mid", false);
+    RE r = song1->toRegex(1, 3, 1, 2, 1, -1)[0];
     RE r2 = song1->toRegex(1, 1, 1, 1, 1, -1)[0];
     ENFA e = r.toENFA();
     DFA d = e.toDFA();
+    cout << d.accepts(r2.re) << endl;
+    cout << d.getStates().size() << endl;
+    d = d.minimize();
     cout <<d.accepts(r2.re) << endl;
 
     /*

@@ -105,7 +105,6 @@ DFA ENFAT::toDFA() {
         finished[set_to_string(current)] = current;
 
     }
-    cout << "he" << endl;
     /**
      * check voor de nieuwe eindstaten
      * */
