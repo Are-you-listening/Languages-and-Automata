@@ -310,14 +310,24 @@ void NFA::adaptDistance(vector<weightedNode*>& original, State* s, int distance,
                     if (index-i > 0){
                         o->addconnection(w, entry.first, (index-i)*weight+1);
                     }
+
+                    o->addconnection(o, entry.first, 0);
+
                 }
+
                 original.push_back(w);
                 //cout << w->name << " "<< distance << endl;
 
             if (distance > 1){
                 adaptDistance(original, st, distance - 1, index+1, weight, result);
                 //adaptDistance(result.getWeightedState(st->getName()).first, st, distance - 1, 0, weight, result);
+
             }
+
+
         }
+
+
     }
+
 }

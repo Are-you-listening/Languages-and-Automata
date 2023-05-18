@@ -288,7 +288,7 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
     }
     
     //Check Notes
-    WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
+    //WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
     
     result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
     if(result<=1 && result>=0){succes = true;}

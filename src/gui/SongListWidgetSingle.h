@@ -10,6 +10,7 @@ class SongListWidgetSingle: public SongListWidget {
 public:
     SongListWidgetSingle(unsigned int x, unsigned int y, unsigned int width, unsigned int height, unsigned int max);
     bool inWidget(unsigned int mouse_x, unsigned int mouse_y);
+    void doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool up);
     Song* getSong();
 private:
     unsigned int max;

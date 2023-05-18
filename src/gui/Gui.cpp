@@ -1,6 +1,8 @@
 
 #include "Gui.h"
 #include "SongListWidget.h"
+#include "ButtonCompare.h"
+#include "SongListWidgetSingle.h"
 Gui::Gui() {
     display = XOpenDisplay((char *)0);
 
@@ -23,10 +25,12 @@ void Gui::start() {
     bool has_selected = false;
     SongWidget* selected = nullptr;
 
-    SongListWidget song_list(20, 20, 250, 800, {new Song("midi_files/(metalslug1) (1).mid",0)});
-    SongListWidget compare(400, 20, 250, 800, {});
-
-    vector<SongListWidget> song_groups = {song_list, compare};
+    SongListWidget* song_list = new SongListWidget(20, 20, 250, 700, {new Song("midi_files/world-1-birabuto-remix-.mid",0), new Song("midi_files/world-1-birabuto-4-.mid",0)});
+    SongListWidget* compare = new SongListWidget(400, 20, 250, 700, {});
+    SongListWidgetSingle* single_song = new SongListWidgetSingle(400, 750, 250, 100, 1);
+    ButtonCompare* compare_button = new ButtonCompare(400, 860, 250, 100, compare, single_song);
+    vector<SongListWidget*> song_groups = {song_list, compare, single_song};
+    vector<Button*> buttons = {compare_button};
 
 
     XEvent event;
@@ -35,7 +39,10 @@ void Gui::start() {
 
         if(event.type==Expose && event.xexpose.count==0) {
             for (auto& s_l: song_groups){
-                s_l.draw(display, window,graphics_content);
+                s_l->draw(display, window,graphics_content);
+            }
+            for (auto& b: buttons){
+                b->draw(display, window,graphics_content);
             }
         }
         if(event.type==ButtonPress) {
@@ -46,8 +53,8 @@ void Gui::start() {
 
             if (button == 4 || button == 5){
                 for (auto& s_l: song_groups){
-                    s_l.doScrolled(mouse_x, mouse_y, button == 4);
-                    s_l.draw(display, window,graphics_content);
+                    s_l->doScrolled(mouse_x, mouse_y, button == 4);
+                    s_l->draw(display, window,graphics_content);
                 }
 
             }
@@ -56,8 +63,8 @@ void Gui::start() {
 
                 if (!has_selected){
                     for (auto& s_l: song_groups){
-                        selected = s_l.select(mouse_x, mouse_y);
-                        s_l.draw(display, window,graphics_content);
+                        selected = s_l->select(mouse_x, mouse_y);
+                        s_l->draw(display, window,graphics_content);
                         if (selected != nullptr){
                             selected->setPosMouse(mouse_x, mouse_y);
                             selected->draw(display, window,graphics_content);
@@ -69,22 +76,32 @@ void Gui::start() {
 
                 }else{
                     for (auto& s_l: song_groups){
-                        if (s_l.inWidget(mouse_x, mouse_y)){
+                        if (s_l->inWidget(mouse_x, mouse_y)){
                             selected->clear(display, window);
 
-                            s_l.addSong(selected);
+                            s_l->addSong(selected);
                             has_selected = false;
                             break;
                         }
                     }
 
-
                     selected->draw(display, window,graphics_content, false);
                     for (auto& s_l: song_groups){
-                        s_l.draw(display, window,graphics_content);
+                        s_l->draw(display, window,graphics_content);
                     }
                 }
 
+                for (auto& b: buttons){
+                    if (b->isClicked(mouse_x, mouse_y)){
+                        b->click();
+
+                    }
+                }
+
+            }
+
+            for (auto& b: buttons){
+                b->draw(display, window,graphics_content);
             }
 
         }
@@ -95,9 +112,16 @@ void Gui::start() {
 
             selected->setPosMouse(mouse_x, mouse_y);
             for (auto& s_l: song_groups){
-                s_l.draw(display, window,graphics_content);
+                s_l->draw(display, window,graphics_content);
             }
+
+            for (auto& b: buttons){
+                b->draw(display, window,graphics_content);
+            }
+
             selected->draw(display, window,graphics_content, false);
+
+
         }
 
     }

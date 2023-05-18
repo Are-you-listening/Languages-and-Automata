@@ -55,7 +55,7 @@ void SongListWidget::drawSongs(Display *display, Window window, GC graphics_cont
     for (int i=0; i< songs.size(); i++){
         SongWidget* song_widget = songs[i];
         int offset = index*80+index_offset+ i*100;
-        bool skip = (int) song_widget->getY()+offset+80 < 0 || (int) song_widget->getY()+offset >= (int) height;
+        bool skip = (int) song_widget->getY()+offset+(int)y < 10 || (int) song_widget->getY()+offset >= (int) height+(int)y;
         if (!skip){
             song_widget->draw(display, window, graphics_content, offset, y+10, height+y-10);
         }
@@ -88,4 +88,13 @@ void SongListWidget::addSong(SongWidget *song_widget) {
 
 vector<SongWidget *> SongListWidget::getSongs() {
     return songs;
+}
+
+vector<Song *> SongListWidget::getAllSongs() {
+    vector<Song *> out;
+    for (auto s_w: songs){
+        out.push_back(s_w->getSong());
+    }
+
+    return out;
 }

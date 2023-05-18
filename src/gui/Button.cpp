@@ -13,3 +13,8 @@ bool Button::isClicked(unsigned int mouse_x, unsigned int mouse_y) {
     bool in_y = y <= mouse_y && mouse_y <= y+height;
     return in_x && in_y;
 }
+
+void Button::draw(Display *display, Window window, GC graphics_content) {
+    XSetForeground(display,graphics_content, 255 << 16);
+    XFillRectangle(display, window, graphics_content, x, y, width, height);
+}
