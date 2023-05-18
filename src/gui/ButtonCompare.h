@@ -8,15 +8,17 @@
 #include "SongListWidget.h"
 #include "SongListWidgetSingle.h"
 #include "ButtonBool.h"
+#include "PctScreen.h"
 class ButtonCompare: public Button {
 public:
-    ButtonCompare(unsigned int x, unsigned int y, unsigned int width, unsigned int height, SongListWidget* compare, SongListWidgetSingle* song_box, ButtonBool* comp, ButtonBool* reverse);
+    ButtonCompare(unsigned int x, unsigned int y, unsigned int width, unsigned int height, SongListWidget* compare, SongListWidgetSingle* song_box, ButtonBool* comp, ButtonBool* reverse, PctScreen* pcts);
     void click();
 private:
     SongListWidget* compare;
     SongListWidgetSingle* song_box;
     ButtonBool* complement_button;
     ButtonBool* reverse_button;
+    PctScreen* pcts;
 };
 
 

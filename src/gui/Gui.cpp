@@ -4,13 +4,14 @@
 #include "ButtonCompare.h"
 #include "SongListWidgetSingle.h"
 #include "ButtonBool.h"
+#include "PctScreen.h"
 Gui::Gui() {
     display = XOpenDisplay((char *)0);
 
 
     window =XCreateSimpleWindow(display,
                                 DefaultRootWindow(display),
-                                0, 0, 1600, 1000, 0, 0, 0);
+                                0, 0, 1600, 1000, 0, 0, (40 << 16)+(40 << 8)+50);
 
     XSetStandardProperties(display, window, "I am Listening", NULL, None, NULL, 0, NULL);
     XSelectInput(display, window, ExposureMask | ButtonPressMask | PointerMotionMask);
@@ -23,18 +24,29 @@ Gui::Gui() {
 
 void Gui::start() {
 
+
     bool has_selected = false;
     SongWidget* selected = nullptr;
 
-    SongListWidget* song_list = new SongListWidget(20, 20, 250, 700, {new Song("midi_files/world-1-birabuto-remix-.mid",0), new Song("midi_files/world-1-birabuto-4-.mid",0),
-                                                                      new Song("midi_files/HarryPotterPrologue(3).mid",0)});
+    SongListWidget* song_list = new SongListWidget(20, 20, 250, 700, {
+                                                                      new Song("midi_files/world-1-birabuto-remix-.mid",0),
+                                                                      new Song("midi_files/world-1-birabuto-4-.mid",0),
+                                                                      new Song("midi_files/HarryPotterPrologue(3).mid",0),
+            new Song("midi_files/c0.mid",0),new Song("midi_files/c1.mid",0),
+            new Song("midi_files/c2.mid",0),new Song("midi_files/c3.mid",0),
+            new Song("midi_files/c4.mid",0),new Song("midi_files/c5.mid",0),new Song("midi_files/c0.mid",0)
+    });
     SongListWidget* compare = new SongListWidget(400, 20, 250, 700, {});
     SongListWidgetSingle* single_song = new SongListWidgetSingle(400, 750, 250, 100, 1);
 
     ButtonBool* complement_button = new ButtonBool(660, 860, 49, 49, false);
     ButtonBool* reverse_button = new ButtonBool(660, 911, 49, 49, false);
 
-    ButtonCompare* compare_button = new ButtonCompare(400, 860, 250, 100, compare, single_song, complement_button, reverse_button);
+    PctScreen* result = new PctScreen(700, 400, 200, 200);
+
+    ButtonCompare* compare_button = new ButtonCompare(400, 860, 250, 100, compare, single_song, complement_button, reverse_button, result);
+
+
 
     vector<SongListWidget*> song_groups = {song_list, compare, single_song};
     vector<Button*> buttons = {compare_button, complement_button, reverse_button};
@@ -51,6 +63,7 @@ void Gui::start() {
             for (auto& b: buttons){
                 b->draw(display, window,graphics_content);
             }
+            result->draw(display, window,graphics_content);
         }
         if(event.type==ButtonPress) {
             unsigned int button = event.xbutton.button;
@@ -110,6 +123,7 @@ void Gui::start() {
             for (auto& b: buttons){
                 b->draw(display, window,graphics_content);
             }
+            result->draw(display, window,graphics_content);
 
         }
 

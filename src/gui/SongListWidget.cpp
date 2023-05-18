@@ -47,7 +47,7 @@ bool SongListWidget::inWidget(unsigned int mouse_x, unsigned int mouse_y) {
 
 void SongListWidget::draw(Display *display, Window window, GC graphics_content) {
 
-    XSetForeground(display,graphics_content, 255);
+    XSetForeground(display,graphics_content, (65 << 16)+(65 << 8)+(65));
     XFillRectangle(display, window, graphics_content, x, y, width, height);
     drawSongs(display, window, graphics_content);
 }
