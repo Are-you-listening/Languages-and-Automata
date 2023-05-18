@@ -10,12 +10,12 @@
 
 #include "NFA.h"
 int main() {
-    WNFA k = WNFA("JSONWORK2.json");
+    /*WNFA k = WNFA("JSONWORK2.json");
     WDFA s = k.toWDFA();
     s.print();
-    cout << ":";
+    cout << ":";*/
 
-    /*vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
+    vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
     ifstream Filelist("filelist.txt");
     string c;
     string c2="midi_files/";
@@ -41,12 +41,12 @@ int main() {
             generated.save(path);
             song->similarity(*song2,0,0);
             delete song2;
-            break;
+            break;*/
         }
         delete song;
-        break;
+        //break;
     }
     Filelist.close(); //TODO mischien moeten wij vanaf nu de afpsraak maken dat alle files geopend worden met ios::binairy
-    */
+
     return 0;
 }
