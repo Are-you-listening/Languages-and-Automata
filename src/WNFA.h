@@ -13,19 +13,20 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include "WDFA.h"
 
 using namespace std;
 using json = nlohmann::json;
 
 class WNFA {
+    pair<string, double> WSSC_helper(const string& currentstate, const char& input);
+    vector<string> splitString(const string& str);
 public:
     map<string, weightedNode*> states;
     weightedNode* startState = nullptr;
     map<string, weightedNode*> endStates = {};
     string type;
     vector<string> alfabet;
-
-    pair<weightedNode *, bool> getweightedState(string name);
 
     void addState(string name, bool start, bool endState);
 
@@ -48,6 +49,8 @@ public:
      */
     double weightedaccepts(string input);
     void print();
+    
+    WDFA toWDFA();
 };
 
 

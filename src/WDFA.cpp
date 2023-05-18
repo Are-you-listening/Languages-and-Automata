@@ -35,7 +35,7 @@ WDFA::WDFA(const string &filename) {
     }
 }
 
-WDFA::WDFA() {}
+WDFA::WDFA(): type("WDFA") {}
 
 pair<weightedNode *, bool> WDFA::getweightedState(string name) {
     for (weightedNode* state : states){
@@ -83,12 +83,7 @@ double WDFA::weightedaccepts(string input) {
             }
         }
     }
-    for (Node* state : endStates){
-        if (state == currentState){
-            return result;
-        }
-    }
-    return 0.0;
+    return result/input.size();
 }
 
 void WDFA::print() {
@@ -120,9 +115,9 @@ void WDFA::print() {
     cout << setw(4) << Jout << endl;
 }
 
-pair<Node*, bool> WDFA::getState(string name) {
+pair<weightedNode *, bool> WDFA::getState(string name) {
 
-    for (Node* state : states){
+    for (weightedNode* state : states){
         if (state->getName() == name){
             return make_pair(state, true);
         }

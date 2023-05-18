@@ -2,6 +2,7 @@
 // Created by emill on 10/05/2023.
 //
 
+#include <queue>
 #include "WNFA.h"
 
 WNFA::WNFA(const string &filename) {
@@ -134,4 +135,89 @@ bool WNFA::isEndState(string name) {
         return true;
     }
     return false;
+}
+
+vector<string> WNFA::splitString(const string &str) {
+    vector<string> tokens;
+    string token;
+    string filteredString;
+    for (char character : str){
+        if (character != '{' and character != '}'){
+            filteredString += character;
+        }
+    }
+
+    istringstream tokenStream(filteredString);
+    while (getline(tokenStream, token, ',')) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
+pair<string, double> WNFA::WSSC_helper(const string &currentstate, const char &input) {     // currentstate is van de vorm {a, b} met a en b staten in de NFA
+    vector<string> temp;
+    double largestweight = 0.0;
+    for (const auto& state : splitString(currentstate)){                                                     // splits de string op in een verzameling van staten
+        for (auto connection : getWeightedState(state).first->getweightedconnections()){
+            if (get<1>(connection).find(input) != get<1>(connection).end()){                                       // als er een verbinding bestaat voor symbool 'input'
+                if (find(temp.begin(), temp.end(), get<0>(connection)->getName()) == temp.end()){           // check of we al eens een verbinding naar de nieuwe staat hebben gemaakt
+                    temp.push_back(get<0>(connection)->getName());
+                }
+                
+                largestweight = max(largestweight, get<2>(connection));
+            }
+        }
+    }
+    string result = "{";
+    sort(temp.begin(), temp.end());
+    for(const auto& part : temp){
+        result += part;
+        if (part != temp.back()){
+            result += ",";
+        }
+    }
+    result += "}";
+    return make_pair(result, largestweight);
+}
+
+WDFA WNFA::toWDFA() {
+    WDFA result;
+    result.alfabet = alfabet;
+    string startstate = "{" + startState->getName() + "}";
+    queue<string> toProcess;
+    toProcess.push(startstate);
+    
+    if (endStates.find(startState->getName()) == endStates.end()){
+        result.addState(startstate, true, false);
+    } else {
+        result.addState(startstate, true, true);
+    }
+    
+    while(not toProcess.empty()){
+        string processing = toProcess.front();
+        for (const string& symbol_str : alfabet){
+            const char& symbol = symbol_str[0];
+            pair<string, double> otherstate = WSSC_helper(processing, symbol);
+            string temp = otherstate.first;
+            double weight = otherstate.second;
+            
+            if (! result.getState(temp).second){
+                toProcess.push(temp);
+                
+                bool accepting = false;
+                
+                vector<string> split = splitString(temp);
+                
+                for (const auto& state : split){
+                    if (endStates.find(state) != endStates.end()){
+                        accepting = true;
+                    }
+                }
+                result.addState(temp, false, accepting);
+            }
+            result.getState(processing).first->addconnection(result.getState(temp).first, symbol, weight);
+        }
+        toProcess.pop();
+    }
+    return result;
 }

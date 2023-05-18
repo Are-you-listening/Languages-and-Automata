@@ -34,7 +34,7 @@ public:
 
     bool isEndState(string name);
 
-    pair<Node*, bool> getState(string name);
+    pair<weightedNode *, bool> getState(string name);
     
     WDFA();
     WDFA(const string &filename);
