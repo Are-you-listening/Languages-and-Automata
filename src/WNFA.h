@@ -5,15 +5,17 @@
 #ifndef WNFA_WNFA_H
 #define WNFA_WNFA_H
 
-#include "Toi_Emil/weightedNode.h"
-#include <list>
+
+#include <queue>
 #include <string>
 #include <set>
-#include "json.hpp"
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+
+#include "json.hpp"
 #include "WDFA.h"
+#include "weightedNode.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -36,7 +38,7 @@ public:
 
     bool isEndState(string name);
 
-    pair<Node*, bool> getState(string name);
+    pair<weightedNode*, bool> getState(string name);
     
     WNFA();
     WNFA(const string &filename);

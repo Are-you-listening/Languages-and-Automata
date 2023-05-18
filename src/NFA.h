@@ -12,6 +12,7 @@
 #include "Toi_Kars/Utils.h"
 #include "json.hpp"
 #include "WNFA.h"
+#include "weightedNode.h"
 
 using json = nlohmann::json;
 

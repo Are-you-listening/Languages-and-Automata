@@ -2,7 +2,6 @@
 // Created by emill on 10/05/2023.
 //
 
-#include <queue>
 #include "WNFA.h"
 
 WNFA::WNFA(const string &filename) {
@@ -27,8 +26,8 @@ WNFA::WNFA(const string &filename) {
 
     set<json> newtransitions = j["transitions"];
     for (auto transition : newtransitions) {
-        weightedNode *state1 = getWeightedState(transition["from"]).first;
-        weightedNode *state2 = getWeightedState(transition["to"]).first;
+        weightedNode *state1 = states.find(transition["to"])->second;
+        weightedNode *state2 = states.find(transition["to"])->second;
         string inputsymbol = transition["input"];
         double weight = transition["weight"];
         for (auto symbol: inputsymbol) {
@@ -50,14 +49,7 @@ void WNFA::addState(string name, bool start, bool endState) {
     }
 }
 
-pair<weightedNode *, bool> WNFA::getWeightedState(string name) const{
-    auto result = states.find(name);
-    if (result == states.end()){
-        return make_pair(nullptr, false);
-    }
-    return make_pair(result->second, true);
-}
-
+/*
 double WNFA::weightedaccepts(string input) {
     set<pair<double, weightedNode*>> currentstates = {make_pair(0.0, this->startState)};
 
@@ -83,8 +75,8 @@ double WNFA::weightedaccepts(string input) {
         largestpath = max(largestpath, state.first);
     }
     return largestpath/input.size();
-}
-
+}*/
+/*
 void WNFA::print() {
     json Jout;
     Jout["type"] = type;
@@ -112,9 +104,9 @@ void WNFA::print() {
         }
     }
     cout << setw(4) << Jout << endl;
-}
+}*/
 
-pair<Node*, bool> WNFA::getState(string name) {
+pair<weightedNode*, bool> WNFA::getState(string name) {
     auto result = states.find(name);
     if (result == states.end()){
         return make_pair(nullptr, false);
@@ -155,37 +147,42 @@ vector<string> WNFA::splitString(const string &str) {
 }
 
 pair<string, double> WNFA::WSSC_helper(const string &currentstate, const char &input) {     // currentstate is van de vorm {a, b} met a en b staten in de NFA
-    vector<string> temp;
+    vector<weightedNode*> temp; //Gebruik pointers zodat we geen onnodige Node-names (string) copy's moeten bijhouden
     double largestweight = 0.0;
-    for (const auto& state : splitString(currentstate)){                                                     // splits de string op in een verzameling van staten
-        for (auto connection : getWeightedState(state).first->getweightedconnections()){
-            if (get<1>(connection).find(input) != get<1>(connection).end()){                                       // als er een verbinding bestaat voor symbool 'input'
-                if (find(temp.begin(), temp.end(), get<0>(connection)->getName()) == temp.end()){           // check of we al eens een verbinding naar de nieuwe staat hebben gemaakt
-                    temp.push_back(get<0>(connection)->getName());
+    for (const auto& state : splitString(currentstate)) { // splits de string op in een verzameling van staten
+        weightedNode* node = states.find(state)->second; //Should always find a state
+
+        auto connectedNodes = node->accepts(input);
+        if (!connectedNodes.empty()) { // als er een verbinding bestaat voor symbool 'input'
+            for (auto state: connectedNodes) {
+                if (std::find(temp.begin(), temp.end(), state.second)!= temp.end()) { // check of we al eens een verbinding naar de nieuwe staat hebben gemaakt
+                    temp.push_back(state.second);
                 }
-                
-                largestweight = max(largestweight, get<2>(connection));
+                largestweight = max(largestweight, state.first); //Change weight to the biggest
             }
         }
     }
+
+    //sort(temp.begin(), temp.end()); //We hoeven dit niet in te dienen in inginious, dus de naam volgorde maakt niet uit
+    //TODO Tibo, Emil pls tell me this is correct? - Kars
+
     string result = "{";
-    sort(temp.begin(), temp.end());
-    for(const auto& part : temp){
-        result += part;
-        if (part != temp.back()){
-            result += ",";
-        }
+    for(int i =0; i<temp.size()-1; i++){
+        result += temp[i]->getName()+",";
     }
-    result += "}";
+    result+=temp[temp.size()-1]->getName() + "}"; //Add last state (no "," )
+
     return make_pair(result, largestweight);
 }
 
 WDFA WNFA::toWDFA() {
     WDFA result;
+
     result.alfabet = alfabet;
     string startstate = "{" + startState->getName() + "}";
+
     queue<string> toProcess;
-    toProcess.push(startstate);
+    toProcess.push(startstate); //Add Start State for lazy evaluation
     
     if (endStates.find(startState->getName()) == endStates.end()){
         result.addState(startstate, true, false);
@@ -193,10 +190,12 @@ WDFA WNFA::toWDFA() {
         result.addState(startstate, true, true);
     }
     
-    while(not toProcess.empty()){
+    while(!toProcess.empty()){ //While there are states to proces
         string processing = toProcess.front();
+
         for (const string& symbol_str : alfabet){
             const char& symbol = symbol_str[0];
+
             pair<string, double> otherstate = WSSC_helper(processing, symbol);
             string temp = otherstate.first;
             double weight = otherstate.second;
@@ -220,4 +219,12 @@ WDFA WNFA::toWDFA() {
         toProcess.pop();
     }
     return result;
+}
+
+pair<weightedNode *, bool> WNFA::getWeightedState(string name) const{
+    auto result = states.find(name);
+    if (result == states.end()){
+        return make_pair(nullptr, false);
+    }
+    return make_pair(result->second, true);
 }

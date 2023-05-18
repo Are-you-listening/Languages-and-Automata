@@ -15,6 +15,7 @@ public:
     list<pair<Node*, set<char>>> connections;
     list<pair<Node*, string>> regexconnections;
     string selfconnection;
+
     explicit Node(const string &name);
     void addconnection(Node* otherState, char symbol);
 

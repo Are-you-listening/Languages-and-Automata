@@ -5,14 +5,15 @@
 #ifndef WNFA_WDFA_H
 #define WNFA_WDFA_H
 
-#include "weightedNode.h"
 #include <list>
 #include <string>
 #include <set>
-#include "json.hpp"
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+
+#include "json.hpp"
+#include "weightedNode.h"
 
 using namespace std;
 using json = nlohmann::json;

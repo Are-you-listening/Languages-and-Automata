@@ -250,6 +250,7 @@ NFA::NFA(const json &j) {
 }
 
 WNFA NFA::toWNFA(){
+
     WNFA result = WNFA();
     result.alfabet = Alphabet;
     State* start_state;
@@ -265,7 +266,6 @@ WNFA NFA::toWNFA(){
     vector<weightedNode*> v = {result.startState};
     adaptDistance(v, start_state, (int) Q.size()-1, 0, -0.2, result);
 
-
     // voeg de transities uit de NFA toe aan de WNFA
     for (pair<string, weightedNode*> state : result.states){
         for (string temp : result.alfabet){
@@ -273,7 +273,6 @@ WNFA NFA::toWNFA(){
             for (const auto& transition : Q.find(state.second->getName())->second->DoTransition(symbol)){
                 state.second->addconnection(result.getWeightedState(transition).first, symbol, 1);
             }
-
         }
     }
 

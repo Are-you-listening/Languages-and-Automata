@@ -16,7 +16,7 @@ class weightedNode{
     string name;
 
 public:
-    void addconnection(weightedNode *otherState, char symbol, double &weight);
+    void addconnection(weightedNode *otherState, char symbol, double weight);
 
     const map<char,vector<pair< double,weightedNode* >> > & getweightedconnections() const;
 
@@ -28,6 +28,11 @@ public:
 
     const string &getName() const;
 
+    /**
+     * \brief Returns the reachable states with an input from this state
+     * @param input
+     * @return
+     */
     vector<pair< double,weightedNode* >> accepts(const char &input);
 };
 
