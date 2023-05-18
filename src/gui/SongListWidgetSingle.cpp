@@ -23,3 +23,6 @@ Song *SongListWidgetSingle::getSong() {
     }
 
 }
+void SongListWidgetSingle::doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool up){
+
+}

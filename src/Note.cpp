@@ -55,7 +55,7 @@ string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rek
     string s; //1
     if(r_duration>1){
         s="(";
-        double temp_duration = lround((atan(1.5*(duration/1000.0))/1.5)*155);
+        double temp_duration = lround((atan(1.5*(duration/1000.0))/1.6)*155);
         for(int i=temp_duration-(r_duration-1);  i<=temp_duration+(r_duration-1); i++){
             int v = i;
             if (v < 0){
@@ -68,7 +68,7 @@ string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rek
         }
         s[s.size()-1] = ')';
     } else if (r_duration==1){
-        s=toChar( lround((atan(1.5*(double) duration/1000.0)/1.5)*155));
+        s=toChar( lround((atan(1.5*(double) duration/1000.0)/1.6)*155));
     }else{
         s = "";
     }

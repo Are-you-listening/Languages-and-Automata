@@ -18,12 +18,13 @@
 class SongListWidget {
 public:
     SongListWidget(unsigned int x, unsigned int y, unsigned int width, unsigned int height, const vector<Song*>& songs_in);
-    void doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool up);
+    virtual void doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool up);
     virtual bool inWidget(unsigned int mouse_x, unsigned int mouse_y);
     void draw(Display* display, Window window, GC graphics_content);
     void drawSongs(Display* display, Window window, GC graphics_content);
     SongWidget* select(unsigned int mouse_x, unsigned int mouse_y);
     void addSong(SongWidget* song_widget);
+    vector<Song*> getAllSongs();
 private:
     unsigned int x;
     unsigned int y;
