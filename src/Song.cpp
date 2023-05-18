@@ -601,7 +601,6 @@ double Song::checkWNFA(RE &r,RE &s){
      * 3: self loop everywhere else
      * 4: arrow to the next state
      * */
-    
     ENFA e = r.toENFA();
     json j = e.getJsonNfa();
     NFA n(j);
