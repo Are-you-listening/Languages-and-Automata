@@ -290,10 +290,9 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     }
     
     //Check Notes
-    WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
+    //WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
     
-    //result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
-    result = WNFA_result;
+    result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
@@ -552,38 +551,37 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
     if(console){cout << log;}
     logs.push_back(log);
     //For each element of the RE
-    for(const char &m: k.re) {
-        if (index == param.size()) { //Reached all params, ready to make objects
-            //Make notes
-            vector<vector<int>> notes = makeNotes(info);
-
-            for(vector<int> &f: notes){ //Create the actual objects
-                Note* e = new Note(f[0],f[1],f[2],f[3],f[4]);
-                note_map[{f[1],f[0]}].push_back(e);
+    for(string::iterator it=k.re.begin(); it!=k.re.end(); it++){
+        vector<unsigned int> note_values;
+        if((*it)=='('){
+            it++;
+            while((*it)!='+'){
+                note_values.push_back(toInt(*it));
+                it++;
             }
-
-            index = 0; //Reset Index
-        }
-
-        if (param[index] == 0) { //If param not used
-            index++;
-            info.push_back({0}); //Add Nothing
-        }else { //Param is used
-            if(m=='('){ //Begin of Regex
-                tempstack.push(m);
-                continue;
-            }else if(m==')') { //Ended 1 character
-                index++;
-                info.push_back(options); //Push back options
-                options.clear(); //Reset options
-                tempstack.pop();
-            }else if(m=='*'){
-                cerr << "Honestly no clue what to do with Kleene Star, which length should I take?" << endl;
-            }else{
-                options.push_back(toInt(m));
-                if(tempstack.empty()){
-                    index++;
+            while((*it)!=')'){
+                it++;
+            }
+            Note* n=new Note(note_values[0],note_values[1],note_values[2],note_values[3],note_values[4]);
+            note_map[{note_values[0],1}].push_back(n);
+            note_map[{note_values[0]+note_values[1],0}].push_back(n);
+            continue;
+        } else{
+            if((*it)=='*'){
+                cerr << "kleene star in regex" << endl;
+                throw std::exception();
+            } else {
+                for(vector<int>::iterator it2=param.begin(); it2!=param.end(); it2++){
+                    if(*it==true){
+                        note_values.push_back(toInt(*it));
+                        it++;
+                    } else {
+                        note_values.push_back(0);
+                    }
                 }
+                Note* n=new Note(note_values[0],note_values[1],note_values[2],note_values[3],note_values[4]);
+                note_map[{note_values[0],1}].push_back(n);
+                note_map[{note_values[0]+note_values[1],0}].push_back(n);
             }
         }
     }
