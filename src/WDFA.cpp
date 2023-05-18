@@ -71,15 +71,14 @@ double WDFA::weightedaccepts(string input) {
     double result = 0.0;
     for (char symbol : input){
         string symbol_str = string(1, symbol);
-        if (std::find(alfabet.begin(), alfabet.end(),symbol_str) == alfabet.end()){
-            cerr << "Symbol " << symbol << " not in alphabet" << endl;
-            return -1.0;
-        }
         for (auto connection : currentState->weightedNode::getweightedconnections()){
             if (get<1>(connection).find(symbol) != get<1>(connection).end()){
                 result += get<2>(connection);
                 currentState = get<0>(connection);
                 break;
+            } else {
+                result+=-1.0;
+                continue;
             }
         }
     }
