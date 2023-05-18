@@ -5,7 +5,8 @@ project(Tog)
 ################################################################
 #flags
 set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Werror -O2")
+
+set(CMAKE_CXX_FLAGS "-std=c++17 -Ofast") #-Wall -Werror -02
 ################################################################
 #directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
