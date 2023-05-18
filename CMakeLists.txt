@@ -70,8 +70,8 @@ set(MAIN_SRC
         lib/Toi_Emil/Node.h
         lib/Toi_Emil/weightedautomaat.cpp
         lib/Toi_Emil/weightedautomaat.h
-        lib/Toi_Emil/weightedNode.cpp
-        lib/Toi_Emil/weightedNode.h
+        src/weightedNode.cpp
+        src/weightedNode.h
 
         lib/Toi_Kars/Utils.cpp
         lib/Toi_Kars/Utils.h
