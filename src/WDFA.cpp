@@ -55,7 +55,7 @@ double WDFA::weightedaccepts(string input) {
         auto nextStates = currentState->accepts(symbol); //Get the reachable states with this symbol
 
         if(nextStates.empty()){ //No transitions
-            result-=1.0;
+            result--;
         }else{ //The state accepted this symbol
             result+=nextStates[0].first; //If this is a correct DFA, there is only 1 reachable state by this input
             currentState = nextStates[0].second;
