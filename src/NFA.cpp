@@ -305,21 +305,18 @@ void NFA::adaptDistance(vector<weightedNode*>& original, State* s, int distance,
 
             weightedNode* w = (result.getState(st->getName())).first;
 
-                for (int i=0; i < original.size(); i++){
-                    weightedNode* o = original[i];
-                    if (index-i > 0){
-                        o->addconnection(w, entry.first, (index-i)*weight+1);
-                    }
-
+            for (int i=0; i < original.size(); i++) {
+                weightedNode *o = original[i];
+                if (index - i > 0) {
+                    o->addconnection(w, entry.first, (index - i) * weight + 1);
                 }
+            }
 
-                original.push_back(w);
-                //cout << w->name << " "<< distance << endl;
+            original.push_back(w);
 
             if (distance > 1){
                 adaptDistance(original, st, distance - 1, index+1, weight, result);
                 //adaptDistance(result.getWeightedState(st->getName()).first, st, distance - 1, 0, weight, result);
-
             }
         }
     }
