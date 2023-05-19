@@ -174,23 +174,17 @@ map<string,weightedNode*> WNFA::splitString(const string &str) {
     return tokens;
 }
 
-pair< map<string,weightedNode*> , double> WNFA::WSSC_helper(const map<string,weightedNode*> &currentstates, const char &input) {     // currentstate is van de vorm {a, b} met a en b staten in de NFA
+pair< map<string,weightedNode*> , double> WNFA::WSSC_helper(const map<string,weightedNode*> &currentstates, const char &input) {
     map<string,weightedNode*> to;
     double largestweight = 0.0;
     for (auto &node : currentstates) { // Loop over elke staat
         auto connections = node.second->accepts(input); //Find reachable states from node
 
-        //if (!connections.empty()) { // als er een verbinding bestaat voor symbool 'input'
-            for (auto &state: connections) {
-                //cout << state.second->getName() << endl;
-                to[state.second->getName()]=state.second; //We should simply be able to overwrite the state with ittself if it already exists
-                largestweight = max(largestweight, state.first); //Change weight to the biggest
-            }
-        //}
+        for (auto &state: connections) {
+            to[state.second->getName()] = state.second; //We should simply be able to overwrite the state with ittself if it already exists
+            largestweight = max(largestweight, state.first); //Change weight to the biggest
+        }
     }
-
-    //sort(to.begin(), to.end()); //TODO is de sort hier nodig? Map sort automatisch?
-
     return make_pair(to, largestweight);
 }
 
