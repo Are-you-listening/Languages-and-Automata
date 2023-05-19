@@ -4,35 +4,8 @@
 
 #include "WDFA.h"
 
-WDFA::WDFA(const string &filename) {
-    ifstream input(filename);
-    json j;
-    input >> j;
-    type = j["type"];
-    set<string> temp = j["alphabet"];
-    alfabet.clear();
-    for (auto item : temp){
-        string symbol = item;
-        alfabet.push_back(symbol);
-    }
-    set<json> newstates = j["states"];
-    for (auto state : newstates){
-        string tempname = state["name"];
-        bool tempstart = state["starting"];
-        bool tempend = state["accepting"];
-        addState(tempname, tempstart, tempend);
-    }
-
-    set<json> newtransitions = j["transitions"];
-    for (auto transition : newtransitions) {
-        weightedNode *state1 = getState(transition["from"]).first;
-        weightedNode *state2 = getState(transition["to"]).first;
-        string inputsymbol = transition["input"];
-        double weight = transition["weight"];
-        for (auto symbol: inputsymbol) {
-            state1->addconnection(state2, symbol, weight);
-        }
-    }
+WDFA::WDFA(const string &filename): WNFA(filename) {
+    type="WDFA";
 }
 
 WDFA::WDFA() {type="WDFA";}

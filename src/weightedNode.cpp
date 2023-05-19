@@ -1,6 +1,7 @@
 //
 // Created by emil on 27/04/23.
 //
+
 #include "weightedNode.h"
 
 void weightedNode::addconnection(weightedNode *otherState, char symbol, double weight) {

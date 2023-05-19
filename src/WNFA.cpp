@@ -23,7 +23,6 @@ WNFA::WNFA(const string &filename) {
         bool tempend = state["accepting"];
         addState(tempname, tempstart, tempend);
     }
-    
 
     set<json> newtransitions = j["transitions"];
     for (auto transition : newtransitions) {
@@ -75,7 +74,6 @@ double WNFA::weightedaccepts(string input) const {
     for(const auto &k: currentStates){
         result+=k.second.first;
     }
-
     return result/( (double) currentStates.size() );
 }
 
