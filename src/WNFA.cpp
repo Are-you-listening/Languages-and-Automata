@@ -49,9 +49,9 @@ void WNFA::addState(const string& name, bool start, bool endState) {
     }
 }
 
-/*
+
 double WNFA::weightedaccepts(string input) {
-    set<pair<double, weightedNode*>> currentstates = {make_pair(0.0, this->startState)};
+    /*set<pair<double, weightedNode*>> currentstates = {make_pair(0.0, this->startState)};
 
     for (const char& symbol : input){
         if (std::find(alfabet.begin(), alfabet.end(), string(1, symbol)) == alfabet.end()){
@@ -74,8 +74,35 @@ double WNFA::weightedaccepts(string input) {
     for (const pair<double, weightedNode*>& state : currentstates){
         largestpath = max(largestpath, state.first);
     }
-    return largestpath/input.size();
-}*/
+    return largestpath/input.size();*/
+
+    double result = 0.0;
+    map<string, pair<double,weightedNode*> > currentStates;
+    currentStates[startState->getName()]={0.0,startState};
+
+    for (const char &symbol : input) { //Loop on every character of the string
+        for (auto &node: currentStates) {
+            auto nextStates = node.second.second->accepts(symbol); //Get the reachable states with this symbol
+
+            if (nextStates.empty()) { //No transitions
+                node.second.first -= 1.0; //Subtract values
+            } else { //The state accepted this symbol
+                for (const auto &state: nextStates) { //For each state we can reach with the symbol
+                    result += nextStates[0].first;
+                    currentStates[state.second->getName()] = {state.first + node.second.first,state.second}; // map[ "0" ] = {1.0 + 1.0 , *"0"}
+                }
+            }
+            cout << currentStates.size() << endl;
+        }
+    }
+
+    //Add all results together
+    for(const auto &k: currentStates){
+        result+=k.second.first;
+    }
+
+    return result/( (double) currentStates.size() );
+}
 
 void WNFA::print() {
     json Jout;
@@ -130,8 +157,8 @@ bool WNFA::isEndState(string name) {
     return false;
 }
 
-vector<string> WNFA::splitString(const string &str) {
-    vector<string> tokens;
+map<string,weightedNode*> WNFA::splitString(const string &str) {
+    map<string,weightedNode*> tokens;
     string token;
     string filteredString;
     for (char character : str){
@@ -142,7 +169,7 @@ vector<string> WNFA::splitString(const string &str) {
 
     istringstream tokenStream(filteredString);
     while (getline(tokenStream, token, ',')) {
-        tokens.push_back(token);
+        tokens[token]= getState(token).first;
     }
     return tokens;
 }
@@ -153,10 +180,9 @@ pair< map<string,weightedNode*> , double> WNFA::WSSC_helper(const map<string,wei
     for (auto &node : currentstates) { // Loop over elke staat
         auto connections = node.second->accepts(input); //Find reachable states from node
 
-        //cout << connections.empty() << endl;
-
         //if (!connections.empty()) { // als er een verbinding bestaat voor symbool 'input'
             for (auto &state: connections) {
+                //cout << state.second->getName() << endl;
                 to[state.second->getName()]=state.second; //We should simply be able to overwrite the state with ittself if it already exists
                 largestweight = max(largestweight, state.first); //Change weight to the biggest
             }
@@ -171,46 +197,53 @@ pair< map<string,weightedNode*> , double> WNFA::WSSC_helper(const map<string,wei
 WDFA WNFA::toWDFA() {
     WDFA result;
 
-    //cout << this->states.size() << endl;
-
     result.alfabet = alfabet;
     map<string,weightedNode*> startstate;
     startstate[startState->getName()] = startState;
 
-    queue< map<string,weightedNode*> > toProcess;
-    toProcess.push(startstate); //Add Start State for lazy evaluation
+    set< string > toProcess;
+    toProcess.insert("{" + startState->getName() + "}"); //Add Start State for lazy evaluation
     result.addState("{" + startState->getName() + "}", true, true); //Add start state to DFA
     
     while(!toProcess.empty()){ //While there are states to proces
-        //cout << toProcess.size() << endl;
-
-        map<string,weightedNode*> processing = toProcess.front(); //current state
-        toProcess.pop();
-
-        //cout << toProcess.size() << endl;
 
 
-        string processing_str = NodesToString(processing);
+        string processing_str = *toProcess.begin();
+
+        map<string,weightedNode*> processing = splitString(processing_str) ; //current state
+        toProcess.erase(processing_str);
 
         for (const string& symbol_str : alfabet){
             const char& symbol = symbol_str[0];
 
             auto otherstate = WSSC_helper(processing , symbol);
-            if(otherstate.first.empty()){
+            /*if(otherstate.first.empty()){
                 continue;
-            }
+            }*/
             string temp = NodesToString(otherstate.first);
+            //cout << temp << endl;
 
+            if(temp == "{0,20,24,4,8}"){
+                cout << temp << endl;
+            }
 
             //cout << temp << endl;
             double weight = otherstate.second;
 
             //Maak van de queue een map
             if ( result.states.find(temp) == result.states.end() ){ //Als de huidige state nog niet in de WDFA zit
-                toProcess.push(otherstate.first); //Add to process
+
+
+                if(toProcess.find(temp)==toProcess.end()){
+                    toProcess.insert(temp); //Add to process
+                };
+
+
+
 
                 result.addState(temp, false, true); //Add the new state (Every state in the WNFA is an accepting state)
             }
+
 
             (result.getState(processing_str).first)->addconnection(result.getState(temp).first, symbol, weight); //Add a connection from State:Processing to the newly created State:temp
         }

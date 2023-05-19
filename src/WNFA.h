@@ -12,6 +12,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <algorithm>
 
 #include "json.hpp"
 #include "WDFA.h"
@@ -24,7 +25,7 @@ using json = nlohmann::json;
 class WNFA {
     //Get reachable states (eq class string) + biggest weight
     pair< map<string,weightedNode*> , double> WSSC_helper(const map<string,weightedNode*> &currentstates, const char& input);
-    vector<string> splitString(const string& str);
+    map<string,weightedNode*> splitString(const string& str);
 
 public:
     map<string, weightedNode*> states;
