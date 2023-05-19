@@ -35,64 +35,10 @@ bool pluswithoutbrackets(const string &input){
     return false;
 }
 
-bool comesbefore(string str1, string str2) {
-    //char firstChar1 = '\0';
-    //char firstChar2 = '\0';
-    //for (int i = 0; i < str1.size(); i++) {
-    //    if (isalnum(str1[i])) {
-    //        firstChar1 = str1[i];
-    //        break;
-    //    }
-    //}
-    //for (int i = 0; i < str2.size(); i++) {
-    //    if (isalnum(str2[i])) {
-    //        firstChar2 = str2[i];
-    //        if (firstChar1 != firstChar2){
-    //            break;
-    //        }
-    //    }
-    //}
-    //
-    //if (tolower(firstChar1) < tolower(firstChar2)) {
-    //    return true;
-    //} else {
-    //    return false;
-    //}
-    
-    int i = 0;
-    int j = 0;
-    
-    while (i < str1.length() && j < str2.length()){
-        if (!isalnum(str1[i])){
-            i++;
-            continue;
-        }
-        
-        if (!isalnum(str2[j])){
-            j++;
-            continue;
-        }
-        
-        if (::tolower(str1[i]) < ::tolower(str2[j])){
-            return true;
-        } else if (::tolower(str1[i]) > ::tolower(str2[j])){
-            return false;
-        }
-        i++;
-        j++;
-        if (i == str1.length() && j != str2.length()){
-            return true;
-        } else if (i != str1.length() && j == str2.length()){
-            return false;
-        } else if (i == str1.length() && j == str2.length()){
-            return false;
-        }
-    }
-}
-
 void DFAE::eliminateState(std::string eliminatedstate) {
-    Node* todestroy = getState(eliminatedstate).first;
-    for (Node* state : states) {
+    Node* todestroy = states[eliminatedstate];
+    for (pair<string, Node*> temppair : states) {
+        Node* state = temppair.second;
         if (state == todestroy) {
             continue;
         }
@@ -131,17 +77,13 @@ void DFAE::eliminateState(std::string eliminatedstate) {
             }
         }
         for (const auto & connection : connectionstoremove){
-            state->regexconnections.remove(connection);
+            state->regexconnections.erase(connection.first);
         }
         list<pair<Node*, string>> temp;
         for (auto& regexconnection : state->regexconnections){
             for (auto connection : connectionstoadd){
                 if (regexconnection.first == connection.first){
-                    if (comesbefore(regexconnection.second, connection.second)){
-                        regexconnection.second += "+" + connection.second;
-                    } else {
-                        regexconnection.second = connection.second + "+" + regexconnection.second;
-                    }
+                    regexconnection.second += "+" + connection.second;
                     temp.push_back(connection);
                 }
             }
@@ -149,7 +91,7 @@ void DFAE::eliminateState(std::string eliminatedstate) {
         for (auto connection : temp){
             connectionstoadd.remove(connection);
         }
-        state->regexconnections.insert(state->regexconnections.end(), connectionstoadd.begin(), connectionstoadd.end());
+        state->regexconnections.insert(connectionstoadd.begin(), connectionstoadd.end());
     }
 }
 
@@ -157,41 +99,17 @@ void DFAE::eliminateState(std::string eliminatedstate) {
 
 REE DFAE::toREE() {
     
-    bool sorted;
-    if (not states.empty()) {
-        do {
-            for (auto it = states.begin(); it != states.end().operator--(); it++) {
-                auto next = it.operator++();
-                it.operator--();
-                if (comesbefore((*next)->getName(), (*it)->getName())) {
-                    sorted = false;
-                    auto *temp = *next;
-                    *next = *it;
-                    *it = temp;
-                } else {
-                    sorted = true;
-                }
-            }
-        } while (not sorted);
-    }
-    if (not endStates.empty()) {
-        do {
-            for (auto it = endStates.begin(); it != endStates.end().operator--(); it++) {
-                auto next = it.operator++();
-                it.operator--();
-                if (comesbefore((*next)->getName(), (*it)->getName())) {
-                    sorted = false;
-                    auto *temp = *next;
-                    *next = *it;
-                    *it = temp;
-                } else {
-                    sorted = true;
-                }
-            }
-        } while (not sorted);
-    }
     for (auto &state : states){
-        for (const auto& connection : state->connections){
+        
+        map<Node*, set<char>> tempconnections;
+        
+        for (const char& symbol : alfabet){
+            Node* temp = state.second->connections[symbol];
+            tempconnections[temp].emplace(symbol);
+        }
+        
+        
+        for (const auto& connection : tempconnections){
             string tempstring;
             if (connection.second.size() == 1){
                 tempstring = *connection.second.begin();
@@ -205,11 +123,12 @@ REE DFAE::toREE() {
                 }
 
             }
-            state->regexconnections.emplace_back(connection.first, tempstring);
-            if (connection.first == state){
-                state->selfconnection = tempstring;
+            state.second->regexconnections[connection.first] = tempstring;
+            if (connection.first == state.second){
+                state.second->selfconnection = tempstring;
             }
         }
+        
     }
 
     // for each endstate eliminate all other states except for the starting state
@@ -220,7 +139,8 @@ REE DFAE::toREE() {
     int count = 0;
     for (Node* endstate : endStates) {
         DFAE tempdfa(*this);
-        for (Node *state: tempdfa.states) {
+        for (pair<string, Node*> temp: tempdfa.states) {
+            Node* state = temp.second;
             if (state->getName() != startState->getName() && state->getName() != endstate->getName()) {
                 tempdfa.eliminateState(state->getName());
             }
@@ -307,7 +227,7 @@ REE DFAE::toREE() {
         count ++;
     }
     for (auto state : states){
-        state->regexconnections.clear();
+        state.second->regexconnections.clear();
     }
     return REE(finalregex);
 }
@@ -315,25 +235,25 @@ REE DFAE::toREE() {
 DFAE::DFAE(DFAE &other) {
     // Create new nodes
     for (const auto& node : other.states) {
-        Node* new_node = new Node(node->getName());
-        states.push_back(new_node);
-        if (other.isStartState(node->getName())) {
+        Node* new_node = new Node(node.first);
+        states[node.first] = new_node;
+        if (other.isStartState(node.first)) {
             startState = new_node;
         }
-        if (other.isEndState(node->getName())) {
+        if (other.isEndState(node.first)) {
             endStates.push_back(new_node);
         }
     }
 
     // Create new connections
     for (const auto& node : other.states) {
-        Node* new_node = getState(node->getName()).first;
-        for (const auto& connection : node->regexconnections) {
+        Node* new_node = getState(node.first).first;
+        for (const auto& connection : node.second->regexconnections) {
             Node* target = getState(connection.first->getName()).first;
-            new_node->regexconnections.emplace_back(target, connection.second);
+            new_node->regexconnections[target] = connection.second;
         }
-        if (not node->selfconnection.empty()) {
-            new_node->selfconnection = node->selfconnection;
+        if (not node.second->selfconnection.empty()) {
+            new_node->selfconnection = node.second->selfconnection;
         }
     }
 }

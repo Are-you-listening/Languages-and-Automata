@@ -8,23 +8,13 @@
 Node::Node(const string &name) : name(name) {}
 
 void Node::addconnection(Node *otherState, char symbol) {
-    bool found = false;
-    for (auto &connection : connections) {
-        if (connection.first == otherState) {
-            connection.second.emplace(symbol);
-            found = true;
-        }
-    }
-    if (not found){
-                connections.push_back(make_pair(otherState, set<char> {symbol}));
-        }
+    connections[symbol] = otherState;
 }
 
 const string &Node::getName() const {
     return name;
 }
 
-const list<pair<Node *, set<char>>> &Node::getConnections() const {
+const map<char, Node*> &Node::getConnections() const {
     return connections;
 }
-

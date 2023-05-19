@@ -26,7 +26,7 @@ automaat::automaat(string fileName) {
 
 void automaat::addState(string name, bool start, bool endState) {
     Node* n = new Node(name);
-    states.push_back(n);
+    states[name] = n;
     if (start){
         startState = n;
     }
@@ -42,11 +42,10 @@ void automaat::addState(string name, bool start, bool endState) {
  */
 
 pair<Node*, bool> automaat::getState(string name) const{
+    auto search = states.find(name);
     
-    for (Node* state : states){
-        if (state->getName() == name){
-            return make_pair(state, true);
-        }
+    if (search != states.end()){
+        return make_pair(search->second, true);
     }
     return make_pair(nullptr, false);
 }
@@ -65,12 +64,7 @@ bool automaat::accepts(string input) {
             cerr << "inputstring contains an unknown symbol" << endl;
             return false;
         }
-        for (auto connection : currentState->getConnections()){
-            if (connection.second.find(symbol) != connection.second.end()){
-                currentState = connection.first;
-                break;
-            }
-        }
+        currentState = currentState->connections[symbol];
     }
     for (Node* state : endStates){
         if (state == currentState){
@@ -109,21 +103,19 @@ void automaat::print() {
     }
     for (auto state: states) {  // add all the states
         json temp;
-        temp["name"] = state->getName();
-        temp["starting"] = isStartState(state->getName());
-        temp["accepting"] = isEndState(state->getName());
+        temp["name"] = state.first;
+        temp["starting"] = isStartState(state.first);
+        temp["accepting"] = isEndState(state.first);
         Jout["states"].push_back(temp);
     }
     // these 2 for loops can probably be merged, but I will keep them separate for readability
     for (auto state: states) {  // add all the transitions
-        for (const auto& transition: state->getConnections()) {
-            for (auto symbol: transition.second) {
+        for (const auto& transition: state.second->getConnections()) {
                 json temp;
-                temp["from"] = state->getName();
-                temp["to"] = transition.first->getName();
-                temp["input"] = string(1, symbol);
+                temp["from"] = state.first;
+                temp["to"] = transition.second->getName();
+                temp["input"] = string(1, transition.first);
                 Jout["transitions"].push_back(temp);
-            }
         }
     }
         cout << setw(4) << Jout << endl;
@@ -181,21 +173,19 @@ nlohmann::json automaat::getJson() const{
     }
     for (auto state: states) {  // add all the states
         json temp;
-        temp["name"] = state->getName();
-        temp["starting"] = isStartState(state->getName());
-        temp["accepting"] = isEndState(state->getName());
+        temp["name"] = state.first;
+        temp["starting"] = isStartState(state.first);
+        temp["accepting"] = isEndState(state.first);
         Jout["states"].push_back(temp);
     }
     // these 2 for loops can probably be merged, but I will keep them separate for readability
     for (auto state: states) {  // add all the transitions
-        for (const auto& transition: state->getConnections()) {
-            for (auto symbol: transition.second) {
+        for (const auto& transition: state.second->getConnections()) {
                 json temp;
-                temp["from"] = state->getName();
-                temp["to"] = transition.first->getName();
-                temp["input"] = string(1, symbol);
+                temp["from"] = state.first;
+                temp["to"] = transition.second->getName();
+                temp["input"] = string(1, transition.first);
                 Jout["transitions"].push_back(temp);
-            }
         }
     }
     return Jout;

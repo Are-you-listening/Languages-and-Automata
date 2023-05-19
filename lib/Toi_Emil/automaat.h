@@ -12,7 +12,7 @@ using namespace std;
 
 class automaat {
 public:
-    list<Node*> states;
+    map<string, Node*> states;
     set<char> alfabet;
     Node* startState = nullptr;
     list<Node*> endStates = {};

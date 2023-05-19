@@ -7,13 +7,14 @@
 #include <string>
 #include <list>
 #include <set>
+#include <map>
 using namespace std;
 
 class Node {
 public:
     string name;
-    list<pair<Node*, set<char>>> connections;
-    list<pair<Node*, string>> regexconnections;
+    map<char, Node*> connections;
+    map<Node*, string> regexconnections;
     string selfconnection;
 
     explicit Node(const string &name);
@@ -21,7 +22,7 @@ public:
 
     const string &getName() const;
 
-    virtual const list<pair<Node *, set<char>>> &getConnections() const;
+    virtual const map<char, Node*> &getConnections() const;
 };
 
 
