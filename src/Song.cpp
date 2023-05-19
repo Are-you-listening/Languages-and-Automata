@@ -576,9 +576,12 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
                         note_values.push_back(0);
                     }
                 }
-                Note* n=new Note(note_values[0],note_values[1],note_values[2],note_values[3],note_values[4]);
-                note_map[{note_values[0],1}].push_back(n);
-                note_map[{note_values[0]+note_values[1],0}].push_back(n);
+                it--;
+                
+                Note* n=new Note(note_values[0]*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
+                note_map[{note_values[0]*1000,1}].push_back(n);
+                Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
+                note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2);
             }
         }
     }

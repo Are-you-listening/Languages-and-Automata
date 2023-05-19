@@ -15,8 +15,7 @@ midiExporter::midiExporter(const string &path, const map<pair<unsigned int, bool
 
 void midiExporter::changeFormat() {
     channel_counter = 0;
-
-
+    
     for (auto entry: note_map){
         for(Note* n: entry.second){
             addNote(n, entry.first.second);

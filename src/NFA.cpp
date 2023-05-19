@@ -264,14 +264,14 @@ WNFA NFA::toWNFA(){
     }
 
     vector<weightedNode*> v = {result.getStartState()};
-    adaptDistance(v, start_state, (int) Q.size()-1, 0, -0.2, result);
+    adaptDistance(v, start_state, (int) Q.size()-1, 0, -0.2, result); //add weight -0.2
 
     // voeg de transities uit de NFA toe aan de WNFA
     for (pair<string, weightedNode*> state : result.getStates()){
         for (string temp : result.getAlfabet()){
             char symbol = temp[0];
             for (const auto& transition : Q.find(state.second->getName())->second->DoTransition(symbol)){
-                state.second->addconnection(result.getState(transition).first, symbol, 1);
+                state.second->addconnection(result.getState(transition).first, symbol, 1); //add connection transitie weight 1
             }
         }
     }
