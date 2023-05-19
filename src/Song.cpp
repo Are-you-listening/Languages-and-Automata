@@ -150,7 +150,7 @@ Song::~Song(){
     }
 }
 
-[[nodiscard]] vector<RE> Song::toRegex(int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern){ //When int>1 -> activate round
+[[nodiscard]] vector<RE> Song::toRegex(int time_stamp, int duration, int instrument, int note_b, int velocity, int pattern){ //When int>1 -> activate round
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     char epsilon='*';
@@ -165,7 +165,7 @@ Song::~Song(){
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
         if (it->first.second){
             for(Note* note: it->second){
-                string z = note->getRE(time_stamp, note_on, instrument, note_b, velocity);
+                string z = note->getRE(time_stamp, duration, instrument, note_b, velocity);
                 temp+=z;
                 count++;
                 if(count==pattern){
@@ -558,16 +558,17 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
             while((*it)!=')'){
                 it++;
             }
-            Note* n=new Note(note_values[0],note_values[1],note_values[2],note_values[3],note_values[4]);
-            note_map[{note_values[0],1}].push_back(n);
-            note_map[{note_values[0]+note_values[1],0}].push_back(n);
+            Note* n=new Note(note_values[0]*1000,tan(note_values[1]/155*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
+            note_map[{note_values[0]*1000,1}].push_back(n);
+            Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
+            note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2);
             continue;
         } else{
             if((*it)=='*'){
                 cerr << "kleene star in regex" << endl;
                 throw std::exception();
             }else {
-                for(vector<int>::iterator it2=param.begin(); it2!=param.end(); it2++){
+                for(vector<int>::iterator it2=param.begin(); it2!=param.end()-1; it2++){
                     if(*it2==true){
                         note_values.push_back(toInt(*it));
                         it++;

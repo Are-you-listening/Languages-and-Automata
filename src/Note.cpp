@@ -97,7 +97,7 @@ string Note::RoundVelocity(int r_velocity) const{ //TODO hier wordt nog geen rek
             }
         }
     } else if(r_velocity==1){
-        s = toChar(velocity);
+        s = toChar(velocity/3);
     } else {
         s="";
     }
