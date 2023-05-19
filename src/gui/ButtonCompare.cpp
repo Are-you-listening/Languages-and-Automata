@@ -28,7 +28,7 @@ void ButtonCompare::click() {
         cout << pct << endl;
         pcts->setPct(pct);
     }else{
-        Genre g = Genre(songs[0], songs[1], {0,1,0,1,0,-1}, "GUI", 0);
+        Genre g = Genre(songs[0], songs[1], {0,1,0,1,0,-1}, "GUI", 0, 0);
         for(int i =2; i<songs.size(); i++){
             g.addGenre(songs[i]);
         }

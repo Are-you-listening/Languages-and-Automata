@@ -122,6 +122,10 @@ char toChar(int value){
 int toInt(const char x){
     int index = (int)(x);
 
+    if (index < 0){
+        index += 256;
+    }
+
     if(index >= 173 ){
         index-=51;
     }

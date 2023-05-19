@@ -568,7 +568,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
                 throw std::exception();
             }else {
                 for(vector<int>::iterator it2=param.begin(); it2!=param.end(); it2++){
-                    if(*it==true){
+                    if(*it2==true){
                         note_values.push_back(toInt(*it));
                         it++;
                     } else {
