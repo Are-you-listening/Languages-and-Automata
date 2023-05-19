@@ -230,6 +230,10 @@ WDFA WNFA::toWDFA() {
             //cout << temp << endl;
             double weight = otherstate.second;
 
+            if(temp == "{}"){
+                continue;
+            }
+
             //Maak van de queue een map
             if ( result.states.find(temp) == result.states.end() ){ //Als de huidige state nog niet in de WDFA zit
 
