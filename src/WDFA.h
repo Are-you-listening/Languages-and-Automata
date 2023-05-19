@@ -18,15 +18,21 @@ using namespace std;
 using json = nlohmann::json;
 
 class WDFA: public WNFA {
-private:
-
 public:
     WDFA();
-    WDFA(const string &filename);
+    explicit WDFA(const string &filename);
 
-    virtual void print() const override;
+    /**
+     * \brief Print the object to the terminal
+     */
+    void print() const override;
 
-    virtual double weightedaccepts(string input) const override;
+    /**
+     * \brief Check if a certain string is accepted and returns its weight
+     * @param input
+     * @return
+     */
+    [[nodiscard]] double weightedaccepts(const string &input) const override;
 };
 
 #endif //WNFA_WDFA_H
