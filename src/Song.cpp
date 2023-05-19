@@ -87,7 +87,12 @@ Song::Song(const string &path, bool console) : console(console) {
     REQUIRE(FileExists(path) , "Given file not found");
 
     fInitCheck=this;
-    //title = path.substr(11, 4);
+    if (find(path.begin(), path.end(), '/') != path.end()){
+        title = string(find(path.begin(), path.end(), '/')+1, path.end());
+    }else{
+        title = path;
+    }
+
 
     string log = getCurrTime() + " Parsing note_map from .mid file...\n\n";
     if(console){cout << log;}
