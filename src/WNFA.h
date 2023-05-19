@@ -30,14 +30,14 @@ private:
      * @param input
      * @return
      */
-    pair< map<string,weightedNode*> , double> WSSC_helper(const map<string,weightedNode*> &currentstates, const char& input) const;
+    [[nodiscard]] static pair< map<string,weightedNode*> , double> WSSC_helper(const map<string,weightedNode*> &currentstates, const char& input) ;
 
     /**
      * \brief Split a string (e.g. "{1,2,3}") and retrieve it's actual Nodes
      * @param str
      * @return
      */
-    map<string,weightedNode*> splitString(const string& str) const;
+    [[nodiscard]] map<string,weightedNode*> splitString(const string& str) const;
 
 protected:
     /**
@@ -70,7 +70,7 @@ public:
      * \brief Simple getter
      * @return
      */
-    const map<string, weightedNode *> &getStates() const;
+    [[nodiscard]] const map<string, weightedNode *> &getStates() const;
 
     /**
      * \brief Simple setter
@@ -82,7 +82,7 @@ public:
      * \brief Simple getter
      * @return
      */
-    weightedNode *getStartState() const;
+    [[nodiscard]] weightedNode *getStartState() const;
 
     /**
      * \brief Simple setter
@@ -94,7 +94,7 @@ public:
      * \brief Simple getter
      * @return
      */
-    const map<string, weightedNode *> &getEndStates() const;
+    [[nodiscard]] const map<string, weightedNode *> &getEndStates() const;
 
     /**
      * \brief Simple setter
@@ -106,7 +106,7 @@ public:
      * \brief Simple getter
      * @return
      */
-    const string &getType() const;
+    [[nodiscard]] const string &getType() const;
 
     /**
      * \brief Simple setter
@@ -118,7 +118,7 @@ public:
      * \brief Simple getter
      * @return
      */
-    const vector<string> &getAlfabet() const;
+    [[nodiscard]] const vector<string> &getAlfabet() const;
 
     /**
      * \brief Simple setter
@@ -131,14 +131,14 @@ public:
      * @param name
      * @return
      */
-    bool isStartState(string name) const;
+    [[nodiscard]] bool isStartState(const string &name) const;
 
     /**
      * \brief Check if a state is accepting
      * @param name
      * @return
      */
-    bool isEndState(string name) const;
+    [[nodiscard]] bool isEndState(const string &name) const;
 
     /**
      * \brief Add a new state
@@ -146,14 +146,14 @@ public:
      * @param start
      * @param endState
      */
-    void addState(const string& name, bool start, bool endState);
+    void addState(string& name, bool start, bool endState);
 
     /**
      * \brief Retrieve the state with a given name
      * @param name
      * @return {ptr , succes}
      */
-    [[nodiscard]] pair<weightedNode*, bool> getState(string name) const;
+    [[nodiscard]] pair<weightedNode*, bool> getState(const string &name) const;
 
     /**
      * \brief Empty constructor
@@ -164,14 +164,14 @@ public:
      * \brief Construct from a file//Load
      * @param filename
      */
-    WNFA(const string &filename);
+    explicit WNFA(const string &filename);
 
     /**
      * \brief Check if a certain string is accepted and returns its weight
      * @param input
      * @return
      */
-    virtual double weightedaccepts(string input) const;
+    [[nodiscard]] virtual double weightedaccepts(const string &input) const;
 
     /**
      * \brief Print this object to the terminal

@@ -36,13 +36,13 @@ public:
      * \brief Simple getter
      * @return
      */
-    const map<char,vector<pair< double,weightedNode* >> > & getweightedconnections() const;
+    [[nodiscard]] const map<char,vector<pair< double,weightedNode* >> > & getweightedconnections() const;
 
     /**
      * \brief Simple Constructor
      * @param name
      */
-    weightedNode(const string &name);
+    explicit weightedNode(string &name);
 
     /**
      * \brief Simple getter

@@ -17,7 +17,7 @@ WNFA::WNFA(const string &filename) {
         alfabet.push_back(symbol);
     }
     set<json> newstates = j["states"];
-    for (auto state : newstates){
+    for (const auto &state : newstates){
         string tempname = state["name"];
         bool tempstart = state["starting"];
         bool tempend = state["accepting"];
@@ -25,12 +25,12 @@ WNFA::WNFA(const string &filename) {
     }
 
     set<json> newtransitions = j["transitions"];
-    for (auto transition : newtransitions) {
+    for (const auto &transition : newtransitions) {
         weightedNode *state1 = states.find(transition["from"])->second;
         weightedNode *state2 = states.find(transition["to"])->second;
         string inputsymbol = transition["input"];
         double weight = transition["weight"];
-        for (auto symbol: inputsymbol) {
+        for (const auto &symbol: inputsymbol) {
             state1->addconnection(state2, symbol, weight);
         }
     }
@@ -38,7 +38,7 @@ WNFA::WNFA(const string &filename) {
 
 WNFA::WNFA() {type = "WNFA";}
 
-void WNFA::addState(const string& name, bool start, bool endState) {
+void WNFA::addState(string& name, bool start, bool endState) {
     auto* n = new weightedNode(name);
     states[name] = n;
     if (start){
@@ -50,7 +50,7 @@ void WNFA::addState(const string& name, bool start, bool endState) {
 }
 
 
-double WNFA::weightedaccepts(string input) const {
+double WNFA::weightedaccepts(const string &input) const {
     double result = 0.0;
     map<string, pair<double,weightedNode*> > currentStates;
     currentStates[startState->getName()]={0.0,startState};
@@ -80,10 +80,10 @@ double WNFA::weightedaccepts(string input) const {
 void WNFA::print() const{
     json Jout;
     Jout["type"] = type;
-    for (auto &symbol : alfabet){
+    for (const auto &symbol : alfabet){
         Jout["alphabet"].push_back(symbol);
     }
-    for (auto &state: states) {  // add all the states
+    for (const auto &state: states) {  // add all the states
         json temp;
         temp["name"] = state.second->getName();
         temp["starting"] = isStartState(state.second->getName());
@@ -91,10 +91,10 @@ void WNFA::print() const{
         Jout["states"].push_back(temp);
     }
 
-    for (auto &state: states) {// add all the transitions
+    for (const auto &state: states) {// add all the transitions
         const map<char,vector<pair< double,weightedNode* >> > transitions = state.second->getweightedconnections();
-        for (auto &k: transitions) { // {char, {pair(1.0 , State) , pair(1.0 , State)} }
-            for(auto s: k.second){
+        for (const auto &k: transitions) { // {char, {pair(1.0 , State) , pair(1.0 , State)} }
+            for(const auto &s: k.second){
                 json temp;
                 temp["from"] = state.second->getName();
                 temp["to"] = s.second->getName();
@@ -107,7 +107,7 @@ void WNFA::print() const{
     cout << setw(4) << Jout << endl;
 }
 
-pair<weightedNode*, bool> WNFA::getState(string name) const {
+pair<weightedNode*, bool> WNFA::getState(const string &name) const {
     auto result = states.find(name);
     if (result == states.end()){
         return make_pair(nullptr, false);
@@ -115,7 +115,7 @@ pair<weightedNode*, bool> WNFA::getState(string name) const {
     return make_pair(result->second, true);
 }
 
-bool WNFA::isStartState(string name) const {
+bool WNFA::isStartState(const string &name) const {
     if (getState(name).first == startState){
         return true;
     } else {
@@ -123,7 +123,7 @@ bool WNFA::isStartState(string name) const {
     }
 }
 
-bool WNFA::isEndState(string name) const{
+bool WNFA::isEndState(const string &name) const{
     if (endStates.find(name) != endStates.end()){
         return true;
     }
@@ -134,7 +134,7 @@ map<string,weightedNode*> WNFA::splitString(const string &str) const {
     map<string,weightedNode*> tokens;
     string token;
     string filteredString;
-    for (char character : str){
+    for (const char &character : str){
         if (character != '{' and character != '}'){
             filteredString += character;
         }
@@ -147,14 +147,14 @@ map<string,weightedNode*> WNFA::splitString(const string &str) const {
     return tokens;
 }
 
-pair< map<string,weightedNode*> , double> WNFA::WSSC_helper(const map<string,weightedNode*> &currentstates, const char &input) const {
+pair< map<string,weightedNode*> , double> WNFA::WSSC_helper(const map<string,weightedNode*> &currentstates, const char &input) {
     map<string,weightedNode*> to;
     double largestweight = 0.0;
     for (auto &node : currentstates) { // Loop over elke staat
         auto connections = node.second->accepts(input); //Find reachable states from node
 
         for (auto &state: connections) {
-            to[state.second->getName()] = state.second; //We should simply be able to overwrite the state with ittself if it already exists
+            to[state.second->getName()] = state.second; //We should simply be able to overwrite the state with itself if it already exists
             largestweight = max(largestweight, state.first); //Change weight to the biggest
         }
     }
@@ -209,8 +209,9 @@ WDFA WNFA::toWDFA() {
     startstate[startState->getName()] = startState;
 
     set< string > toProcess;
-    toProcess.insert("{" + startState->getName() + "}"); //Add Start State for lazy evaluation
-    result.addState("{" + startState->getName() + "}", true, true); //Add start state to DFA
+    string ks = "{" + startState->getName() + "}";
+    toProcess.insert(ks); //Add Start State for lazy evaluation
+    result.addState(ks, true, true); //Add start state to DFA
 
     while(!toProcess.empty()){ //While there are states to proces
         string processing_str = *toProcess.begin();

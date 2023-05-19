@@ -20,19 +20,19 @@ using json = nlohmann::json;
 class WDFA: public WNFA {
 public:
     WDFA();
-    WDFA(const string &filename);
+    explicit WDFA(const string &filename);
 
     /**
      * \brief Print the object to the terminal
      */
-    virtual void print() const override;
+    void print() const override;
 
     /**
      * \brief Check if a certain string is accepted and returns its weight
      * @param input
      * @return
      */
-    virtual double weightedaccepts(string input) const override;
+    [[nodiscard]] double weightedaccepts(const string &input) const override;
 };
 
 #endif //WNFA_WDFA_H
