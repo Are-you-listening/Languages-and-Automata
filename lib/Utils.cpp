@@ -157,6 +157,17 @@ vector<vector<int>> makeNotes(const vector<vector<int>> &info){
 }
 
 string NodesToString(const map<string,weightedNode*> &s){
+    if(s.empty()){
+        return "{}";
+    }
+
+    if(s.size()==1){
+        string k = "{";
+        k+=s.begin()->first;
+        k+="}";
+        return k;
+    }
+
     string result = "{";
     auto it = s.begin();
     auto itr = s.end();
