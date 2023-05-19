@@ -33,7 +33,9 @@ DFA Genre::toProductAutomata() {
     }
     ProductAutomata.first = (int) members.size();
 
-    ProductAutomata.second.minimize(); //So we will use less space
+    if(TFA){
+        ProductAutomata.second = ProductAutomata.second.minimize(); //So we will use less space
+    }
 
     return ProductAutomata.second;
 }
@@ -67,16 +69,13 @@ bool Genre::inGenre(Song *&s) {
     return succes;
 }
 
-Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, bool console) {
+Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, bool console, bool TFA): param(params), name(name) ,  console(console), TFA(TFA) {
     REQUIRE(params.size()==6, "Params doesn't has all the paramaters");
 
     //Set Data
-    this->console = console;
-    param = params;
+    fInitCheck = this;
     members={s,k};
     this->limit=s->similarity(*k,false,false);
-    this->name = name;
-    fInitCheck = this;
 
     string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit) +  " minimum match %\n\n";
     if(console){cout << log;}
@@ -91,6 +90,7 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     vector<RE> t2 = members[1]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
     ENFA a2 = t2[0].toENFA();
     DFA z2 = a2.toDFA();
+
     //Merge the 2 Alphabets
     set<string> Difference;
     set<string> Difference2;
@@ -140,7 +140,11 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     if(console){cout << log;}
     logs.push_back(log);
 
-    ProductAutomata = {2,prod.minimize()}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO minimise zou hier terug moeten 
+    if(TFA){
+        prod = prod.minimize();
+    }
+
+    ProductAutomata = {2,prod}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO minimise zou hier terug moeten
 
     log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}

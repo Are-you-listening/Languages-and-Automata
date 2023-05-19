@@ -51,6 +51,11 @@ private:
     double limit;
 
     /**
+     * \brief Bool deciding if TFA needs to be used
+     */
+    bool TFA;
+
+    /**
      * \brief Generate a product automata for the current Genre's member-sub-regexes
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @return Datatype containing the sub DFA's in product-automata
@@ -90,8 +95,9 @@ public:
       * @param params
       * @param name
       * @param console
+      * @param TFA
       */
-    Genre(Song* &s, Song* &k, const vector<int> &params, const string &name, bool console);
+    Genre(Song* &s, Song* &k, const vector<int> &params, const string &name, bool console, bool TFA);
 
     /**
      * \brief Output results to a .txt file
