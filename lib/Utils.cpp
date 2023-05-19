@@ -161,13 +161,6 @@ string NodesToString(const map<string,weightedNode*> &s){
         return "{}";
     }
 
-    if(s.size()==1){
-        string k = "{";
-        k+=s.begin()->first;
-        k+="}";
-        return k;
-    }
-
     string result = "{";
     auto it = s.begin();
     auto itr = s.end();
