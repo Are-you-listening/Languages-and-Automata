@@ -206,52 +206,31 @@ WDFA WNFA::toWDFA() {
     result.addState("{" + startState->getName() + "}", true, true); //Add start state to DFA
     
     while(!toProcess.empty()){ //While there are states to proces
-
-
         string processing_str = *toProcess.begin();
-
         map<string,weightedNode*> processing = splitString(processing_str) ; //current state
         toProcess.erase(processing_str);
 
         for (const string& symbol_str : alfabet){
             const char& symbol = symbol_str[0];
-
             auto otherstate = WSSC_helper(processing , symbol);
-            /*if(otherstate.first.empty()){
-                continue;
-            }*/
             string temp = NodesToString(otherstate.first);
-            //cout << temp << endl;
-
-            if(temp == "{0,20,24,4,8}"){
-                cout << temp << endl;
-            }
-
-            //cout << temp << endl;
             double weight = otherstate.second;
 
             if(temp == "{}"){
                 continue;
             }
 
-            //Maak van de queue een map
             if ( result.states.find(temp) == result.states.end() ){ //Als de huidige state nog niet in de WDFA zit
-
 
                 if(toProcess.find(temp)==toProcess.end()){
                     toProcess.insert(temp); //Add to process
-                };
-
-
-
+                }
 
                 result.addState(temp, false, true); //Add the new state (Every state in the WNFA is an accepting state)
             }
 
-
             (result.getState(processing_str).first)->addconnection(result.getState(temp).first, symbol, weight); //Add a connection from State:Processing to the newly created State:temp
         }
-        cout << toProcess.size() << endl;
     }
     return result;
 }
