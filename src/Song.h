@@ -195,7 +195,7 @@ public:
      * @param reverse, in case the complements of the 2 songs needs to be checked
      * @return percentage, the percentage the Songs are the same
      */
-    [[nodiscard]] double similarity(Song &song,bool complement, bool reverse);
+    double similarity(Song &song,bool complement, bool reverse);
 
     /**
      * \brief Check the occurrences of the Notes and its similarity towards the notes of this object

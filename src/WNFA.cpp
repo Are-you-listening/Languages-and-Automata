@@ -3,6 +3,7 @@
 //
 
 #include "WNFA.h"
+#include "WDFA.h"
 
 WNFA::WNFA(const string &filename) {
     ifstream input(filename);
@@ -36,7 +37,7 @@ WNFA::WNFA(const string &filename) {
     }
 }
 
-WNFA::WNFA() {}
+WNFA::WNFA() {type = "WNFA";}
 
 void WNFA::addState(const string& name, bool start, bool endState) {
     auto* n = new weightedNode(name);
@@ -50,32 +51,7 @@ void WNFA::addState(const string& name, bool start, bool endState) {
 }
 
 
-double WNFA::weightedaccepts(string input) {
-    /*set<pair<double, weightedNode*>> currentstates = {make_pair(0.0, this->startState)};
-
-    for (const char& symbol : input){
-        if (std::find(alfabet.begin(), alfabet.end(), string(1, symbol)) == alfabet.end()){
-            cerr << "Symbol " << symbol << " not in alphabet" << endl;
-            return -1.0;
-        }
-        
-        set<pair<double, weightedNode*>> tempstates;
-        for (const pair<double, weightedNode*>& state : currentstates){
-            for (const auto& connection : state.second->getweightedconnections()){
-                if (get<1>(connection).find(symbol) != get<1>(connection).end()){
-                    tempstates.emplace(state.first + get<2>(connection), get<0>(connection));
-                }
-            }
-        }
-        currentstates = tempstates;
-    }
-
-    double largestpath = 0.0;
-    for (const pair<double, weightedNode*>& state : currentstates){
-        largestpath = max(largestpath, state.first);
-    }
-    return largestpath/input.size();*/
-
+double WNFA::weightedaccepts(string input) const {
     double result = 0.0;
     map<string, pair<double,weightedNode*> > currentStates;
     currentStates[startState->getName()]={0.0,startState};
@@ -92,7 +68,6 @@ double WNFA::weightedaccepts(string input) {
                     currentStates[state.second->getName()] = {state.first + node.second.first,state.second}; // map[ "0" ] = {1.0 + 1.0 , *"0"}
                 }
             }
-            cout << currentStates.size() << endl;
         }
     }
 
@@ -104,7 +79,7 @@ double WNFA::weightedaccepts(string input) {
     return result/( (double) currentStates.size() );
 }
 
-void WNFA::print() {
+void WNFA::print() const{
     json Jout;
     Jout["type"] = type;
     for (auto &symbol : alfabet){
@@ -142,7 +117,7 @@ pair<weightedNode*, bool> WNFA::getState(string name) const {
     return make_pair(result->second, true);
 }
 
-bool WNFA::isStartState(string name) {
+bool WNFA::isStartState(string name) const {
     if (getState(name).first == startState){
         return true;
     } else {
@@ -150,14 +125,14 @@ bool WNFA::isStartState(string name) {
     }
 }
 
-bool WNFA::isEndState(string name) {
+bool WNFA::isEndState(string name) const{
     if (endStates.find(name) != endStates.end()){
         return true;
     }
     return false;
 }
 
-map<string,weightedNode*> WNFA::splitString(const string &str) {
+map<string,weightedNode*> WNFA::splitString(const string &str) const {
     map<string,weightedNode*> tokens;
     string token;
     string filteredString;
@@ -174,7 +149,7 @@ map<string,weightedNode*> WNFA::splitString(const string &str) {
     return tokens;
 }
 
-pair< map<string,weightedNode*> , double> WNFA::WSSC_helper(const map<string,weightedNode*> &currentstates, const char &input) {
+pair< map<string,weightedNode*> , double> WNFA::WSSC_helper(const map<string,weightedNode*> &currentstates, const char &input) const {
     map<string,weightedNode*> to;
     double largestweight = 0.0;
     for (auto &node : currentstates) { // Loop over elke staat
@@ -188,17 +163,57 @@ pair< map<string,weightedNode*> , double> WNFA::WSSC_helper(const map<string,wei
     return make_pair(to, largestweight);
 }
 
+const map<string, weightedNode *> &WNFA::getStates() const {
+    return states;
+}
+
+void WNFA::setStates(const map<string, weightedNode *> &states) {
+    WNFA::states = states;
+}
+
+weightedNode *WNFA::getStartState() const {
+    return startState;
+}
+
+void WNFA::setStartState(weightedNode *startState) {
+    WNFA::startState = startState;
+}
+
+const map<string, weightedNode *> &WNFA::getEndStates() const {
+    return endStates;
+}
+
+void WNFA::setEndStates(const map<string, weightedNode *> &endStates) {
+    WNFA::endStates = endStates;
+}
+
+const string &WNFA::getType() const {
+    return type;
+}
+
+void WNFA::setType(const string &type) {
+    WNFA::type = type;
+}
+
+const vector<string> &WNFA::getAlfabet() const {
+    return alfabet;
+}
+
+void WNFA::setAlfabet(const vector<string> &alfabet) {
+    WNFA::alfabet = alfabet;
+}
+
 WDFA WNFA::toWDFA() {
     WDFA result;
 
-    result.alfabet = alfabet;
+    result.alfabet=alfabet;
     map<string,weightedNode*> startstate;
     startstate[startState->getName()] = startState;
 
     set< string > toProcess;
     toProcess.insert("{" + startState->getName() + "}"); //Add Start State for lazy evaluation
     result.addState("{" + startState->getName() + "}", true, true); //Add start state to DFA
-    
+
     while(!toProcess.empty()){ //While there are states to proces
         string processing_str = *toProcess.begin();
         map<string,weightedNode*> processing = splitString(processing_str) ; //current state

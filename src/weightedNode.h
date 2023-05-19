@@ -9,10 +9,12 @@
 #include <vector>
 #include <string>
 #include "string"
+
 using namespace std;
 
 class weightedNode{
-    map<char,vector<pair< double,weightedNode* >> > connections; //Old: list<tuple<weightedNode *, set<char>, double>>
+private:
+    map<char,vector<pair< double,weightedNode* >> > connections;
 
     string name;
 

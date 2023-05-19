@@ -15,44 +15,59 @@
 #include <algorithm>
 
 #include "json.hpp"
-#include "WDFA.h"
 #include "weightedNode.h"
 #include "../lib/Utils.h"
 
 using namespace std;
 using json = nlohmann::json;
 
-class WNFA {
-    //Get reachable states (eq class string) + biggest weight
-    pair< map<string,weightedNode*> , double> WSSC_helper(const map<string,weightedNode*> &currentstates, const char& input);
-    map<string,weightedNode*> splitString(const string& str);
+class WDFA;
 
-public:
+class WNFA {
+private:
+    //Get reachable states (eq class') + biggest weight
+    pair< map<string,weightedNode*> , double> WSSC_helper(const map<string,weightedNode*> &currentstates, const char& input) const;
+    map<string,weightedNode*> splitString(const string& str) const;
+
+protected:
     map<string, weightedNode*> states;
     weightedNode* startState = nullptr;
     map<string, weightedNode*> endStates = {};
     string type;
     vector<string> alfabet;
 
+public:
+    const map<string, weightedNode *> &getStates() const;
+
+    void setStates(const map<string, weightedNode *> &states);
+
+    weightedNode *getStartState() const;
+
+    void setStartState(weightedNode *startState);
+
+    const map<string, weightedNode *> &getEndStates() const;
+
+    void setEndStates(const map<string, weightedNode *> &endStates);
+
+    const string &getType() const;
+
+    void setType(const string &type);
+
+    const vector<string> &getAlfabet() const;
+
+    void setAlfabet(const vector<string> &alfabet);
+
+    bool isStartState(string name) const;
+    bool isEndState(string name) const;
     void addState(const string& name, bool start, bool endState);
-
-    bool isStartState(string name);
-
-    bool isEndState(string name);
-
-    pair<weightedNode*, bool> getState(string name) const;
+    [[nodiscard]] pair<weightedNode*, bool> getState(string name) const;
     
     WNFA();
     WNFA(const string &filename);
-    
-    /**
-     * \brief 
-     * REQUIRE: Alphabet is compatible with the input string
-     * @param input 
-     * @return 
-     */
-    double weightedaccepts(string input);
-    void print();
+
+    virtual double weightedaccepts(string input) const;
+
+    virtual void print() const;
     
     WDFA toWDFA();
 };

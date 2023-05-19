@@ -35,20 +35,9 @@ WDFA::WDFA(const string &filename) {
     }
 }
 
-WDFA::WDFA(): type("WDFA") {}
+WDFA::WDFA() {type="WDFA";}
 
-void WDFA::addState(string name, bool start, bool endState) {
-    weightedNode* n = new weightedNode(name);
-    states[n->getName()]=n;
-    if (start){
-        startState = n;
-    }
-    if (endState){
-        endStates.push_back(n);
-    }
-}
-
-double WDFA::weightedaccepts(string input) {
+double WDFA::weightedaccepts(string input) const {
     weightedNode* currentState = startState;
     double result = 0.0;
     for (const char &symbol : input){ //Loop on every character of the string
@@ -64,7 +53,7 @@ double WDFA::weightedaccepts(string input) {
     return result/input.size();
 }
 
-void WDFA::print() {
+void WDFA::print() const {
     json Jout;
     Jout["type"] = type;
     for (auto symbol : alfabet){
@@ -89,29 +78,4 @@ void WDFA::print() {
         }
     }
     cout << setw(4) << Jout << endl;
-}
-
-pair<weightedNode *, bool> WDFA::getState(string name) {
-    auto result = states.find(name);
-    if (result == states.end()){
-        return make_pair(nullptr, false);
-    }
-    return make_pair(result->second, true);
-}
-
-bool WDFA::isStartState(string name) {
-    if (getState(name).first == startState){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool WDFA::isEndState(string name) {
-    for (auto state : endStates){
-        if (state == getState(name).first){
-            return true;
-        }
-    }
-    return false;
 }

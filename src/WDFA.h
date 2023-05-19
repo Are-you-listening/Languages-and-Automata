@@ -12,33 +12,21 @@
 #include <iomanip>
 #include <iostream>
 
-#include "json.hpp"
-#include "weightedNode.h"
+#include "WNFA.h"
 
 using namespace std;
 using json = nlohmann::json;
 
-class WDFA {
+class WDFA: public WNFA {
+private:
+
 public:
-    map<string,weightedNode*> states;
-    weightedNode* startState = nullptr;
-    list<weightedNode*> endStates = {};
-    string type;
-    vector<string> alfabet;
-
-    void addState(string name, bool start, bool endState);
-
-    bool isStartState(string name);
-
-    bool isEndState(string name);
-
-    pair<weightedNode *, bool> getState(string name);
-    
     WDFA();
     WDFA(const string &filename);
-    double weightedaccepts(string input);
-    void print();
-};
 
+    virtual void print() const override;
+
+    virtual double weightedaccepts(string input) const override;
+};
 
 #endif //WNFA_WDFA_H
