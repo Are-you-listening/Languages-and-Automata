@@ -286,7 +286,6 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     
     //Check Notes
     WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
-    
     result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.       
 
     if(result<=1 && result>=0){succes = true;}
@@ -609,5 +608,6 @@ double Song::checkWNFA(RE &r,RE &s){
     NFA n(j);
     WNFA w = n.toWNFA();
     WDFA m = w.toWDFA();
+    double d = m.weightedaccepts(s.re);
     return m.weightedaccepts(s.re);
 }

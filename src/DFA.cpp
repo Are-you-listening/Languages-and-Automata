@@ -157,11 +157,13 @@ void state::addTransitionFunctionENFA(string c, state *q) {
 }
 
 DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
+
+    DFA final;
     bool a= true;
     state* startstate = new state();
     startstate->starting= true;
-    DFA::alphabet=dfa1.alphabet;
-    DFA::alphabet.insert(dfa2.alphabet.begin(),dfa2.alphabet.end());
+    final.alphabet=dfa1.alphabet;
+    final.alphabet.insert(dfa2.alphabet.begin(),dfa2.alphabet.end());
     startstate->name="("+dfa1.startingState->name+","+dfa2.startingState->name+")";
     if(dfa1.startingState->accepting && dfa2.startingState->accepting && c){
         startstate->accepting= true;
@@ -170,7 +172,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     } else{
         startstate->accepting = false;
     }
-    DFA::startingState=startstate;
+    final.startingState=startstate;
     set<state*> check_states = {startstate};
     set<tuple<state*, state*, state*>> current_states = {make_tuple(startstate, dfa1.startingState, dfa2.startingState)};
     set<tuple<state*, state*, state*>> new_states;
@@ -180,7 +182,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
         //cout << get<0>(*current_states.begin())->name << " " << current_states.size() << endl;
         a=false;
         for(auto tup: current_states){
-            for(set<string>::const_iterator it2=DFA::alphabet.begin(); it2!=DFA::alphabet.end(); it2++){
+            for(set<string>::const_iterator it2=final.alphabet.begin(); it2!=final.alphabet.end(); it2++){
 
                 state* temp;
                 state* state1 = get<1>(tup);
@@ -201,7 +203,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
                     new_names.insert(name);
 
                     if (temp->accepting){
-                        DFA::endstates.push_back(temp);
+                        final.endstates.push_back(temp);
                     }
 
                     a=true;
@@ -224,7 +226,13 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     }
 
 
-    std::copy(check_states.begin(),check_states.end(), std::back_inserter(DFA::states));
+    std::copy(check_states.begin(),check_states.end(), std::back_inserter(final.states));
+
+    json data = final.getJson();
+    DFAT temp;
+    temp.load(data);
+
+    load(temp.getJson());
 }
 
 DFA DFA::minimize() {
@@ -250,6 +258,7 @@ DFA DFA::minimize() {
 
     json data = getJson();
     DFAT temp;
+
     temp.load(data);
     temp = temp.minimize();
 
