@@ -21,6 +21,8 @@
 
 using namespace std;
 
+class RE;
+
 bool DirectoryExists(const std::string dirname);
 
 bool FileExists(const std::string dirname);
@@ -65,5 +67,12 @@ int toInt(const char x);
 vector<vector<int>> makeNotes(const vector<vector<int>> &info);
 
 string NodesToString(const map<string,weightedNode*> &s);
+
+/**
+ * \brief Set the biggest vector to the second argument
+ * @param t
+ * @return
+ */
+[[nodiscard]] pair<vector<RE>, vector<RE>> sort(const pair<vector<RE>, vector<RE>> &t);
 
 #endif

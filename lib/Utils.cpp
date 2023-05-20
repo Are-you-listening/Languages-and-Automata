@@ -6,6 +6,7 @@
 // Description : TicTactToe in C++, Ansi-style
 //============================================================================
 #include "Utils.h"
+#include "../src/RE.h"
 
 using namespace std;
 
@@ -175,4 +176,12 @@ string NodesToString(const map<string,weightedNode*> &s){
     }
     result+=itr->first+ "}"; //Add last state (no "," )
     return result;
+}
+
+[[nodiscard]] pair<vector<RE>, vector<RE>> sort(const pair<vector<RE>, vector<RE>> &t) {
+    pair<vector<RE>, vector<RE>> k = t;
+    if(t.first.size()>t.second.size()){
+        k = {t.second, t.first};
+    }
+    return k;
 }
