@@ -34,7 +34,14 @@ void Gui::start() {
                                                                       new Song("midi_files/HarryPotterPrologue(3).mid",0),
             new Song("midi_files/c0.mid",0),new Song("midi_files/c1.mid",0),
             new Song("midi_files/c2.mid",0),new Song("midi_files/c3.mid",0),
-            new Song("midi_files/c4.mid",0),new Song("midi_files/c5.mid",0),new Song("midi_files/c0.mid",0)
+            new Song("midi_files/c4.mid",0),new Song("midi_files/c5.mid",0),new Song("midi_files/c0.mid",0),
+                                                                      new Song("midi_files/c6.mid",0),
+                                                                      new Song("midi_files/c7.mid",0),
+            new Song("midi_files/c8.mid",0),
+            new Song("midi_files/c9.mid",0),
+                                                                      new Song("midi_files/c10.mid",0),
+                                                                      new Song("midi_files/c11.mid",0),
+                                                                      new Song("midi_files/c12.mid",0), new Song("midi_files/c13.mid",0)
     });
     SongListWidget* compare = new SongListWidget(400, 20, 250, 700, {});
     SongListWidgetSingle* single_song = new SongListWidgetSingle(400, 750, 250, 100, 1);
@@ -139,6 +146,8 @@ void Gui::start() {
             for (auto& b: buttons){
                 b->draw(display, window,graphics_content);
             }
+
+            result->draw(display, window,graphics_content);
 
             selected->draw(display, window,graphics_content, false);
 

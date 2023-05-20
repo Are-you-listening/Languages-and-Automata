@@ -9,22 +9,44 @@
 #include "Utils.h"
 
 #include "NFA.h"
+#include "gui/Gui.h"
 
 int main() {
+    vector<int> V = {1,1,1,1,1,-1};
+    Song* s = new Song("midi_files/c0.mid" , false);
+
+    ENFA az = s->toRegex(V[0],V[1],V[2],V[3],V[4],V[5])[0].toENFA();
+    DFA aza = az.toDFA();
+
+    Song* k = new Song("midi_files/c1.mid" , false);
+    Genre m = Genre(s,k,V,"test",0,0);
+
+    DFA a = m.getProductAutomata();
+    Song* yaay = new Song(a,V,true);
+    /*
+    Song* k = new Song("midi_files/[ontiva.com] Tekken Tag Tournament - Hwoarang Theme-tiny.wav.mid" , false);
+    RE r = k->toRegex(1, 1, 1, 1, 1, -1)[0];
+    ENFA e = r.toENFA();
+    NFA n(e.getJsonNfa());
+    WNFA w = n.toWNFA();
+    */
+
+
+    /*
     string m = "(m+y)*+(e+y+m+i)s";
     const char e = 'e';
     RE r(m,e);
     ENFA k = r.toENFA();
     //ENFA s("enfa.json");
     //DFA s = k.toDFA();
-
+    */
     /*Song* s = new Song("midi_files/c0.mid" , false);
     Song* k = new Song("midi_files/c1.mid" , false);
     Genre m = Genre(s,k,{1,1,1,1,0,1},"test",0,0);
 
     delete s;
     delete k;*/
-
+    /*
     vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
     ifstream Filelist("filelist2nd.txt"); 
     string c;
@@ -59,6 +81,6 @@ int main() {
         break;
     }
     Filelist.close();
-
+    */
     return 0;
 }
