@@ -20,7 +20,7 @@ NFA::NFA(const string &inputfile) {
         bool start = states[i]["starting"];
         bool accept = states[i]["accepting"];
 
-        State* temp = new State(toestand,start,accept);
+        auto temp = new State(toestand,start,accept);
         Q.insert({toestand, temp});
     }
 
@@ -30,15 +30,15 @@ NFA::NFA(const string &inputfile) {
         string from = transitions[i]["from"];
         string to = transitions[i]["to"];
         string in = transitions[i]["input"];
-        char input = in[0];
+        char c = in[0];
 
-        Q.find(from)->second->AddTransition(input, to );
+        Q.find(from)->second->AddTransition(c, to );
     }
 }
 
 NFA::~NFA() {
-    for(auto it = Q.begin(); it != Q.end() ; it++){
-        delete it->second;
+    for(auto &it: Q){
+        delete it.second;
     }
 }
 
@@ -48,11 +48,11 @@ DFA NFA::toDFA() const {
     map<string,int> counts; //Keeps how many times a string been evaluated
 
     //Find Start State and add it to Q
-    State* start;
-    string startname="";
+    //State* start;
+    string startname;
     for(auto itr = this->Q.begin(); itr!=this->Q.end() ; itr++){
         if(itr->second->getStarting()){
-            State* start = itr->second;
+            //State* start = itr->second;
             vector<string> temp = {itr->first};
             string name = NameConvert( temp );
             startname = name;
@@ -116,27 +116,19 @@ DFA NFA::toDFA() const {
         vector<pair<char,string>> transitions = j.second;
         //Set transitions (voor elke state)
         for(int i = 0; i<transitions.size() ; i++){
-            string temp = j.first;
+            string t = j.first;
 
-            dfa["transitions"][count]["from"]= SortName(temp);
+            dfa["transitions"][count]["from"]= SortName(t);
             string z = SortName(transitions[i].second);
 
             dfa["transitions"][count]["to"]= SortName(transitions[i].second);
-            temp ="";
-            temp += transitions[i].first;
-            dfa["transitions"][count]["input"]= temp;
+            t ="";
+            t += transitions[i].first;
+            dfa["transitions"][count]["input"]= t;
             count++;
-
         }
         count2++;
     }
-
-    //Output the file
-    /*
-    std::ofstream file("DFA.json");
-    file << dfa;
-    file.close();
-     */
 
     return DFA(dfa);
 }
@@ -145,7 +137,7 @@ vector<State *> NFA::StringToState(const string &a) const {
     string tempstring;
     vector<State*> states;
 
-    for(char k:a){
+    for(const char &k:a){
         if( (k=='{') ){
             continue;
         }else if( (k==',') || (k=='}') ){
@@ -164,19 +156,18 @@ vector<pair<char, string>> NFA::FindReachableStates(const string &start) const {
     vector<pair<char, string>> ReachableStates;
 
     for(State* state: current){ //Voor elke staat
-        for(string s: Alphabet){ //Collect alle reachable states bij deze input
+        for(const string &s: Alphabet){ //Collect alle reachable states bij deze input
             char k = s[0]; //Conversion to char
             vector<string> Reachable = state->DoTransition(k);
             string temp = NameConvert(Reachable); //Bereikbare staten in string vorm
             pair<char,string> bereikbaar = {k,temp}; //In Pair vorm
             bool check = false;
 
-            for(int i = 0; i<ReachableStates.size(); i++){
-                auto s = ReachableStates[i];
-                if(s.first==k){
+            for(auto &m: ReachableStates){
+                if(m.first==k){
 
                     //Sort & Merge
-                    ReachableStates[i].second=SortNames(temp,s.second);
+                    m.second=SortNames(temp,m.second);
                     check = true;
                 }
             }
@@ -189,21 +180,12 @@ vector<pair<char, string>> NFA::FindReachableStates(const string &start) const {
     return ReachableStates;
 }
 
-bool NFA::Found(vector<pair<string, vector<pair<char, string>>>> &processed, string &name) const {
-    for(auto &z: processed){
-        if(z.first==name){
-            return true;
-        }
-    }
-    return false;
-}
-
 string NFA::SortNames(string &a, string &b) const {
     vector<State*> aNaked = StringToState(a);
     vector<State*> bNaked = StringToState(b);
     vector<State*> Full = MergeVectors(aNaked,bNaked);
     vector<string> temp;
-    for(auto k: Full){
+    for(const auto &k: Full){
         temp.push_back(k->getName());
     }
     std::sort(temp.begin(), temp.end());
@@ -232,7 +214,7 @@ NFA::NFA(const json &j) {
         bool start = states[i]["starting"];
         bool accept = states[i]["accepting"];
 
-        State* temp = new State(toestand,start,accept);
+        auto temp = new State(toestand,start,accept);
         Q.insert({toestand, temp});
     }
 
@@ -298,10 +280,10 @@ WNFA NFA::toWNFA(){
 
 void NFA::adaptDistance(vector<weightedNode*>& original, State* s, int distance, int index, double weight, const WNFA& result){
     map<const char, vector<string>> transition_map = s->getTransition();
-    for (auto entry: transition_map){
+    for (const auto &entry: transition_map){
         vector<State*> current_states;
-        for (auto s: entry.second){
-            State* st = Q.find(s)->second;
+        for (const auto &m: entry.second){
+            State* st = Q.find(m)->second;
 
             weightedNode* w = (result.getState(st->getName())).first;
 

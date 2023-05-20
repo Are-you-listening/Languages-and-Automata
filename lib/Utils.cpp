@@ -271,3 +271,54 @@ string ConvertToEqclassName(vector < vector<string> > &eqClass, const string &s)
     }
     return "{"+s+"}";
 }
+
+bool Found(vector<pair<string, vector<pair<char, string>>>> &processed, string &name) {
+    for(auto &z: processed){
+        if(z.first==name){
+            return true;
+        }
+    }
+    return false;
+}
+
+void MergeAlpabets(DFA &z, DFA &z2) {
+    set<string> Difference;
+    set<string> Difference2;
+
+    set_difference(z.getAlphabet().begin(), z.getAlphabet().end(), z2.getAlphabet().begin(), z2.getAlphabet().end(),std::inserter(Difference, Difference.begin()));
+    set_difference(z2.getAlphabet().begin(), z2.getAlphabet().end(), z.getAlphabet().begin(), z.getAlphabet().end(),std::inserter(Difference2, Difference2.begin()));
+    state *deadstate = new state();
+    deadstate->name = "{}";
+    deadstate->accepting = false;
+    deadstate->starting = false;
+    vector<state *> Vstates = z2.getStates();
+    Vstates.push_back(deadstate);
+    z2.setStates(Vstates);
+    for (auto c = z2.getAlphabet().begin(); c != z2.getAlphabet().end(); c++) {
+        deadstate->addTransitionFunction(*c, deadstate);
+    }
+
+    for (auto it = Difference.begin(); it != Difference.end(); it++) {
+        //add to z2
+        for (auto it2 = z2.getStates().begin(); it2 != z2.getStates().end(); it2++) {
+            (*it2)->addTransitionFunction((*it), deadstate);
+        }
+    }
+    deadstate = new state();
+    deadstate->name = "{}";
+    deadstate->accepting = false;
+    deadstate->starting = false;
+    Vstates = z.getStates();
+    Vstates.push_back(deadstate);
+    z.setStates(Vstates);
+    for (auto c = z.getAlphabet().begin(); c != z.getAlphabet().end(); c++) {
+        deadstate->addTransitionFunction(*c, deadstate);
+    }
+
+    for (auto it = Difference2.begin(); it != Difference2.end(); it++) {
+        //add to z2
+        for (auto it2 = z.getStates().begin(); it2 != z.getStates().end(); it2++) {
+            (*it2)->addTransitionFunction((*it), deadstate);
+        }
+    }
+}

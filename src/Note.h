@@ -15,9 +15,71 @@
 using namespace std;
 
 class Note {
+private:
+    /**
+     * \brief The instrument playing this note
+     */
+    unsigned int instrument;
+
+    /**
+     * \brief The value of the note (A,B,C)
+     */
+    int note_value=0;
+
+    /**
+     * \brief Moment of playing
+     */
+    unsigned int time_stamp;
+
+    /**
+     * \brief "Music guys knows"
+     */
+    int velocity;
+
+    /**
+     * \brief Duration of the node been played
+     */
+    int duration=-1;
+
+    /**
+     * \brief Round the used instrument to it's general (Electric Piano = Piano)
+     * @param r_instrument
+     * @return
+     */
+    [[nodiscard]] string RoundInstrument(int r_instrument) const;
+
+    /**
+     * \brief Round to the notes close by
+     * @param r_note
+     * @param r_octaaf
+     * @return
+     */
+    [[nodiscard]] string RoundNote(int r_note, int r_octaaf) const;
+
+    /**
+     * \brief Round the time stamp
+     * @param r_time_stamp
+     * @return
+     */
+    [[nodiscard]] string RoundTime_stamp(int r_time_stamp) const;
+
+    /**
+     * \brief Round the duration
+     * @param r_duration
+     * @return
+     */
+    [[nodiscard]] string RoundDuration(int r_duration) const;
+
+    /**
+     * \brief Round the velocity
+     * @param r_velocity
+     * @return
+     */
+    [[nodiscard]] string RoundVelocity(int r_velocity) const;
+
 public:
     /**
-     * \brief Simple Constructer
+     * \brief Simple Constructor
      * @param time_stamp
      * @param duration
      * @param channel
@@ -43,29 +105,40 @@ public:
      */
     [[nodiscard]] string getRE(int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity) const;
 
+    /**
+     * \brief Simple getter
+     * @return
+     */
     [[nodiscard]] int getNoteValue() const;
 
+    /**
+     * \brief Simple getter
+     * @return
+     */
     [[nodiscard]] unsigned int getInstrument() const;
 
+    /**
+     * \brief Simple getter
+     * @return
+     */
     [[nodiscard]] unsigned int getTimeStamp() const;
 
+    /**
+     * \brief Simple getter
+     * @return
+     */
     [[nodiscard]] int getVelocity() const;
 
+    /**
+     * \brief Simple getter
+     * @return
+     */
     [[nodiscard]] int getDuration() const;
 
+    /**
+     * \brief Simple setter
+     * @return
+     */
     void setDuration(int duration);
-
-private:
-    unsigned int instrument;
-    int note_value=0;
-    unsigned int time_stamp;
-    int velocity;
-    int duration=-1;
-
-    [[nodiscard]] string RoundInstrument(int r_instrument) const;
-    [[nodiscard]] string RoundNote(int r_note, int r_octaaf) const;
-    [[nodiscard]] string RoundTime_stamp(int r_time_stamp) const;
-    [[nodiscard]] string RoundDuration(int r_duration) const;
-    [[nodiscard]] string RoundVelocity(int r_velocity) const;
 };
 #endif //MIDIPARSER_NOTE_H
