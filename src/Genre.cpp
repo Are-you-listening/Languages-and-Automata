@@ -59,6 +59,7 @@ bool Genre::inGenre(Song *&s) {
         succes = true;
     }
 
+
     //bool succes = m.accepts(st[0].re);
     if(succes){
         log = getCurrTime() + " Found matching results on the characteristics on this Genre!\n\n";

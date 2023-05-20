@@ -209,13 +209,13 @@ NFA::NFA(const json &j) {
 
     //Parse States
     auto states = j["states"];
-    for(int i = 0 ; i<states.size() ; i++){
-        string toestand = states[i]["name"];
-        bool start = states[i]["starting"];
-        bool accept = states[i]["accepting"];
+    for(auto &node : states){
+        string toestand = node["name"];
+        bool start = node["starting"];
+        bool accept = node["accepting"];
 
         auto temp = new State(toestand,start,accept);
-        Q.insert({toestand, temp});
+        Q[toestand]= temp;
     }
 
     //Parse Delta
@@ -225,10 +225,8 @@ NFA::NFA(const json &j) {
         string to = transitions[i]["to"];
         string in = transitions[i]["input"];
         char input = in[0];
-
         Q.find(from)->second->AddTransition(input, to );
     }
-
 }
 
 WNFA NFA::toWNFA(){

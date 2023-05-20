@@ -13,10 +13,10 @@ using namespace std;
 
 class RE {
 protected:
-    ENFA * plus(ENFA& enfa1, ENFA& enfa2);
-    void kleene(ENFA& enfa);
-    void concatenation(ENFA& enfa1, ENFA& enfa2)&;
-    ENFA * onechar(const string& c);
+    ENFA plus(ENFA &enfa1, ENFA &enfa2);
+    void kleene(ENFA &enfa);
+    void concatenation(ENFA &enfa1, ENFA &enfa2);
+    ENFA onechar(const string& c);
 
 public:
     string re;

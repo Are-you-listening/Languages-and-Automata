@@ -28,8 +28,8 @@ class DFA;
 class ENFA {
 protected:
     map<pair<char,string>, vector<string>> possibleStates(state* nextState, const string &name)const&;
-    vector<state *> ECLOSE(state* Etransition)const&;
-    vector<state *> ECLOSE2(state* Etransition, string input)const&;
+    vector<state*> ECLOSE(state* Etransition)const&;
+    vector<state*> ECLOSE2(state* Etransition, string input)const&;
     void Etransitions(vector<state*> &states)const&;
     void Etransitions(vector<state*> &states, vector<state*> &found)const&;
 public:
@@ -40,6 +40,10 @@ public:
     string eps;
     ENFA(const string& c);
     ENFA(const ENFA& enfa,state* state);
+
+    ENFA(state*startingState, const vector<state*> &states, const set<string> &alphabet,
+         const vector<state*> &endstates, const string &eps);
+
     ENFA();
     bool accepts(string c)const&;
     void print()const&;
@@ -49,7 +53,15 @@ public:
     void concatenate(const ENFA& enfa)&;
     void load(const json& j);
     json getJson() const;
+
+    /**
+     * \brief Get the JSON of the converted NFA
+     * ONLY works for Concatination ENFA
+     * @return
+     */
     json getJsonNfa() const;
+
+    void clear();
 };
 
 

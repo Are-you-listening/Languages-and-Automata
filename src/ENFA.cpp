@@ -11,14 +11,14 @@ ENFA::ENFA(const string& c) {
     if (j.value("type","string") == "ENFA"){
         ENFA::eps=j["eps"];
         vector<string> a=j["alphabet"];
-        for(vector<string>::const_iterator it=a.begin();it!=a.end();it++){
-            ENFA::alphabet.insert((*it));
+        for(string &it: a){
+            ENFA::alphabet.insert(it);
         }
         vector<json> b =j["states"];
         int count=0;
         while(count!=b.size()){
             json d1 =b[count];
-            state* q= new state();
+            state* q(new state());
             q->name=d1["name"];
             q->starting=d1["starting"];
             q->accepting=d1["accepting"];
@@ -138,7 +138,7 @@ ENFA::ENFA(const ENFA &enfa, state* state) {
     eps=enfa.eps;
 }
 
-vector<state *> ENFA::ECLOSE(state *Etransition)const&{
+vector<state*> ENFA::ECLOSE(state*Etransition)const&{
     vector<state*> EStates;
     for(map<string,state*>::const_iterator it=Etransition->states.begin(); it != Etransition->states.end(); it++) {
         if((*it->first.begin())==(*ENFA::eps.begin()) && find(EStates.begin(),EStates.end(), it->second)==EStates.end()){
@@ -150,11 +150,11 @@ vector<state *> ENFA::ECLOSE(state *Etransition)const&{
     return EStates;
 }
 
-vector<state *> ENFA::ECLOSE2(state *Etransition, string input)const&{
-    vector<state *> EStates;
-    for (map<string, state *>::const_iterator it = Etransition->states.begin(); it != Etransition->states.end(); it++) {
+vector<state*> ENFA::ECLOSE2(state*Etransition, string input)const&{
+    vector<state*> EStates;
+    for (map<string, state*>::const_iterator it = Etransition->states.begin(); it != Etransition->states.end(); it++) {
         if ((*it->first.begin()) == (*ENFA::eps.begin())) {
-            vector<state *> temp = ECLOSE2(Etransition->states[ENFA::eps], input);
+            vector<state*> temp = ECLOSE2(Etransition->states[ENFA::eps], input);
             EStates.insert(EStates.end(), temp.begin(), temp.end());
         } else {
             if (Etransition->states.find(input) != Etransition->states.end()) {
@@ -164,7 +164,7 @@ vector<state *> ENFA::ECLOSE2(state *Etransition, string input)const&{
             }
         }
         for (int i = 0; Etransition->states.find(input + to_string(i)) != Etransition->states.end(); i++) {
-            state *temp = Etransition->states[input + to_string(i)];
+            state*temp = Etransition->states[input + to_string(i)];
             if (find(EStates.begin(), EStates.end(), temp) == EStates.end()) {
                 EStates.push_back(temp);
             }
@@ -336,6 +336,8 @@ DFA ENFA::toDFA() &{
     t.load(getJson());
     DFA dfa = t.toDFA();
 
+    clear();
+
     return dfa;
 }
 
@@ -358,7 +360,7 @@ DFA ENFA::toDFA2() &{
         ENFAtoDFA.push_back(states2);
     }
     vector<string> lazyEval;
-    state* emptyset = new state();
+    state* emptyset(new state());
     emptyset->name = "{}";
     emptyset->accepting = false;
     emptyset->starting = false;
@@ -477,7 +479,7 @@ DFA ENFA::toDFA2() &{
                 }
                 name+="}";
                 if(find(dfaStateNames.begin(),dfaStateNames.end(),name)==dfaStateNames.end()){
-                    state* temp=new state();
+                    state* temp(new state());
                     temp->name = name;
                     for(vector<string>::const_iterator it4=endstates.begin(); it4!=endstates.end(); it4++) {
                         if (it3->first.second.find((*it4)) != string::npos) {
@@ -606,15 +608,15 @@ void ENFA::printStats()const&{
 }
 
 void ENFA::concatenate(const ENFA& enfa) &{
-    ENFA::states.insert(ENFA::states.end(),enfa.states.begin(),enfa.states.end());
-    state* temp=(*ENFA::endstates.begin());
-    for(vector<state*>::iterator it=ENFA::endstates.begin(); it!=ENFA::endstates.end(); it++){
-        (*it)->accepting= false;
+    states.insert(states.end(),enfa.states.begin(),enfa.states.end());
+    state* temp=*endstates.begin();
+    for(state* s: endstates){
+        s->accepting= false;
     }
-    ENFA::endstates=enfa.endstates;
-    ENFA::alphabet.insert(enfa.alphabet.begin(),enfa.alphabet.end());
+    endstates=enfa.endstates;
+    alphabet.insert(enfa.alphabet.begin(),enfa.alphabet.end());
     enfa.startingState->starting= false;
-    temp->addTransitionFunction(ENFA::eps,enfa.startingState);
+    temp->addTransitionFunction(eps,enfa.startingState);
 }
 
 ENFA::ENFA() {};
@@ -630,7 +632,7 @@ void ENFA::load(const json &j) {
         int count=0;
         while(count!=b.size()){
             json d1 =b[count];
-            state* q= new state();
+            state* q(new state());
             q->name=d1["name"];
             q->starting=d1["starting"];
             q->accepting=d1["accepting"];
@@ -748,7 +750,7 @@ json ENFA::getJsonNfa() const {
         }
     }
 
-    for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
+    for(auto &state: this->states){
         int count = -1;
         while (true){
             json temp;
@@ -760,10 +762,10 @@ json ENFA::getJsonNfa() const {
                 key = "*"+ to_string(count);
             }
 
-            if ((*it)->states.find(key) != (*it)->states.end()){
+            if (state->states.find(key) != state->states.end()){
 
-                pair<string, string> before = link_skipper.at((*it)->name);
-                string target_name = (*it)->states[key]->name;
+                pair<string, string> before = link_skipper.at(state->name);
+                string target_name = state->states[key]->name;
 
                 temp["from"]=before.second;
                 temp["input"] = before.first;
@@ -771,7 +773,7 @@ json ENFA::getJsonNfa() const {
 
                 transitions.push_back(temp);
 
-                t_map[(*it)->name].clear();
+                t_map[state->name].clear();
 
                 count += 1;
             }else{
@@ -780,25 +782,35 @@ json ENFA::getJsonNfa() const {
         }
     }
 
-    for (auto entry: t_map){
-        for (auto t: entry.second){
+    for (auto &entry: t_map){
+        for (auto &t: entry.second){
             transitions.push_back(t);
         }
     }
 
-    vector<json> states;
-    for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
-        if (link_skipper.find((*it)->name) == link_skipper.end() || !t_map.at((*it)->name).empty()){
+    vector<json> nodes;
+    for(auto &k: this->states){
+        if (link_skipper.find(k->name) == link_skipper.end() || !t_map.at(k->name).empty()){
             json temp;
-            temp["name"]=(*it)->name;
-            temp["starting"]=(*it)->starting;
-            temp["accepting"]=(*it)->accepting;
-            states.push_back(temp);
+            temp["name"]=k->name;
+            temp["starting"]=k->starting;
+            temp["accepting"]=k->accepting;
+            nodes.push_back(temp);
         }
-
     }
-    j["states"]=states;
+    j["states"]=nodes; //TODO ERROR DIT GEEFT NIET ALLE STATES MEE - Kars
 
     j["transitions"]=transitions;
     return j;
 }
+
+ENFA::ENFA(state*startingState, const vector<state*> &states, const set<string> &alphabet,
+           const vector<state*> &endstates, const string &eps) : startingState(startingState), states(states),
+                                                                  alphabet(alphabet), endstates(endstates), eps(eps) {}
+
+void ENFA::clear() {
+    for(auto &k: states){
+        delete k;
+    }
+}
+

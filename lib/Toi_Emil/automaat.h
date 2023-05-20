@@ -39,6 +39,7 @@ public:
     virtual bool accepts(string input);
     virtual void print();
 
+    virtual ~automaat();
 };
 
 

@@ -9,6 +9,8 @@
 #include <map>
 #include <vector>
 
+#include "DesignByContract.h"
+
 using namespace std;
 
 class State {
@@ -17,6 +19,8 @@ private:
     map<const char,vector<string>> transition; //input, next state
     const bool starting;
     const bool end;
+
+    const State* fInitCheck;
 
 public:
     vector<string> DoTransition(const char &a) const;
@@ -32,6 +36,8 @@ public:
     const string &getName() const;
 
     const map<const char, vector<string>> &getTransition() const;
+
+    [[nodiscard]] bool ProperlyInitialized() const;
 };
 
 

@@ -24,7 +24,7 @@ void DFA::load(const json &j) {
         int count=0;
         while(count!=b.size()){
             json d1 =b[count];
-            state* q= new state(d1["name"],d1["starting"],d1["accepting"] );
+            state* q(new state(d1["name"],d1["starting"],d1["accepting"] ));
             if (q->starting){
                 DFA::startingState = q;
             }
@@ -94,19 +94,19 @@ void DFA::print()const&{
 
 DFA::DFA() {};
 
-state *DFA::getStartingState() const {
+state*DFA::getStartingState() const {
     return startingState;
 }
 
-void DFA::setStartingState(state *startingState) {
+void DFA::setStartingState(state*startingState) {
     DFA::startingState = startingState;
 }
 
-const vector<state *> &DFA::getStates() const {
+const vector<state*> &DFA::getStates() const {
     return states;
 }
 
-void DFA::setStates(const vector<state *> &states) {
+void DFA::setStates(const vector<state*> &states) {
     DFA::states = states;
 }
 
@@ -118,15 +118,15 @@ void DFA::setAlphabet(const set<string> &alphabet) {
     DFA::alphabet = alphabet;
 }
 
-const vector<state *> &DFA::getEndstates() const {
+const vector<state*> &DFA::getEndstates() const {
     return endstates;
 }
 
-void DFA::setEndstates(const vector<state *> &endstates) {
+void DFA::setEndstates(const vector<state*> &endstates) {
     DFA::endstates = endstates;
 }
 
-void state::addTransitionFunction(string c, state * q){
+void state::addTransitionFunction(string c, state* q){
     string* ptr = &c;
     string cCopy = *ptr;
     int count=0;
@@ -139,12 +139,12 @@ void state::addTransitionFunction(string c, state * q){
 }
 
 state* state::getComplement() {
-    state* new_state = new state( name, starting, !accepting ) ;
+    state* new_state(new state( name, starting, !accepting )) ;
     new_state->states = states; //TODO Dit is memory wise best wel een probleem
     return new_state;
 }
 
-void state::addTransitionFunctionENFA(const string &c, state *q) {
+void state::addTransitionFunctionENFA(const string &c, state*q) {
     //string* ptr = &c;
     //string cCopy = *ptr;
     statesENFA[c].insert(q);
@@ -165,7 +165,8 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     final.alphabet.insert(dfa2.alphabet.begin(),dfa2.alphabet.end());
 
     //Set Starting State
-        state* startstate = new state("("+dfa1.startingState->name+","+dfa2.startingState->name+")" , true, false);
+
+    state* startstate(new state("("+dfa1.startingState->name+","+dfa2.startingState->name+")" , true, false));
         startstate->starting= true;
 
         //Set Accepting true/false according (Depending on union/intersection)
@@ -190,13 +191,12 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
         for(auto &tup: current_states){
             for(set<string>::const_iterator it2=final.alphabet.begin(); it2!=final.alphabet.end(); it2++){
 
-                state* temp;
+                state* temp(new state());;
                 state* state1 = get<1>(tup);
                 state* state2 = get<2>(tup);
 
                 string name= "(" + state1->states[(*it2)]->name + "," + state2->states[(*it2)]->name + ")";
 
-                temp = new state();
                 temp->name = name;
                 temp->starting = false;
                 temp->accepting = false;
@@ -348,7 +348,7 @@ ENFA DFA::reverse() {
     map<string, set<pair<state*, string>>> reverse_link_map;
     map<string, state*> name_to_state_map;
     for (state* s: states){
-        state* new_state = new state();
+        state* new_state(new state());
         new_state->name = s->name;
         new_state->accepting = s->starting;
         new_state->starting = false;
@@ -372,7 +372,7 @@ ENFA DFA::reverse() {
         }
     }
 
-    state* new_start = new state();
+    state* new_start(new state());
     new_start->name = "reversed_start";
     new_start->starting = true;
     new_start->accepting = false;
@@ -424,15 +424,15 @@ ENFA DFA::reverse() {
     return n;
 }
 
-void DFA::load(const set<string> &alfa, const vector<state *> &states, state *start_state,
-               const vector<state *> &end_states) {
+void DFA::load(const set<string> &alfa, const vector<state*> &states, state*start_state,
+               const vector<state*> &end_states) {
     alphabet = alfa;
     DFA::states = states;
     DFA::startingState = start_state;
     DFA::endstates = end_states;
 }
 
-void DFA::AddState(state *k) {
+void DFA::AddState(state*k) {
     states.push_back(k);
     if(k->accepting){
         endstates.push_back(k);
@@ -462,7 +462,7 @@ vector<DFA> DFA::split(int split_size) {
 
         o.insert(current_start);
         for(auto s: o){
-            state* temp = new state;
+            state* temp(new state());
             if (s == current_start){
                 temp->starting = true;
                 out_start = temp;
@@ -481,7 +481,7 @@ vector<DFA> DFA::split(int split_size) {
             out.push_back(temp);
         }
         for(auto s: e){
-            state* temp = new state;
+            state* temp(new state());
             if (s == current_start){
                 temp->starting = true;
                 out_start = temp;
@@ -511,7 +511,7 @@ vector<DFA> DFA::split(int split_size) {
     return d_list;
 }
 
-void DFA::inRange(int range, set<state *> &out,set<state*>& last, set<state*>& end, state *current) {
+void DFA::inRange(int range, set<state*> &out,set<state*>& last, set<state*>& end, state*current) {
 
     if (range == -1){
         last.insert(current);
@@ -533,9 +533,8 @@ void DFA::inRange(int range, set<state *> &out,set<state*>& last, set<state*>& e
     }
 }
 
-
-/*DFA::~DFA() {
-    for(auto &k: states){
+void DFA::clear() {
+    for(auto &k:states){
         delete k;
     }
-}*/
+}

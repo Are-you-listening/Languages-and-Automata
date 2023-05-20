@@ -161,21 +161,17 @@ DFA ENFAT::toDFA() {
         bool start = false;
         bool end = false;
 
-        state* temp_state = new state();
+        state* temp_state(new state(s,start,end));
 
         if (new_start_state == s){
-            start = true;
+            temp_state->starting = true;
             start_state_parent = temp_state;
         }
 
         if ( end_states_string.find(s) != end_states_string.end() ){
-            end = true;
+            temp_state->accepting= true;
             end_parent.push_back(temp_state);
         }
-
-        temp_state->name = s;
-        temp_state->starting = start;
-        temp_state->accepting = end;
 
         state_linker.insert({s, temp_state});
         states_parent.push_back(temp_state);
@@ -305,4 +301,4 @@ void ENFAT::load(const json &data) {
     }
 }
 
-ENFAT::ENFAT() {};
+ENFAT::ENFAT() {}

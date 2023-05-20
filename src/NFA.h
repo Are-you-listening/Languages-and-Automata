@@ -86,6 +86,7 @@ public:
 
     /**
      * \brief WNFA converter
+     * ONLY works from the correctly converted ENFA
      * @return
      */
     WNFA toWNFA();

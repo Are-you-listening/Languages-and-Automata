@@ -190,3 +190,9 @@ nlohmann::json automaat::getJson() const{
     }
     return Jout;
 }
+
+automaat::~automaat() {
+    for( auto &node: states){
+        delete node.second;
+    }
+}

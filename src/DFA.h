@@ -56,25 +56,25 @@ private:
 
 public:
     void load(const json& j);
-    void load(const set<string>& alfa, const vector<state*>& states, state* start_state, const vector<state*>& end_states);
-    state *getStartingState() const;
+    void load(const set<string>& alfa, const vector<state*> &states, state* start_state, const vector<state*>& end_states);
+    state*getStartingState() const;
 
     vector<DFA> split(int split_size);
     void inRange(int range, set<state*>& out, set<state*>& last, set<state*>& end, state* current);
 
-    void setStartingState(state *startingState);
+    void setStartingState(state*startingState);
 
-    const vector<state *> &getStates() const;
+    const vector<state*> &getStates() const;
 
-    void setStates(const vector<state *> &states);
+    void setStates(const vector<state*> &states);
 
     const set<string> &getAlphabet() const;
 
     void setAlphabet(const set<string> &alphabet);
 
-    const vector<state *> &getEndstates() const;
+    const vector<state*> &getEndstates() const;
 
-    void setEndstates(const vector<state *> &endstates);
+    void setEndstates(const vector<state*> &endstates);
 
     void AddState(state* k);
 
@@ -100,8 +100,7 @@ public:
 
     ENFA reverse();
 
-    //virtual ~DFA();
+    void clear();
 };
-
 
 #endif //TA__TOG_DFA_H
