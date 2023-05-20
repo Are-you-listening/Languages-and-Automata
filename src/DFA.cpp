@@ -443,6 +443,97 @@ void DFA::AddState(state *k) {
     }
 }
 
+vector<DFA> DFA::split(int split_size) {
+    state* current_start;
+    set<state*> o;
+    set<state*> e;
+    set<state*> l = {getStartingState()};
+    vector<DFA> d_list;
+    do{
+        current_start = *l.begin();
+        o.clear();
+        l.clear();
+        e.clear();
+        inRange(split_size, o, l, e, current_start);
+
+        vector<state*> out;
+        vector<state*> end;
+        state* out_start;
+
+        o.insert(current_start);
+        for(auto s: o){
+            state* temp = new state;
+            if (s == current_start){
+                temp->starting = true;
+                out_start = temp;
+            }else{
+                temp->starting = false;
+            }
+            temp->name = s->name;
+            temp->accepting = false;
+
+            for(auto transities: s->states){
+                auto t_state = transities.second;
+                if (o.find(t_state) != o.end()){
+                    temp->addTransitionFunction(transities.first, t_state);
+                }
+            }
+            out.push_back(temp);
+        }
+        for(auto s: e){
+            state* temp = new state;
+            if (s == current_start){
+                temp->starting = true;
+                out_start = temp;
+            }else{
+                temp->starting = false;
+            }
+            temp->name = s->name;
+            temp->accepting = true;
+
+            for(auto transities: s->states){
+                auto t_state = transities.second;
+                if (o.find(t_state) != o.end()){
+                    temp->addTransitionFunction(transities.first, t_state);
+                }
+            }
+            out.push_back(temp);
+            end.push_back(temp);
+        }
+        DFA d;
+        d.setAlphabet(alphabet);
+        d.setStates(out);
+        d.setStartingState(out_start);
+        d.setEndstates(end);
+        d_list.push_back(d);
+
+    }while(!l.empty());
+    return d_list;
+}
+
+void DFA::inRange(int range, set<state *> &out,set<state*>& last, set<state*>& end, state *current) {
+
+    if (range == -1){
+        last.insert(current);
+        return;
+    }else if(range == 0){
+        if (current->name != "{}"){
+            end.insert(current);
+        }
+    }else{
+        out.insert(current);
+    }
+
+    for(auto target: current->states){
+        auto s_target = target.second;
+        if (out.find(s_target) == out.end()){
+            inRange(range-1, out, last, end, s_target);
+        }
+
+    }
+}
+
+
 /*DFA::~DFA() {
     for(auto &k: states){
         delete k;

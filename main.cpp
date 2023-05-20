@@ -9,8 +9,19 @@
 #include "Utils.h"
 
 #include "NFA.h"
-
+#include "gui/Gui.h"
 int main() {
+    Song* s = new Song("midi_files/c0.mid" , false);
+    vector<int> V = {1,1,1,1,1,-1};
+    ENFA az = s->toRegex(V[0],V[1],V[2],V[3],V[4],V[5])[0].toENFA();
+    DFA aza = az.toDFA();
+
+    vector<DFA> d = aza.split(3);
+
+    /*
+    Gui g;
+    g.start();
+     */
     //DFA aka("JSONWORK.json");
     //DFA saka("dfa.json");
 
@@ -22,6 +33,7 @@ int main() {
     RE m(a.ToRe() , ep);
     m.re;*/
 
+    /*
     vector<int> V = {1,1,1,1,1,-1};
     Song* s = new Song("midi_files/c0.mid" , false);
 
@@ -35,12 +47,14 @@ int main() {
     Song* yaay = new Song(a,V,true);
 
     yaay->save("tazazazazazaz.mid");
+     */
     //s->save(s->getTitle());
     //s->similarity(*k,0,0);
-
+    /*
     delete s;
     delete k;
     delete yaay;
+    */
 
     /*vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
     ifstream Filelist("filelist2nd.txt"); 

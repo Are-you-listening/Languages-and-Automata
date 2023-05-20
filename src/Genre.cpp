@@ -54,6 +54,7 @@ bool Genre::inGenre(Song *&s) {
 
     //Generate a Song and check how much similar it is with the given song
     Song k = Song(ProductAutomata.second, param, console);
+    cout << k.similarity(*s,false, false) << endl;
     if(k.similarity(*s,false, false)>=limit){
         succes = true;
     }
