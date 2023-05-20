@@ -69,21 +69,6 @@ bool FileCompare(const std::string &leftFileName, const std::string &rightFileNa
 	return result;
 }
 
-vector<string> MergeVectors(vector<string> &vec1, vector<string> &vec2) {
-	for(const auto &i: vec2){
-		bool exists = false;
-		for(const auto &j: vec1){
-			if(j == i){
-				exists = true;
-			}
-		}
-		if(!exists){
-			vec1.push_back(i);
-		}
-	}
-	return vec1;
-}
-
 string getCurrTime(){
     //Code from https://stackoverflow.com/questions/16357999/current-date-and-time-as-string
     time_t rawtime;
@@ -184,4 +169,105 @@ string NodesToString(const map<string,weightedNode*> &s){
         k = {t.second, t.first};
     }
     return k;
+}
+
+//Merge 2 Vectoren
+vector<string> MergeVectors(vector<string> &a, vector<string> &b){
+    for(auto k: b){
+        if(!Find(a,k)){
+            a.push_back(k);
+        }
+    }
+    return a;
+}
+
+//Check if an item exists in a vector
+bool Find(vector<string> &a, string &k){
+    for(const auto &z: a){
+        if(k==z){
+            return true;
+        }
+    }
+    return false;
+}
+
+//Convert the names of a state set correctly
+string NameConvert(vector<string> &a){
+    std::sort(a.begin(), a.end());
+
+    string t = "{";
+
+    for(long unsigned int i=0; i<a.size()-1;i++){
+        t+=a[i]+", ";
+    }
+
+    t+=a[a.size()-1]+"}"; //Voeg laatste toe
+
+    return t;
+}
+
+//Merge 2 Vectoren
+vector<State*> MergeVectors(vector<State*> &a, vector<State*> &b){
+    for(State* k: b){
+        if(!Find(a,k)){
+            a.push_back(k);
+        }
+    }
+    return a;
+}
+
+//Check if an item exists in a vector
+bool Find(vector<State*> &a, State* &k){
+    for(auto z: a){
+        if(k==z){
+            return true;
+        }
+    }
+    return false;
+}
+
+string NameConvert2(vector<string> &a) {
+    string t;
+
+    for(long unsigned int i=0; i<a.size()-1;i++){
+        t+=a[i]+",";
+    }
+
+    t+=a[a.size()-1]; //Voeg laatste toe
+
+    return t;
+}
+
+vector<string> eqClassToState(const string &a){
+    string tempString;
+    vector<string> states;
+
+    if(a[0]!='{'){
+        return {a};
+    }
+
+    for(char k:a) {
+        if (k == '{') {
+            continue;
+        }else if ((k == ',') || (k == '}')) {
+            states.push_back(tempString);
+            tempString = ""; //Reset temp
+        } else if (k==' '){
+            continue;
+        } else {
+            tempString += k;
+        }
+    }
+    return states;
+}
+
+string ConvertToEqclassName(vector < vector<string> > &eqClass, const string &s){
+    for(vector<string> &k: eqClass){
+        for(const string &z: k){
+            if(s==z){
+                return NameConvert(k);
+            }
+        }
+    }
+    return "{"+s+"}";
 }

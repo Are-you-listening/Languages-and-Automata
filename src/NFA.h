@@ -9,7 +9,7 @@
 
 #include "DFA.h"
 #include "Toi_Kars/State.h"
-#include "Toi_Kars/Utils.h"
+#include "Utils.h"
 #include "json.hpp"
 #include "WNFA.h"
 #include "weightedNode.h"
