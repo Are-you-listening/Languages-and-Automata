@@ -394,6 +394,11 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     //Check KarsAnas
     results.push_back(checkKarsAnas(d, toCheck.second) );
 
+    //Free used memory
+    for(auto &k: d){
+        d.clear();
+    }
+
     return results;
 }
 
@@ -588,9 +593,11 @@ double Song::checkWNFA(RE &r,RE &s){
     ENFA e = r.toENFA();
     json j = e.getJsonNfa();
     NFA n(j);
+
     WNFA w = n.toWNFA();
     WDFA m = w.toWDFA();
 
     //Calculate value
-    return m.weightedaccepts(s.re);
+    double d = m.weightedaccepts(s.re);
+    return d;
 }

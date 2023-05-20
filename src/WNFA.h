@@ -187,7 +187,7 @@ public:
     /**
      * \brief Destructor to free used memory
      */
-    //virtual ~WNFA();
+    virtual ~WNFA();
 };
 
 #endif //WNFA_WNFA_H
