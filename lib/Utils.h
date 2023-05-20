@@ -18,12 +18,12 @@
 #include <ctime>
 
 #include "weightedNode.h"
-#include "../src/DFA.h"
 
 using namespace std;
 
 class RE;
 class State;
+class DFA;
 
 /**
  * \brief Check if the given directory exists

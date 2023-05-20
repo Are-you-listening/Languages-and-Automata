@@ -5,10 +5,10 @@
 // Copyright   : Project Software Engineering - BA1 Informatica - Serge Demeyer - University of Antwerp
 // Description : TicTactToe in C++, Ansi-style
 //============================================================================
+
 #include "Utils.h"
 #include "../src/RE.h"
-
-using namespace std;
+#include "../src/DFA.h"
 
 /**
 Auxiliary functions for file manipulation.
