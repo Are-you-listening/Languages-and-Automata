@@ -287,6 +287,7 @@ void MergeAlpabets(DFA &z, DFA &z2) {
 
     set_difference(z.getAlphabet().begin(), z.getAlphabet().end(), z2.getAlphabet().begin(), z2.getAlphabet().end(),std::inserter(Difference, Difference.begin()));
     set_difference(z2.getAlphabet().begin(), z2.getAlphabet().end(), z.getAlphabet().begin(), z.getAlphabet().end(),std::inserter(Difference2, Difference2.begin()));
+
     state* deadstate = new state("{}", false, false);
     z2.AddState(deadstate);
     for (auto c = z2.getAlphabet().begin(); c != z2.getAlphabet().end(); c++) {
@@ -299,9 +300,9 @@ void MergeAlpabets(DFA &z, DFA &z2) {
             (*it2)->addTransitionFunction((*it), deadstate);
         }
     }
+
     deadstate = new state("{}", false, false);
     z.AddState(deadstate);
-
     for (auto c = z.getAlphabet().begin(); c != z.getAlphabet().end(); c++) {
         deadstate->addTransitionFunction(*c, deadstate);
     }

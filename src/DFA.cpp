@@ -160,6 +160,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     bool a= true;
 
     //Merge the alpabets
+    MergeAlpabets(dfa1,dfa2);
     final.alphabet=dfa1.alphabet;
     final.alphabet.insert(dfa2.alphabet.begin(),dfa2.alphabet.end());
 

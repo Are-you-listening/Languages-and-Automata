@@ -504,10 +504,6 @@ void Song::switchConsoleOutput() {
 }
 
 Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
-    stack<char> tempstack; //Helper variable
-    vector<vector<int>> info; //{ {possible time_stamps}, {possible durations}, {possible notes},  {possible velocity's}, {possible instruments} }
-    vector<int> options = {}; //Possible values
-
     //Start up
     fInitCheck = this; // TODO soms wordt er een plus gehanteerd voor meerdere noten op een tijdstip, mischien moeten wij plus zo hanteren als da niet groter is dan een bepaalde waarde.
     title = s.getStartingState()->name;
@@ -532,6 +528,10 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
     //For each element of the RE
     for(string::iterator it=k.re.begin(); it!=k.re.end(); it++){
         vector<unsigned int> note_values;
+        if(*it=='+'){
+            continue;
+        }
+
         if((*it)=='('){
             it++;
             while((*it)!='+'){
@@ -541,7 +541,8 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
             while((*it)!=')'){
                 it++;
             }
-            Note* n=new Note(note_values[0]*1000,tan(note_values[1]/155*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
+
+            Note* n=new Note( note_values[0]*1000, tan(note_values[1]/155*1.6)/1.5*1000 ,note_values[3],note_values[4]*3,note_values[2]);
             note_map[{note_values[0]*1000,1}].push_back(n);
             Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
             note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2);
@@ -549,7 +550,8 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
         } else{
             if((*it)=='*'){
                 cerr << "kleene star in regex" << endl;
-                throw std::exception();
+                //throw std::exception();
+                continue;
             }else {
                 for(auto it2=param.begin(); it2!=param.end()-1; it2++){
                     if(*it2==true){
@@ -560,7 +562,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
                     }
                 }
                 it--;
-                
+
                 Note* n=new Note(note_values[0]*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
                 note_map[{note_values[0]*1000,1}].push_back(n);
                 Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);

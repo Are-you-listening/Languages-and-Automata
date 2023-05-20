@@ -30,8 +30,6 @@ DFA Genre::toProductAutomata() {
         ENFA a = t[0].toENFA();
         DFA s = a.toDFA();
 
-        MergeAlpabets(s,ProductAutomata.second); //TODO Is this the correct way of merging? - Kars
-
         ProductAutomata.second = DFA(ProductAutomata.second, s, false); //Extend ProductAutomata
     }
     ProductAutomata.first = (int) members.size();
@@ -78,7 +76,7 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     //Set Data
     fInitCheck = this;
     members={s,k};
-    this->limit=s->similarity(*k,false,false);
+    //this->limit=s->similarity(*k,false,false); //TODO Uncommented this
 
     string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit) +  " minimum match %\n\n";
     if(console){cout << log;}
@@ -93,9 +91,6 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     vector<RE> t2 = members[1]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
     ENFA a2 = t2[0].toENFA();
     DFA z2 = a2.toDFA();
-
-    //Merge the 2 Alphabets
-    MergeAlpabets(z,z2);
 
     log = getCurrTime() + " Started Product Automata Construction..\n\n";
     if(console){cout << log;}
