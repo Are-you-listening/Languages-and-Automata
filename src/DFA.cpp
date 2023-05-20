@@ -160,6 +160,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     bool a= true;
 
     //Merge the alpabets
+    MergeAlpabets(dfa1,dfa2);
     final.alphabet=dfa1.alphabet;
     final.alphabet.insert(dfa2.alphabet.begin(),dfa2.alphabet.end());
 
@@ -197,10 +198,11 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
 
                 temp = new state();
                 temp->name = name;
+                temp->starting = false;
+                temp->accepting = false;
                 if ((state1->states[(*it2)]->accepting && state2->states[(*it2)]->accepting && c) || (state1->states[(*it2)]->accepting || state2->states[(*it2)]->accepting && !c)) {
                     temp->accepting = true;
                 }
-
                 if (new_names.find(name) == new_names.end() && current_names.find(name) == current_names.end()){
                     check_states.insert(temp);
                     new_states.insert(make_tuple(temp, state1->states[(*it2)], state2->states[(*it2)]));
@@ -288,6 +290,8 @@ json DFA::getJson() const{
     vector<json> states;
     for(vector<state*>::const_iterator it=DFA::states.begin(); it!=DFA::states.end(); it++){
         json temp;
+        state* s = (*it);
+
         temp["name"]=(*it)->name;
         temp["starting"]=(*it)->starting;
         temp["accepting"]=(*it)->accepting;

@@ -88,7 +88,7 @@ Song::Song(const string &path, bool console) : console(console) {
 
     MidiParser m(path);
     note_map = m.getNoteMap();
-    
+
     int count = 0;
     for(const auto &entry: note_map){
         count += (int) entry.second.size();
@@ -219,7 +219,7 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
     if(d.empty() || s.empty()){
         result=0;
     }
-    
+
     if(result>=0 && result<=1){succeeded = true;} //Result bust me a percentage
 
     ENSURE(succeeded, "Operation did not work properly");
@@ -256,7 +256,7 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
 
 double Song::similarity(Song &song, bool complement, bool reverse) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    
+
     string m = getCurrTime()+" Applying " + '"' + "similarity (" + to_string(complement) + ") (" + to_string(reverse) + ")" +  '"' +" on Song: " + title + " and Song: " + song.getTitle() + "\n";
     if(console){cout << m;}
     logs.push_back( m );
@@ -265,14 +265,14 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
     double WNFA_result=1;
     bool succes = false;
     vector<vector<double>> results;
-    
+
     //Do different checks on different Regex's
     for(const vector<int> &v: PARAMS.vectors){
         //No roundings
         pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]), this->toRegex(min(v[0], 1), min(v[1], 1), min(v[2], 1), min(v[3], 1), min(v[4], 1), v[5]) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
         results.push_back( similar(toCheck,complement,reverse) ); // 0,1,0,1,0, 1,0
     }
-    
+
     //Check Notes
     WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
     result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.       
@@ -395,7 +395,7 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
 
     //Check KarsAnas
     results.push_back(checkKarsAnas(d, toCheck.second) );
-    
+
     return results;
 }
 
@@ -420,7 +420,7 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     return counts;
 }
 
-[[nodiscard]] double Song::noteCountSimilarity(Song &s) { 
+[[nodiscard]] double Song::noteCountSimilarity(Song &s) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string m = getCurrTime()+" Applying" + '"' + "noteCountSimilarity" + '"' +" on Song: " + title + " and Song: " + s.getTitle() + "\n";
@@ -509,10 +509,6 @@ void Song::switchConsoleOutput() {
 }
 
 Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
-    stack<char> tempstack; //Helper variable
-    vector<vector<int>> info; //{ {possible time_stamps}, {possible durations}, {possible notes},  {possible velocity's}, {possible instruments} }
-    vector<int> options = {}; //Possible values
-
     //Start up
     fInitCheck = this; // TODO soms wordt er een plus gehanteerd voor meerdere noten op een tijdstip, mischien moeten wij plus zo hanteren als da niet groter is dan een bepaalde waarde.
     title = s.getStartingState()->name;
@@ -537,6 +533,10 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
     //For each element of the RE
     for(string::iterator it=k.re.begin(); it!=k.re.end(); it++){
         vector<unsigned int> note_values;
+        if(*it=='+'){
+            continue;
+        }
+
         if((*it)=='('){
             it++;
             while((*it)!='+'){
@@ -546,30 +546,32 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
             while((*it)!=')'){
                 it++;
             }
-            Note* n=new Note(note_values[0]*1000,tan(note_values[1]/155*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
+
+            Note* n=new Note( note_values[0]*1000, tan(note_values[1]/155*1.6)/1.5*1000 ,note_values[3],note_values[4]*3,note_values[2]);
             note_map[{note_values[0]*1000,1}].push_back(n);
             Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
             note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2);
             continue;
         } else{
             if((*it)=='*'){
-                cerr << "kleene star in regex" << endl;
-                throw std::exception();
+                //cerr << "kleene star in regex" << endl;
+                //throw std::exception();
+                continue;
             }else {
                 for(auto it2=param.begin(); it2!=param.end()-1; it2++){
-                    if(*it2==true){
-                        note_values.push_back(toInt(*it));
+                    if(*it2==true){ //Param used
+                        note_values.push_back(toInt(*it)); //Re-convert the value
                         it++;
                     } else {
-                        note_values.push_back(0);
+                        note_values.push_back(0); //Not used, add 0
                     }
                 }
                 it--;
-                
+
                 Note* n=new Note(note_values[0]*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
                 note_map[{note_values[0]*1000,1}].push_back(n);
-                Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
-                note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2);
+                Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]); //Make the note with the given data
+                note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2); //Add the note
             }
         }
     }

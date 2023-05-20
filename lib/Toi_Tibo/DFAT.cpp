@@ -515,7 +515,12 @@ void DFAT::load(const nlohmann::json &data) {
 
     int state_size = data["states"].size();
     for (int i = 0; i<state_size; i++){
+
+
         string state_name = data["states"][i]["name"].get<std::string>();
+
+
+
         states.insert(state_name);
         bool starting = data["states"][i]["starting"].get<bool>();
         if (starting){
@@ -548,6 +553,8 @@ nlohmann::json DFAT::getJson() const {
     }
     int index = 0;
     for (auto s : states){
+
+
         bool start = false;
         bool end = false;
         if (start_state == s){

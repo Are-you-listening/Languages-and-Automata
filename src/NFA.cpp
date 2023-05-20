@@ -232,7 +232,6 @@ NFA::NFA(const json &j) {
 }
 
 WNFA NFA::toWNFA(){
-
     WNFA result = WNFA();
     result.setAlfabet(Alphabet);
     State* start_state;
@@ -240,7 +239,6 @@ WNFA NFA::toWNFA(){
     for (pair<string, State*> state_pair : Q){
         result.addState(state_pair.first, state_pair.second->getStarting(), state_pair.second->getAnEnd());
         if (state_pair.second->getStarting()){
-
             start_state = state_pair.second;
         }
     }
@@ -285,7 +283,7 @@ void NFA::adaptDistance(vector<weightedNode*>& original, State* s, int distance,
         for (const auto &m: entry.second){
             State* st = Q.find(m)->second;
 
-            weightedNode* w = (result.getState(st->getName())).first;
+            weightedNode* w = result.getState(st->getName()).first;
 
             for (int i=0; i < original.size(); i++) {
                 weightedNode *o = original[i];
