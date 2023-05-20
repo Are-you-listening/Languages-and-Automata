@@ -554,19 +554,19 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
                 continue;
             }else {
                 for(auto it2=param.begin(); it2!=param.end()-1; it2++){
-                    if(*it2==true){
-                        note_values.push_back(toInt(*it));
+                    if(*it2==true){ //Param used
+                        note_values.push_back(toInt(*it)); //Re-convert the value
                         it++;
                     } else {
-                        note_values.push_back(0);
+                        note_values.push_back(0); //Not used, add 0
                     }
                 }
                 it--;
 
                 Note* n=new Note(note_values[0]*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
                 note_map[{note_values[0]*1000,1}].push_back(n);
-                Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
-                note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2);
+                Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]); //Make the note with the given data
+                note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2); //Add the note
             }
         }
     }

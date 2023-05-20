@@ -11,21 +11,38 @@
 #include "NFA.h"
 
 int main() {
-    string m = "(m+y)*+(e+y+m+i)s";
-    const char e = 'e';
-    RE r(m,e);
-    ENFA k = r.toENFA();
-    //ENFA s("enfa.json");
-    //DFA s = k.toDFA();
+    //DFA aka("JSONWORK.json");
+    //DFA saka("dfa.json");
 
-    /*Song* s = new Song("midi_files/c0.mid" , false);
+    /*MergeAlpabets(s,k);
+    DFA a(k,s, false);
+    a.print();
+
+    const char ep = 'e';
+    RE m(a.ToRe() , ep);
+    m.re;*/
+
+    vector<int> V = {1,1,1,1,1,-1};
+    Song* s = new Song("midi_files/c0.mid" , false);
+
+    ENFA az = s->toRegex(V[0],V[1],V[2],V[3],V[4],V[5])[0].toENFA();
+    DFA aza = az.toDFA();
+
     Song* k = new Song("midi_files/c1.mid" , false);
-    Genre m = Genre(s,k,{1,1,1,1,0,1},"test",0,0);
+    Genre m = Genre(s,k,V,"test",0,0);
+
+    DFA a = m.getProductAutomata();
+    Song* yaay = new Song(a,V,true);
+
+    yaay->save("tazazazazazaz.mid");
+    //s->save(s->getTitle());
+    //s->similarity(*k,0,0);
 
     delete s;
-    delete k;*/
+    delete k;
+    delete yaay;
 
-    vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
+    /*vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
     ifstream Filelist("filelist2nd.txt"); 
     string c;
     string c2="midi_files/";
@@ -51,14 +68,14 @@ int main() {
             //string path="midi_output/"+c+"_compare_"+c3;
             //generated.save(path);
 
-            //song->similarity(*song2,0,0);
+            song->similarity(*song2,0,0);
             delete song2;
             break;
         }
         delete song;
         break;
     }
-    Filelist.close();
+    Filelist.close();*/
 
     return 0;
 }
