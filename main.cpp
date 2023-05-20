@@ -9,9 +9,19 @@
 #include "Utils.h"
 
 #include "NFA.h"
-#include "gui/Gui.h"
 
 int main() {
+    //DFA aka("JSONWORK.json");
+    //DFA saka("dfa.json");
+
+    /*MergeAlpabets(s,k);
+    DFA a(k,s, false);
+    a.print();
+
+    const char ep = 'e';
+    RE m(a.ToRe() , ep);
+    m.re;*/
+
     vector<int> V = {1,1,1,1,1,-1};
     Song* s = new Song("midi_files/c0.mid" , false);
 
@@ -23,31 +33,16 @@ int main() {
 
     DFA a = m.getProductAutomata();
     Song* yaay = new Song(a,V,true);
-    /*
-    Song* k = new Song("midi_files/[ontiva.com] Tekken Tag Tournament - Hwoarang Theme-tiny.wav.mid" , false);
-    RE r = k->toRegex(1, 1, 1, 1, 1, -1)[0];
-    ENFA e = r.toENFA();
-    NFA n(e.getJsonNfa());
-    WNFA w = n.toWNFA();
-    */
 
-
-    /*
-    string m = "(m+y)*+(e+y+m+i)s";
-    const char e = 'e';
-    RE r(m,e);
-    ENFA k = r.toENFA();
-    //ENFA s("enfa.json");
-    //DFA s = k.toDFA();
-    */
-    /*Song* s = new Song("midi_files/c0.mid" , false);
-    Song* k = new Song("midi_files/c1.mid" , false);
-    Genre m = Genre(s,k,{1,1,1,1,0,1},"test",0,0);
+    yaay->save("tazazazazazaz.mid");
+    //s->save(s->getTitle());
+    //s->similarity(*k,0,0);
 
     delete s;
-    delete k;*/
-    /*
-    vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
+    delete k;
+    delete yaay;
+
+    /*vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
     ifstream Filelist("filelist2nd.txt"); 
     string c;
     string c2="midi_files/";
@@ -73,14 +68,14 @@ int main() {
             //string path="midi_output/"+c+"_compare_"+c3;
             //generated.save(path);
 
-            //song->similarity(*song2,0,0);
+            song->similarity(*song2,0,0);
             delete song2;
             break;
         }
         delete song;
         break;
     }
-    Filelist.close();
-    */
+    Filelist.close();*/
+
     return 0;
 }

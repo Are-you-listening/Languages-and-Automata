@@ -49,7 +49,6 @@ void WNFA::addState(string& name, bool start, bool endState) {
     }
 }
 
-
 double WNFA::weightedaccepts(const string &input) const {
     double result = 0.0;
     map<string, pair<double,weightedNode*> > currentStates;
