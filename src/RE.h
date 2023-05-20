@@ -23,6 +23,7 @@ public:
     string epsilon;
     RE(const string& re,const char epsilon);
     ENFA toENFA()&;
+    ~RE();
 };
 
 #endif //TA__TOG_RE_H

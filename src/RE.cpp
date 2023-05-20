@@ -156,3 +156,7 @@ ENFA RE::toENFA()& {
     }
     return enfa;
 }
+
+RE::~RE() {
+
+}

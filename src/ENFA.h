@@ -60,8 +60,7 @@ public:
      * @return
      */
     json getJsonNfa() const;
-
-    void clear();
+    ~ENFA();
 };
 
 

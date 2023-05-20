@@ -336,8 +336,6 @@ DFA ENFA::toDFA() &{
     t.load(getJson());
     DFA dfa = t.toDFA();
 
-    clear();
-
     return dfa;
 }
 
@@ -804,13 +802,14 @@ json ENFA::getJsonNfa() const {
     return j;
 }
 
+ENFA::~ENFA() {
+    for(auto s: states){
+        delete s;
+    }
+}
+
 ENFA::ENFA(state*startingState, const vector<state*> &states, const set<string> &alphabet,
            const vector<state*> &endstates, const string &eps) : startingState(startingState), states(states),
                                                                   alphabet(alphabet), endstates(endstates), eps(eps) {}
 
-void ENFA::clear() {
-    for(auto &k: states){
-        delete k;
-    }
-}
 

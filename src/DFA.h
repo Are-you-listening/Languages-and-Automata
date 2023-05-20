@@ -100,7 +100,7 @@ public:
 
     ENFA reverse();
 
-    void clear();
+    ~DFA();
 };
 
 #endif //TA__TOG_DFA_H
