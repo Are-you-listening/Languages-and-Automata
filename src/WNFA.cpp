@@ -242,8 +242,8 @@ WDFA WNFA::toWDFA() {
     return result;
 }
 
-/*WNFA::~WNFA() {
+WNFA::~WNFA() {
     for(auto &k: states){
         delete k.second;
     }
-}*/
+}
