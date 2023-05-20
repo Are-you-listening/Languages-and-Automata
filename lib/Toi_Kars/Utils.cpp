@@ -16,7 +16,7 @@ vector<string> MergeVectors(vector<string> &a, vector<string> &b){
 
 //Check if an item exists in a vector
 bool Find(vector<string> &a, string &k){
-    for(auto z: a){
+    for(const auto &z: a){
         if(k==z){
             return true;
         }
@@ -72,7 +72,7 @@ string NameConvert2(vector<string> &a) {
 }
 
 vector<string> eqClassToState(const string &a){
-    string tempstring;
+    string tempString;
     vector<string> states;
 
     if(a[0]!='{'){
@@ -80,15 +80,15 @@ vector<string> eqClassToState(const string &a){
     }
 
     for(char k:a) {
-        if ((k == '{')) {
+        if (k == '{') {
             continue;
-        } else if ((k == ',') || (k == '}')) {
-            states.push_back(tempstring);
-            tempstring = ""; //Reset temp
+        }else if ((k == ',') || (k == '}')) {
+            states.push_back(tempString);
+            tempString = ""; //Reset temp
         } else if (k==' '){
             continue;
         } else {
-            tempstring += k;
+            tempString += k;
         }
     }
     return states;

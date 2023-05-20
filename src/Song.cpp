@@ -7,7 +7,6 @@
 struct Vectors_Params{
 public:
     //timestamp, note on, instrument, note, velocity, pattern
-    //vector<vector<int>> vectors={{1,1,1,1,0,1}}; //TODO dit zullen er meer worden, maar voor nu debuggen te vergemakkelijken zijn er het 1
     //vectors={{1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4}};
 
     //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
@@ -30,27 +29,15 @@ vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) {
         ENFA k = z.toENFA();
         DFA l = k.toDFA();
 
-        if(complement){
-            l = l.complement();
-        }
-
+        if(complement){l = l.complement();}
         if(reverse){
             ENFA m = l.reverse();
             l = m.toDFA();
         }
 
-        //l.minimize();
         tt.push_back(l);
     }
     return tt;
-}
-
-[[nodiscard]] pair<vector<RE>, vector<RE>> Song::sort(const pair<vector<RE>, vector<RE>> &t) const {
-    pair<vector<RE>, vector<RE>> k = t;
-    if(t.first.size()>t.second.size()){
-        k = {t.second, t.first};
-    }
-    return k;
 }
 
 [[nodiscard]] bool Song::ProperlyInitialized() const {
@@ -87,12 +74,13 @@ Song::Song(const string &path, bool console) : console(console) {
     REQUIRE(FileExists(path) , "Given file not found");
 
     fInitCheck=this;
+
+    //Find the correct title of the midi file without the path
     if (find(path.begin(), path.end(), '/') != path.end()){
         title = string(find(path.begin(), path.end(), '/')+1, path.end());
     }else{
         title = path;
     }
-
 
     string log = getCurrTime() + " Parsing note_map from .mid file...\n\n";
     if(console){cout << log;}
@@ -100,7 +88,6 @@ Song::Song(const string &path, bool console) : console(console) {
 
     MidiParser m(path);
     note_map = m.getNoteMap();
-
     
     int count = 0;
     for(const auto &entry: note_map){
@@ -110,12 +97,6 @@ Song::Song(const string &path, bool console) : console(console) {
     log = getCurrTime() + " Initialising new Song Object...\n\n";
     if(console){cout << log;}
     logs.push_back(log);
-
-    //TODO Retrieve title from path!
-
-    //checkWNFA(toRegex(0, 0, 0, 1, 0, -1)[0]);
-    //midiExporter e("out.mid", note_map);
-
 
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
@@ -149,7 +130,7 @@ Song::~Song(){
     logs.push_back(log);
 
     for(auto it = note_map.begin(); it!=note_map.end() ; it++){
-        for(Note* note: it->second){
+        for(Note* &note: it->second){
             delete note;
         }
     }
@@ -161,7 +142,7 @@ Song::~Song(){
     char epsilon='*';
     vector<RE> regex_list;
     int count = 0;
-    string temp = "";
+    string temp;
 
     string log = getCurrTime() + " Converting the Object to Regex's...\n\n";
     if(console){cout << log;}
@@ -251,10 +232,9 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
 
-    for(long unsigned int i = 0; i<d.size(); i++){ // Given song
-        for(long unsigned int j = 0; j<s.size(); j++){
-            string test=s[j].re;
-            bool b = d[i].accepts(test); //Addition Anas
+    for(const DFA &i: d){ // Given song
+        for(const RE &j: s){
+            bool b = i.accepts(j.re);
 
             if(b){
                 succes++;
@@ -355,7 +335,7 @@ double Song::magimathical(vector<vector<double>> &results) {
     logs.push_back(log);
 
     //Anas Working Space
-    for(vector<vector<int>>::iterator v=PARAMS.vectors.begin(); v!=PARAMS.vectors.end(); v++){
+    for(auto v=PARAMS.vectors.begin(); v!=PARAMS.vectors.end(); v++){
         int a=1;
         int b=1;
         int c=1;
@@ -518,8 +498,8 @@ void Song::save(const string &path) {
     logs.push_back(log);
 
     midiExporter exp(path, note_map);
-    
-    //TODO ENSURE FIL EXISTS
+
+    ENSURE(FileExists(path),"No file has been created");
 }
 
 void Song::switchConsoleOutput() {
@@ -528,7 +508,6 @@ void Song::switchConsoleOutput() {
 }
 
 Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
-    long unsigned int index = 0; //Index ptr van param
     stack<char> tempstack; //Helper variable
     vector<vector<int>> info; //{ {possible time_stamps}, {possible durations}, {possible notes},  {possible velocity's}, {possible instruments} }
     vector<int> options = {}; //Possible values
@@ -576,7 +555,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
                 cerr << "kleene star in regex" << endl;
                 throw std::exception();
             }else {
-                for(vector<int>::iterator it2=param.begin(); it2!=param.end()-1; it2++){
+                for(auto it2=param.begin(); it2!=param.end()-1; it2++){
                     if(*it2==true){
                         note_values.push_back(toInt(*it));
                         it++;
@@ -602,24 +581,17 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
 }
 
 double Song::checkWNFA(RE &r,RE &s){
-    /**
-     * format indexes:
-     * 0: accepted note line
-     * 1: self loop start
-     * 2: self loop end
-     * 3: self loop everywhere else
-     * 4: arrow to the next state
-     * */
-
     string log = getCurrTime() + " Started using gold? (WNFA/WDFA)..\n\n";
     if(console){cout << log;}
     logs.push_back(log);
-    
+
+    //Convert to WDFA
     ENFA e = r.toENFA();
     json j = e.getJsonNfa();
     NFA n(j);
     WNFA w = n.toWNFA();
     WDFA m = w.toWDFA();
-    double d = m.weightedaccepts(s.re);
+
+    //Calculate value
     return m.weightedaccepts(s.re);
 }

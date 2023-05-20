@@ -51,13 +51,6 @@ private:
     map<pair<unsigned int, bool>, vector<Note*>> note_map; //{TimeStamp, on/off} {Note*} Timestamp=0,001s
 
     /**
-     * \brief Set the biggest vector to the second argument
-     * @param t
-     * @return
-     */
-    [[nodiscard]] pair<vector<RE>,vector<RE>> sort(const pair<vector<RE>,vector<RE>> &t) const;
-
-    /**
      * \brief Convert Regex's to minimized DFA's
      * @param s
      * @param complement, bool deciding if the DFA complement needs to be taken
@@ -246,6 +239,7 @@ public:
     /**
      * \brief Export this Song back to a .mid File
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
+     * \ENSURE(FileExists(path),"No file has been created");
      * @param path
      */
     void save(const string &path);

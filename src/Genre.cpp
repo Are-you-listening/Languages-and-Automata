@@ -144,7 +144,7 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
         prod = prod.minimize();
     }
 
-    ProductAutomata = {2,prod}; //Construct First ProductAutomata //True = Doorsnede, False = Unie// TODO minimise zou hier terug moeten
+    ProductAutomata = {2,prod}; //Construct First ProductAutomata //True = Doorsnede, False = Unie
 
     log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}
