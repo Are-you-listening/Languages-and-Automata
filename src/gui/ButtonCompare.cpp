@@ -32,6 +32,7 @@ void ButtonCompare::click() {
         for(int i =2; i<songs.size(); i++){
             g.addGenre(songs[i]);
         }
+
     }
 
 }
