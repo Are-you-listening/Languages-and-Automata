@@ -225,11 +225,16 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
         for(long unsigned int j = 0; j<s.size(); j++){
             string test=s[j].re;
             bool b = d[i].accepts(test); //Addition Anas
-            if(b){succes++;}
+            if(b){
+                if(j!=s.size()-1&&i!=d.size()-1&&d[i+1].accepts(s[j+1].re)){
+                    succes++;
+                    break;
+                }
+            }
         }
     }
 
-    double result = succes / (double) (d.size() * s.size()) ;
+    double result = succes / (double) d.size();
     if(d.empty() || s.empty()){
         result=0;
     }
@@ -245,7 +250,6 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
 
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
-    double count = 0; //Counter to keep Nr of Operations
 
     for(long unsigned int i = 0; i<d.size(); i++){ // Given song
         for(long unsigned int j = 0; j<s.size(); j++){
@@ -257,11 +261,10 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
                 break; //Idea Anas
             }
         }
-        count ++;
     }
 
-    double result = succes / count ;
-    if(count==0){
+    double result = succes / (double) d.size() ;
+    if(d.size()==0){
         result=0;
     }
     if(result>=0 && result<=1){succeeded = true;}
@@ -383,9 +386,9 @@ double Song::magimathical(vector<vector<double>> &results) {
             e=0;
             V0=1;
         }
-        double boolparam = (40.0/V0)*e + (17.0/V1)*d + (6.0/V2)*c + (17.0/V3)*b + (20.0/V4)*a + pow(5,(*v)[5]); //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
+        double boolparam = (40.0/V0)*e + (17.0/V1)*d + (6.0/V2)*c + (17.0/V3)*b + (20.0/V4)*a; //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
         for(vector<vector<double>>::iterator it=results.begin(); it!=results.end(); it++){
-            result+=(boolparam*(0.7*(*it)[0]+0.25*(*it)[1]+0.05*(*it)[2]))/((double)results[0].size());
+            result+=(boolparam*(0.7*(*it)[0]+0.25*(*it)[1]+(0.05*(*it)[2])*pow(5,(*v)[5]))/5)/((double)results[0].size());
         }
     }
     result=result/((double)results.size());
