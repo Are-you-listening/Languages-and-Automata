@@ -72,7 +72,7 @@ bool Genre::inGenre(Song *&s) {
     return succes;
 }
 
-Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, bool console, bool TFA): param(params), name(name) ,  console(console), TFA(TFA) {
+Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bool console, bool TFA): param(params), name(name) ,  console(console), TFA(TFA) {
     REQUIRE(params.size()==6, "Params doesn't has all the parameters");
 
     //Set Data
@@ -102,11 +102,12 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     logs.push_back(log);
 
     DFA prod = DFA(z,z2, false);
-    log = getCurrTime() + " Minimizing our beautiful product..\n\n";
-    if(console){cout << log;}
-    logs.push_back(log);
 
     if(TFA){
+        log = getCurrTime() + " Minimizing our beautiful product..\n\n";
+        if(console){cout << log;}
+        logs.push_back(log);
+
         prod = prod.minimize();
     }
 

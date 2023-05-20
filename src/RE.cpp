@@ -16,18 +16,17 @@ RE::RE(const string& re, const char epsilon) {
 
 ENFA * RE::plus(ENFA& enfa1, ENFA& enfa2) {
     ENFA* enfa=new ENFA();
-    state* temp1=new state();
+    state* temp1=new state(to_string(tempcounter.count) , true, false);
     state* temp2=new state();
-    temp1->starting= true;
-    temp1->accepting= false;
-    temp1->name= to_string(tempcounter.count);
+
     tempcounter.count++;
+
     enfa->startingState=temp1;
-    vector<state*> endstates={temp1};
-    enfa->endstates=endstates;
+    //vector<state*> endstates=;
+    enfa->endstates={temp1};
     enfa->eps=RE::epsilon;
-    vector<state*> states={temp1};
-    enfa->states=states;
+    //vector<state*> states={temp1};
+    enfa->states={temp1};
     state* temp=(*enfa->endstates.begin());
     enfa->concatenate(enfa1);
 
@@ -45,8 +44,8 @@ ENFA * RE::plus(ENFA& enfa1, ENFA& enfa2) {
     enfa->endstates[1]->accepting= false;
     enfa->endstates[0]->addTransitionFunction(RE::epsilon,temp2);
     enfa->endstates[1]->addTransitionFunction(RE::epsilon,temp2);
-    endstates={temp2};
-    enfa->endstates=endstates;
+    //endstates={temp2};
+    enfa->endstates={temp2};
     enfa1.startingState->starting= false;
     enfa->states.push_back(temp2);
     return enfa;

@@ -56,11 +56,6 @@ public:
      * @return
      */
     vector<pair< double,weightedNode* >> accepts(const char &input);
-
-    /**
-     * \brief Simple destructor to delete used memory
-     */
-    virtual ~weightedNode();
 };
 
 #endif //DFA_WEIGHTEDNODE_H

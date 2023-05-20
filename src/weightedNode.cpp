@@ -23,7 +23,3 @@ vector<pair<double, weightedNode * >> weightedNode::accepts(const char &input) {
 const string &weightedNode::getName() const {
     return name;
 }
-
-weightedNode::~weightedNode() {
-    delete this;
-}

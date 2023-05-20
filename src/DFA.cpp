@@ -24,10 +24,7 @@ void DFA::load(const json &j) {
         int count=0;
         while(count!=b.size()){
             json d1 =b[count];
-            state* q= new state();
-            q->name=d1["name"];
-            q->starting=d1["starting"];
-            q->accepting=d1["accepting"];
+            state* q= new state(d1["name"],d1["starting"],d1["accepting"] );
             if (q->starting){
                 DFA::startingState = q;
             }
@@ -138,50 +135,58 @@ void state::addTransitionFunction(string c, state * q){
         cCopy+=to_string(count);
         count++;
     }
-    state::states[cCopy]=q;
+    states[cCopy]=q;
 }
 
 state* state::getComplement() {
-    state* new_state = new state() ;
-    new_state->name = name;
-    new_state->states = states;
-    new_state->accepting = !accepting;
-    new_state->starting = starting;
+    state* new_state = new state( name, starting, !accepting ) ;
+    new_state->states = states; //TODO Dit is memory wise best wel een probleem
     return new_state;
 }
 
-void state::addTransitionFunctionENFA(string c, state *q) {
-    string* ptr = &c;
-    string cCopy = *ptr;
-    state::statesENFA[cCopy].insert(q);
+void state::addTransitionFunctionENFA(const string &c, state *q) {
+    //string* ptr = &c;
+    //string cCopy = *ptr;
+    statesENFA[c].insert(q);
 }
 
-DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
+state::state() {}
 
+state::state(const string &name,bool starting, bool accepting) : name(name), starting(starting),
+                                              accepting(accepting) {}
+
+DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     DFA final;
     bool a= true;
-    state* startstate = new state();
-    startstate->starting= true;
+
+    //Merge the alpabets
     final.alphabet=dfa1.alphabet;
     final.alphabet.insert(dfa2.alphabet.begin(),dfa2.alphabet.end());
-    startstate->name="("+dfa1.startingState->name+","+dfa2.startingState->name+")";
-    if(dfa1.startingState->accepting && dfa2.startingState->accepting && c){
-        startstate->accepting= true;
-    } else if((dfa1.startingState->accepting || dfa2.startingState->accepting) && !c) {
-        startstate->accepting=true;
-    } else{
-        startstate->accepting = false;
-    }
+
+    //Set Starting State
+        state* startstate = new state("("+dfa1.startingState->name+","+dfa2.startingState->name+")" , true, false);
+        startstate->starting= true;
+
+        //Set Accepting true/false according (Depending on union/intersection)
+        if(dfa1.startingState->accepting && dfa2.startingState->accepting && c){
+            startstate->accepting= true;
+        } else if((dfa1.startingState->accepting || dfa2.startingState->accepting) && !c) {
+            startstate->accepting=true;
+        } else{
+            startstate->accepting = false;
+        }
     final.startingState=startstate;
+
     set<state*> check_states = {startstate};
     set<tuple<state*, state*, state*>> current_states = {make_tuple(startstate, dfa1.startingState, dfa2.startingState)};
     set<tuple<state*, state*, state*>> new_states;
     set<string> current_names = {startstate->name};
     set<string> new_names;
+
     while (a){
         //cout << get<0>(*current_states.begin())->name << " " << current_states.size() << endl;
         a=false;
-        for(auto tup: current_states){
+        for(auto &tup: current_states){
             for(set<string>::const_iterator it2=final.alphabet.begin(); it2!=final.alphabet.end(); it2++){
 
                 state* temp;
@@ -194,7 +199,6 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
                 temp->name = name;
                 if ((state1->states[(*it2)]->accepting && state2->states[(*it2)]->accepting && c) || (state1->states[(*it2)]->accepting || state2->states[(*it2)]->accepting && !c)) {
                     temp->accepting = true;
-
                 }
 
                 if (new_names.find(name) == new_names.end() && current_names.find(name) == current_names.end()){
@@ -208,7 +212,6 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
 
                     a=true;
                 }
-
 
                 get<0>(tup)->addTransitionFunction((*it2),temp);
             }
@@ -224,7 +227,6 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
         new_states.clear();
         new_names.clear();
     }
-
 
     std::copy(check_states.begin(),check_states.end(), std::back_inserter(final.states));
 
@@ -425,3 +427,20 @@ void DFA::load(const set<string> &alfa, const vector<state *> &states, state *st
     DFA::startingState = start_state;
     DFA::endstates = end_states;
 }
+
+void DFA::AddState(state *k) {
+    states.push_back(k);
+    if(k->accepting){
+        endstates.push_back(k);
+    }
+
+    if(k->starting){
+        startingState=k;
+    }
+}
+
+/*DFA::~DFA() {
+    for(auto &k: states){
+        delete k;
+    }
+}*/

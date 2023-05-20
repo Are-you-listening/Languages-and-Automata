@@ -241,6 +241,7 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
                 break; //Idea Anas
             }
         }
+        count ++;
     }
 
     double result = succes / (double) d.size() ;

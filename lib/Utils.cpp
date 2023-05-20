@@ -287,13 +287,8 @@ void MergeAlpabets(DFA &z, DFA &z2) {
 
     set_difference(z.getAlphabet().begin(), z.getAlphabet().end(), z2.getAlphabet().begin(), z2.getAlphabet().end(),std::inserter(Difference, Difference.begin()));
     set_difference(z2.getAlphabet().begin(), z2.getAlphabet().end(), z.getAlphabet().begin(), z.getAlphabet().end(),std::inserter(Difference2, Difference2.begin()));
-    state *deadstate = new state();
-    deadstate->name = "{}";
-    deadstate->accepting = false;
-    deadstate->starting = false;
-    vector<state *> Vstates = z2.getStates();
-    Vstates.push_back(deadstate);
-    z2.setStates(Vstates);
+    state* deadstate = new state("{}", false, false);
+    z2.AddState(deadstate);
     for (auto c = z2.getAlphabet().begin(); c != z2.getAlphabet().end(); c++) {
         deadstate->addTransitionFunction(*c, deadstate);
     }
@@ -304,13 +299,9 @@ void MergeAlpabets(DFA &z, DFA &z2) {
             (*it2)->addTransitionFunction((*it), deadstate);
         }
     }
-    deadstate = new state();
-    deadstate->name = "{}";
-    deadstate->accepting = false;
-    deadstate->starting = false;
-    Vstates = z.getStates();
-    Vstates.push_back(deadstate);
-    z.setStates(Vstates);
+    deadstate = new state("{}", false, false);
+    z.AddState(deadstate);
+
     for (auto c = z.getAlphabet().begin(); c != z.getAlphabet().end(); c++) {
         deadstate->addTransitionFunction(*c, deadstate);
     }
