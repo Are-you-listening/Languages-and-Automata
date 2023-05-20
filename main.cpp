@@ -11,12 +11,16 @@
 #include "NFA.h"
 #include "gui/Gui.h"
 int main() {
+    Song k("midi_files/c0.mid",1);
+    Song s("midi_files/c1.mid",1);
+    s.similarity(k,0,0);
+    /*
     Song* s = new Song("midi_files/c0.mid" , false);
     RE r = s->toRegex(1, 1, 1, 1, 1, -1)[0];
     ENFA e = r.toENFA();
-    //DFA d = e.toDFA();
-    cout << "he" << endl;
+    DFA d = e.toDFA();
     delete s;
+     */
 
     /*
     Song* s = new Song("midi_files/c0.mid" , false);

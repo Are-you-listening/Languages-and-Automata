@@ -91,6 +91,7 @@ ENFA RE::toENFA()& {
         if ((*it)=='+'){
             RE regex(re.substr(count+1),(*RE::epsilon.begin()));
             ENFA temp= regex.toENFA();
+            temp.deletable = false;
             enfa = RE::plus(enfa,temp);
             break;
         } else if ((*it)=='('){
@@ -114,6 +115,7 @@ ENFA RE::toENFA()& {
             if ((*(re.begin()+count+1))=='*'){
                 RE regex(temp_string,(*RE::epsilon.begin()));
                 ENFA temp= regex.toENFA();
+                temp.deletable = false;
                 RE::kleene(temp);
                 if (enfa.startingState == nullptr){
                     enfa=temp;
@@ -123,6 +125,7 @@ ENFA RE::toENFA()& {
             } else {
                 RE regex(temp_string,(*RE::epsilon.begin()));
                 ENFA temp= regex.toENFA();
+                temp.deletable = false;
                 if (enfa.startingState == nullptr){
                     enfa=temp;
                 } else {

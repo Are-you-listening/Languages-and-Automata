@@ -534,8 +534,9 @@ void DFA::inRange(int range, set<state*> &out,set<state*>& last, set<state*>& en
 }
 
 DFA::~DFA() {
+    /*
     for(auto &k:states){
         delete k;
-    }
+    }*/
 }
 
