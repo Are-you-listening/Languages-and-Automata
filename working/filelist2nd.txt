@@ -1,3 +1,14 @@
+c0.mid
+c1.mid
+c2.mid
+c3.mid
+c4.mid
+c5.mid
+c6.mid
+c7.mid
+c8.mid
+c9.mid
+c10.mid
 98_-_Battle_Against_a_True_Hero.mid
 air-man-s-stage-8-.mid
 battle-of-marx-v2-0-.mid

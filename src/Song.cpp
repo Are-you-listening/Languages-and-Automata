@@ -241,7 +241,6 @@ double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
                 break; //Idea Anas
             }
         }
-        count ++;
     }
 
     double result = succes / (double) d.size() ;
@@ -275,8 +274,8 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
 
     //Check Notes
     WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
-    result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.       
-
+    result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
+    
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
@@ -336,7 +335,8 @@ double Song::magimathical(vector<vector<double>> &results) {
     logs.push_back(log);
 
     //Anas Working Space
-    for(auto v=PARAMS.vectors.begin(); v!=PARAMS.vectors.end(); v++){
+    int count=0;
+    for(auto v=PARAMS.vectors.begin(); v!=PARAMS.vectors.end(); v++, count++){
         int a=1;
         int b=1;
         int c=1;
@@ -367,10 +367,8 @@ double Song::magimathical(vector<vector<double>> &results) {
             e=0;
             V0=1;
         }
-        double boolparam = (40.0/V0)*e + (17.0/V1)*d + (6.0/V2)*c + (17.0/V3)*b + (20.0/V4)*a; //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
-        for(vector<vector<double>>::iterator it=results.begin(); it!=results.end(); it++){
-            result+=(boolparam*(0.7*(*it)[0]+0.25*(*it)[1]+(0.05*(*it)[2])*pow(5,(*v)[5]))/5)/((double)results[0].size());
-        }
+        double boolparam = ((40.0/V0)*e + (17.0/V1)*d + (6.0/V2)*c + (17.0/V3)*b + (20.0/V4)*a+ pow(pow(2,3.0/4.0)* sqrt(5),(*v)[5]))/200; //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
+        result+=boolparam*(7*results[count][0]+2*results[count][1]+1*results[count][2])/(double)results[0].size();
     }
     result=result/((double)results.size());
     if (result>1){
@@ -533,10 +531,9 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
     //For each element of the RE
     for(string::iterator it=k.re.begin(); it!=k.re.end(); it++){
         vector<unsigned int> note_values;
-        if(*it=='+'){
+        if(*it=='+'){ //TODO kan niet de perfecte fix zijn
             continue;
         }
-
         if((*it)=='('){
             it++;
             while((*it)!='+'){
@@ -546,8 +543,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
             while((*it)!=')'){
                 it++;
             }
-
-            Note* n=new Note( note_values[0]*1000, tan(note_values[1]/155*1.6)/1.5*1000 ,note_values[3],note_values[4]*3,note_values[2]);
+            Note* n=new Note(note_values[0]*1000,tan(note_values[1]/155*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
             note_map[{note_values[0]*1000,1}].push_back(n);
             Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
             note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2);
