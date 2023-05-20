@@ -32,7 +32,9 @@ protected:
     vector<state*> ECLOSE2(state* Etransition, string input)const&;
     void Etransitions(vector<state*> &states)const&;
     void Etransitions(vector<state*> &states, vector<state*> &found)const&;
+
 public:
+    bool deletable = false;
     state* startingState;
     vector<state*> states;
     set<string> alphabet;

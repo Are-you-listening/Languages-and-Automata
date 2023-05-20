@@ -803,9 +803,12 @@ json ENFA::getJsonNfa() const {
 }
 
 ENFA::~ENFA() {
-    for(auto s: states){
-        delete s;
+    if (deletable){
+        for(auto s: states){
+            delete s;
+        }
     }
+
 }
 
 ENFA::ENFA(state*startingState, const vector<state*> &states, const set<string> &alphabet,

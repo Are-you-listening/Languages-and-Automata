@@ -15,6 +15,7 @@ int main() {
     RE r = s->toRegex(1, 1, 1, 1, 1, -1)[0];
     ENFA e = r.toENFA();
     //DFA d = e.toDFA();
+    cout << "he" << endl;
     delete s;
 
     /*

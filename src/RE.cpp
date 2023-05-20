@@ -154,6 +154,8 @@ ENFA RE::toENFA()& {
             break;
         }
     }
+
+    enfa.deletable = true;
     return enfa;
 }
 
