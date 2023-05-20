@@ -23,13 +23,34 @@ using namespace std;
 
 class RE;
 
-bool DirectoryExists(const std::string dirname);
+/**
+ * \brief Check if the given directory exists
+ * @param dirname
+ * @return
+ */
+bool DirectoryExists(const std::string &dirname);
 
-bool FileExists(const std::string dirname);
+/**
+ * \brief Check if a File is existing
+ * @param dirname
+ * @return
+ */
+bool FileExists(const std::string &dirname);
 
-bool FileIsEmpty(const std::string filename);
+/**
+ * \brief Check if a file is empty
+ * @param filename
+ * @return
+ */
+bool FileIsEmpty(const std::string &filename);
 
-bool FileCompare(const std::string leftFileName, const std::string rightFileName);
+/**
+ * \brief Compare 2 files
+ * @param leftFileName
+ * @param rightFileName
+ * @return
+ */
+bool FileCompare(const std::string &leftFileName, const std::string &rightFileName);
 
 /**
  * \brief Merge 2 vectors and remove duplicates
@@ -37,7 +58,7 @@ bool FileCompare(const std::string leftFileName, const std::string rightFileName
  * @param vec2
  * @return
  */
-vector<string> MergeVectors(vector<string> vec1, vector<string> vec2);
+vector<string> MergeVectors(vector<string> &vec1, vector<string> &vec2);
 
 /**
  * \brief Export Curr time to String
@@ -46,18 +67,18 @@ vector<string> MergeVectors(vector<string> vec1, vector<string> vec2);
 string getCurrTime();
 
 /**
- * \brief Convert a value to an unique charachter
+ * \brief Convert a value to an unique character
  * @param value
  * @return
  */
-char toChar(int value);
+char toChar(int &value);
 
 /**
  * \brief Decode a character to it's original integer value
  * @param x
  * @return
  */
-int toInt(const char x);
+int toInt(const char &x);
 
 /**
  * \brief Convert 'info' to possible note combinations
@@ -66,6 +87,11 @@ int toInt(const char x);
  */
 vector<vector<int>> makeNotes(const vector<vector<int>> &info);
 
+/**
+ * \brief Convert different notes to a string in equivalent class form (E.g. {1,2,3} )
+ * @param s
+ * @return
+ */
 string NodesToString(const map<string,weightedNode*> &s);
 
 /**

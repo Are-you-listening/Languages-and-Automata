@@ -13,12 +13,12 @@ using namespace std;
 /**
 Auxiliary functions for file manipulation.
 */
-bool DirectoryExists(const std::string dirname) {
+bool DirectoryExists(const std::string &dirname) {
 	struct stat st;
 	return stat(dirname.c_str(), &st) == 0;
 }
 
-bool FileExists(const std::string filename) {
+bool FileExists(const std::string &filename) {
 	struct stat st;
 	if (stat(filename.c_str(), &st) != 0) return false;
 	ifstream f(filename.c_str());
@@ -31,13 +31,13 @@ bool FileExists(const std::string filename) {
     }   
 }
 
-bool FileIsEmpty(const std::string filename) {
+bool FileIsEmpty(const std::string &filename) {
 	struct stat st;
 	if (stat(filename.c_str(), &st) != 0) return true; // File does not exist; thus it is empty
 	return st.st_size == 0;
 }
 
-bool FileCompare(const std::string leftFileName, const std::string rightFileName) {
+bool FileCompare(const std::string &leftFileName, const std::string &rightFileName) {
 	ifstream leftFile, rightFile;
 	char leftRead, rightRead;
 	bool result;
@@ -46,39 +46,39 @@ bool FileCompare(const std::string leftFileName, const std::string rightFileName
 	leftFile.open(leftFileName.c_str());
 	if (!leftFile.is_open()) {
 		return false;
-	};
+	}
 	rightFile.open(rightFileName.c_str());
 	if (!rightFile.is_open()) {
 		leftFile.close();
 		return false;
-	};
+	}
 
 	result = true; // files exist and are open; assume equality unless a counterexamples shows up.
 	while (result && leftFile.good() && rightFile.good()) {
 		leftFile.get(leftRead);
 		rightFile.get(rightRead);
 		result = (leftRead == rightRead);
-	};
+	}
 	if (result) {
 		// last read was still equal; are we at the end of both files ?
 		result = (!leftFile.good()) && (!rightFile.good());
-	};
+	}
 
 	leftFile.close();
 	rightFile.close();
 	return result;
 }
 
-vector<string> MergeVectors(vector<string> vec1, vector<string> vec2) {
-	for(long unsigned int i = 0; i < vec2.size(); i++){
+vector<string> MergeVectors(vector<string> &vec1, vector<string> &vec2) {
+	for(const auto &i: vec2){
 		bool exists = false;
-		for(long unsigned int j = 0; j < vec1.size(); j++){
-			if(vec1[j] == vec2[i]){
+		for(const auto &j: vec1){
+			if(j == i){
 				exists = true;
 			}
 		}
 		if(!exists){
-			vec1.push_back(vec2[i]);
+			vec1.push_back(i);
 		}
 	}
 	return vec1;
