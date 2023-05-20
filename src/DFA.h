@@ -32,13 +32,17 @@ class ENFA;
 
 class state{
 public:
+    state();
+
+    state(const string &name,bool starting, bool accepting);
+
     map<string,state*> states;
     map<string,set<state*>> statesENFA;
     string name;
     bool starting;
     bool accepting;
     void addTransitionFunction(string c ,state* q);
-    void addTransitionFunctionENFA(string c ,state* q);
+    void addTransitionFunctionENFA(const string &c ,state* q);
     state* getComplement();
 };
 
@@ -69,6 +73,8 @@ public:
 
     void setEndstates(const vector<state *> &endstates);
 
+    void AddState(state* k);
+
     DFA(const string& c);
 
     DFA();
@@ -90,6 +96,8 @@ public:
     DFA complement();
 
     ENFA reverse();
+
+    //virtual ~DFA();
 };
 
 

@@ -183,6 +183,11 @@ public:
      * @return The newly created WDFA
      */
     WDFA toWDFA();
+
+    /**
+     * \brief Destructor to free used memory
+     */
+    //virtual ~WNFA();
 };
 
 #endif //WNFA_WNFA_H

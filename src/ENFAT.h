@@ -24,20 +24,22 @@ class ENFAT {
 private:
     set<string> states;
     set<char> alfabet;
-    map<string, map<char, set<string>>> transition_map;
-    map<string , set<string>> epsilon_transition_map;
+
     string start_state;
     set<string> end_states;
     char epsilon;
+
+    map<string, map<char, set<string>>> transition_map;
+    map<string , set<string>> epsilon_transition_map;
 
     set<string> Eclose(const string& state);
 
     set<string> Eclose(const string& state, const set<string>& found);
 
-    string set_to_string(const set<string> &s) const;
+    [[nodiscard]] string set_to_string(const set<string> &s) const;
 
 public:
-    ENFAT(const string& path);
+    explicit ENFAT(const string& path);
 
     ENFAT();
 

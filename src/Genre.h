@@ -97,7 +97,7 @@ public:
       * @param console
       * @param TFA
       */
-    Genre(Song* &s, Song* &k, const vector<int> &params, const string &name, bool console, bool TFA);
+    Genre(Song* s, Song* k, const vector<int> &params, const string &name, bool console, bool TFA);
 
     /**
      * \brief Output results to a .txt file

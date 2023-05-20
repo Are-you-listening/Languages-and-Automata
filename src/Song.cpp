@@ -202,10 +202,9 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
 
-    for(long unsigned int i = 0; i<d.size(); i++){ // Given song
-        for(long unsigned int j = 0; j<s.size(); j++){
-            string test=s[j].re;
-            bool b = d[i].accepts(test); //Addition Anas
+    for(const DFA &i: d){ // Given song
+        for(const RE &j: s){
+            bool b = i.accepts(j.re);
             if(b){succes++;}
         }
     }
