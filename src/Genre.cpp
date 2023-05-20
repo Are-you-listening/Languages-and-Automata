@@ -29,6 +29,9 @@ DFA Genre::toProductAutomata() {
         vector<RE> t = members[i]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
         ENFA a = t[0].toENFA();
         DFA s = a.toDFA();
+
+        MergeAlpabets(s,ProductAutomata.second); //TODO Is this the correct way of merging? - Kars
+
         ProductAutomata.second = DFA(ProductAutomata.second, s, false); //Extend ProductAutomata
     }
     ProductAutomata.first = (int) members.size();
@@ -70,7 +73,7 @@ bool Genre::inGenre(Song *&s) {
 }
 
 Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, bool console, bool TFA): param(params), name(name) ,  console(console), TFA(TFA) {
-    REQUIRE(params.size()==6, "Params doesn't has all the paramaters");
+    REQUIRE(params.size()==6, "Params doesn't has all the parameters");
 
     //Set Data
     fInitCheck = this;
@@ -92,44 +95,7 @@ Genre::Genre(Song *&s, Song *&k, const vector<int> &params, const string &name, 
     DFA z2 = a2.toDFA();
 
     //Merge the 2 Alphabets
-    set<string> Difference;
-    set<string> Difference2;
-    set_difference(z.getAlphabet().begin(), z.getAlphabet().end(), z2.getAlphabet().begin(), z2.getAlphabet().end(),std::inserter(Difference, Difference.begin()));
-    set_difference(z2.getAlphabet().begin(), z2.getAlphabet().end(), z.getAlphabet().begin(), z.getAlphabet().end(),std::inserter(Difference2, Difference2.begin()));
-    state* deadstate = new state();
-    deadstate->name="{}";
-    deadstate->accepting=false;
-    deadstate->starting=false;
-    vector<state*> Vstates=z2.getStates();
-    Vstates.push_back(deadstate);
-    z2.setStates(Vstates);
-    for(auto c=z2.getAlphabet().begin(); c!=z2.getAlphabet().end(); c++){
-        deadstate->addTransitionFunction(*c, deadstate);
-    }
-    
-    for(auto it=Difference.begin(); it!=Difference.end(); it++){
-        //add to z2
-        for(auto it2=z2.getStates().begin(); it2!=z2.getStates().end(); it2++){
-            (*it2)->addTransitionFunction((*it),deadstate);
-        }
-    }
-    deadstate = new state();
-    deadstate->name="{}";
-    deadstate->accepting=false;
-    deadstate->starting=false;
-    Vstates=z.getStates();
-    Vstates.push_back(deadstate);
-    z.setStates(Vstates);
-    for(auto c=z.getAlphabet().begin(); c!=z.getAlphabet().end(); c++){
-        deadstate->addTransitionFunction(*c, deadstate);
-    }
-    
-    for(auto it=Difference2.begin(); it!=Difference2.end(); it++){
-        //add to z2
-        for(auto it2=z.getStates().begin(); it2!=z.getStates().end(); it2++){
-            (*it2)->addTransitionFunction((*it),deadstate);
-        }
-    }
+    MergeAlpabets(z,z2);
 
     log = getCurrTime() + " Started Product Automata Construction..\n\n";
     if(console){cout << log;}

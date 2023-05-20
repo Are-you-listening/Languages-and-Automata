@@ -23,6 +23,7 @@ using namespace std;
 
 class RE;
 class State;
+class DFA;
 
 /**
  * \brief Check if the given directory exists
@@ -154,5 +155,20 @@ bool Find(vector<State*> &a, State* &k);
  * @return
  */
 string ConvertToEqclassName(vector < vector<string> > &eqClass, const string &s);
+
+/**
+ * \brief Internal helper function for NFA
+ * @param processed
+ * @param name
+ * @return
+ */
+bool Found(vector<pair<string, vector<pair<char, string>>>> &processed, string &name);
+
+/**
+ * \brief Merge the alpabets of 2 DFA's, helper function for Genre
+ * @param z
+ * @param z2
+ */
+void MergeAlpabets(DFA &z, DFA &z2);
 
 #endif
