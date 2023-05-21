@@ -241,9 +241,6 @@ WNFA NFA::toWNFA(){
         }
     }
 
-    vector<weightedNode*> v = {result.getStartState()};
-    adaptDistance(v, start_state, (int) Q.size()-1, 0, -0.2, result); //add weight -0.2
-
     // voeg de transities uit de NFA toe aan de WNFA
     for (pair<string, weightedNode*> state : result.getStates()){
         for (string temp : result.getAlfabet()){
@@ -253,6 +250,9 @@ WNFA NFA::toWNFA(){
             }
         }
     }
+
+    vector<weightedNode*> v = {result.getStartState()};
+    adaptDistance2(-0.2, result); //add weight -0.2
 
     // voeg nieuwe transities toe die enkel in de WNFA aanwezig zijn
     /*
@@ -284,9 +284,8 @@ void NFA::adaptDistance(vector<weightedNode*>& original, State* s, int distance,
             weightedNode* w = result.getState(st->getName()).first;
 
             for (int i=0; i < original.size(); i++) {
-                weightedNode *o = original[i];
                 if (index - i > 0) {
-                    o->addconnection(w, entry.first, (index - i) * weight + 1);
+                    original[i]->addconnection(w, entry.first, (index - i) * weight + 1);
                 }
             }
 
@@ -297,5 +296,20 @@ void NFA::adaptDistance(vector<weightedNode*>& original, State* s, int distance,
                 //adaptDistance(result.getWeightedState(st->getName()).first, st, distance - 1, 0, weight, result);
             }
         }
+    }
+}
+
+void NFA::adaptDistance2(double weight, const WNFA& result){
+    int count=1;
+    vector<char> temp;
+    for(auto it=result.getStates().begin(); it!=result.getStates().end()--; it++){
+        temp.push_back(it->second->getweightedconnections().begin()->first);
+    }
+    for(auto it=result.getStates().begin(); it!=result.getStates().end()--; it++){
+        int count2=count;
+        for(auto it2=result.getStates().begin().operator++(count+1); it2!=result.getStates().end(); it2++, count2++){
+            it->second->addconnection(it2->second,temp[count2],count2*weight+1);
+        }
+        count++;
     }
 }
