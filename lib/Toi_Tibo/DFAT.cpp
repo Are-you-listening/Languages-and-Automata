@@ -590,3 +590,37 @@ nlohmann::json DFAT::getJson() const {
     return data;
 }
 
+void DFAT::load2(const nlohmann::json &data) {
+    for (string s: data["alphabet"].get<std::set<string>>()){
+        alfabet.insert(s[0]);
+    }
+
+    int state_size = data["states"].size();
+    for (int i = 0; i<state_size; i++){
+
+
+        string state_name = data["states"][i]["name"].get<std::string>();
+
+
+
+        states.insert(state_name);
+        bool starting = data["states"][i]["starting"].get<bool>();
+        if (starting){
+            start_state = state_name;
+        }
+
+        bool accepting = data["states"][i]["accepting"].get<bool>();
+        if (accepting){
+            end_states.insert(state_name);
+        }
+
+    }
+    int transition_size = data["transitions"].size();
+    for (int i = 0; i < transition_size; i++){
+        string from = data["transitions"][i]["from"].get<std::string>();
+        string to = data["transitions"][i]["to"].get<std::string>();
+        char input = data["transitions"][i]["input"].get<std::string>()[0];
+        transition_map[from].insert({input, to});
+    }
+}
+

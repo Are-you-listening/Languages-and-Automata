@@ -231,10 +231,9 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
     }
 
     std::copy(check_states.begin(),check_states.end(), std::back_inserter(final.states));
-
     json data = final.getJson();
     DFAT temp;
-    temp.load(data);
+    temp.load2(data);
 
     load(temp.getJson());
 }

@@ -78,6 +78,13 @@ void Gui::start() {
             unsigned int mouse_x = event.xbutton.x;
             unsigned int mouse_y = event.xbutton.y;
 
+            for (auto& b: buttons){
+                if (b->isClicked(mouse_x, mouse_y)){
+                    b->click();
+
+                }
+            }
+
             if (button == 4 || button == 5){
                 for (auto& s_l: song_groups){
                     s_l->doScrolled(mouse_x, mouse_y, button == 4);
@@ -118,12 +125,7 @@ void Gui::start() {
                     }
                 }
 
-                for (auto& b: buttons){
-                    if (b->isClicked(mouse_x, mouse_y)){
-                        b->click();
 
-                    }
-                }
 
             }
 

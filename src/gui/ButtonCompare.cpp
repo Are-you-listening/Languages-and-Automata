@@ -12,16 +12,28 @@ ButtonCompare::ButtonCompare(unsigned int x, unsigned int y, unsigned int width,
 
 void ButtonCompare::click() {
     Song* song = song_box->getSong();
+    vector<Song*> songs = compare->getAllSongs();
 
     if (song == nullptr){
+        if (songs.size() >= 2){
+            Genre g = Genre(songs[0], songs[1], {1,1,1,1,1,-1}, "GUI", 0, 0);
+            for(int i =2; i<songs.size(); i++){
+                g.addGenre(songs[i]);
+            }
+            DFA* genreDFA = g.getProductAutomata();
+            vector<int> v = {1,1,1,1,1,-1};
+            Song* new_song = new Song(genreDFA, v, false);
+            SongWidget* new_widget = new SongWidget(getX()+10, getY()+10, getWidth()-20, 80, new_song);
+            song_box->addSong(new_widget);
+
+            new_song->save("out.mid");
+        }
         return;
     }
 
-    vector<Song*> songs = compare->getAllSongs();
     if (songs.empty()){
         return;
     }
-
 
     if(songs.size() == 1){
         double pct = song->similarity(*songs[0], complement_button->isOn(), reverse_button->isOn());

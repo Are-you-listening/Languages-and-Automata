@@ -24,13 +24,13 @@ void SongWidget::draw(Display *display, Window window, GC graphics_content, int 
     XFontStruct* font_info = XLoadQueryFont(display, "-Sony-Fixed-Medium-R-Normal--24-170-100-100-C-120-JISX0201.1976-0");
     XSetForeground(display,graphics_content, 0);
     XSetFont(display, graphics_content, font_info->fid);
-
+    XFlush(display);
     if (y+offset+height < x+max_height){
         XDrawString(display, window, graphics_content, x+10, using_y+40, &song->getTitle()[0], min(18, (int) song->getTitle().size()));
     }
 
 
-    XSetForeground(display,graphics_content, 900000);
+
 }
 
 unsigned int SongWidget::getX() const {

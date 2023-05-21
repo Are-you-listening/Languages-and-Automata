@@ -11,6 +11,9 @@
 #include "NFA.h"
 #include "gui/Gui.h"
 int main() {
+    Gui g;
+    g.start();
+    /*
     vector<int> V = {1,1,1,1,1,-1};
     Song* s = new Song("midi_files/c0.mid" , false);
 
@@ -27,6 +30,7 @@ int main() {
     delete a;
     delete k;
     delete yaay;
+     */
     /*
     Song* s = new Song("midi_files/c0.mid" , false);
     RE r = s->toRegex(1, 1, 1, 1, 1, -1)[0];

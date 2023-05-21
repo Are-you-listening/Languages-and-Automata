@@ -19,6 +19,7 @@ public:
     DFAT();
     DFAT(const string &path);
     void load(const nlohmann::json& data);
+    void load2(const nlohmann::json& data);
     DFAT(const set<char> &alfabet, const set<string> &states, const map<string , map<char, string>>& transition_map, const string& start_state, const set<string> &end_states);
     bool accepts(const string& s);
     void print() const;
