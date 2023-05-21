@@ -31,7 +31,7 @@ void automaat::addState(string name, bool start, bool endState) {
         startState = n;
     }
     if (endState){
-        endStates.push_back(n);
+        endStates.emplace(n);
     }
 }
 
