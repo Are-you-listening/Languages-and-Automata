@@ -241,6 +241,8 @@ WNFA NFA::toWNFA(){
         }
     }
 
+    adaptDistance2(-0.2, result); //add weight -0.2
+
     // voeg de transities uit de NFA toe aan de WNFA
     for (pair<string, weightedNode*> state : result.getStates()){
         for (string temp : result.getAlfabet()){
@@ -250,9 +252,6 @@ WNFA NFA::toWNFA(){
             }
         }
     }
-
-    vector<weightedNode*> v = {result.getStartState()};
-    adaptDistance2(-0.2, result); //add weight -0.2
 
     // voeg nieuwe transities toe die enkel in de WNFA aanwezig zijn
     /*
