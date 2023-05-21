@@ -300,14 +300,14 @@ void NFA::adaptDistance(vector<weightedNode*>& original, State* s, int distance,
 }
 
 void NFA::adaptDistance2(double weight, const WNFA& result){
-    int count=1;
+    int count=0;
     vector<char> temp;
-    for(auto it=result.getStates().begin(); it!=result.getStates().end()--; it++){
+    for(auto it=result.getStates().begin()++; it!=result.getStates().end(); it++){
         temp.push_back(it->second->getweightedconnections().begin()->first);
     }
     for(auto it=result.getStates().begin(); it!=result.getStates().end()--; it++){
         int count2=count;
-        for(auto it2=result.getStates().begin().operator++(count+1); it2!=result.getStates().end(); it2++, count2++){
+        for(auto it2=it.operator++(2); it2!=result.getStates().end(); it2++, count2++){
             it->second->addconnection(it2->second,temp[count2],count2*weight+1);
         }
         count++;
