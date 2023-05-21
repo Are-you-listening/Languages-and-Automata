@@ -279,6 +279,7 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
 
     //Check Notes
     WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
+    cout << WNFA_result << endl; // TODO dit zou in de log moeten komen denk ik, redelijk handig
     result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
     
     if(result<=1 && result>=0){succes = true;}
