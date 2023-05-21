@@ -99,7 +99,6 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     logs.push_back(log);
 
     DFA* prod = new DFA(z,z2, false);
-
     if(TFA){
         log = getCurrTime() + " Minimizing our beautiful product..\n\n";
         if(console){cout << log;}
@@ -116,7 +115,6 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
 
     delete z;
     delete z2;
-
     ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 }
 

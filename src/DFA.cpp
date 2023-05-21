@@ -156,13 +156,12 @@ state::state(const string &name,bool starting, bool accepting) : name(name), sta
                                               accepting(accepting) {}
 
 DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
-    DFA final;
     bool a= true;
 
     //Merge the alpabets
     MergeAlpabets(dfa1,dfa2);
-    final.alphabet=dfa1->alphabet;
-    final.alphabet.insert(dfa2->alphabet.begin(),dfa2->alphabet.end());
+    alphabet=dfa1->alphabet;
+    alphabet.insert(dfa2->alphabet.begin(),dfa2->alphabet.end());
 
     //Set Starting State
 
@@ -177,19 +176,20 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
         } else{
             startstate->accepting = false;
         }
-    final.startingState=startstate;
+    startingState=startstate;
 
     set<state*> check_states = {startstate};
     set<tuple<state*, state*, state*>> current_states = {make_tuple(startstate, dfa1->startingState, dfa2->startingState)};
     set<tuple<state*, state*, state*>> new_states;
     set<string> current_names = {startstate->name};
     set<string> new_names;
+    set<string> old_names;
 
     while (a){
         //cout << get<0>(*current_states.begin())->name << " " << current_states.size() << endl;
         a=false;
         for(auto &tup: current_states){
-            for(set<string>::const_iterator it2=final.alphabet.begin(); it2!=final.alphabet.end(); it2++){
+            for(set<string>::const_iterator it2=alphabet.begin(); it2!=alphabet.end(); it2++){
 
                 state* temp(new state());;
                 state* state1 = get<1>(tup);
@@ -203,13 +203,13 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
                 if ((state1->states[(*it2)]->accepting && state2->states[(*it2)]->accepting && c) || (state1->states[(*it2)]->accepting || state2->states[(*it2)]->accepting && !c)) {
                     temp->accepting = true;
                 }
-                if (new_names.find(name) == new_names.end() && current_names.find(name) == current_names.end()){
+                if (new_names.find(name) == new_names.end() && current_names.find(name) == current_names.end() && old_names.find(name) == old_names.end()){
                     check_states.insert(temp);
                     new_states.insert(make_tuple(temp, state1->states[(*it2)], state2->states[(*it2)]));
                     new_names.insert(name);
 
                     if (temp->accepting){
-                        final.endstates.push_back(temp);
+                        endstates.push_back(temp);
                     }
 
                     a=true;
@@ -222,6 +222,7 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
         if (new_states.size() == 0){
             break;
         }
+        old_names.insert(current_names.begin(), current_names.end());
         current_states.clear();
         current_names.clear();
         current_states = new_states;
@@ -230,12 +231,9 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
         new_names.clear();
     }
 
-    std::copy(check_states.begin(),check_states.end(), std::back_inserter(final.states));
-    json data = final.getJson();
-    DFAT temp;
-    temp.load2(data);
+    std::copy(check_states.begin(),check_states.end(), std::back_inserter(states));
 
-    load(temp.getJson());
+
 }
 
 DFA* DFA::minimize() {
