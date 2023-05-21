@@ -282,35 +282,38 @@ bool Found(vector<pair<string, vector<pair<char, string>>>> &processed, string &
 }
 
 void MergeAlpabets(DFA* z, DFA* z2) {
-    set<string> Difference;
-    set<string> Difference2;
-
+    //Get Differences
+    set<string> Difference; //Symbols Lacking in z2
+    set<string> Difference2; //Symbols lacking in z
     set_difference(z->getAlphabet().begin(), z->getAlphabet().end(), z2->getAlphabet().begin(), z2->getAlphabet().end(),std::inserter(Difference, Difference.begin()));
     set_difference(z2->getAlphabet().begin(), z2->getAlphabet().end(), z->getAlphabet().begin(), z->getAlphabet().end(),std::inserter(Difference2, Difference2.begin()));
 
-    state* deadstate = new state("{}", false, false);
-    z2->AddState(deadstate);
-    for (auto c = z2->getAlphabet().begin(); c != z2->getAlphabet().end(); c++) {
-        deadstate->addTransitionFunction(*c, deadstate);
-    }
+    //Merge-in Differences
+    z->ExtendAlphabet(Difference2);
+    z2->ExtendAlphabet(Difference);
 
-    for (auto it = Difference.begin(); it != Difference.end(); it++) {
-        //add to z2
-        for (auto it2 = z2->getStates().begin(); it2 != z2->getStates().end(); it2++) {
-            it2->second->addTransitionFunction((*it), deadstate);
+    //Add new transitions to z
+    state* zDead = new state("{}",false, false);
+    z->AddState(zDead);
+    for(const auto &k: z->getAlphabet()){
+        zDead->addTransitionFunction(k,zDead);
+    }
+    for(auto &k: z->getStates()){
+        for(const auto &s: z->getAlphabet()){
+            k.second->addTransitionFunction(s,zDead);
         }
     }
 
-    deadstate = new state("{}", false, false);
-    z->AddState(deadstate);
-    for (auto c = z->getAlphabet().begin(); c != z->getAlphabet().end(); c++) {
-        deadstate->addTransitionFunction(*c, deadstate);
+    //Add new transitions to z2
+    state* zDead2 = new state("{}",false, false);
+    z2->AddState(zDead2);
+    for(const auto &k: z->getAlphabet()){
+        zDead2->addTransitionFunction(k,zDead2);
     }
-
-    for (auto it = Difference2.begin(); it != Difference2.end(); it++) {
-        //add to z2
-        for (auto it2 = z->getStates().begin(); it2 != z->getStates().end(); it2++) {
-            it2->second->addTransitionFunction((*it), deadstate);
+    for(auto &k: z2->getStates()){
+        for(const auto &s: z2->getAlphabet()){
+            k.second->addTransitionFunction(s,zDead2);
         }
     }
+
 }

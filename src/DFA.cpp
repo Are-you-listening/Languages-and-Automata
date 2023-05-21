@@ -119,39 +119,44 @@ void DFA::setEndstates(const vector<state*> &endstates) {
 }
 
 void state::addTransitionFunction(string c, state* q){
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     string* ptr = &c;
     string cCopy = *ptr;
     int count=0;
-    while (states.find(cCopy) != states.end()){
+    /*while (states.find(cCopy) != states.end()){
         cCopy = *ptr;
         cCopy+=to_string(count);
         count++;
-    }
+    }*/
     states[cCopy]=q;
 }
 
 state* state::getComplement() {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     state* new_state(new state( name, starting, !accepting )) ;
     new_state->states = states; //TODO Dit is memory wise best wel een probleem
     return new_state;
 }
 
 void state::addTransitionFunctionENFA(const string &c, state*q) {
+    REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     //string* ptr = &c;
     //string cCopy = *ptr;
     statesENFA[c].insert(q);
 }
 
-state::state() {}
+state::state() {fInitCheck=this;}
 
 state::state(const string &name,bool starting, bool accepting) : name(name), starting(starting),
-                                              accepting(accepting) {}
+                                              accepting(accepting) {fInitCheck=this;}
+
+bool state::ProperlyInitialized() const {
+    return this->fInitCheck==this;
+}
 
 DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
-    bool a= true;
-
     //Merge the alpabets
-    //MergeAlpabets(dfa1,dfa2);
+    MergeAlpabets(dfa1,dfa2);
     alphabet=dfa1->alphabet;
     alphabet.insert(dfa2->alphabet.begin(),dfa2->alphabet.end());
 
@@ -171,6 +176,7 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
     queue<tuple<state*, state*, state*>> todo;
     todo.push({make_tuple(startstate, dfa1->startingState, dfa2->startingState)});
 
+    int count;
 
     set<string> new_names;
     set<string> old_names;
@@ -184,6 +190,7 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
             state* new1 = state1->states[(*it2)];
             state* new2 = state2->states[(*it2)];
 
+            count++;
             string name = "{" + new1->name + "," + new2->name + "}";
             state *temp(new state(name, false, false));
 
@@ -197,7 +204,6 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
                 }
 
                 states[temp->name] = temp;
-                cout << temp->name << endl;
                 get<0>(tup)->addTransitionFunction((*it2), temp);
             } else {
                 state* temp2 = states.find(temp->name)->second;
@@ -560,5 +566,11 @@ const map<string, state *> &DFA::getStates() const {
 
 void DFA::setStates(const map<string, state *> &states) {
     DFA::states = states;
+}
+
+void DFA::ExtendAlphabet(set<string> &k) {
+    for(auto &s: k){
+        this->alphabet.insert(s);
+    }
 }
 

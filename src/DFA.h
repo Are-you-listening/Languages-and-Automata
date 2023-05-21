@@ -31,6 +31,7 @@ using json = nlohmann::json;
 class ENFA;
 
 class state{
+    const state* fInitCheck;
 public:
     state();
 
@@ -44,6 +45,10 @@ public:
     void addTransitionFunction(string c ,state* q);
     void addTransitionFunctionENFA(const string &c ,state* q);
     state* getComplement();
+
+    bool ProperlyInitialized() const;
+
+
 };
 
 class DFA {
@@ -101,6 +106,8 @@ public:
     ENFA reverse();
 
     ~DFA();
+
+    void ExtendAlphabet(set<string> &k);
 };
 
 #endif //TA__TOG_DFA_H
