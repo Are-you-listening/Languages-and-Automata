@@ -307,7 +307,11 @@ void NFA::adaptDistance2(double weight, const WNFA& result){
     }
     for(auto it=result.getStates().begin(); it!=result.getStates().end()--; it++){
         int count2=count;
-        for(auto it2=it.operator++(2); it2!=result.getStates().end(); it2++, count2++){
+        for(auto it2=it; it2!=result.getStates().end(); it2++, count2++){
+            if(it2==it){
+                it2++;
+                it2++;
+            }
             it->second->addconnection(it2->second,temp[count2],count2*weight+1);
         }
         count++;
