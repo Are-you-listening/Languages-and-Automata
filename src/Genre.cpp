@@ -53,12 +53,14 @@ bool Genre::inGenre(Song *&s) {
     vector<RE> st = s->toRegex(param[0],param[1],param[2],param[3],param[4],-1);
 
     //Generate a Song and check how much similar it is with the given song
+
+
     Song k = Song(ProductAutomata.second, param, console);
     if(k.similarity(*s,false, false)>=limit){
         succes = true;
     }
 
-    //bool succes = m.accepts(st[0].re);
+    //bool succes = m->accepts(st[0].re);
     if(succes){
         log = getCurrTime() + " Found matching results on the characteristics on this Genre!\n\n";
     }else{

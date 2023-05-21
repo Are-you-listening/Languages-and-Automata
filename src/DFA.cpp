@@ -401,12 +401,12 @@ ENFA DFA::reverse() {
     return n;
 }
 
-void DFA::load(const set<string> &alfa,const map<string,state*> &states, state*start_state,
-               const vector<state*> &end_states) {
+void DFA::load( set<string> &alfa, map<string,state*> &states, state*start_state,
+               vector<state*> &end_states) {
     alphabet = alfa;
-    DFA::states = states;
-    DFA::startingState = start_state;
-    DFA::endstates = end_states;
+    this->states = states;
+    startingState = start_state;
+    endstates = end_states;
 }
 
 void DFA::AddState(state*k) {
@@ -574,3 +574,6 @@ void DFA::ExtendAlphabet(set<string> &k) {
     }
 }
 
+DFA::DFA(state *startingState, map<string, state *> &states, set<string> &alphabet,
+         vector<state *> &endstates) : startingState(startingState), states(states),
+                                                                   alphabet(alphabet), endstates(endstates){}

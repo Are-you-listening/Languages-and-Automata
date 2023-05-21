@@ -561,8 +561,8 @@ DFA ENFA::toDFA2() &{
     }
     for(auto state=dfaStates.begin(); state!=dfaStates.end(); state++){
         for(set<string>::const_iterator char1=ENFA::alphabet.begin(); char1!=ENFA::alphabet.end(); char1++){
-            if((*state).second->states.find((*char1)) == (*state).second->states.end()){
-                (*state).second->addTransitionFunction((*char1),emptyset);
+            if((state->second)->states.find((*char1)) == (*state).second->states.end()){
+                (state->second)->addTransitionFunction((*char1),emptyset);
             }
         }
     }

@@ -611,7 +611,6 @@ vector<double> Song::similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, bo
         for(auto c: d){
             check_assemble.push_back(c);
         }
-
     }
 
     //Check Kars

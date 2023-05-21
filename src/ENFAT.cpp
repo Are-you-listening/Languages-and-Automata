@@ -60,14 +60,13 @@ set<string> ENFAT::Eclose(const string &state, const set<string>& found) {
 
 DFA* ENFAT::toDFA() {
     /**
-     * Vormt een DFA om naar e-NFA
-     * */
+  * Vormt een DFA om naar e-NFA
+  * */
     set<string> DFA_start_state;
     DFA_start_state = Eclose(start_state);
     set<set<string>> state_queue;
     //set<set<string>> finished ={};
     map<string, set<string>> finished;
-
     /**
      * maak een DFA-format transitiediagram
      * */
@@ -92,7 +91,6 @@ DFA* ENFAT::toDFA() {
                     new_pos.insert(eq.begin(), eq.end());
                 }
             }
-
             string new_pos_string = set_to_string(new_pos);
             new_transition_map[set_to_string(current)][a] = new_pos_string;
             //if (find(finished.begin(), finished.end(), new_pos) == finished.end()){
@@ -100,10 +98,8 @@ DFA* ENFAT::toDFA() {
                 state_queue.insert(new_pos);
             }
         }
-
         state_queue.erase(current);
         finished[set_to_string(current)] = current;
-
     }
     /**
      * check voor de nieuwe eindstaten
@@ -117,81 +113,64 @@ DFA* ENFAT::toDFA() {
             }
         }
     }
-
     /**
      * convert set<string> naar string format
      * */
-
     set<string> states_string;
     for (auto &fv: finished){
         auto f = fv.second;
         states_string.insert(set_to_string(f));
     }
-
     for (auto &state :states_string){
         if (new_transition_map.find(state) == new_transition_map.end()){
             map<char, string> m;
             new_transition_map[state] = m;
         }
-
         for (const char &a: alfabet){
             if (new_transition_map.at(state).find(a) == new_transition_map.at(state).end()){
                 new_transition_map[state][a] = state;
             }
         }
     }
-
     /**
      * maak nieuwe DFA aan
      * */
+    DFA* d = new DFA();
     string new_start_state = set_to_string(DFA_start_state);
-
     set<string> alfabet_parent;
+
+    //Make alfabet
     for (auto &a: alfabet){
         string s;
         s += a;
         alfabet_parent.insert(s);
     }
+    d->setAlphabet(alfabet_parent);
 
-    map<string, state*> state_linker;
-    map<string,state*> states_parent;
-    vector<state*> end_parent;
-    state* start_state_parent;
-    for (auto &s : states_string){
-        bool start = false;
-        bool end = false;
-
-        state* temp_state(new state(s,start,end));
+    for (const auto &s : states_string){
+        state* temp_state = new state(s, false, false);
 
         if (new_start_state == s){
             temp_state->starting = true;
-            start_state_parent = temp_state;
+            d->setStartingState(temp_state);
         }
-
         if ( end_states_string.find(s) != end_states_string.end() ){
             temp_state->accepting= true;
-            end_parent.push_back(temp_state);
         }
-
-        state_linker.insert({s, temp_state});
-        states_parent[temp_state->name]=temp_state;
+        d->AddState(temp_state);
     }
 
     for (auto &t : new_transition_map){
-        string state_string = t.first;
-        state* depart_state = state_linker.at(state_string);
+        state* depart_state = d->getStates().find(t.first)->second;
         for (const char &a: alfabet){
             string target_string = t.second.at(a);
-            state* arrive_state = state_linker.at(target_string);
-
+            state* arrive_state = d->getStates().find(t.first)->second;
             string s;
             s += a;
             depart_state->addTransitionFunction(s, arrive_state);
         }
     }
-
-    DFA* d = new DFA();
-    d->load(alfabet_parent, states_parent, start_state_parent, end_parent);
+    
     return d;
 }
 

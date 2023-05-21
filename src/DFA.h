@@ -61,7 +61,7 @@ private:
 
 public:
     void load(const json& j);
-    void load(const set<string>& alfa, const map<string,state*> &states, state* start_state, const vector<state*>& end_states);
+    void load(set<string> & alfa, map<string,state*> &states, state* start_state, vector<state*> & end_states);
     state* getStartingState() const;
 
     vector<vector<DFA*>> split(int split_size);
@@ -86,6 +86,9 @@ public:
     DFA(const string& c);
 
     DFA();
+
+    DFA(state *startingState, map<string, state *> &states, set<string> &alphabet,
+        vector<state *> &endstates );
 
     DFA(DFA* dfa1, DFA* dfa2, bool c);
 
