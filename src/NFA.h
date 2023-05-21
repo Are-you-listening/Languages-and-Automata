@@ -90,6 +90,8 @@ public:
      * @return
      */
     WNFA toWNFA();
+
+    void adaptDistance2(double weight, const WNFA& result);
 };
 
 #endif //TA_TOG_NFA_H

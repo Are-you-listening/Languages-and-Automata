@@ -35,61 +35,71 @@ bool pluswithoutbrackets(const string &input){
     return false;
 }
 
-void DFAE::eliminateState(std::string eliminatedstate) {
+void DFAE::eliminateState(const std::string &eliminatedstate) {
+    cout << "inside eliminateState" << endl;
     Node* todestroy = states[eliminatedstate];
-    for (pair<string, Node*> temppair : states) {
+    for (const auto& temppair : states) {
         Node* state = temppair.second;
         if (state == todestroy) {
             continue;
         }
-        list<pair<Node*, string>> connectionstoadd;
-        list<pair<Node*, string>> connectionstoremove;
-        for (const auto &regexconnection: state->regexconnections) {
-            if (regexconnection.first == todestroy) {
-                for (const auto& todestroyconnection: todestroy->regexconnections) {
-                    string tempconnection = regexconnection.second;
-                    if (todestroyconnection.first == todestroy) {
-                        continue;
-                    }
-
-
-                    if (not todestroy->selfconnection.empty()) {
-                        if (pluswithoutbrackets(tempconnection)){
-                            tempconnection += ")";
-                        }
-                        tempconnection += todestroy->selfconnection + "*";
-                    }
-
-                    if (todestroyconnection.second.find('+') != todestroyconnection.second.npos){       // als er een + in staat moeten er haken komen
-                        tempconnection += "(" + todestroyconnection.second + ")";
-                    } else {
-                        tempconnection += todestroyconnection.second;
-                    }
-                    if (tempconnection.find('(') == tempconnection.npos && tempconnection.find(')') != tempconnection.npos){
-                        tempconnection = "(" + tempconnection;
-                    } else if (pluswithoutbrackets(tempconnection)){
-                        tempconnection = "(" + tempconnection + ")";
-                    }
-
-                    connectionstoadd.emplace_back(todestroyconnection.first, tempconnection);
-                    connectionstoremove.emplace_back(regexconnection);
-                }
+        set<pair<Node*, string>> connectionstoadd;
+        set<pair<Node*, string>> connectionstoremove;
+        pair<Node*, string> regexconnection(todestroy, state->regexconnections[todestroy]);
+        for (const auto& todestroyconnection: todestroy->regexconnections) {
+            cout << "inside todestroyconnection" << endl;
+            stringstream tempconnection;
+            tempconnection<< regexconnection.second;
+            if (todestroyconnection.first == todestroy) {
+                continue;
             }
+
+            if (not todestroy->selfconnection.empty()) {
+                if (pluswithoutbrackets(tempconnection.str())){
+                    tempconnection << ")";
+                }
+                tempconnection << todestroy->selfconnection << "*";
+            }
+
+            if (todestroyconnection.second.find('+') != todestroyconnection.second.npos){       // als er een + in staat moeten er haken komen
+                tempconnection << "(" << todestroyconnection.second << ")";
+            } else {
+                tempconnection << todestroyconnection.second;
+            }
+            string tempconnection_str = tempconnection.str();
+            if (tempconnection_str.find('(') == tempconnection_str.npos && tempconnection_str.find(')') != tempconnection_str.npos){
+                stringstream temp;
+                temp << "(" << tempconnection_str;
+                tempconnection.clear();
+                tempconnection << temp.str();
+            } else if (pluswithoutbrackets(tempconnection_str)){
+                stringstream temp;
+                temp << "(" << tempconnection_str << ")";
+                tempconnection.clear();
+                tempconnection << temp.str();
+            }
+
+            connectionstoadd.emplace(todestroyconnection.first, tempconnection.str());
+            connectionstoremove.emplace(regexconnection);
         }
+
+
         for (const auto & connection : connectionstoremove){
+            cout << "inside connectionstoremove" << endl;
             state->regexconnections.erase(connection.first);
         }
-        list<pair<Node*, string>> temp;
-        for (auto& regexconnection : state->regexconnections){
-            for (auto connection : connectionstoadd){
-                if (regexconnection.first == connection.first){
-                    regexconnection.second += "+" + connection.second;
-                    temp.push_back(connection);
+        set<pair<Node*, string>> temp;
+        for (auto& regexconnection2 : state->regexconnections){
+            cout << "inside regexconnections" << endl;
+            for (const auto& connection : connectionstoadd){
+                if (regexconnection2.first == connection.first){
+                    regexconnection2.second += "+" + connection.second;
+                    temp.emplace(connection);
                 }
             }
         }
         for (auto connection : temp){
-            connectionstoadd.remove(connection);
+            connectionstoadd.erase(connection);
         }
         state->regexconnections.insert(connectionstoadd.begin(), connectionstoadd.end());
     }
@@ -98,7 +108,7 @@ void DFAE::eliminateState(std::string eliminatedstate) {
 
 
 REE DFAE::toREE() {
-    
+    cout << states.size() << endl;
     for (auto &state : states){
         
         map<Node*, set<char>> tempconnections;
@@ -107,7 +117,6 @@ REE DFAE::toREE() {
             Node* temp = state.second->connections[symbol];
             tempconnections[temp].emplace(symbol);
         }
-        
         
         for (const auto& connection : tempconnections){
             string tempstring;
@@ -135,7 +144,7 @@ REE DFAE::toREE() {
     // generate the regex for this dfa with 1 or 2 states (structure found in textbook)
     // connect all the regex's with '+'
 
-    string finalregex;
+    stringstream finalregex;
     int count = 0;
     for (Node* endstate : endStates) {
         DFAE tempdfa(*this);
@@ -149,7 +158,7 @@ REE DFAE::toREE() {
         string start2end;
         string end2end;
         string end2start;
-        string regex;
+        stringstream regex;
         if (endstate != startState){    // if start- and endstate are seperate
             for (const auto &startconnection: tempdfa.getState(startState->getName()).first->regexconnections) {
                 if (startconnection.first == tempdfa.startState) {
@@ -168,68 +177,68 @@ REE DFAE::toREE() {
 
             vector<string*> strings = {&start2start, &start2end, &end2start, &end2end};
 
-            for (auto regex : strings){
-                if (pluswithoutbrackets(*regex)){
-                    *regex = "(" + *regex + ")";
+            for (auto temp : strings){
+                if (pluswithoutbrackets(*temp)){
+                    *temp = "(" + *temp + ")";
                 }
             }
 
             if (not start2start.empty() || (not start2end.empty() && not end2start.empty())){
-                regex += "(";
+                regex << "(";
             }
 
             if (not start2start.empty()){
-                regex += start2start;
+                regex << start2start;
             }
 
             if (not start2start.empty() && (not start2end.empty() && not end2start.empty())){
-                regex += "+";
+                regex << "+";
             }
 
             if (not start2end.empty() && not end2start.empty()){
-                regex += start2end;
+                regex << start2end;
                 if (not end2end.empty()){
                     if (end2end[0] == '(' && *(end2end.end()-1) == ')'){
-                        regex += "" + end2end + "*";
+                        regex << "" << end2end << "*";
                     } else {
-                        regex += "(" + end2end + ")*";
+                        regex << "(" << end2end << ")*";
                     }
                 }
-                regex += end2start;
+                regex << end2start;
             }
 
             if (not start2start.empty() || (not start2end.empty() && not end2start.empty())){
-                regex += ")*";
+                regex << ")*";
             }
 
-            regex += start2end;     // if start2end is empty, the endstate is unreachable from the startstate, so we always add it
+            regex << start2end;     // if start2end is empty, the endstate is unreachable from the startstate, so we always add it
 
             // also check if the string already has parentheses?
 
             if (not end2end.empty()){
                 if (end2end[0] == '(' && *(end2end.end()-1) == ')'){
-                    regex += "" + end2end + "*";
+                    regex << "" << end2end << "*";
                 } else {
-                    regex += "(" + end2end + ")*";
+                    regex << "(" << end2end << ")*";
                 }
             }
 
         } else {        // if start- and endstate are the same
             // there will only be one connection
             end2end = endstate->regexconnections.begin()->second;
-            regex = end2end + "*";
+            regex << end2end << "*";
         }
         if (count == 0){
-            finalregex += regex;
+            finalregex << regex.str();
         } else {
-            finalregex += "+" + regex;
+            finalregex << "+" << regex.str();
         }
         count ++;
     }
-    for (auto state : states){
+    for (const auto& state : states){
         state.second->regexconnections.clear();
     }
-    return REE(finalregex);
+    return REE(finalregex.str());
 }
 
 DFAE::DFAE(DFAE &other) {
@@ -241,7 +250,7 @@ DFAE::DFAE(DFAE &other) {
             startState = new_node;
         }
         if (other.isEndState(node.first)) {
-            endStates.push_back(new_node);
+            endStates.emplace(new_node);
         }
     }
 

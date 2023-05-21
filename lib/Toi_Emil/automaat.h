@@ -12,10 +12,10 @@ using namespace std;
 
 class automaat {
 public:
-    map<string, Node*> states;
+    unordered_map<string, Node*> states;
     set<char> alfabet;
     Node* startState = nullptr;
-    list<Node*> endStates = {};
+    set<Node*> endStates = {};
     string type;
 
     void load(const nlohmann::json& j);
