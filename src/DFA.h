@@ -57,7 +57,7 @@ private:
 public:
     void load(const json& j);
     void load(const set<string>& alfa, const vector<state*> &states, state* start_state, const vector<state*>& end_states);
-    state*getStartingState() const;
+    state* getStartingState() const;
 
     vector<vector<DFA*>> split(int split_size);
     void inRange(int range, set<state*>& out, set<state*>& last, set<state*>& end, state* current);
@@ -94,7 +94,7 @@ public:
 
     json getJson() const;
 
-    string ToRe();
+    string ToRe() const;
 
     DFA* complement();
 

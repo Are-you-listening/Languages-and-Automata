@@ -164,10 +164,7 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
     alphabet.insert(dfa2->alphabet.begin(),dfa2->alphabet.end());
 
     //Set Starting State
-
-    state* startstate(new state("("+dfa1->startingState->name+","+dfa2->startingState->name+")" , true, false));
-        startstate->starting= true;
-
+    state* startstate(new state("{"+dfa1->startingState->name+","+dfa2->startingState->name+"}" , true, false));
         //Set Accepting true/false according (Depending on union/intersection)
         if(dfa1->startingState->accepting && dfa2->startingState->accepting && c){
             startstate->accepting= true;
@@ -177,8 +174,8 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
             startstate->accepting = false;
         }
     startingState=startstate;
+    states.push_back(startstate);
 
-    set<state*> check_states = {startstate};
     set<tuple<state*, state*, state*>> current_states = {make_tuple(startstate, dfa1->startingState, dfa2->startingState)};
     set<tuple<state*, state*, state*>> new_states;
     set<string> current_names = {startstate->name};
@@ -186,35 +183,26 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
     set<string> old_names;
 
     while (a){
-        //cout << get<0>(*current_states.begin())->name << " " << current_states.size() << endl;
         a=false;
         for(auto &tup: current_states){
             for(set<string>::const_iterator it2=alphabet.begin(); it2!=alphabet.end(); it2++){
-
-                state* temp(new state());;
                 state* state1 = get<1>(tup);
                 state* state2 = get<2>(tup);
 
-                string name= "(" + state1->states[(*it2)]->name + "," + state2->states[(*it2)]->name + ")";
+                string name= "{" + state1->states[(*it2)]->name + "," + state2->states[(*it2)]->name + "}";
+                state* temp( new state(name,false,false));
 
-                temp->name = name;
-                temp->starting = false;
-                temp->accepting = false;
-                if ((state1->states[(*it2)]->accepting && state2->states[(*it2)]->accepting && c) || (state1->states[(*it2)]->accepting || state2->states[(*it2)]->accepting && !c)) {
-                    temp->accepting = true;
-                }
                 if (new_names.find(name) == new_names.end() && current_names.find(name) == current_names.end() && old_names.find(name) == old_names.end()){
-                    check_states.insert(temp);
                     new_states.insert(make_tuple(temp, state1->states[(*it2)], state2->states[(*it2)]));
                     new_names.insert(name);
 
-                    if (temp->accepting){
+                    if ((state1->states[(*it2)]->accepting && state2->states[(*it2)]->accepting && c) || (state1->states[(*it2)]->accepting || state2->states[(*it2)]->accepting && !c)){
+                        temp->accepting= true;
                         endstates.push_back(temp);
                     }
-
                     a=true;
                 }
-
+                states.push_back(temp);
                 get<0>(tup)->addTransitionFunction((*it2),temp);
             }
         }
@@ -222,18 +210,13 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
         if (new_states.size() == 0){
             break;
         }
+
         old_names.insert(current_names.begin(), current_names.end());
-        current_states.clear();
-        current_names.clear();
         current_states = new_states;
         current_names = new_names;
         new_states.clear();
         new_names.clear();
     }
-
-    std::copy(check_states.begin(),check_states.end(), std::back_inserter(states));
-
-
 }
 
 DFA* DFA::minimize() {
@@ -296,12 +279,12 @@ json DFA::getJson() const{
     }
     j["states"]=states;
     vector<json> transitions;
-    for(vector<state*>::const_iterator it=DFA::states.begin(); it!=DFA::states.end(); it++){
-        for(set<string>::const_iterator it2=DFA::alphabet.begin(); it2!=DFA::alphabet.end(); it2++){
+    for(const auto &it: this->states){
+        for(const auto &it2: alphabet){
             json temp;
-            temp["from"]=(*it)->name;
-            temp["input"] = (*it2);
-            temp["to"]=(*it)->states[(*it2)]->name;
+            temp["from"]=it->name;
+            temp["input"] = it2;
+            temp["to"]=it->states[it2]->name;
             transitions.push_back(temp);
         }
     }
@@ -309,7 +292,7 @@ json DFA::getJson() const{
     return j;
 }
 
-string DFA::ToRe(){
+string DFA::ToRe() const{
     json data = getJson();
     DFAE temp;
     temp.load(data);
@@ -575,7 +558,6 @@ void DFA::inRange(int range, set<state*> &out,set<state*>& last, set<state*>& en
 }
 
 DFA::~DFA() {
-
     for(auto &k:states){
         delete k;
     }
