@@ -123,11 +123,11 @@ void state::addTransitionFunction(string c, state* q){
     string* ptr = &c;
     string cCopy = *ptr;
     int count=0;
-    /*while (states.find(cCopy) != states.end()){
+    while (states.find(cCopy) != states.end()){
         cCopy = *ptr;
         cCopy+=to_string(count);
         count++;
-    }*/
+    }
     states[cCopy]=q;
 }
 
