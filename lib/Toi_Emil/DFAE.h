@@ -13,10 +13,10 @@ class DFAE: public automaat{
 
 public:
     DFAE();
-    DFAE(DFAE &other);
+    DFAE(const DFAE &other);
     explicit DFAE(const string &fileName);
     void eliminateState(const std::string &eliminatedstate);
-    REE toREE();
+    REE toREE() const;
     string getselfconnection();
 };
 

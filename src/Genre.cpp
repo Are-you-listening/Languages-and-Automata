@@ -54,11 +54,9 @@ bool Genre::inGenre(Song *&s) {
 
     //Generate a Song and check how much similar it is with the given song
     Song k = Song(ProductAutomata.second, param, console);
-    //cout << k.similarity(*s,false, false) << endl;
     if(k.similarity(*s,false, false)>=limit){
         succes = true;
     }
-
 
     //bool succes = m.accepts(st[0].re);
     if(succes){
@@ -78,7 +76,7 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     //Set Data
     fInitCheck = this;
     members={s,k};
-    //this->limit=s->similarity(*k,false,false); //TODO Uncommented this
+    limit=s->similarity(*k,false,false);
 
     string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit) +  " minimum match %\n\n";
     if(console){cout << log;}
@@ -107,14 +105,17 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
         prod = prod->minimize();
     }
 
-    ProductAutomata = {2,prod}; //Construct First ProductAutomata //True = Doorsnede, False = Unie
+    ProductAutomata.second = prod; //Construct First ProductAutomata //True = Doorsnede, False = Unie
+    ProductAutomata.first = 2;
 
     log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
+    //Free memory
     delete z;
     delete z2;
+
     ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 }
 
@@ -160,7 +161,7 @@ void Genre::switchConsoleOutput() {
 }
 
 Genre::~Genre() {
-    //delete ProductAutomata.second;
+    delete ProductAutomata.second;
 }
 
 double Genre::similarity(Song *s) {
@@ -174,7 +175,7 @@ double Genre::similarity(Song *s) {
     vector<RE> r = s->toRegex(param[0], param[1], param[2], param[3], param[4], 1);
 
     DFA* r2 = ProductAutomata.second;
-    vector<state*>  v = r2->getStates();
+    auto  v = r2->getStates();
     vector<vector<DFA*>> df = ProductAutomata.second->split(2);
 
     vector<double> results = Song::similar(df, r, false, false);

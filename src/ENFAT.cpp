@@ -154,7 +154,7 @@ DFA* ENFAT::toDFA() {
     }
 
     map<string, state*> state_linker;
-    vector<state*> states_parent;
+    map<string,state*> states_parent;
     vector<state*> end_parent;
     state* start_state_parent;
     for (auto &s : states_string){
@@ -174,7 +174,7 @@ DFA* ENFAT::toDFA() {
         }
 
         state_linker.insert({s, temp_state});
-        states_parent.push_back(temp_state);
+        states_parent[temp_state->name]=temp_state;
     }
 
     for (auto &t : new_transition_map){

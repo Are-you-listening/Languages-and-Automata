@@ -297,7 +297,7 @@ void MergeAlpabets(DFA* z, DFA* z2) {
     for (auto it = Difference.begin(); it != Difference.end(); it++) {
         //add to z2
         for (auto it2 = z2->getStates().begin(); it2 != z2->getStates().end(); it2++) {
-            (*it2)->addTransitionFunction((*it), deadstate);
+            it2->second->addTransitionFunction((*it), deadstate);
         }
     }
 
@@ -310,7 +310,7 @@ void MergeAlpabets(DFA* z, DFA* z2) {
     for (auto it = Difference2.begin(); it != Difference2.end(); it++) {
         //add to z2
         for (auto it2 = z->getStates().begin(); it2 != z->getStates().end(); it2++) {
-            (*it2)->addTransitionFunction((*it), deadstate);
+            it2->second->addTransitionFunction((*it), deadstate);
         }
     }
 }

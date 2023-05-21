@@ -49,14 +49,14 @@ public:
 class DFA {
 private:
     state* startingState;
-    vector<state*> states;
+    map<string,state*> states;
     set<string> alphabet;
     vector<state*> endstates;
     json json_data;
 
 public:
     void load(const json& j);
-    void load(const set<string>& alfa, const vector<state*> &states, state* start_state, const vector<state*>& end_states);
+    void load(const set<string>& alfa, const map<string,state*> &states, state* start_state, const vector<state*>& end_states);
     state* getStartingState() const;
 
     vector<vector<DFA*>> split(int split_size);
@@ -64,9 +64,9 @@ public:
 
     void setStartingState(state*startingState);
 
-    const vector<state*> &getStates() const;
+    const map<string, state *> &getStates() const;
 
-    void setStates(const vector<state*> &states);
+    void setStates(const map<string, state *> &states);
 
     const set<string> &getAlphabet() const;
 

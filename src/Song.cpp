@@ -520,11 +520,11 @@ Song::Song(DFA* s, vector<int> &param, bool console): console(console){ //param 
     string log = getCurrTime() + " Creating Song Object from your perfect DFA...\n\n";
     if(console){cout << log;}
     logs.push_back(log);
+
     //State Elimination
     log = getCurrTime() + " Eliminating States...\n\n";
     if(console){cout << log;}
     logs.push_back(log);
-
     const char epsilon='*';
     RE k(s->ToRe(), epsilon);
 

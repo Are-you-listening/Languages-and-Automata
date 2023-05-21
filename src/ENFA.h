@@ -62,10 +62,8 @@ public:
      * @return
      */
     json getJsonNfa() const;
+
     ~ENFA();
 };
-
-
-
 
 #endif //TA__TOG_ENFA_H

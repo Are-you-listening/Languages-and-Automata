@@ -107,7 +107,7 @@ void DFAE::eliminateState(const std::string &eliminatedstate) {
 
 
 
-REE DFAE::toREE() {
+REE DFAE::toREE() const {
     cout << states.size() << endl;
     for (auto &state : states){
         
@@ -241,7 +241,7 @@ REE DFAE::toREE() {
     return REE(finalregex.str());
 }
 
-DFAE::DFAE(DFAE &other) {
+DFAE::DFAE(const DFAE &other) {
     // Create new nodes
     for (const auto& node : other.states) {
         Node* new_node = new Node(node.first);

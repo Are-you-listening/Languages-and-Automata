@@ -435,7 +435,7 @@ DFA ENFA::toDFA2() &{
         count++;
     }
     vector<string> endstates;
-    vector<state*> dfaStates;
+    map<string,state*> dfaStates;
     vector<state*> dfaEndStates;
     vector<string> dfaStateNames;
     for(vector<string>::const_iterator state=notExistingStates.begin(); state!=notExistingStates.end(); state++){
@@ -453,8 +453,8 @@ DFA ENFA::toDFA2() &{
             for(set<string>::const_iterator char1=ENFA::alphabet.begin(); char1!=ENFA::alphabet.end(); char1++){
                 vector<string> v={"{}"};
                 ENFAtoDFADONE[0][0][make_pair((*(*char1).begin()),(*state))]=v;
-                if (find(dfaStates.begin(),dfaStates.end(),emptyset)==dfaStates.end()){
-                    dfaStates.push_back(emptyset);
+                if (dfaStates.find(emptyset->name)==dfaStates.end()){
+                    dfaStates[emptyset->name]=emptyset;
                 }
             }
         }
@@ -503,7 +503,7 @@ DFA ENFA::toDFA2() &{
                         dfa->setStartingState(temp);
                     }
                     dfaStateNames.push_back(temp->name);
-                    dfaStates.push_back(temp);
+                    dfaStates[temp->name]=temp;
                 }
             }
         }
@@ -544,13 +544,13 @@ DFA ENFA::toDFA2() &{
                     }
                 }
                 name3+="}";
-                for(vector<state*>::const_iterator it5=dfaStates.begin(); it5!=dfaStates.end(); it5++){
-                    if((*it5)->name == name){
-                        for(vector<state*>::const_iterator it6=dfaStates.begin(); it6!=dfaStates.end(); it6++){
-                            if((*it6)->name==name3){
+                for(auto it5=dfaStates.begin(); it5!=dfaStates.end(); it5++){
+                    if(it5->first == name){
+                        for(auto it6=dfaStates.begin(); it6!=dfaStates.end(); it6++){
+                            if(it6->first==name3){
                                 string temp_string(1,it3->first.first);
-                                if ((*it5)->states.find(temp_string) == (*it5)->states.end()){
-                                    (*it5)->addTransitionFunction(temp_string,(*it6));
+                                if (it5->second->states.find(temp_string) == (*it5).second->states.end()){
+                                    (*it5).second->addTransitionFunction(temp_string,(it6->second));
                                 }
                             }
                         }
@@ -559,10 +559,10 @@ DFA ENFA::toDFA2() &{
             }
         }
     }
-    for(vector<state*>::const_iterator state=dfaStates.begin(); state!=dfaStates.end(); state++){
+    for(auto state=dfaStates.begin(); state!=dfaStates.end(); state++){
         for(set<string>::const_iterator char1=ENFA::alphabet.begin(); char1!=ENFA::alphabet.end(); char1++){
-            if((*state)->states.find((*char1)) == (*state)->states.end()){
-                (*state)->addTransitionFunction((*char1),emptyset);
+            if((*state).second->states.find((*char1)) == (*state).second->states.end()){
+                (*state).second->addTransitionFunction((*char1),emptyset);
             }
         }
     }
@@ -660,7 +660,6 @@ void ENFA::load(const json &j) {
         }
     }
 }
-
 json ENFA::getJson() const {
     json j;
     j["type"] = "ENFA";
@@ -796,7 +795,7 @@ json ENFA::getJsonNfa() const {
             nodes.push_back(temp);
         }
     }
-    j["states"]=nodes; //TODO ERROR DIT GEEFT NIET ALLE STATES MEE - Kars
+    j["states"]=nodes;
 
     j["transitions"]=transitions;
     return j;
@@ -808,11 +807,8 @@ ENFA::~ENFA() {
             delete s;
         }
     }
-
 }
 
 ENFA::ENFA(state*startingState, const vector<state*> &states, const set<string> &alphabet,
            const vector<state*> &endstates, const string &eps) : startingState(startingState), states(states),
                                                                   alphabet(alphabet), endstates(endstates), eps(eps) {}
-
-
