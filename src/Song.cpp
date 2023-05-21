@@ -180,8 +180,7 @@ Song::~Song(){
     return regex_list;
 }
 
-double Song::checkTibo(vector<DFA*> &d, vector<RE> &s) const {
-    REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+double Song::checkTibo(vector<DFA*> &d, vector<RE> &s){
 
     bool succeeded = false;
     int succes = 0;
@@ -201,8 +200,7 @@ double Song::checkTibo(vector<DFA*> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::checkKars(vector<DFA*> &d, vector<RE> &s) const {
-    REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
 
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
@@ -231,8 +229,7 @@ double Song::checkKars(vector<DFA*> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::checkKarsAnas(vector<DFA*> &d, vector<RE> &s) const {
-    REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
+double Song::checkKarsAnas(vector<DFA*> &d, vector<RE> &s){
 
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
@@ -397,7 +394,6 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
 
     //Check KarsAnas
     results.push_back(checkKarsAnas(d, toCheck.second) );
-
     //Free used memory
     for(auto &k: d){
         delete k;
@@ -603,4 +599,50 @@ double Song::checkWNFA(RE &r,RE &s){
     //Calculate value
     double d = m.weightedaccepts(s.re);
     return d;
+}
+
+vector<double> Song::similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, bool complement, bool reverse) {
+    vector<double> results;
+
+    results.push_back( checkTibo2(dfa1 , toCheck));
+    vector<DFA*> check_assemble;
+    for(auto d: dfa1){
+        for(auto c: d){
+            check_assemble.push_back(c);
+        }
+
+    }
+
+    //Check Kars
+    results.push_back(min(checkKars(check_assemble, toCheck)*2, 1.0) );
+
+    //Check KarsAnas
+    results.push_back(min(checkKarsAnas(check_assemble, toCheck)* (double)check_assemble.size()/(double)dfa1.size(), 1.0) );
+
+    return results;
+}
+
+double Song::checkTibo2(vector<vector<DFA *>> &d, vector<RE> &s) {
+    bool succeeded = false;
+    int succes = 0;
+
+    for(long unsigned int i = 0; i<min(d.size(), s.size()); i++){ // Given song
+        string test=s[i].re;
+        bool b = false;
+        for (int j=0; j < d[i].size(); j++){
+            if (d[i][j]->accepts(test)){
+                b = true;
+            }
+        }
+
+        if(b){succes++;}
+    }
+    double result = (double) succes/((double)min(d.size(), s.size()));
+    if(d.empty()){
+        result=0;
+    }
+    if(result>=0 && result<=1){succeeded = true;} //Result bust me a percentage
+
+    ENSURE(succeeded, "Operation did not work properly");
+    return result;
 }

@@ -120,6 +120,8 @@ public:
     [[nodiscard]] DFA* getProductAutomata() const;
 
     ~Genre();
+
+    double similarity(Song* s);
 };
 
 #endif //TOG_GENRE_H

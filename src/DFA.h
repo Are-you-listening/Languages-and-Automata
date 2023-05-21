@@ -59,7 +59,7 @@ public:
     void load(const set<string>& alfa, const vector<state*> &states, state* start_state, const vector<state*>& end_states);
     state*getStartingState() const;
 
-    vector<DFA> split(int split_size);
+    vector<vector<DFA*>> split(int split_size);
     void inRange(int range, set<state*>& out, set<state*>& last, set<state*>& end, state* current);
 
     void setStartingState(state*startingState);

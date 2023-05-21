@@ -66,7 +66,9 @@ private:
      * \ENSURE(succeeded, "Operation did not work properly");
      * @return
      */
-    double checkTibo(vector<DFA*> &d, vector<RE> &s) const;
+    static double checkTibo(vector<DFA*> &d, vector<RE> &s);
+
+    static double checkTibo2(vector<vector<DFA*>> &d, vector<RE> &s);
 
     /**
      * \brief Cross check the similarity
@@ -74,7 +76,8 @@ private:
      * \ENSURE(succeeded, "Operation did not work properly");
      * @return
      */
-    double checkKars(vector<DFA*> &d, vector<RE> &s) const;
+    static double checkKars(vector<DFA*> &d, vector<RE> &s);
+
 
     /**
      * \brief Cross check the similarity but more accurately?
@@ -84,7 +87,7 @@ private:
      * @param s
      * @return
      */
-    double checkKarsAnas(vector<DFA*> &d, vector<RE> &s) const;
+    static double checkKarsAnas(vector<DFA*> &d, vector<RE> &s);
 
     /**
      * \brief Use the WNFA to calculate a similarity %
@@ -178,6 +181,8 @@ public:
      * @return
      */
     vector<double> similar(pair<vector<RE>,vector<RE>> &toCheck,bool complement, bool reverse);
+
+    static vector<double> similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, bool complement, bool reverse);
 
     /**
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");

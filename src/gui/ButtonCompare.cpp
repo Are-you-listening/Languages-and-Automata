@@ -20,6 +20,7 @@ void ButtonCompare::click() {
             for(int i =2; i<songs.size(); i++){
                 g.addGenre(songs[i]);
             }
+
             DFA* genreDFA = g.getProductAutomata();
             vector<int> v = {1,1,1,1,1,-1};
             Song* new_song = new Song(genreDFA, v, false);
@@ -44,6 +45,7 @@ void ButtonCompare::click() {
         for(int i =2; i<songs.size(); i++){
             g.addGenre(songs[i]);
         }
+        g.similarity(song);
 
     }
 

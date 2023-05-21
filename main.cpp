@@ -21,13 +21,14 @@ int main() {
 
     ENFA az = s->toRegex(V[0],V[1],V[2],V[3],V[4],V[5])[0].toENFA();
 
-    Song* k = new Song("midi_files/c1.mid" , false);
+    Song* k = new Song("midi_files/HarryPotter.mid" , false);
     Genre m = Genre(s,k,V,"test",0,0);
 
     DFA* a = m.getProductAutomata();
     Song* yaay = new Song(a,V,true);
 
     yaay->save("tazazazazazaz.mid");
+
 
     delete a;
     delete k;

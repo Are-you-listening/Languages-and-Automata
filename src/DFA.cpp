@@ -440,83 +440,127 @@ void DFA::AddState(state*k) {
     }
 }
 
-vector<DFA> DFA::split(int split_size) {
+vector<vector<DFA*>> DFA::split(int split_size) {
     state* current_start;
     set<state*> o;
     set<state*> e;
-    set<state*> l = {getStartingState()};
-    vector<DFA> d_list;
-    do{
-        current_start = *l.begin();
-        o.clear();
-        l.clear();
-        e.clear();
-        inRange(split_size, o, l, e, current_start);
+    set<state*> l = {};
+    set<state*> new_l = {getStartingState()};
+    vector<vector<DFA*>> d_list;
 
-        vector<state*> out;
-        vector<state*> end;
-        state* out_start;
+    do {
+         l = new_l;
+        vector<DFA*> d_sub_list;
+         new_l.clear();
 
-        o.insert(current_start);
-        for(auto s: o){
-            state* temp(new state());
-            if (s == current_start){
-                temp->starting = true;
-                out_start = temp;
-            }else{
-                temp->starting = false;
+        do {
+            set<string> names;
+            current_start = *l.begin();
+            l.erase(current_start);
+            o.clear();
+            e.clear();
+            inRange(split_size, o, new_l, e, current_start);
+            map<state *, state *> state_link;
+            for (auto a: o) {
+                state* w = new state;
+                w->name = a->name;
+                state_link[a] = w;
             }
-            temp->name = s->name;
-            temp->accepting = false;
+            for (auto a: e) {
+                state_link[a] = new state;
+            }
 
-            for(auto transities: s->states){
-                auto t_state = transities.second;
-                if (o.find(t_state) != o.end()){
-                    temp->addTransitionFunction(transities.first, t_state);
+
+            vector<state *> out;
+            vector<state *> end;
+            state *out_start;
+
+            o.insert(current_start);
+            for (auto s: o) {
+                /*
+                if (names.find(s->name) != names.end()) {
+                    continue;
+                }*/
+                state *temp = state_link[s];
+                if (s == current_start) {
+                    temp->starting = true;
+                    out_start = temp;
+                } else {
+                    temp->starting = false;
                 }
-            }
-            out.push_back(temp);
-        }
-        for(auto s: e){
-            state* temp(new state());
-            if (s == current_start){
-                temp->starting = true;
-                out_start = temp;
-            }else{
-                temp->starting = false;
-            }
-            temp->name = s->name;
-            temp->accepting = true;
+                temp->name = s->name;
+                temp->accepting = false;
 
-            for(auto transities: s->states){
-                auto t_state = transities.second;
-                if (o.find(t_state) != o.end()){
-                    temp->addTransitionFunction(transities.first, t_state);
+                for (auto transities: s->states) {
+                    auto t_state = transities.second;
+                    if (o.find(t_state) != o.end() || e.find(t_state) != e.end()) {
+                        if (state_link.find(t_state) == state_link.end()){
+                            cout << "he" << endl;
+                        }
+                        state* debug1 = state_link[t_state];
+                        temp->addTransitionFunction(transities.first, state_link[t_state]);
+                    }
                 }
+                names.insert(temp->name);
+                out.push_back(temp);
             }
-            out.push_back(temp);
-            end.push_back(temp);
-        }
-        DFA d;
-        d.setAlphabet(alphabet);
-        d.setStates(out);
-        d.setStartingState(out_start);
-        d.setEndstates(end);
-        d_list.push_back(d);
+            for (auto s: e) {
+                if (names.find(s->name) != names.end()) {
+                    continue;
+                }
 
-    }while(!l.empty());
+                state *temp = state_link[s];
+                if (s == current_start) {
+                    temp->starting = true;
+                    out_start = temp;
+                } else {
+                    temp->starting = false;
+                }
+                temp->name = s->name;
+                temp->accepting = true;
+
+                for (auto transities: s->states) {
+                    auto t_state = transities.second;
+                    if (o.find(t_state) != o.end() || e.find(t_state) != e.end()) {
+                        if (state_link.find(t_state) == state_link.end()){
+                            cout << "he" << endl;
+                        }
+                        temp->addTransitionFunction(transities.first, state_link[t_state]);
+                    }
+                }
+                names.insert(temp->name);
+                out.push_back(temp);
+                end.push_back(temp);
+            }
+            DFA *d = new DFA();
+            d->setAlphabet(alphabet);
+            d->setStates(out);
+            d->setStartingState(out_start);
+            d->setEndstates(end);
+            d_sub_list.push_back(d);
+
+        } while (!l.empty());
+        d_list.push_back(d_sub_list);
+    }while(!new_l.empty());
     return d_list;
 }
 
 void DFA::inRange(int range, set<state*> &out,set<state*>& last, set<state*>& end, state*current) {
 
     if (range == -1){
-        last.insert(current);
+        if (current->name != "({},{})"){
+            last.insert(current);
+        }
+
         return;
     }else if(range == 0){
-        if (current->name != "{}"){
+        if (current->name != "({},{})"){
             end.insert(current);
+            last.insert(current);
+        }else{
+            out.insert(current);
         }
+        return;
     }else{
         out.insert(current);
     }
