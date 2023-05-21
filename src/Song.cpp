@@ -255,10 +255,10 @@ double Song::checkKarsAnas(vector<DFA*> &d, vector<RE> &s){
     return result;
 }
 
-double Song::similarity(Song &song, bool complement, bool reverse) {
+double Song::similarity(Song* song, bool complement, bool reverse) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    string m = getCurrTime()+" Applying " + '"' + "similarity (" + to_string(complement) + ") (" + to_string(reverse) + ")" +  '"' +" on Song: " + title + " and Song: " + song.getTitle() + "\n";
+    string m = getCurrTime()+" Applying " + '"' + "similarity (" + to_string(complement) + ") (" + to_string(reverse) + ")" +  '"' +" on Song: " + title + " and Song: " + song->getTitle() + "\n";
     if(console){cout << m;}
     logs.push_back( m );
 
@@ -270,12 +270,12 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
     //Do different checks on different Regex's
     for(const vector<int> &v: PARAMS.vectors){
         //No roundings
-        pair<vector<RE>,vector<RE>> toCheck = {song.toRegex(v[0], v[1], v[2], v[3], v[4], v[5]), this->toRegex(min(v[0], 1), min(v[1], 1), min(v[2], 1), min(v[3], 1), min(v[4], 1), v[5]) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
+        pair<vector<RE>,vector<RE>> toCheck = {song->toRegex(v[0], v[1], v[2], v[3], v[4], v[5]), this->toRegex(min(v[0], 1), min(v[1], 1), min(v[2], 1), min(v[3], 1), min(v[4], 1), v[5]) }; //time_stamp,  note_on, instrument, note_b, velocity, pattern, rounder
         results.push_back( similar(toCheck,complement,reverse) ); // 0,1,0,1,0, 1,0
     }
 
     //Check Notes
-    WNFA_result = checkWNFA(song.toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
+    WNFA_result = checkWNFA(song->toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
     //cout << WNFA_result << endl; // TODO dit zou in de log moeten komen denk ik, redelijk handig
     result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
     
@@ -301,7 +301,7 @@ double Song::similarity(Song &song, bool complement, bool reverse) {
     return result;
 }
 
-bool Song::operator==(Song &rhs) {
+bool Song::operator==(Song* rhs) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string log = getCurrTime() + " Checking if the songs are the same...\n\n";
@@ -312,10 +312,10 @@ bool Song::operator==(Song &rhs) {
     double percentage = similarity(rhs, false, false);
     if(percentage>=1){
         succes = true;
-        log = getCurrTime() + " " + getTitle() + " is the same as: " + rhs.getTitle() + "\n\n";
+        log = getCurrTime() + " " + getTitle() + " is the same as: " + rhs->getTitle() + "\n\n";
     }else{
         succes = false;
-        log = getCurrTime() + " " + getTitle() + " is differing from: " + rhs.getTitle() + "\n\n";
+        log = getCurrTime() + " " + getTitle() + " is differing from: " + rhs->getTitle() + "\n\n";
     }
 
     if(console){cout << log;}
@@ -324,9 +324,9 @@ bool Song::operator==(Song &rhs) {
     return succes;
 }
 
-bool Song::operator!=(Song &rhs) {
+bool Song::operator!=(Song* rhs) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    return !((Song) rhs == *this);
+    return !(rhs == this);
 }
 
 double Song::magimathical(vector<vector<double>> &results) {
