@@ -299,7 +299,7 @@ void MergeAlpabets(DFA* z, DFA* z2) {
         zDead->addTransitionFunction(k,zDead);
     }
     for(auto &k: z->getStates()){
-        for(const auto &s: z->getAlphabet()){
+        for(const auto &s: Difference2){
             k.second->addTransitionFunction(s,zDead);
         }
     }
@@ -307,11 +307,11 @@ void MergeAlpabets(DFA* z, DFA* z2) {
     //Add new transitions to z2
     state* zDead2 = new state("{}",false, false);
     z2->AddState(zDead2);
-    for(const auto &k: z->getAlphabet()){
+    for(const auto &k: z2->getAlphabet()){
         zDead2->addTransitionFunction(k,zDead2);
     }
     for(auto &k: z2->getStates()){
-        for(const auto &s: z2->getAlphabet()){
+        for(const auto &s: Difference){
             k.second->addTransitionFunction(s,zDead2);
         }
     }

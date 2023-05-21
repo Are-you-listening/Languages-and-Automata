@@ -176,10 +176,6 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
     queue<tuple<state*, state*, state*>> todo;
     todo.push({make_tuple(startstate, dfa1->startingState, dfa2->startingState)});
 
-    int count;
-
-    set<string> new_names;
-    set<string> old_names;
     while(!todo.empty()) {
         auto tup = todo.front();
         todo.pop();
@@ -190,7 +186,6 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
             state* new1 = state1->states[(*it2)];
             state* new2 = state2->states[(*it2)];
 
-            count++;
             string name = "{" + new1->name + "," + new2->name + "}";
             state *temp(new state(name, false, false));
 
