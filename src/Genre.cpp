@@ -17,7 +17,7 @@ void Genre::addGenre(Song *&s) {
     logs.push_back(log);
 }
 
-DFA Genre::toProductAutomata() {
+DFA* Genre::toProductAutomata() {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string log = getCurrTime()+ " Converting to ProductAutomata..\n\n";
@@ -28,14 +28,14 @@ DFA Genre::toProductAutomata() {
     for(long unsigned int i = ProductAutomata.first; i<members.size(); i++) {
         vector<RE> t = members[i]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
         ENFA a = t[0].toENFA();
-        DFA s = a.toDFA();
+        DFA* s = a.toDFA();
 
-        ProductAutomata.second = DFA(ProductAutomata.second, s, false); //Extend ProductAutomata
+        ProductAutomata.second = new DFA(ProductAutomata.second, s, false); //Extend ProductAutomata
     }
     ProductAutomata.first = (int) members.size();
 
     if(TFA){
-        ProductAutomata.second = ProductAutomata.second.minimize(); //So we will use less space
+        ProductAutomata.second = ProductAutomata.second->minimize(); //So we will use less space
     }
 
     return ProductAutomata.second;
@@ -49,7 +49,7 @@ bool Genre::inGenre(Song *&s) {
     logs.push_back(log);
 
     bool succes = false;
-    DFA m = toProductAutomata();
+    DFA* m = toProductAutomata();
     vector<RE> st = s->toRegex(param[0],param[1],param[2],param[3],param[4],-1);
 
     //Generate a Song and check how much similar it is with the given song
@@ -87,25 +87,25 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     //Create Separate DFA's
     vector<RE> t = members[0]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
     ENFA a = t[0].toENFA();
-    DFA z = a.toDFA();
+    DFA* z = a.toDFA();
     
     //Other DFA
     vector<RE> t2 = members[1]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
     ENFA a2 = t2[0].toENFA();
-    DFA z2 = a2.toDFA();
+    DFA* z2 = a2.toDFA();
 
     log = getCurrTime() + " Started Product Automata Construction..\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
-    DFA prod = DFA(z,z2, false);
+    DFA* prod = new DFA(z,z2, false);
 
     if(TFA){
         log = getCurrTime() + " Minimizing our beautiful product..\n\n";
         if(console){cout << log;}
         logs.push_back(log);
 
-        prod = prod.minimize();
+        prod = prod->minimize();
     }
 
     ProductAutomata = {2,prod}; //Construct First ProductAutomata //True = Doorsnede, False = Unie
@@ -113,6 +113,9 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}
     logs.push_back(log);
+
+    delete z;
+    delete z2;
 
     ENSURE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 }
@@ -154,6 +157,10 @@ void Genre::switchConsoleOutput() {
     console = !console;
 }
 
-[[nodiscard]] DFA Genre::getProductAutomata() const {
+[[nodiscard]] DFA* Genre::getProductAutomata() const {
     return ProductAutomata.second;
+}
+
+Genre::~Genre() {
+    //delete ProductAutomata.second;
 }

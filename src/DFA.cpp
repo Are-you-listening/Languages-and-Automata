@@ -155,24 +155,24 @@ state::state() {}
 state::state(const string &name,bool starting, bool accepting) : name(name), starting(starting),
                                               accepting(accepting) {}
 
-DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
+DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
     DFA final;
     bool a= true;
 
     //Merge the alpabets
     MergeAlpabets(dfa1,dfa2);
-    final.alphabet=dfa1.alphabet;
-    final.alphabet.insert(dfa2.alphabet.begin(),dfa2.alphabet.end());
+    final.alphabet=dfa1->alphabet;
+    final.alphabet.insert(dfa2->alphabet.begin(),dfa2->alphabet.end());
 
     //Set Starting State
 
-    state* startstate(new state("("+dfa1.startingState->name+","+dfa2.startingState->name+")" , true, false));
+    state* startstate(new state("("+dfa1->startingState->name+","+dfa2->startingState->name+")" , true, false));
         startstate->starting= true;
 
         //Set Accepting true/false according (Depending on union/intersection)
-        if(dfa1.startingState->accepting && dfa2.startingState->accepting && c){
+        if(dfa1->startingState->accepting && dfa2->startingState->accepting && c){
             startstate->accepting= true;
-        } else if((dfa1.startingState->accepting || dfa2.startingState->accepting) && !c) {
+        } else if((dfa1->startingState->accepting || dfa2->startingState->accepting) && !c) {
             startstate->accepting=true;
         } else{
             startstate->accepting = false;
@@ -180,7 +180,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     final.startingState=startstate;
 
     set<state*> check_states = {startstate};
-    set<tuple<state*, state*, state*>> current_states = {make_tuple(startstate, dfa1.startingState, dfa2.startingState)};
+    set<tuple<state*, state*, state*>> current_states = {make_tuple(startstate, dfa1->startingState, dfa2->startingState)};
     set<tuple<state*, state*, state*>> new_states;
     set<string> current_names = {startstate->name};
     set<string> new_names;
@@ -239,7 +239,7 @@ DFA::DFA(DFA& dfa1, DFA& dfa2, bool c) {
     load(temp.getJson());
 }
 
-DFA DFA::minimize() {
+DFA* DFA::minimize() {
     /*
     fstream FILE;
     FILE.open("JSONWORK.json", std::ofstream::out | std::ofstream::trunc);
@@ -266,8 +266,8 @@ DFA DFA::minimize() {
     temp.load(data);
     temp = temp.minimize();
 
-    DFA final;
-    final.load(temp.getJson());
+    DFA* final =  new DFA();
+    final->load(temp.getJson());
     return final;
 }
 
@@ -320,7 +320,7 @@ string DFA::ToRe(){
     return r.getRegex();
 }
 
-DFA DFA::complement() {
+DFA* DFA::complement() {
     vector<state*> new_states;
     for (state* s: states){
         state* new_state = s->getComplement();
@@ -338,8 +338,8 @@ DFA DFA::complement() {
     }
 
     j["states"]=states;
-    DFA d;
-    d.load(j);
+    DFA* d =  new DFA();
+    d->load(j);
     return d;
 }
 
@@ -534,9 +534,9 @@ void DFA::inRange(int range, set<state*> &out,set<state*>& last, set<state*>& en
 }
 
 DFA::~DFA() {
-    /*
+
     for(auto &k:states){
         delete k;
-    }*/
+    }
 }
 

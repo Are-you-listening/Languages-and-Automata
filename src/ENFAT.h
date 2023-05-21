@@ -43,7 +43,7 @@ public:
 
     ENFAT();
 
-    DFA toDFA();
+    DFA* toDFA();
 
     bool accepts(const string& s);
 

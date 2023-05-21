@@ -13,7 +13,7 @@ private:
     /**
      * \brief The current ProductAutomate build up from the existing members (pair.first = members.size)
      */
-     pair<int,DFA> ProductAutomata;
+     pair<int,DFA*> ProductAutomata;
 
     /**
      * \brief Toggle the Console Output
@@ -60,7 +60,7 @@ private:
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @return Datatype containing the sub DFA's in product-automata
      */
-    DFA toProductAutomata();
+    DFA* toProductAutomata();
 
 public:
     /**
@@ -117,7 +117,9 @@ public:
      * \brief Retrieve the current ProductAutomata
      * @return
      */
-    [[nodiscard]] DFA getProductAutomata() const;
+    [[nodiscard]] DFA* getProductAutomata() const;
+
+    ~Genre();
 };
 
 #endif //TOG_GENRE_H

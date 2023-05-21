@@ -82,13 +82,13 @@ public:
 
     DFA();
 
-    DFA(DFA& dfa1, DFA& dfa2, bool c);
+    DFA(DFA* dfa1, DFA* dfa2, bool c);
 
     bool accepts(string c)const&;
 
     void print()const&;
 
-    DFA minimize();
+    DFA* minimize();
 
     bool operator==(const DFA& d);
 
@@ -96,7 +96,7 @@ public:
 
     string ToRe();
 
-    DFA complement();
+    DFA* complement();
 
     ENFA reverse();
 

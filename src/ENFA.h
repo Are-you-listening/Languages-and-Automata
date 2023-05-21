@@ -49,7 +49,7 @@ public:
     ENFA();
     bool accepts(string c)const&;
     void print()const&;
-    DFA toDFA()&;
+    DFA* toDFA()&;
     DFA toDFA2()&;
     void printStats()const&;
     void concatenate(const ENFA& enfa)&;

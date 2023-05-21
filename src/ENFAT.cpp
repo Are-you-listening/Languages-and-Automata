@@ -58,7 +58,7 @@ set<string> ENFAT::Eclose(const string &state, const set<string>& found) {
     return output;
 }
 
-DFA ENFAT::toDFA() {
+DFA* ENFAT::toDFA() {
     /**
      * Vormt een DFA om naar e-NFA
      * */
@@ -190,8 +190,8 @@ DFA ENFAT::toDFA() {
         }
     }
 
-    DFA d;
-    d.load(alfabet_parent, states_parent, start_state_parent, end_parent);
+    DFA* d = new DFA();
+    d->load(alfabet_parent, states_parent, start_state_parent, end_parent);
     return d;
 }
 

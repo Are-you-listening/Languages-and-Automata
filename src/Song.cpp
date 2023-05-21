@@ -18,8 +18,8 @@ public:
 };
 Vectors_Params PARAMS;
 
-vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) {
-    vector<DFA> tt;
+vector<DFA*> Song::convert(vector<RE> &s, bool complement, bool reverse) {
+    vector<DFA*> tt;
 
     string log = getCurrTime() + " Converting Regex's to DFA's ("+ to_string(complement) + ") ("+ to_string(reverse) + ") ...\n\n";
     if(console){cout << log;}
@@ -27,11 +27,16 @@ vector<DFA> Song::convert(vector<RE> &s, bool complement, bool reverse) {
 
     for(auto z: s){
         ENFA k = z.toENFA();
-        DFA l = k.toDFA();
+        DFA* l = k.toDFA();
 
-        if(complement){l = l.complement();}
+        if(complement){
+            DFA* temp = l->complement();
+            delete l;
+            l = temp;
+        }
         if(reverse){
-            ENFA m = l.reverse();
+            ENFA m = l->reverse();
+            delete l;
             l = m.toDFA();
         }
 
@@ -175,7 +180,7 @@ Song::~Song(){
     return regex_list;
 }
 
-double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
+double Song::checkTibo(vector<DFA*> &d, vector<RE> &s) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     bool succeeded = false;
@@ -183,7 +188,7 @@ double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
 
     for(long unsigned int i = 0; i<min(d.size(), s.size()); i++){ // Given song
         string test=s[i].re;
-        bool b = d[i].accepts(test); //Addition Anas
+        bool b = d[i]->accepts(test); //Addition Anas
         if(b){succes++;}
     }
     double result = (double) succes/((double)d.size());
@@ -196,7 +201,7 @@ double Song::checkTibo(vector<DFA> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
+double Song::checkKars(vector<DFA*> &d, vector<RE> &s) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     bool succeeded = false;
@@ -205,9 +210,9 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
     for(long unsigned int i = 0; i<d.size(); i++){ // Given song
         for(long unsigned int j = 0; j<s.size(); j++){
             string test=s[j].re;
-            bool b = d[i].accepts(test); //Addition Anas
+            bool b = d[i]->accepts(test); //Addition Anas
             if(b){
-                if(j!=s.size()-1&&i!=d.size()-1&&d[i+1].accepts(s[j+1].re)){
+                if(j!=s.size()-1&&i!=d.size()-1&&d[i+1]->accepts(s[j+1].re)){
                     succes++;
                     break;
                 }
@@ -226,15 +231,15 @@ double Song::checkKars(vector<DFA> &d, vector<RE> &s) const {
     return result;
 }
 
-double Song::checkKarsAnas(vector<DFA> &d, vector<RE> &s) const {
+double Song::checkKarsAnas(vector<DFA*> &d, vector<RE> &s) const {
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
 
-    for(const DFA &i: d){ // Given song
+    for(const DFA* i: d){ // Given song
         for(const RE &j: s){
-            bool b = i.accepts(j.re);
+            bool b = i->accepts(j.re);
 
             if(b){
                 succes++;
@@ -381,14 +386,13 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     vector<double> results;
-    vector<DFA> d;
+    vector<DFA*> d;
 
     pair<vector<RE>,vector<RE>> toCheck2 = sort(toCheck);
     d = convert(toCheck.first,complement,reverse);
     results.push_back( checkTibo(d , toCheck.second ) );
 
     //Check Kars
-    d = convert(toCheck.first,complement,reverse);
     results.push_back(checkKars(d, toCheck.second) );
 
     //Check KarsAnas
@@ -396,7 +400,7 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
 
     //Free used memory
     for(auto &k: d){
-        d.clear();
+        delete k;
     }
 
     return results;
@@ -511,10 +515,10 @@ void Song::switchConsoleOutput() {
     console = !console;
 }
 
-Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
+Song::Song(DFA* s, vector<int> &param, bool console): console(console){ //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
     //Start up
     fInitCheck = this; // TODO soms wordt er een plus gehanteerd voor meerdere noten op een tijdstip, mischien moeten wij plus zo hanteren als da niet groter is dan een bepaalde waarde.
-    title = s.getStartingState()->name;
+    title = s->getStartingState()->name;
 
     string log = getCurrTime() + " Creating Song Object from your perfect DFA...\n\n";
     if(console){cout << log;}
@@ -526,7 +530,7 @@ Song::Song(DFA &s, vector<int> &param, bool console): console(console){ //param 
     logs.push_back(log);
 
     const char epsilon='*';
-    RE k(s.ToRe(), epsilon);
+    RE k(s->ToRe(), epsilon);
 
     //RE to Song
     log = getCurrTime() + " Started decoding...\n\n";

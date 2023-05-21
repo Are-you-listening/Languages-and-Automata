@@ -169,6 +169,6 @@ bool Found(vector<pair<string, vector<pair<char, string>>>> &processed, string &
  * @param z
  * @param z2
  */
-void MergeAlpabets(DFA &z, DFA &z2);
+void MergeAlpabets(DFA* z, DFA* z2);
 
 #endif

@@ -57,7 +57,7 @@ private:
      * @param reverse, bool deciding if the DFA reverse needs to be taken
      * @return
      */
-    vector<DFA> convert(vector<RE> &s, bool complement, bool reverse);
+    vector<DFA*> convert(vector<RE> &s, bool complement, bool reverse);
 
     /**
      * \brief Check the similarity in order
@@ -66,7 +66,7 @@ private:
      * \ENSURE(succeeded, "Operation did not work properly");
      * @return
      */
-    double checkTibo(vector<DFA> &d, vector<RE> &s) const;
+    double checkTibo(vector<DFA*> &d, vector<RE> &s) const;
 
     /**
      * \brief Cross check the similarity
@@ -74,7 +74,7 @@ private:
      * \ENSURE(succeeded, "Operation did not work properly");
      * @return
      */
-    double checkKars(vector<DFA> &d, vector<RE> &s) const;
+    double checkKars(vector<DFA*> &d, vector<RE> &s) const;
 
     /**
      * \brief Cross check the similarity but more accurately?
@@ -84,7 +84,7 @@ private:
      * @param s
      * @return
      */
-    double checkKarsAnas(vector<DFA> &d, vector<RE> &s) const;
+    double checkKarsAnas(vector<DFA*> &d, vector<RE> &s) const;
 
     /**
      * \brief Use the WNFA to calculate a similarity %
@@ -132,7 +132,7 @@ public:
      * @param s, a random DFA
      * @param param, the list with used parameters for Construction of Note Objects
      */
-    Song(DFA &s, vector<int> &param, bool console);
+    Song(DFA* s, vector<int> &param, bool console);
 
     /**
      * \brief Overload Constructor (Creates a new object) Including new usages of memory!

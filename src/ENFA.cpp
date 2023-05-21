@@ -292,7 +292,7 @@ map<pair<char,string>, vector<string>> ENFA::possibleStates(state* nextState, co
     return states2;
 }
 
-DFA ENFA::toDFA() &{
+DFA* ENFA::toDFA() &{
     /*
     map<char,string> dict;
     int count=0;
@@ -334,7 +334,7 @@ DFA ENFA::toDFA() &{
 
     ENFAT t;
     t.load(getJson());
-    DFA dfa = t.toDFA();
+    DFA* dfa = t.toDFA();
 
     return dfa;
 }
