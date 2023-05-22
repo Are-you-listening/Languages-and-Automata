@@ -14,7 +14,7 @@ public:
     //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
     //                            {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3},
     //                             {1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4},{0,1,0,1,5,1}};
-    vector<vector<int>> vectors={{0,1,0,1,0,1},{8,1,0,2,0,1},{0,1,0,2,0,2},{1,1,1,1,1,1},{0,1,1,1,0,1},{0,2,0,2,0,4}}; // TODO een no
+    vector<vector<int>> vectors={{0,1,0,1,0,1},{8,1,0,2,0,1},{0,1,0,2,0,2},{1,1,1,1,1,1},{0,1,1,1,0,1},{0,2,0,2,0,4}};
 };
 Vectors_Params PARAMS;
 
@@ -111,13 +111,13 @@ Song &Song::operator=(const Song &a) {
 
     map<pair<unsigned int, bool>, vector<Note*>> map2;
 
-    for(auto it = a.note_map.begin(); it!=a.note_map.end(); it++){
+    for(const auto &it: a.note_map){
         vector<Note*> temp;
-        for(const Note* n: it->second){ //Construct new Note objects on heap
+        for(const Note* n: it.second){ //Construct new Note objects on heap
             Note* k = new Note(*n);
             temp.push_back( k );
         }
-        map2[it->first]=temp;
+        map2[it.first]=temp;
     }
 
     console = a.console;
@@ -134,8 +134,8 @@ Song::~Song(){
     if(console){cout << log;}
     logs.push_back(log);
 
-    for(auto it = note_map.begin(); it!=note_map.end() ; it++){
-        for(Note* &note: it->second){
+    for(auto &it: note_map){
+        for(Note* &note: it.second){
             delete note;
         }
     }
@@ -153,9 +153,9 @@ Song::~Song(){
     if(console){cout << log;}
     logs.push_back(log);
 
-    for(auto it = note_map.begin(); it!=note_map.end() ; it++){
-        if (it->first.second){
-            for(Note* note: it->second){
+    for(auto &it: note_map){
+        if (it.first.second){
+            for(Note* &note: it.second){
                 string z = note->getRE(time_stamp, duration, instrument, note_b, velocity);
                 temp+=z;
                 count++;
@@ -263,7 +263,7 @@ double Song::similarity(Song* song, bool complement, bool reverse) {
     logs.push_back( m );
 
     double result;
-    double WNFA_result=1;
+    double WNFA_result;
     bool succes = false;
     vector<vector<double>> results;
 
@@ -415,8 +415,8 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     if(console){cout << log;}
     logs.push_back(log);
 
-    for(auto it = note_map.begin(); it!=note_map.end(); it++){
-        for(const Note* n: it->second){
+    for(const auto &it: note_map){
+        for(const Note* n: it.second){
             if(counts.find(n->getNoteValue())==counts.end()){ //In case not found
                 counts[n->getNoteValue()]=1;
             }else{
@@ -441,9 +441,9 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     unsigned int occurrences = count.size();
     bool succeed = false;
 
-    for(auto k = count.begin(); k!=count.end(); k++){
-        if( scount.find(k->first)!=scount.end()){ //Sharing a note
-            if(scount[k->first]==k->second){
+    for(const auto &k: count){
+        if( scount.find(k.first)!=scount.end()){ //Sharing a note
+            if(scount[k.first]==k.second){
                 succes+=1;
             }
         }
@@ -610,8 +610,8 @@ vector<double> Song::similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, bo
 
     results.push_back( checkTibo2(dfa1 , toCheck));
     vector<DFA*> check_assemble;
-    for(auto d: dfa1){
-        for(auto c: d){
+    for(const auto &d: dfa1){
+        for(auto &c: d){
             check_assemble.push_back(c);
         }
     }
