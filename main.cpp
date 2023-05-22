@@ -30,13 +30,11 @@ int main() {
             Song* song2 = new Song(c2+c3,0);
             song2->setTitle(c3);
             vector<int> V={1,1,1,1,1,-1};
-            /*
             Genre genre = Genre(song,song2,V,c+"_compare_"+c3,1,0);
             DFA* genreDFA=genre.getProductAutomata();
             Song generated=Song(genreDFA,V,1);
             string path="midi_output/"+c+"_compare_"+c3;
             generated.save(path);
-             */
             song->similarity(song2,0,0);
             delete song2;
         }
