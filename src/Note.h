@@ -7,10 +7,10 @@
 
 #include <iostream>
 #include <string>
+#include <cmath>
 
 #include "Utils.h"
 #include "DesignByContract.h"
-#include <cmath>
 
 using namespace std;
 
@@ -139,6 +139,6 @@ public:
      * \brief Simple setter
      * @return
      */
-    void setDuration(int duration);
+    void setDuration(int Duration);
 };
 #endif //MIDIPARSER_NOTE_H

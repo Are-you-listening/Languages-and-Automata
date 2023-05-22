@@ -184,6 +184,6 @@ int Note::getDuration() const {
     return duration;
 }
 
-void Note::setDuration(int duration) {
-    Note::duration = duration;
+void Note::setDuration(int Duration) {
+    Note::duration = Duration;
 }
