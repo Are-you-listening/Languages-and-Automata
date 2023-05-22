@@ -73,48 +73,6 @@ public:
     [[nodiscard]] const map<string, weightedNode *> &getStates() const;
 
     /**
-     * \brief Simple setter
-     * @return
-     */
-    void setStates(const map<string, weightedNode *> &states);
-
-    /**
-     * \brief Simple getter
-     * @return
-     */
-    [[nodiscard]] weightedNode *getStartState() const;
-
-    /**
-     * \brief Simple setter
-     * @return
-     */
-    void setStartState(weightedNode *startState);
-
-    /**
-     * \brief Simple getter
-     * @return
-     */
-    [[nodiscard]] const map<string, weightedNode *> &getEndStates() const;
-
-    /**
-     * \brief Simple setter
-     * @return
-     */
-    void setEndStates(const map<string, weightedNode *> &endStates);
-
-    /**
-     * \brief Simple getter
-     * @return
-     */
-    [[nodiscard]] const string &getType() const;
-
-    /**
-     * \brief Simple setter
-     * @return
-     */
-    void setType(const string &type);
-
-    /**
      * \brief Simple getter
      * @return
      */
@@ -124,7 +82,7 @@ public:
      * \brief Simple setter
      * @return
      */
-    void setAlfabet(const vector<string> &alfabet);
+    void setAlfabet(const vector<string> &Alfabet);
 
     /**
      * \brief Check if the state is the start state
@@ -146,7 +104,7 @@ public:
      * @param start
      * @param endState
      */
-    void addState(string name, bool start, bool endState);
+    void addState(const string &name, bool start, bool endState);
 
     /**
      * \brief Retrieve the state with a given name

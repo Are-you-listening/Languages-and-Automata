@@ -38,7 +38,7 @@ WNFA::WNFA(const string &filename) {
 
 WNFA::WNFA() {type = "WNFA";}
 
-void WNFA::addState(string name, bool start, bool endState) {
+void WNFA::addState(const string &name, bool start, bool endState) {
     auto* n = new weightedNode(name);
     states[name] = n;
     if (start){
@@ -164,40 +164,12 @@ const map<string, weightedNode *> &WNFA::getStates() const {
     return states;
 }
 
-void WNFA::setStates(const map<string, weightedNode *> &states) {
-    WNFA::states = states;
-}
-
-weightedNode *WNFA::getStartState() const {
-    return startState;
-}
-
-void WNFA::setStartState(weightedNode *startState) {
-    WNFA::startState = startState;
-}
-
-const map<string, weightedNode *> &WNFA::getEndStates() const {
-    return endStates;
-}
-
-void WNFA::setEndStates(const map<string, weightedNode *> &endStates) {
-    WNFA::endStates = endStates;
-}
-
-const string &WNFA::getType() const {
-    return type;
-}
-
-void WNFA::setType(const string &type) {
-    WNFA::type = type;
-}
-
 const vector<string> &WNFA::getAlfabet() const {
     return alfabet;
 }
 
-void WNFA::setAlfabet(const vector<string> &alfabet) {
-    WNFA::alfabet = alfabet;
+void WNFA::setAlfabet(const vector<string> &Alfabet) {
+    WNFA::alfabet = Alfabet;
 }
 
 WDFA WNFA::toWDFA() {
