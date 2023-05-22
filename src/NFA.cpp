@@ -230,13 +230,9 @@ NFA::NFA(const json &j) {
 WNFA NFA::toWNFA(){
     WNFA result = WNFA();
     result.setAlfabet(Alphabet);
-    State* start_state;
     // maak de staten van de WNFA aan
     for (pair<string, State*> state_pair : Q){
         result.addState(state_pair.first, state_pair.second->getStarting(), true);
-        if (state_pair.second->getStarting()){
-            start_state = state_pair.second;
-        }
     }
 
     // voeg de transities uit de NFA toe aan de WNFA
