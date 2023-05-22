@@ -226,7 +226,6 @@ WDFA WNFA::toWDFA() {
             if(temp == "{}"){
                 continue;
             }
-
             if ( result.states.find(temp) == result.states.end() ){ //Als de huidige state nog niet in de WDFA zit
 
                 if(toProcess.find(temp)==toProcess.end()){
@@ -244,6 +243,6 @@ WDFA WNFA::toWDFA() {
 
 WNFA::~WNFA() {
     for(auto &k: states){
-        delete k.second;
+        //delete k.second;
     }
 }
