@@ -12,7 +12,8 @@
 #include "gui/Gui.h"
 int main() {
     vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
-    ifstream Filelist("filelistAnas.txt"); // hier moet je filelist met je naam komen
+    ifstream Filelist("filelistEmil.txt"); // hier moet je filelist met je naam komen
+    ofstream errorfile;
     string c;
     string c2="midi_files/";
     vector<Song*> songs;
@@ -29,17 +30,23 @@ int main() {
             }
             Song* song2 = new Song(c2+c3,0);
             song2->setTitle(c3);
-            vector<int> V={1,1,1,1,1,-1};
-            Genre genre = Genre(song,song2,V,c+"_compare_"+c3,1,0);
-            DFA* genreDFA=genre.getProductAutomata();
-            Song generated=Song(genreDFA,V,1);
-            string path="midi_output/"+c+"_compare_"+c3;
-            generated.save(path);
-            song->similarity(song2,0,0);
+            try {
+                vector<int> V = {1, 1, 1, 1, 1, -1};
+                Genre genre = Genre(song, song2, V, c + "_compare_" + c3, 1, 0);
+                DFA *genreDFA = genre.getProductAutomata();
+                Song generated = Song(genreDFA, V, 1);
+                string path = "midi_output/" + c + "_compare_" + c3;
+                generated.save(path);
+                song->similarity(song2, 0, 0);
+            } catch (...){
+                errorfile << c << c3 << "\n";
+            }
             delete song2;
         }
         delete song;
+        Filelist2.close();
     }
     Filelist.close();
+    errorfile.close();
     return 0;
 }
