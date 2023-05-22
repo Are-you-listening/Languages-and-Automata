@@ -172,7 +172,7 @@ void WNFA::setAlfabet(const vector<string> &Alfabet) {
     WNFA::alfabet = Alfabet;
 }
 
-WDFA WNFA::toWDFA() {
+WDFA WNFA::toWDFA() const {
     WDFA result;
 
     result.alfabet=alfabet;

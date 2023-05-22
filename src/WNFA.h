@@ -140,7 +140,7 @@ public:
      * \brief Convert to a WDFA using a form of the SubSetConstruction (SSC)
      * @return The newly created WDFA
      */
-    WDFA toWDFA();
+    [[nodiscard]] WDFA toWDFA() const;
 
     /**
      * \brief Destructor to free used memory
