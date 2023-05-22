@@ -268,10 +268,15 @@ double Song::similarity(Song* song, bool complement, bool reverse) {
 
     //Check Notes
     WNFA_result = checkWNFA(song->toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
-    cout << WNFA_result << endl; // TODO dit zou in de log moeten komen denk ik, redelijk handig
+
     if(WNFA_result>1){
         WNFA_result=1;
     }
+
+    m = getCurrTime()+" Used the WDFA, found a partial result off: "+ to_string(WNFA_result*100) + " %\n\n";
+    if(console){cout << m;}
+    logs.push_back(m);
+
     result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
     
     if(result<=1 && result>=0){succes = true;}
