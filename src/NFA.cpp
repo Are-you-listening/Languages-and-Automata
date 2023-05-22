@@ -235,13 +235,11 @@ WNFA NFA::toWNFA(){
     State* start_state;
     // maak de staten van de WNFA aan
     for (pair<string, State*> state_pair : Q){
-        result.addState(state_pair.first, state_pair.second->getStarting(), state_pair.second->getAnEnd());
+        result.addState(state_pair.first, state_pair.second->getStarting(), true);
         if (state_pair.second->getStarting()){
             start_state = state_pair.second;
         }
     }
-
-    adaptDistance2(-0.2, result); //add weight -0.2
 
     // voeg de transities uit de NFA toe aan de WNFA
     for (pair<string, weightedNode*> state : result.getStates()){
@@ -252,6 +250,8 @@ WNFA NFA::toWNFA(){
             }
         }
     }
+
+    adaptDistance2(-0.2, result); //add weight -0.2
 
     // voeg nieuwe transities toe die enkel in de WNFA aanwezig zijn
     /*

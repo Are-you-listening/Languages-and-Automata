@@ -11,10 +11,10 @@
 #include "NFA.h"
 #include "gui/Gui.h"
 int main() {
-    /*
+
     Gui g;
     g.start();
-    */
+
 
     /*
     vector<int> V = {1,1,1,1,1,-1};
@@ -70,7 +70,7 @@ int main() {
     RE m(a.ToRe() , ep);
     m.re;*/
 
-
+    /*
     vector<int> V = {1,1,1,1,1,-1};
     Song* s = new Song("midi_files/c0.mid" , false);
 
@@ -84,6 +84,7 @@ int main() {
     Song* yaay = new Song(a,V,true);
 
     yaay->save("tazazazazazaz.mid");
+     */
 
     //s->save(s->getTitle());
     //s->similarity(*k,0,0);
