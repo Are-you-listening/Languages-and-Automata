@@ -5,13 +5,6 @@
 #ifndef WNFA_WDFA_H
 #define WNFA_WDFA_H
 
-#include <list>
-#include <string>
-#include <set>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-
 #include "WNFA.h"
 
 using namespace std;
@@ -19,7 +12,16 @@ using json = nlohmann::json;
 
 class WDFA: public WNFA {
 public:
+
+    /**
+     * \brief Empty Constructor
+     */
     WDFA();
+
+    /**
+     * \brief Constructor from a File
+     * @param filename
+     */
     explicit WDFA(const string &filename);
 
     /**

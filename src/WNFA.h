@@ -11,7 +11,6 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <algorithm>
 
 #include "json.hpp"
 #include "weightedNode.h"
