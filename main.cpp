@@ -9,7 +9,7 @@
 
 int main() {
     vector<pair<string,string>> doubleComparison;
-    ifstream Filelist("filelist.txt"); // hier moet je filelist met je naam komen
+    ifstream Filelist("filelistKars.txt"); // hier moet je filelist met je naam komen
     ofstream errorfile;
     string c;
     string c2="midi_files/";
@@ -39,10 +39,8 @@ int main() {
                 errorfile << c << c3 << "\n";
             }
             delete song2;
-            break;
         }
         delete song;
-        break;
         Filelist2.close();
     }
     Filelist.close();
