@@ -1,18 +1,15 @@
 #include <iostream>
-#include <algorithm>
 
 #include "Song.h"
 #include "src/DFA.h"
 #include "src/ENFA.h"
-#include "src/RE.h"
 #include "Genre.h"
 #include "Utils.h"
-
-#include "NFA.h"
 #include "gui/Gui.h"
+
 int main() {
-    vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
-    ifstream Filelist("filelistEmil.txt"); // hier moet je filelist met je naam komen
+    vector<pair<string,string>> doubleComparison;
+    ifstream Filelist("filelist.txt"); // hier moet je filelist met je naam komen
     ofstream errorfile;
     string c;
     string c2="midi_files/";
@@ -42,8 +39,10 @@ int main() {
                 errorfile << c << c3 << "\n";
             }
             delete song2;
+            break;
         }
         delete song;
+        break;
         Filelist2.close();
     }
     Filelist.close();
