@@ -214,7 +214,7 @@ WDFA WNFA::toWDFA() const {
 }
 
 WNFA::~WNFA() {
-    for(auto &k: states){
+    for(auto &k: states){ //Delete the states
         delete k.second;
     }
 }
