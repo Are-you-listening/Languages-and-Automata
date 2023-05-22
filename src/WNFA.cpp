@@ -243,6 +243,6 @@ WDFA WNFA::toWDFA() {
 
 WNFA::~WNFA() {
     for(auto &k: states){
-        //delete k.second;
+        delete k.second;
     }
 }
