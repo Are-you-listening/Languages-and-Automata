@@ -146,7 +146,7 @@ public:
      * @param start
      * @param endState
      */
-    void addState(string& name, bool start, bool endState);
+    void addState(string name, bool start, bool endState);
 
     /**
      * \brief Retrieve the state with a given name

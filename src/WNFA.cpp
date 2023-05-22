@@ -38,7 +38,7 @@ WNFA::WNFA(const string &filename) {
 
 WNFA::WNFA() {type = "WNFA";}
 
-void WNFA::addState(string& name, bool start, bool endState) {
+void WNFA::addState(string name, bool start, bool endState) {
     auto* n = new weightedNode(name);
     states[name] = n;
     if (start){

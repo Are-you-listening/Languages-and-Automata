@@ -14,7 +14,7 @@ const map<char,vector<pair< double,weightedNode* >> > & weightedNode::getweighte
     return connections;
 }
 
-weightedNode::weightedNode(string &name): name(name){}
+weightedNode::weightedNode(string name): name(name){}
 
 vector<pair<double, weightedNode * >> weightedNode::accepts(const char &input) {
     return connections[input];

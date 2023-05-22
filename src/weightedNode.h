@@ -42,7 +42,7 @@ public:
      * \brief Simple Constructor
      * @param name
      */
-    explicit weightedNode(string &name);
+    explicit weightedNode(string name);
 
     /**
      * \brief Simple getter

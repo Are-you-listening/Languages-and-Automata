@@ -250,7 +250,6 @@ WNFA NFA::toWNFA(){
             }
         }
     }
-
     adaptDistance2(-0.2, result); //add weight -0.2
 
     // voeg nieuwe transities toe die enkel in de WNFA aanwezig zijn
@@ -302,16 +301,26 @@ void NFA::adaptDistance2(double weight, const WNFA& result){
     int count=0;
     vector<char> temp;
     for(auto it=result.getStates().begin()++; it!=result.getStates().end(); it++){
-        temp.push_back(it->second->getweightedconnections().begin()->first);
+        if (!it->second->getweightedconnections().empty()){
+            temp.push_back(it->second->getweightedconnections().begin()->first);
+        }
     }
-    for(auto it=result.getStates().begin(); it!=result.getStates().end()--; it++){
+    auto itr2 = result.getStates().end();
+    itr2--;
+    for(auto it=result.getStates().begin(); it!=itr2; it++){
         int count2=count;
         for(auto it2=it; it2!=result.getStates().end(); it2++, count2++){
             if(it2==it){
                 it2++;
+                if (result.getStates().end() == it2){
+                    break;
+                }
                 it2++;
+                if (result.getStates().end() == it2){
+                    break;
+                }
             }
-            it->second->addconnection(it2->second,temp[count2],count2*weight+1);
+            it->second->addconnection(it2->second,temp[count2+1],count2*weight+1);
         }
         count++;
     }
