@@ -217,6 +217,6 @@ double Genre::similarity(Song *s) {
         V0=1;
     }
     double result = (7*results[0]+2*results[1]+1*results[2])/10;
-    //cout << result << endl;
+    cout << result << endl;
     return result;
 }

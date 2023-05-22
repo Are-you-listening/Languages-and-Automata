@@ -11,16 +11,10 @@
 #include "NFA.h"
 #include "gui/Gui.h"
 int main() {
-    const string m = "NFA_fix.json";
-    NFA k(m);
 
-    WNFA w = k.toWNFA();
-    w.print();
-
-    /*
     Gui g;
     g.start();
-    */
+
 
     /*
     vector<int> V = {1,1,1,1,1,-1};
