@@ -44,6 +44,9 @@ void DFAE::eliminateState(const std::string &eliminatedstate) {
         }
         set<pair<Node*, string>> connectionstoadd;
         set<pair<Node*, string>> connectionstoremove;
+        if (state->regexconnections.count(todestroy) == 0){
+            continue;
+        }
         pair<Node*, string> regexconnection(todestroy, state->regexconnections[todestroy]);
         for (const auto& todestroyconnection: todestroy->regexconnections) {
             stringstream tempconnection;
@@ -80,8 +83,7 @@ void DFAE::eliminateState(const std::string &eliminatedstate) {
             connectionstoadd.emplace(todestroyconnection.first, tempconnection.str());
             connectionstoremove.emplace(regexconnection);
         }
-
-
+        
         for (const auto & connection : connectionstoremove){
             state->regexconnections.erase(connection.first);
         }
@@ -104,7 +106,6 @@ void DFAE::eliminateState(const std::string &eliminatedstate) {
 
 
 REE DFAE::toREE() const {
-    cout << states.size() << endl;
     for (auto &state : states){
         
         map<Node*, set<char>> tempconnections;
