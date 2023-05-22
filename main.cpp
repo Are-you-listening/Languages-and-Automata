@@ -16,13 +16,13 @@ int main() {
     g.start();
     */
 
-
+    /*
     vector<int> V = {1,1,1,1,1,-1};
     Song* s = new Song("midi_files/c0.mid" , false);
 
     ENFA az = s->toRegex(V[0],V[1],V[2],V[3],V[4],V[5])[0].toENFA();
 
-    Song* k = new Song("midi_files/c1.mid" , false);
+    Song* k = new Song("midi_files/HarryPotter.mid" , false);
     Genre m = Genre(s,k,V,"test",0,0);
 
     DFA* a = m.getProductAutomata();
@@ -34,15 +34,18 @@ int main() {
     delete s;
     delete k;
     delete yaay;
-
+    */
 
     /*
     Song* s = new Song("midi_files/c0.mid" , false);
     RE r = s->toRegex(1, 1, 1, 1, 1, -1)[0];
     ENFA e = r.toENFA();
-    DFA d = e.toDFA();
+    DFA* d = e.toDFA();
+    cout << e.accepts(r.re) << endl;
+    cout << d->accepts(r.re) << endl;
     delete s;
      */
+
 
     /*
     Song* s = new Song("midi_files/c0.mid" , false);
@@ -67,21 +70,21 @@ int main() {
     RE m(a.ToRe() , ep);
     m.re;*/
 
-    /*
+
     vector<int> V = {1,1,1,1,1,-1};
     Song* s = new Song("midi_files/c0.mid" , false);
 
     ENFA az = s->toRegex(V[0],V[1],V[2],V[3],V[4],V[5])[0].toENFA();
-    DFA aza = az.toDFA();
+    DFA* aza = az.toDFA();
 
     Song* k = new Song("midi_files/c1.mid" , false);
     Genre m = Genre(s,k,V,"test",0,0);
 
-    DFA a = m.getProductAutomata();
+    DFA* a = m.getProductAutomata();
     Song* yaay = new Song(a,V,true);
 
     yaay->save("tazazazazazaz.mid");
-     */
+
     //s->save(s->getTitle());
     //s->similarity(*k,0,0);
     /*

@@ -7,12 +7,17 @@
 void Genre::addGenre(Song *&s) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
     string log;
+
+    members.push_back(s);
+    log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
+    toProductAutomata();
+    /*
     if(inGenre(s)){
         members.push_back(s);
         log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
     }else{
         log = getCurrTime()+ " Could not add this Song the Genre.\n\n";
-    }
+    }*/
     if(console){cout << log;}
     logs.push_back(log);
 }
@@ -42,6 +47,7 @@ DFA* Genre::toProductAutomata() {
 }
 
 bool Genre::inGenre(Song *&s) {
+    /*
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string log = getCurrTime()+ " Validating if "+s->getTitle()+" is part of this genre..\n\n";
@@ -66,8 +72,10 @@ bool Genre::inGenre(Song *&s) {
     }
     if(console){cout << log;}
     logs.push_back(log);
+    */
 
-    return succes;
+
+    return similarity(s)>=limit;
 }
 
 Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bool console, bool TFA): param(params), name(name) ,  console(console), TFA(TFA) {
@@ -76,7 +84,7 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     //Set Data
     fInitCheck = this;
     members={s,k};
-    limit=s->similarity(k,false,false);
+    limit = 70;
 
     string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit) +  " minimum match %\n\n";
     if(console){cout << log;}

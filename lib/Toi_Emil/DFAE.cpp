@@ -36,7 +36,6 @@ bool pluswithoutbrackets(const string &input){
 }
 
 void DFAE::eliminateState(const std::string &eliminatedstate) {
-    cout << "inside eliminateState" << endl;
     Node* todestroy = states[eliminatedstate];
     for (const auto& temppair : states) {
         Node* state = temppair.second;
@@ -47,7 +46,6 @@ void DFAE::eliminateState(const std::string &eliminatedstate) {
         set<pair<Node*, string>> connectionstoremove;
         pair<Node*, string> regexconnection(todestroy, state->regexconnections[todestroy]);
         for (const auto& todestroyconnection: todestroy->regexconnections) {
-            cout << "inside todestroyconnection" << endl;
             stringstream tempconnection;
             tempconnection<< regexconnection.second;
             if (todestroyconnection.first == todestroy) {
@@ -85,12 +83,10 @@ void DFAE::eliminateState(const std::string &eliminatedstate) {
 
 
         for (const auto & connection : connectionstoremove){
-            cout << "inside connectionstoremove" << endl;
             state->regexconnections.erase(connection.first);
         }
         set<pair<Node*, string>> temp;
         for (auto& regexconnection2 : state->regexconnections){
-            cout << "inside regexconnections" << endl;
             for (const auto& connection : connectionstoadd){
                 if (regexconnection2.first == connection.first){
                     regexconnection2.second += "+" + connection.second;

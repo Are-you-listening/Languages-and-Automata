@@ -157,14 +157,17 @@ DFA* ENFAT::toDFA() {
         if ( end_states_string.find(s) != end_states_string.end() ){
             temp_state->accepting= true;
         }
+        if (d->getStates().find(temp_state->name) != d->getStates().end()){
+        }
         d->AddState(temp_state);
     }
 
     for (auto &t : new_transition_map){
         state* depart_state = d->getStates().find(t.first)->second;
+
         for (const char &a: alfabet){
             string target_string = t.second.at(a);
-            state* arrive_state = d->getStates().find(t.first)->second;
+            state* arrive_state = d->getStates().find(target_string)->second;
             string s;
             s += a;
             depart_state->addTransitionFunction(s, arrive_state);
