@@ -58,7 +58,7 @@ private:
      */
     string SortName(string &a) const;
 
-    void adaptDistance(vector<weightedNode*>& original, State* s, int distance, int index, double weight, const WNFA& result);
+    void adaptDistance2(double weight, const WNFA& result);
 
 public:
     /**
@@ -90,8 +90,6 @@ public:
      * @return
      */
     WNFA toWNFA();
-
-    void adaptDistance2(double weight, const WNFA& result);
 };
 
 #endif //TA_TOG_NFA_H
