@@ -328,5 +328,18 @@ void MergeAlpabets(DFA* z, DFA* z2) {
             k.second->addTransitionFunction(s,zDead2);
         }
     }
+}
 
+string ColorConverter(const double &d){
+    string formatted;
+    if (d<25){
+        formatted = "\033[1;31m" + to_string(d) + "\033[0m";
+    } else if (d<50){
+        formatted = "\033[1;33m" + to_string(d) + "\033[0m";
+    } else if (d<90){
+        formatted = "\033[1;32m" + to_string(d) + "\033[0m";
+    } else {
+        formatted = "\033[1;42m\033[1;1m\033[1;35m" + to_string(d) + "\033[0m" ;
+    }
+    return formatted;
 }

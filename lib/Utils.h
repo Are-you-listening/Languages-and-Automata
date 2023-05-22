@@ -165,10 +165,18 @@ string ConvertToEqclassName(vector < vector<string> > &eqClass, const string &s)
 bool Found(vector<pair<string, vector<pair<char, string>>>> &processed, string &name);
 
 /**
- * \brief Merge the alpabets of 2 DFA's, helper function for Genre
+ * \brief Merge the alphabets of 2 DFA's, helper function for Genre
  * @param z
  * @param z2
  */
 void MergeAlpabets(DFA* z, DFA* z2);
+
+/**
+ * \brief Add color to your log messages!
+ * \REQUIRE: d in ]0,100[
+ * @param d
+ * @return
+ */
+string ColorConverter(const double &d);
 
 #endif

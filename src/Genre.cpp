@@ -77,7 +77,7 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     members={s,k};
     limit = 70;
 
-    string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit) +  " minimum match %\n\n";
+    string log = getCurrTime() + "The genre will be constructed on a " + ColorConverter(limit) +  " minimum match %\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 

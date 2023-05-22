@@ -273,7 +273,7 @@ double Song::similarity(Song* song, bool complement, bool reverse) {
         WNFA_result=1;
     }
 
-    m = getCurrTime()+" Used the WDFA, found a partial result off: "+ to_string(WNFA_result*100) + " %\n\n";
+    m = getCurrTime()+" Used the WDFA, found a partial result off: "+ ColorConverter(WNFA_result*100) + " %\n\n";
     if(console){cout << m;}
     logs.push_back(m);
 
@@ -282,17 +282,8 @@ double Song::similarity(Song* song, bool complement, bool reverse) {
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
-    string formatted;
     result*=100;
-    if (result<25){
-        formatted = "\033[1;31m" + to_string(result) + "\033[0m";
-    } else if (result<50){
-        formatted = "\033[1;33m" + to_string(result) + "\033[0m";
-    } else if (result<90){
-        formatted = "\033[1;32m" + to_string(result) + "\033[0m";
-    } else {
-        formatted = "\033[1;42m\033[1;1m\033[1;35m" + to_string(result) + "\033[0m" ;
-    }
+    string formatted = ColorConverter(result);
 
     m = getCurrTime()+" Comparison ended, showing a match-percentage off: "+ formatted + " %\n\n";
     if(console){cout << m;}
