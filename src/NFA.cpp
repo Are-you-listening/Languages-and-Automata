@@ -43,17 +43,15 @@ NFA::~NFA() {
 }
 
 DFA NFA::toDFA() const {
-    map<string , vector<pair<char,string>> > DFA_Q; // collect alle states //statename, {inputsymbol, reachablestates in stringform} // bv: ["{q1,q2"} , { c, {q3,q4} }]
+    map<string , vector<pair<char,string>> > DFA_Q; // collect alle states //state name, {input symbol, reachable states in string form} // bv: ["{q1,q2"} , { c, {q3,q4} }]
     queue<string> states_todo;
     map<string,int> counts; //Keeps how many times a string been evaluated
 
     //Find Start State and add it to Q
-    //State* start;
     string startname;
-    for(auto itr = this->Q.begin(); itr!=this->Q.end() ; itr++){
-        if(itr->second->getStarting()){
-            //State* start = itr->second;
-            vector<string> temp = {itr->first};
+    for(auto &itr: Q){
+        if(itr.second->getStarting()){
+            vector<string> temp = {itr.first};
             string name = NameConvert( temp );
             startname = name;
             DFA_Q.insert( {name , FindReachableStates(name)  } ); //Insert Start
@@ -196,7 +194,7 @@ string NFA::SortNames(string &a, string &b) const {
 string NFA::SortName(string &a) const {
     vector<State*> Full = StringToState(a);
     vector<string> temp;
-    for(auto k: Full){
+    for(auto &k: Full){
         temp.push_back(k->getName());
     }
     std::sort(temp.begin(), temp.end());
@@ -254,23 +252,6 @@ WNFA NFA::toWNFA(){
     }
     adaptDistance(-0.2, result); //add weight -0.2
 
-    // voeg nieuwe transities toe die enkel in de WNFA aanwezig zijn
-    /*
-    for (string temp : result.alfabet) {
-        char symbol = temp[0];
-
-        result.startState->addconnection(result.startState, symbol, 0);
-
-        for (weightedNode *endstate: result.endStates) {
-            endstate->addconnection(endstate, symbol, 0);
-        }
-
-        for (weightedNode *firststate: result.states) {
-            for (weightedNode *secondstate: result.states) {
-                firststate->addconnection(secondstate, symbol, 0);
-            }
-        }
-    }*/
     return result;
 }
 
