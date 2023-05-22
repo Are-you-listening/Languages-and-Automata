@@ -251,7 +251,7 @@ WNFA NFA::toWNFA(){
             }
         }
     }
-    adaptDistance2(-0.2, result); //add weight -0.2
+    adaptDistance(-0.2, result); //add weight -0.2
 
     // voeg nieuwe transities toe die enkel in de WNFA aanwezig zijn
     /*
@@ -273,7 +273,7 @@ WNFA NFA::toWNFA(){
     return result;
 }
 
-void NFA::adaptDistance2(double weight, const WNFA& result){
+void NFA::adaptDistance(double weight, const WNFA& result){
     int count=0;
     vector<char> temp;
     for(auto it=result.getStates().begin()++; it!=result.getStates().end(); it++){

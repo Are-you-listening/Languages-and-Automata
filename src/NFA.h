@@ -58,7 +58,12 @@ private:
      */
     string SortName(string &a) const;
 
-    void adaptDistance2(double weight, const WNFA& result);
+    /**
+     * \brief Set Correct Weight & Connections on the new WNFA (Helper Function)
+     * @param weight
+     * @param result
+     */
+    void adaptDistance(double weight, const WNFA& result);
 
 public:
     /**
