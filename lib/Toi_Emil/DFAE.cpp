@@ -111,8 +111,7 @@ REE DFAE::toREE() const {
         map<Node*, set<char>> tempconnections;
         
         for (const char& symbol : alfabet){
-            Node* temp = state.second->connections[symbol];
-            tempconnections[temp].emplace(symbol);
+            tempconnections[state.second->connections[symbol]].emplace(symbol);
         }
         
         for (const auto& connection : tempconnections){
@@ -123,7 +122,7 @@ REE DFAE::toREE() const {
             } else if (connection.second.size() > 1){
                 tempstring += *connection.second.begin();
 
-                for (auto it = connection.second.begin().operator++(); it != connection.second.end(); it++){
+                for (auto it = connection.second.begin()++; it != connection.second.end(); it++){
                     tempstring += "+";
                     tempstring += *it;
                 }
