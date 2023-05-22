@@ -15,9 +15,9 @@ int main() {
     string c2="midi_files/";
     vector<Song*> songs;
     while(getline(Filelist,c)){
-        Song* song = new Song(c2+c,1);
+        Song* song = new Song(c2+c,true);
         song->setTitle(c);
-        ifstream Filelist2("filelist.txt"); // dit ongewijzigd laten aub
+        ifstream Filelist2("filelist.txt"); // dit ongewijzigd laten a.u.b.
         string c3;
         while(getline(Filelist2,c3)){
             if(find(doubleComparison.begin(), doubleComparison.end(), make_pair(c,c3))!=doubleComparison.end()){
@@ -25,16 +25,15 @@ int main() {
             } else {
                 doubleComparison.emplace_back(c,c3);
             }
-            Song* song2 = new Song(c2+c3,0);
+            Song* song2 = new Song(c2+c3,false);
             song2->setTitle(c3);
             try {
                 vector<int> V = {1, 1, 1, 1, 1, -1};
                 Genre genre = Genre(song, song2, V, c + "_compare_" + c3, 1, 0);
                 DFA *genreDFA = genre.getProductAutomata();
-                Song generated = Song(genreDFA, V, 1);
-                string path = "midi_output/" + c + "_compare_" + c3;
-                generated.save(path);
-                song->similarity(song2, 0, 0);
+                Song generated = Song(genreDFA, V, true);
+                generated.save("midi_output/" + c + "_compare_" + c3);
+                song->similarity(song2, false, false);
             } catch (...){
                 errorfile << c << c3 << "\n";
             }
