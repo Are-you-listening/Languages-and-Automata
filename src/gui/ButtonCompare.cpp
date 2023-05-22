@@ -45,7 +45,8 @@ void ButtonCompare::click() {
         for(int i =2; i<songs.size(); i++){
             g.addGenre(songs[i]);
         }
-        g.similarity(song);
+        double pct = g.similarity(song);
+        pcts->setPct(pct*100);
 
     }
 

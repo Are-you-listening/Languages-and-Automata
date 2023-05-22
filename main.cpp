@@ -9,6 +9,7 @@
 #include "Utils.h"
 
 #include "NFA.h"
+#include "gui/Gui.h"
 int main() {
     vector<pair<string,string>> doubleComparison; // TODO enfa alpahbet bezit soms over incomplete sequence
     ifstream Filelist("filelistAnas.txt"); // hier moet je filelist met je naam komen
