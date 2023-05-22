@@ -202,7 +202,7 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
                 get<0>(tup)->addTransitionFunction((*it2), temp);
             } else {
                 state* temp2 = states.find(temp->name)->second;
-                delete temp;
+                //delete temp;
                 get<0>(tup)->addTransitionFunction((*it2), temp2);
                 continue;
             }

@@ -297,12 +297,11 @@ void MergeAlpabets(DFA* z, DFA* z2) {
     state* zDead;
     if (it == z->getStates().end()){
         zDead = new state("{}",false, false);
-        z2->AddState(zDead);
+        z->AddState(zDead);
     }else{
         zDead = it->second;
     }
 
-    z->AddState(zDead);
     for(const auto &k: z->getAlphabet()){
         zDead->addTransitionFunction(k,zDead);
     }

@@ -35,6 +35,17 @@ DFA* Genre::toProductAutomata() {
         ENFA a = t[0].toENFA();
         DFA* s = a.toDFA();
 
+        for (auto a0: s->getStates()){
+            for (auto a1: a0.second->states){
+                if (s->getStates().find(a1.second->name) == s->getStates().end()){
+                    auto it = s->getStates().find(a1.second->name);
+                    if (it->second != a1.second){
+                        cout << "d" << endl;
+                    }
+                }
+            }
+        }
+
         ProductAutomata.second = new DFA(ProductAutomata.second, s, false); //Extend ProductAutomata
     }
     ProductAutomata.first = (int) members.size();
@@ -186,37 +197,7 @@ double Genre::similarity(Song *s) {
 
     vector<double> results = Song::similar(df, r, false, false);
 
-    int a=1;
-    int b=1;
-    int c=1;
-    int d=1;
-    int e=1;
-    int V0=param[0];
-    int V1=param[1];
-    int V2=param[2];
-    int V3=param[3];
-    int V4=param[4];
-    if(param[4]==0){
-        a=0;
-        V4=1;
-    }
-    if(param[3]==0){
-        b=0;
-        V3=1;
-    }
-    if(param[2]==0){
-        c=0;
-        V2=1;
-    }
-    if(param[1]==0){
-        d=0;
-        V1=1;
-    }
-    if(param[0]==0){
-        e=0;
-        V0=1;
-    }
-    double result = (7*results[0]+2*results[1]+1*results[2])/10;
-    cout << result << endl;
+    double result = (7*results[0]+1*results[1]+2*results[2])/10;
+
     return result;
 }
