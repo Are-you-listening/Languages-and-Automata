@@ -6,19 +6,11 @@
 
 void Genre::addGenre(Song *&s) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    string log;
 
     members.push_back(s);
-    log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
     toProductAutomata();
 
-    if(inGenre(s)){
-        members.push_back(s);
-        log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
-    }else{
-        log = getCurrTime()+ " Could not add this Song the Genre.\n\n";
-    }
-
+    string log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 }
