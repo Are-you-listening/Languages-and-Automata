@@ -8,65 +8,64 @@
 
 #include "Utils.h"
 #include "../src/RE.h"
-#include "../src/DFA.h"
 
 /**
 Auxiliary functions for file manipulation.
 */
 bool DirectoryExists(const std::string &dirname) {
-	struct stat st;
-	return stat(dirname.c_str(), &st) == 0;
+    struct stat st;
+    return stat(dirname.c_str(), &st) == 0;
 }
 
 bool FileExists(const std::string &filename) {
-	struct stat st;
-	if (stat(filename.c_str(), &st) != 0) return false;
-	ifstream f(filename.c_str());
+    struct stat st;
+    if (stat(filename.c_str(), &st) != 0) return false;
+    ifstream f(filename.c_str());
     if (f.good()) {
         f.close();
         return true;
     } else {
         f.close();
         return false;
-    }   
+    }
 }
 
 bool FileIsEmpty(const std::string &filename) {
-	struct stat st;
-	if (stat(filename.c_str(), &st) != 0) return true; // File does not exist; thus it is empty
-	return st.st_size == 0;
+    struct stat st;
+    if (stat(filename.c_str(), &st) != 0) return true; // File does not exist; thus it is empty
+    return st.st_size == 0;
 }
 
 bool FileCompare(const std::string &leftFileName, const std::string &rightFileName) {
-	ifstream leftFile, rightFile;
-	char leftRead, rightRead;
-	bool result;
+    ifstream leftFile, rightFile;
+    char leftRead, rightRead;
+    bool result;
 
-	// Open the two files.
-	leftFile.open(leftFileName.c_str());
-	if (!leftFile.is_open()) {
-		return false;
-	}
-	rightFile.open(rightFileName.c_str());
-	if (!rightFile.is_open()) {
-		leftFile.close();
-		return false;
-	}
+    // Open the two files.
+    leftFile.open(leftFileName.c_str());
+    if (!leftFile.is_open()) {
+        return false;
+    }
+    rightFile.open(rightFileName.c_str());
+    if (!rightFile.is_open()) {
+        leftFile.close();
+        return false;
+    }
 
-	result = true; // files exist and are open; assume equality unless a counterexamples shows up.
-	while (result && leftFile.good() && rightFile.good()) {
-		leftFile.get(leftRead);
-		rightFile.get(rightRead);
-		result = (leftRead == rightRead);
-	}
-	if (result) {
-		// last read was still equal; are we at the end of both files ?
-		result = (!leftFile.good()) && (!rightFile.good());
-	}
+    result = true; // files exist and are open; assume equality unless a counterexamples shows up.
+    while (result && leftFile.good() && rightFile.good()) {
+        leftFile.get(leftRead);
+        rightFile.get(rightRead);
+        result = (leftRead == rightRead);
+    }
+    if (result) {
+        // last read was still equal; are we at the end of both files ?
+        result = (!leftFile.good()) && (!rightFile.good());
+    }
 
-	leftFile.close();
-	rightFile.close();
-	return result;
+    leftFile.close();
+    rightFile.close();
+    return result;
 }
 
 string getCurrTime(){
@@ -121,27 +120,27 @@ int toInt(const char x){
 }
 
 vector<vector<int>> makeNotes(const vector<vector<int>> &info){
-     vector<vector<int>> notes;
+    vector<vector<int>> notes;
 
-     int index = 0;
-     while(info[index].size()==0){ //In case some paramaters are not used, we should move on
-         index++;
-     }
+    int index = 0;
+    while(info[index].size()==0){ //In case some paramaters are not used, we should move on
+        index++;
+    }
 
-     for(int k: info[index]){ //Set first options
-         notes.push_back({k});
-     }
+    for(int k: info[index]){ //Set first options
+        notes.push_back({k});
+    }
 
-     for(long unsigned int i=index+1; i<info.size(); i++) { //Add all possible, not yet created, options
-         vector<vector<int>> notes2;
-         for (int m: info[i]) { //Voor elke variatie
-             for(auto s: notes){
-                 s.push_back(m);
-                 notes2.push_back(s);
-             }
-         }
-         notes=notes2;
-     }
+    for(long unsigned int i=index+1; i<info.size(); i++) { //Add all possible, not yet created, options
+        vector<vector<int>> notes2;
+        for (int m: info[i]) { //Voor elke variatie
+            for(auto s: notes){
+                s.push_back(m);
+                notes2.push_back(s);
+            }
+        }
+        notes=notes2;
+    }
 
     return notes;
 }
