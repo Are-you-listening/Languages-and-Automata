@@ -11,29 +11,30 @@
 #include "NFA.h"
 #include "gui/Gui.h"
 int main() {
-
+    /*
     Gui g;
     g.start();
+    */
 
-    /*
+
     vector<int> V = {1,1,1,1,1,-1};
     Song* s = new Song("midi_files/c0.mid" , false);
 
     ENFA az = s->toRegex(V[0],V[1],V[2],V[3],V[4],V[5])[0].toENFA();
 
-    Song* k = new Song("midi_files/HarryPotter.mid" , false);
+    Song* k = new Song("midi_files/c1.mid" , false);
     Genre m = Genre(s,k,V,"test",0,0);
 
     DFA* a = m.getProductAutomata();
     Song* yaay = new Song(a,V,true);
 
-    yaay->save("tazazazazazaz.mid");
+    //yaay->save("tazazazazazaz.mid");
 
 
-    delete a;
+    delete s;
     delete k;
     delete yaay;
-     */
+
 
     /*
     Song* s = new Song("midi_files/c0.mid" , false);

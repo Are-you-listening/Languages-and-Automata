@@ -37,8 +37,8 @@ void ButtonCompare::click() {
     }
 
     if(songs.size() == 1){
-        double pct = song->similarity(*songs[0], complement_button->isOn(), reverse_button->isOn());
-        double pct2 = songs[0]->similarity(*song, complement_button->isOn(), reverse_button->isOn());
+        double pct = song->similarity(songs[0], complement_button->isOn(), reverse_button->isOn());
+        double pct2 = songs[0]->similarity(song, complement_button->isOn(), reverse_button->isOn());
         pcts->setPct((pct+pct2)/2);
     }else{
         Genre g = Genre(songs[0], songs[1], {0,1,0,1,0,-1}, "GUI", 0, 0);
