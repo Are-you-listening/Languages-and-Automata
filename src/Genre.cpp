@@ -11,13 +11,14 @@ void Genre::addGenre(Song *&s) {
     members.push_back(s);
     log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
     toProductAutomata();
-    /*
+
     if(inGenre(s)){
         members.push_back(s);
         log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
     }else{
         log = getCurrTime()+ " Could not add this Song the Genre.\n\n";
-    }*/
+    }
+
     if(console){cout << log;}
     logs.push_back(log);
 }
@@ -35,8 +36,8 @@ DFA* Genre::toProductAutomata() {
         ENFA a = t[0].toENFA();
         DFA* s = a.toDFA();
 
-        for (auto a0: s->getStates()){
-            for (auto a1: a0.second->states){
+        for (const auto &a0: s->getStates()){
+            for (const auto &a1: a0.second->states){
                 if (s->getStates().find(a1.second->name) == s->getStates().end()){
                     auto it = s->getStates().find(a1.second->name);
                     if (it->second != a1.second){
@@ -58,24 +59,13 @@ DFA* Genre::toProductAutomata() {
 }
 
 bool Genre::inGenre(Song *&s) {
-    /*
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string log = getCurrTime()+ " Validating if "+s->getTitle()+" is part of this genre..\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
-    bool succes = false;
-    DFA* m = toProductAutomata();
-    vector<RE> st = s->toRegex(param[0],param[1],param[2],param[3],param[4],-1);
-
-    //Generate a Song and check how much similar it is with the given song
-    Song k = Song(ProductAutomata.second, param, console);
-    if(k.similarity(s,false, false)>=limit){
-        succes = true;
-    }
-
-    //bool succes = m->accepts(st[0].re);
+    bool succes = similarity(s)>=limit;
     if(succes){
         log = getCurrTime() + " Found matching results on the characteristics on this Genre!\n\n";
     }else{
@@ -83,10 +73,8 @@ bool Genre::inGenre(Song *&s) {
     }
     if(console){cout << log;}
     logs.push_back(log);
-    */
 
-
-    return similarity(s)>=limit;
+    return succes;
 }
 
 Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bool console, bool TFA): param(params), name(name) ,  console(console), TFA(TFA) {
@@ -105,7 +93,7 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     vector<RE> t = members[0]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
     ENFA a = t[0].toENFA();
     DFA* z = a.toDFA();
-    
+
     //Other DFA
     vector<RE> t2 = members[1]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
     ENFA a2 = t2[0].toENFA();
@@ -187,7 +175,6 @@ double Genre::similarity(Song *s) {
         if (p >= 1){
             count += 1;
         }
-
     }
     vector<RE> r = s->toRegex(param[0], param[1], param[2], param[3], param[4], 1);
 
