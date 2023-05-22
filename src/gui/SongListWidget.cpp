@@ -5,7 +5,7 @@
 #include "SongListWidget.h"
 #include "cmath"
 SongListWidget::SongListWidget(unsigned int x, unsigned int y, unsigned int width, unsigned int height, const vector<Song*>& songs_in): x(x), y(y), width(width), height(height) {
-    for (int i=0; i<songs_in.size(); i++){
+    for (long unsigned int i=0; i<songs_in.size(); i++){
         SongWidget* w = new SongWidget(x+10, y+10, width-20, 80, songs_in[i]);
         songs.push_back(w);
     }
@@ -53,7 +53,7 @@ void SongListWidget::draw(Display *display, Window window, GC graphics_content) 
 }
 
 void SongListWidget::drawSongs(Display *display, Window window, GC graphics_content) {
-    for (int i=0; i< songs.size(); i++){
+    for (long unsigned int i=0; i< songs.size(); i++){
         SongWidget* song_widget = songs[i];
         int offset = index*80+index_offset+ i*100;
         bool skip = (int) song_widget->getY()+offset+(int)y < 10 || (int) song_widget->getY()+offset >= (int) height+(int)y;
@@ -67,7 +67,7 @@ void SongListWidget::drawSongs(Display *display, Window window, GC graphics_cont
 
 SongWidget *SongListWidget::select(unsigned int mouse_x, unsigned int mouse_y) {
     if (inWidget(mouse_x, mouse_y)){
-        for (int i=0; i< songs.size(); i++){
+        for (long unsigned int i=0; i< songs.size(); i++){
             SongWidget* song_widget = songs[i];
             int offset = index*80+index_offset+ i*100;
             if (song_widget->isClicked(mouse_x, mouse_y, offset, y+10, height+y-10)){

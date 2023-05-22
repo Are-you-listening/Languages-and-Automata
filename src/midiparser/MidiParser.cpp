@@ -221,7 +221,7 @@ bool MidiParser::readComponent() {
          * these will just be ignored if occured
          * */
     }else if (basic_data.equalsHex("f0", 0)){
-        for (unsigned int i=0; i <basic_data.getByte(1); i++){
+        for (long unsigned int i=0; i <basic_data.getByte(1); i++){
             byteRead(1);
         }
     }else if (basic_data.equalsHex("9", 0) || basic_data.equalsHex("8", 0)){

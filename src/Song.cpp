@@ -629,7 +629,7 @@ double Song::checkTibo2(vector<vector<DFA *>> &d, vector<RE> &s) {
     for(long unsigned int i = 0; i<min(d.size(), s.size()); i++){ // Given song
         string test=s[i].re;
         bool b = false;
-        for (int j=0; j < d[i].size(); j++){
+        for (long unsigned int j=0; j < d[i].size(); j++){
             if (d[i][j]->accepts(test)){
                 b = true;
             }

@@ -21,7 +21,7 @@ void DFA::load(const json &j) {
             DFA::alphabet.insert(k);
         }
         vector<json> b =j["states"];
-        int count=0;
+        long unsigned int count=0;
         while(count!=b.size()){
             json d1 =b[count];
             auto q(new state(d1["name"],d1["starting"],d1["accepting"] ));
@@ -35,7 +35,7 @@ void DFA::load(const json &j) {
             count++;
         }
         vector<json> d =j["transitions"];
-        int count2=0;
+        long unsigned int count2=0;
         while(count2!=d.size()){
             json d1 =d[count2];
             for(const auto &it: states){
@@ -189,7 +189,7 @@ DFA::DFA(DFA* dfa1, DFA* dfa2, bool c) {
                 todo.emplace( temp, new1 , new2 );
 
                 if ((state1->states[it2]->accepting && state2->states[it2]->accepting && c) ||
-                    (state1->states[it2]->accepting || state2->states[it2]->accepting && !c)) {
+                    ( (state1->states[it2]->accepting || state2->states[it2]->accepting) && !c)) {
                     temp->accepting = true;
                     endstates.push_back(temp);
                 }

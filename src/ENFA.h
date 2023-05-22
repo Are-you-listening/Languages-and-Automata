@@ -31,7 +31,7 @@ protected:
     vector<state*> ECLOSE(state* Etransition)const&;
     vector<state*> ECLOSE2(state* Etransition, string input)const&;
     void Etransitions(vector<state*> &states)const&;
-    void Etransitions(vector<state*> &states, vector<state*> &found)const&;
+    void Etransitions(vector<state*> &States, vector<state*> &found)const&;
 
 public:
     bool deletable = false;

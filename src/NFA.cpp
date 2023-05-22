@@ -15,7 +15,7 @@ NFA::NFA(const string &inputfile) {
 
     //Parse States
     auto states = j["states"];
-    for(int i = 0 ; i<states.size() ; i++){
+    for(long unsigned int i = 0 ; i<states.size() ; i++){
         string toestand = states[i]["name"];
         bool start = states[i]["starting"];
         bool accept = states[i]["accepting"];
@@ -26,7 +26,7 @@ NFA::NFA(const string &inputfile) {
 
     //Parse Delta
     auto transitions = j["transitions"];
-    for(int i = 0 ; i<transitions.size() ; i++) {
+    for(long unsigned int i = 0 ; i<transitions.size() ; i++) {
         string from = transitions[i]["from"];
         string to = transitions[i]["to"];
         string in = transitions[i]["input"];
@@ -65,7 +65,7 @@ DFA NFA::toDFA() const {
     //Lazy Evaluation from start State
     while(!states_todo.empty()){
         vector<pair<char,string>> options = DFA_Q.find(states_todo.front())->second;
-        for(int i = 0 ; i<options.size() ; i++) {
+        for(long unsigned int i = 0 ; i<options.size() ; i++) {
             string name = options[i].second;
             if(DFA_Q.find(name)!=DFA_Q.end()){
                 if(counts.find(name)->second>0){
@@ -113,7 +113,7 @@ DFA NFA::toDFA() const {
 
         vector<pair<char,string>> transitions = j.second;
         //Set transitions (voor elke state)
-        for(int i = 0; i<transitions.size() ; i++){
+        for(long unsigned int i = 0; i<transitions.size() ; i++){
             string t = j.first;
 
             dfa["transitions"][count]["from"]= SortName(t);
@@ -218,7 +218,7 @@ NFA::NFA(const json &j) {
 
     //Parse Delta
     auto transitions = j["transitions"];
-    for(int i = 0 ; i<transitions.size() ; i++) {
+    for(long unsigned int i = 0 ; i<transitions.size() ; i++) {
         string from = transitions[i]["from"];
         string to = transitions[i]["to"];
         string in = transitions[i]["input"];

@@ -101,15 +101,15 @@ void ENFA::print()const&{
     j["type"] = "ENFA";
     j["alphabet"]=ENFA::alphabet;
 
-    vector<json> states;
+    vector<json> States;
     for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
         json temp;
         temp["name"]=(*it)->name;
         temp["starting"]=(*it)->starting;
         temp["accepting"]=(*it)->accepting;
-        states.push_back(temp);
+        States.push_back(temp);
     }
-    j["states"]=states;
+    j["states"]=States;
     vector<json> transitions;
 
     set<string> alphabet2 = alphabet;
@@ -173,7 +173,7 @@ vector<state*> ENFA::ECLOSE2(state*Etransition, string input)const&{
     return EStates;
 }
 
-void ENFA::Etransitions(vector<state*> &states)const&{
+void ENFA::Etransitions(vector<state*> &States)const&{
     /*
     for(vector<state*>::const_iterator it=states.begin(); it!=states.end(); it++){
         bool a=false;
@@ -193,12 +193,12 @@ void ENFA::Etransitions(vector<state*> &states)const&{
     }*/
 
     vector<state*> new_states;
-    new_states.insert(new_states.begin(), states.begin(), states.end());
-    Etransitions(new_states, states);
+    new_states.insert(new_states.begin(), States.begin(), States.end());
+    Etransitions(new_states, States);
 }
 
-void ENFA::Etransitions(vector<state*> &states, vector<state*> &found)const&{
-    for(vector<state*>::const_iterator it=states.begin(); it!=states.end(); it++){
+void ENFA::Etransitions(vector<state*> &States, vector<state*> &found)const&{
+    for(vector<state*>::const_iterator it=States.begin(); it != States.end(); it++){
         vector<state*> states2= ECLOSE((*it));
         vector<state*> new_states;
         for(vector<state*>::const_iterator it2=states2.begin(); it2!=states2.end(); it2++){
@@ -394,7 +394,7 @@ void ENFA::load(const json &j) {
             ENFA::alphabet.insert((*it));
         }
         vector<json> b =j["states"];
-        int count=0;
+        long unsigned int count=0;
         while(count!=b.size()){
             json d1 =b[count];
             state* q(new state());
@@ -411,7 +411,7 @@ void ENFA::load(const json &j) {
             count++;
         }
         vector<json> d =j["transitions"];
-        int count2=0;
+        long unsigned int count2=0;
         while(count2!=d.size()){
             json d1 =d[count2];
             for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end();it++){
@@ -431,15 +431,15 @@ json ENFA::getJson() const {
     json j;
     j["type"] = "ENFA";
     j["alphabet"]=ENFA::alphabet;
-    vector<json> states;
+    vector<json> States;
     for(vector<state*>::const_iterator it=ENFA::states.begin(); it!=ENFA::states.end(); it++){
         json temp;
         temp["name"]=(*it)->name;
         temp["starting"]=(*it)->starting;
         temp["accepting"]=(*it)->accepting;
-        states.push_back(temp);
+        States.push_back(temp);
     }
-    j["states"]=states;
+    j["states"]=States;
     vector<json> transitions;
 
     set<string> alphabet2 = alphabet;

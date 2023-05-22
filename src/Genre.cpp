@@ -69,7 +69,7 @@ bool Genre::inGenre(Song *&s) {
     return succes;
 }
 
-Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bool console, bool TFA): param(params), name(name) ,  console(console), TFA(TFA) {
+Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bool console, bool TFA): console(console), name(name) ,  param(params), TFA(TFA) {
     REQUIRE(params.size()==6, "Params doesn't has all the parameters");
 
     //Set Data
@@ -109,6 +109,7 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}
     logs.push_back(log);
+
     //Free memory
     delete z;
     delete z2;
@@ -162,12 +163,12 @@ Genre::~Genre() {
 }
 
 double Genre::similarity(Song *s) {
-    int count = 0;
+    /*int count = 0;
     for (auto p: param){
         if (p >= 1){
             count += 1;
         }
-    }
+    }*/
     vector<RE> r = s->toRegex(param[0], param[1], param[2], param[3], param[4], 1);
 
     DFA* r2 = ProductAutomata.second;
