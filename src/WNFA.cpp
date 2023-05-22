@@ -208,9 +208,9 @@ WDFA WNFA::toWDFA() {
     startstate[startState->getName()] = startState;
 
     set< string > toProcess;
-    string ks = "{" + startState->getName() + "}";
-    toProcess.insert(ks); //Add Start State for lazy evaluation
+    string ks = "{" + startState->getName() +"}";
     result.addState(ks, true, true); //Add start state to DFA
+    toProcess.insert(ks); //Add Start State for lazy evaluation
 
     while(!toProcess.empty()){ //While there are states to proces
         string processing_str = *toProcess.begin();
