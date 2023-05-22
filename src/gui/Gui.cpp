@@ -27,6 +27,7 @@ void Gui::start() {
 
     bool has_selected = false;
     SongWidget* selected = nullptr;
+    int draw_counter = 0;
 
     SongListWidget* song_list = new SongListWidget(20, 20, 250, 700, {
                                                                       new Song("midi_files/world-1-birabuto-remix-.mid",0),
@@ -140,18 +141,25 @@ void Gui::start() {
             unsigned int mouse_x = event.xbutton.x;
             unsigned int mouse_y = event.xbutton.y;
 
-            selected->setPosMouse(mouse_x, mouse_y);
-            for (auto& s_l: song_groups){
-                s_l->draw(display, window,graphics_content);
+            if (draw_counter == 6){
+                draw_counter = 0;
+                selected->setPosMouse(mouse_x, mouse_y);
+                for (auto& s_l: song_groups){
+                    s_l->draw(display, window,graphics_content);
+                }
+
+                for (auto& b: buttons){
+                    b->draw(display, window,graphics_content);
+                }
+
+                result->draw(display, window,graphics_content);
+
+                selected->draw(display, window,graphics_content, false);
+            }else{
+                draw_counter += 1;
             }
 
-            for (auto& b: buttons){
-                b->draw(display, window,graphics_content);
-            }
 
-            result->draw(display, window,graphics_content);
-
-            selected->draw(display, window,graphics_content, false);
 
 
         }
