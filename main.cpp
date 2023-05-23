@@ -33,6 +33,9 @@ int main() {
                 Song generated = Song(genreDFA, V, true);
                 generated.save("midi_output/" + c + "_compare_" + c3);
                 song->similarity(song2, false, false);
+                song->output();
+                genre.output();
+                generated.output();
             } catch (...){
                 errorfile << c << c3 << "\n";
             }
