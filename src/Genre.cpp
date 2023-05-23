@@ -100,9 +100,7 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
         log = getCurrTime() + " Minimizing our beautiful product..\n\n";
         if(console){cout << log;}
         logs.push_back(log);
-        cout << prod->getStates().size() << endl;
         prod = prod->minimize();
-        cout << prod->getStates().size() << endl;
     }
     ProductAutomata.second = prod; //Construct First ProductAutomata //True = Doorsnede, False = Unie
     ProductAutomata.first = 2;
