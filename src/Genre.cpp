@@ -121,8 +121,10 @@ void Genre::output() const {
 
     string file= "report_"+name+".txt";
     string file2 = "report_"+name;
+    unsigned int count=0;
     while(FileExists(file)){
-        file2+="(copy)";
+        count++;
+        file2+= to_string(count);
         file = file2+".txt";
     }
 
