@@ -3,8 +3,8 @@
 
 MidiParser::MidiParser(const string &path) {
     /**
-     * Welkom in the midiparser, here some binary data will be converted to
-     * more usefull data. Are you intrested in this very intresting journey of deciphering Bytes
+     * Welkom in the midi parser, here some binary data will be converted to
+     * more useful data. Are you interested in this very interesting journey of deciphering Bytes
      * Follow me through this documentation and you will achieve an basic understanding of our midi-parser
      * */
     stream.open(&path[0], ios_base::binary);
@@ -221,7 +221,7 @@ bool MidiParser::readComponent() {
          * these will just be ignored if occured
          * */
     }else if (basic_data.equalsHex("f0", 0)){
-        for (unsigned int i=0; i <basic_data.getByte(1); i++){
+        for (long unsigned int i=0; i <basic_data.getByte(1); i++){
             byteRead(1);
         }
     }else if (basic_data.equalsHex("9", 0) || basic_data.equalsHex("8", 0)){

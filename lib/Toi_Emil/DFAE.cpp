@@ -37,83 +37,93 @@ bool pluswithoutbrackets(const string &input){
 
 void DFAE::eliminateState(const std::string &eliminatedstate) {
     Node* todestroy = states[eliminatedstate];
-    for (const auto& temppair : states) {
-        Node* state = temppair.second;
+
+    set<pair<Node*, string>> todestroyconnections;
+
+    for (const auto& todestroyconnection: todestroy->regexconnections) {
+        stringstream tempconnection;
+        if (todestroyconnection.first == todestroy) {
+            continue;
+        }
+
+        if (not todestroy->selfconnection.empty()) {
+            if (pluswithoutbrackets(tempconnection.str())) {
+                tempconnection << ")";
+            }
+            tempconnection << todestroy->selfconnection << "*";
+        }
+
+        if (todestroyconnection.second.find('+') !=
+            todestroyconnection.second.npos) {       // als er een + in staat moeten er haken komen
+            tempconnection << "(" << todestroyconnection.second << ")";
+        } else {
+            tempconnection << todestroyconnection.second;
+        }
+        string tempconnection_str = tempconnection.str();
+        if (tempconnection_str.find('(') == tempconnection_str.npos &&
+            tempconnection_str.find(')') != tempconnection_str.npos) {
+            stringstream temp;
+            temp << "(" << tempconnection_str;
+            tempconnection.clear();
+            tempconnection << temp.str();
+        } else if (pluswithoutbrackets(tempconnection_str)) {
+            stringstream temp;
+            temp << "(" << tempconnection_str << ")";
+            tempconnection.clear();
+            tempconnection << temp.str();
+        }
+        todestroyconnections.emplace(todestroyconnection.first, tempconnection.str());
+    }
+
+    //map<Node*, string> connectionstoremove;
+
+    for (const auto& temp_pair : states) {
+        Node* state = temp_pair.second;
         if (state == todestroy) {
             continue;
         }
         set<pair<Node*, string>> connectionstoadd;
-        set<pair<Node*, string>> connectionstoremove;
-        if (state->regexconnections.count(todestroy) == 0){
-            continue;
-        }
-        pair<Node*, string> regexconnection(todestroy, state->regexconnections[todestroy]);
-        for (const auto& todestroyconnection: todestroy->regexconnections) {
-            stringstream tempconnection;
-            tempconnection<< regexconnection.second;
-            if (todestroyconnection.first == todestroy) {
-                continue;
+
+        if (state->regexconnections.find(todestroy) != state->regexconnections.end()) {
+            pair<Node*, string> tempregexpair = make_pair(todestroy, state->regexconnections[todestroy]);
+            if (pluswithoutbrackets(tempregexpair.second)){
+                tempregexpair.second = "(" + tempregexpair.second + ")";
             }
 
-            if (not todestroy->selfconnection.empty()) {
-                if (pluswithoutbrackets(tempconnection.str())){
-                    tempconnection << ")";
-                }
-                tempconnection << todestroy->selfconnection << "*";
-            }
-
-            if (todestroyconnection.second.find('+') != todestroyconnection.second.npos){       // als er een + in staat moeten er haken komen
-                tempconnection << "(" << todestroyconnection.second << ")";
-            } else {
-                tempconnection << todestroyconnection.second;
-            }
-            string tempconnection_str = tempconnection.str();
-            if (tempconnection_str.find('(') == tempconnection_str.npos && tempconnection_str.find(')') != tempconnection_str.npos){
-                stringstream temp;
-                temp << "(" << tempconnection_str;
-                tempconnection.clear();
-                tempconnection << temp.str();
-            } else if (pluswithoutbrackets(tempconnection_str)){
-                stringstream temp;
-                temp << "(" << tempconnection_str << ")";
-                tempconnection.clear();
-                tempconnection << temp.str();
-            }
-
-            connectionstoadd.emplace(todestroyconnection.first, tempconnection.str());
-            connectionstoremove.emplace(regexconnection);
-        }
-        
-        for (const auto & connection : connectionstoremove){
-            state->regexconnections.erase(connection.first);
-        }
-        set<pair<Node*, string>> temp;
-        for (auto& regexconnection2 : state->regexconnections){
-            for (const auto& connection : connectionstoadd){
-                if (regexconnection2.first == connection.first){
-                    regexconnection2.second += "+" + connection.second;
-                    temp.emplace(connection);
+            state->regexconnections.erase(todestroy);
+            for (const auto& connection : todestroyconnections) {
+                if (state->regexconnections[connection.first].empty()) {
+                    connectionstoadd.emplace(connection.first, tempregexpair.second + connection.second);
+                } else {
+                    connectionstoadd.emplace(connection.first, state->regexconnections[connection.first] + "+" + tempregexpair.second + connection.second);
                 }
             }
         }
-        for (auto connection : temp){
-            connectionstoadd.erase(connection);
+
+        //for (auto& regexconnection2 : state->regexconnections){
+        //    for (const auto& connection : todestroyconnections){
+        //        if (regexconnection2.first == connection.first && connection.first != state){
+        //            stringstream tempstream;
+        //            tempstream << regexconnection2.second << "+" << connection.second;
+        //            regexconnection2.second = tempstream.str();
+        //        }
+        //    }
+        //}
+        for (auto add : connectionstoadd){
+            state->regexconnections[add.first] = add.second;
         }
-        state->regexconnections.insert(connectionstoadd.begin(), connectionstoadd.end());
     }
 }
 
-
-
 REE DFAE::toREE() const {
     for (auto &state : states){
-        
+
         map<Node*, set<char>> tempconnections;
-        
+
         for (const char& symbol : alfabet){
             tempconnections[state.second->connections[symbol]].emplace(symbol);
         }
-        
+
         for (const auto& connection : tempconnections){
             string tempstring;
             if (connection.second.size() == 1){
@@ -122,7 +132,7 @@ REE DFAE::toREE() const {
             } else if (connection.second.size() > 1){
                 tempstring += *connection.second.begin();
 
-                for (auto it = connection.second.begin()++; it != connection.second.end(); it++){
+                for (auto it = connection.second.begin().operator++(); it != connection.second.end(); it++){
                     tempstring += "+";
                     tempstring += *it;
                 }
@@ -133,7 +143,7 @@ REE DFAE::toREE() const {
                 state.second->selfconnection = tempstring;
             }
         }
-        
+
     }
 
     // for each endstate eliminate all other states except for the starting state
@@ -234,7 +244,8 @@ REE DFAE::toREE() const {
     for (const auto& state : states){
         state.second->regexconnections.clear();
     }
-    return REE(finalregex.str());
+    string result = finalregex.str();
+    return REE(result);
 }
 
 DFAE::DFAE(const DFAE &other) {

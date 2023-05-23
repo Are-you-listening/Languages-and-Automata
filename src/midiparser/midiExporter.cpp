@@ -16,7 +16,7 @@ midiExporter::midiExporter(const string &path, const map<pair<unsigned int, bool
 void midiExporter::changeFormat() {
     channel_counter = 0;
     
-    for (auto entry: note_map){
+    for (const auto &entry: note_map){
         for(Note* n: entry.second){
             addNote(n, entry.first.second);
         }
@@ -53,7 +53,7 @@ void midiExporter::addNote(Note* note, bool note_on) {
 }
 
 void midiExporter::createTracks() {
-    for(auto entry: instrument_map){
+    for(auto &entry: instrument_map){
         unsigned int instrument = entry.first;
         unsigned int channel = instrument_to_channel.at(instrument);
         unsigned int track_length = 0;
@@ -69,7 +69,7 @@ void midiExporter::createTracks() {
 
 
         vector<ByteX> sub_buffer;
-        for(auto note: entry.second){
+        for(auto &note: entry.second){
             Note* n = get<0>(note);
             unsigned int delta = get<1>(note);
             bool note_on = get<2>(note);
@@ -134,7 +134,7 @@ void midiExporter::store() {
     ofstream o(path, ios_base::binary);
 
 
-    for(auto b: buffer){
+    for(auto &b: buffer){
         o << b.toString();
     }
 

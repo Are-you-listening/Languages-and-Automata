@@ -15,7 +15,7 @@ NFA::NFA(const string &inputfile) {
 
     //Parse States
     auto states = j["states"];
-    for(int i = 0 ; i<states.size() ; i++){
+    for(long unsigned int i = 0 ; i<states.size() ; i++){
         string toestand = states[i]["name"];
         bool start = states[i]["starting"];
         bool accept = states[i]["accepting"];
@@ -26,7 +26,7 @@ NFA::NFA(const string &inputfile) {
 
     //Parse Delta
     auto transitions = j["transitions"];
-    for(int i = 0 ; i<transitions.size() ; i++) {
+    for(long unsigned int i = 0 ; i<transitions.size() ; i++) {
         string from = transitions[i]["from"];
         string to = transitions[i]["to"];
         string in = transitions[i]["input"];
@@ -43,17 +43,15 @@ NFA::~NFA() {
 }
 
 DFA NFA::toDFA() const {
-    map<string , vector<pair<char,string>> > DFA_Q; // collect alle states //statename, {inputsymbol, reachablestates in stringform} // bv: ["{q1,q2"} , { c, {q3,q4} }]
+    map<string , vector<pair<char,string>> > DFA_Q; // collect alle states //state name, {input symbol, reachable states in string form} // bv: ["{q1,q2"} , { c, {q3,q4} }]
     queue<string> states_todo;
     map<string,int> counts; //Keeps how many times a string been evaluated
 
     //Find Start State and add it to Q
-    //State* start;
     string startname;
-    for(auto itr = this->Q.begin(); itr!=this->Q.end() ; itr++){
-        if(itr->second->getStarting()){
-            //State* start = itr->second;
-            vector<string> temp = {itr->first};
+    for(auto &itr: Q){
+        if(itr.second->getStarting()){
+            vector<string> temp = {itr.first};
             string name = NameConvert( temp );
             startname = name;
             DFA_Q.insert( {name , FindReachableStates(name)  } ); //Insert Start
@@ -67,7 +65,7 @@ DFA NFA::toDFA() const {
     //Lazy Evaluation from start State
     while(!states_todo.empty()){
         vector<pair<char,string>> options = DFA_Q.find(states_todo.front())->second;
-        for(int i = 0 ; i<options.size() ; i++) {
+        for(long unsigned int i = 0 ; i<options.size() ; i++) {
             string name = options[i].second;
             if(DFA_Q.find(name)!=DFA_Q.end()){
                 if(counts.find(name)->second>0){
@@ -115,7 +113,7 @@ DFA NFA::toDFA() const {
 
         vector<pair<char,string>> transitions = j.second;
         //Set transitions (voor elke state)
-        for(int i = 0; i<transitions.size() ; i++){
+        for(long unsigned int i = 0; i<transitions.size() ; i++){
             string t = j.first;
 
             dfa["transitions"][count]["from"]= SortName(t);
@@ -196,7 +194,7 @@ string NFA::SortNames(string &a, string &b) const {
 string NFA::SortName(string &a) const {
     vector<State*> Full = StringToState(a);
     vector<string> temp;
-    for(auto k: Full){
+    for(auto &k: Full){
         temp.push_back(k->getName());
     }
     std::sort(temp.begin(), temp.end());
@@ -220,7 +218,7 @@ NFA::NFA(const json &j) {
 
     //Parse Delta
     auto transitions = j["transitions"];
-    for(int i = 0 ; i<transitions.size() ; i++) {
+    for(long unsigned int i = 0 ; i<transitions.size() ; i++) {
         string from = transitions[i]["from"];
         string to = transitions[i]["to"];
         string in = transitions[i]["input"];
@@ -232,13 +230,9 @@ NFA::NFA(const json &j) {
 WNFA NFA::toWNFA(){
     WNFA result = WNFA();
     result.setAlfabet(Alphabet);
-    State* start_state;
     // maak de staten van de WNFA aan
     for (pair<string, State*> state_pair : Q){
         result.addState(state_pair.first, state_pair.second->getStarting(), true);
-        if (state_pair.second->getStarting()){
-            start_state = state_pair.second;
-        }
     }
 
     // voeg de transities uit de NFA toe aan de WNFA
@@ -254,23 +248,6 @@ WNFA NFA::toWNFA(){
     }
     adaptDistance(-0.2, result); //add weight -0.2
 
-    // voeg nieuwe transities toe die enkel in de WNFA aanwezig zijn
-    /*
-    for (string temp : result.alfabet) {
-        char symbol = temp[0];
-
-        result.startState->addconnection(result.startState, symbol, 0);
-
-        for (weightedNode *endstate: result.endStates) {
-            endstate->addconnection(endstate, symbol, 0);
-        }
-
-        for (weightedNode *firststate: result.states) {
-            for (weightedNode *secondstate: result.states) {
-                firststate->addconnection(secondstate, symbol, 0);
-            }
-        }
-    }*/
     return result;
 }
 

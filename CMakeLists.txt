@@ -6,7 +6,7 @@ project(Tog)
 #flags
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "-std=c++17") #-Wall -Werror -02 #-Ofast
+set(CMAKE_CXX_FLAGS "-std=c++17 -O2") #-Wall -Werror -02 #-Ofast
 ################################################################
 #directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -68,6 +68,8 @@ set(MAIN_SRC
         src/WNFA.h
         src/WDFA.cpp
         src/WDFA.h
+        src/weightedNode.cpp
+        src/weightedNode.h
 
         lib/Toi_Tibo/DFAT.cpp
         lib/Toi_Tibo/DFAT.h
@@ -80,8 +82,6 @@ set(MAIN_SRC
         lib/Toi_Emil/automaat.h
         lib/Toi_Emil/Node.cpp
         lib/Toi_Emil/Node.h
-        src/weightedNode.cpp
-        src/weightedNode.h
 
         lib/Toi_Kars/State.h
         lib/Toi_Kars/State.cpp

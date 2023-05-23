@@ -18,3 +18,7 @@ const string &Node::getName() const {
 const map<char, Node*> &Node::getConnections() const {
     return connections;
 }
+
+Node::~Node() {
+
+}

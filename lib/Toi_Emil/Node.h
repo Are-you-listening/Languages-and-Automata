@@ -23,6 +23,8 @@ public:
     const string &getName() const;
 
     virtual const map<char, Node*> &getConnections() const;
+
+    virtual ~Node();
 };
 
 

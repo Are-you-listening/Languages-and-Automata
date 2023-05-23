@@ -78,7 +78,6 @@ private:
      */
     static double checkKars(vector<DFA*> &d, vector<RE> &s);
 
-
     /**
      * \brief Cross check the similarity but more accurately?
      * \REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");

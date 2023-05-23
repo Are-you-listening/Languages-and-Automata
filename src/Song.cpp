@@ -6,15 +6,7 @@
 
 struct Vectors_Params{
 public:
-    //timestamp, note on, instrument, note, velocity, pattern
-    //vectors={{1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4}};
-
-    //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
-    //                             {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3}};
-    //vector<vector<int>> vectors={{0,1,0,1,0,2}, {0,0,0,3,1,2}, {0,0,1,2,0,2}, {0,1,0,0,0,2}, {0,0,0,1,0,2}, {0,1,0,4,0,2}, {0,0,0,4,0,2}, {0,1,0,3,0,2}, {0,0,0,3,0,2}, {0,0,2,0,0,2},
-    //                            {0,1,0,1,0,3}, {0,0,0,3,1,3}, {0,0,1,2,0,3}, {0,1,0,0,0,3}, {0,0,0,1,0,3}, {0,1,0,4,0,3}, {0,0,0,4,0,3}, {0,1,0,2,0,3}, {0,0,0,2,0,3}, {0,0,2,0,0,3},
-    //                             {1,1,1,1,1,1},{0,1,0,1,0,1},{2,2,2,2,2,2},{0,1,0,1,0,2},{0,1,0,1,0,4},{0,1,0,1,5,1}};
-    vector<vector<int>> vectors={{0,1,0,1,0,1},{8,1,0,2,0,1},{0,1,0,2,0,2},{1,1,1,1,1,1},{0,1,1,1,0,1},{0,2,0,2,0,4}}; // TODO een no
+    vector<vector<int>> vectors={{0,1,0,1,0,1},{8,1,0,2,0,1},{0,1,0,2,0,2},{1,1,1,1,1,1},{0,1,1,1,0,1},{0,2,0,2,0,4}}; //timestamp, note on, instrument, note, velocity, pattern
 };
 Vectors_Params PARAMS;
 
@@ -111,13 +103,13 @@ Song &Song::operator=(const Song &a) {
 
     map<pair<unsigned int, bool>, vector<Note*>> map2;
 
-    for(auto it = a.note_map.begin(); it!=a.note_map.end(); it++){
+    for(const auto &it: a.note_map){
         vector<Note*> temp;
-        for(const Note* n: it->second){ //Construct new Note objects on heap
+        for(const Note* n: it.second){ //Construct new Note objects on heap
             Note* k = new Note(*n);
             temp.push_back( k );
         }
-        map2[it->first]=temp;
+        map2[it.first]=temp;
     }
 
     console = a.console;
@@ -134,8 +126,8 @@ Song::~Song(){
     if(console){cout << log;}
     logs.push_back(log);
 
-    for(auto it = note_map.begin(); it!=note_map.end() ; it++){
-        for(Note* &note: it->second){
+    for(auto &it: note_map){
+        for(Note* &note: it.second){
             delete note;
         }
     }
@@ -153,9 +145,9 @@ Song::~Song(){
     if(console){cout << log;}
     logs.push_back(log);
 
-    for(auto it = note_map.begin(); it!=note_map.end() ; it++){
-        if (it->first.second){
-            for(Note* note: it->second){
+    for(auto &it: note_map){
+        if (it.first.second){
+            for(Note* &note: it.second){
                 string z = note->getRE(time_stamp, duration, instrument, note_b, velocity);
                 temp+=z;
                 count++;
@@ -263,7 +255,7 @@ double Song::similarity(Song* song, bool complement, bool reverse) {
     logs.push_back( m );
 
     double result;
-    double WNFA_result=1;
+    double WNFA_result;
     bool succes = false;
     vector<vector<double>> results;
 
@@ -276,26 +268,22 @@ double Song::similarity(Song* song, bool complement, bool reverse) {
 
     //Check Notes
     WNFA_result = checkWNFA(song->toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
-    cout << WNFA_result << endl; // TODO dit zou in de log moeten komen denk ik, redelijk handig
+
     if(WNFA_result>1){
         WNFA_result=1;
     }
+
+    m = getCurrTime()+" Used the WDFA, found a partial result off: "+ ColorConverter(WNFA_result*100) + " %\n\n";
+    if(console){cout << m;}
+    logs.push_back(m);
+
     result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
     
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
-    string formatted;
     result*=100;
-    if (result<25){
-        formatted = "\033[1;31m" + to_string(result) + "\033[0m";
-    } else if (result<50){
-        formatted = "\033[1;33m" + to_string(result) + "\033[0m";
-    } else if (result<90){
-        formatted = "\033[1;32m" + to_string(result) + "\033[0m";
-    } else {
-        formatted = "\033[1;42m\033[1;1m\033[1;35m" + to_string(result) + "\033[0m" ;
-    }
+    string formatted = ColorConverter(result);
 
     m = getCurrTime()+" Comparison ended, showing a match-percentage off: "+ formatted + " %\n\n";
     if(console){cout << m;}
@@ -415,8 +403,8 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     if(console){cout << log;}
     logs.push_back(log);
 
-    for(auto it = note_map.begin(); it!=note_map.end(); it++){
-        for(const Note* n: it->second){
+    for(const auto &it: note_map){
+        for(const Note* n: it.second){
             if(counts.find(n->getNoteValue())==counts.end()){ //In case not found
                 counts[n->getNoteValue()]=1;
             }else{
@@ -441,9 +429,9 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     unsigned int occurrences = count.size();
     bool succeed = false;
 
-    for(auto k = count.begin(); k!=count.end(); k++){
-        if( scount.find(k->first)!=scount.end()){ //Sharing a note
-            if(scount[k->first]==k->second){
+    for(const auto &k: count){
+        if( scount.find(k.first)!=scount.end()){ //Sharing a note
+            if(scount[k.first]==k.second){
                 succes+=1;
             }
         }
@@ -610,8 +598,8 @@ vector<double> Song::similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, bo
 
     results.push_back( checkTibo2(dfa1 , toCheck));
     vector<DFA*> check_assemble;
-    for(auto d: dfa1){
-        for(auto c: d){
+    for(const auto &d: dfa1){
+        for(auto &c: d){
             check_assemble.push_back(c);
         }
     }
@@ -632,7 +620,7 @@ double Song::checkTibo2(vector<vector<DFA *>> &d, vector<RE> &s) {
     for(long unsigned int i = 0; i<min(d.size(), s.size()); i++){ // Given song
         string test=s[i].re;
         bool b = false;
-        for (int j=0; j < d[i].size(); j++){
+        for (long unsigned int j=0; j < d[i].size(); j++){
             if (d[i][j]->accepts(test)){
                 b = true;
             }

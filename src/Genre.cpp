@@ -6,18 +6,11 @@
 
 void Genre::addGenre(Song *&s) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    string log;
 
     members.push_back(s);
-    log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
     toProductAutomata();
-    /*
-    if(inGenre(s)){
-        members.push_back(s);
-        log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
-    }else{
-        log = getCurrTime()+ " Could not add this Song the Genre.\n\n";
-    }*/
+
+    string log = getCurrTime()+ " Successfully added " + s->getTitle() + " to the Genre!\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 }
@@ -35,8 +28,8 @@ DFA* Genre::toProductAutomata() {
         ENFA a = t[0].toENFA();
         DFA* s = a.toDFA();
 
-        for (auto a0: s->getStates()){
-            for (auto a1: a0.second->states){
+        for (const auto &a0: s->getStates()){
+            for (const auto &a1: a0.second->states){
                 if (s->getStates().find(a1.second->name) == s->getStates().end()){
                     auto it = s->getStates().find(a1.second->name);
                     if (it->second != a1.second){
@@ -58,24 +51,13 @@ DFA* Genre::toProductAutomata() {
 }
 
 bool Genre::inGenre(Song *&s) {
-    /*
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string log = getCurrTime()+ " Validating if "+s->getTitle()+" is part of this genre..\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
-    bool succes = false;
-    DFA* m = toProductAutomata();
-    vector<RE> st = s->toRegex(param[0],param[1],param[2],param[3],param[4],-1);
-
-    //Generate a Song and check how much similar it is with the given song
-    Song k = Song(ProductAutomata.second, param, console);
-    if(k.similarity(s,false, false)>=limit){
-        succes = true;
-    }
-
-    //bool succes = m->accepts(st[0].re);
+    bool succes = similarity(s)>=limit;
     if(succes){
         log = getCurrTime() + " Found matching results on the characteristics on this Genre!\n\n";
     }else{
@@ -83,13 +65,11 @@ bool Genre::inGenre(Song *&s) {
     }
     if(console){cout << log;}
     logs.push_back(log);
-    */
 
-
-    return similarity(s)>=limit;
+    return succes;
 }
 
-Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bool console, bool TFA): param(params), name(name) ,  console(console), TFA(TFA) {
+Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bool console, bool TFA): console(console), name(name) ,  param(params), TFA(TFA) {
     REQUIRE(params.size()==6, "Params doesn't has all the parameters");
 
     //Set Data
@@ -97,7 +77,7 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     members={s,k};
     limit = 70;
 
-    string log = getCurrTime() + "The genre will be constructed on a " + to_string(limit) +  " minimum match %\n\n";
+    string log = getCurrTime() + "The genre will be constructed on a " + ColorConverter(limit) +  " minimum match %\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
@@ -105,7 +85,7 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     vector<RE> t = members[0]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
     ENFA a = t[0].toENFA();
     DFA* z = a.toDFA();
-    
+
     //Other DFA
     vector<RE> t2 = members[1]->toRegex(param[0],param[1],param[2],param[3],param[4],-1); //Set pattern to -1, so we can generate 1 big Regex
     ENFA a2 = t2[0].toENFA();
@@ -129,6 +109,7 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
     log = getCurrTime() + " Created the new Genre: "+name+" , based on "+ s->getTitle() + " and " + k->getTitle() +"\n\n";
     if(console){cout << log;}
     logs.push_back(log);
+
     //Free memory
     delete z;
     delete z2;
@@ -182,13 +163,12 @@ Genre::~Genre() {
 }
 
 double Genre::similarity(Song *s) {
-    int count = 0;
+    /*int count = 0;
     for (auto p: param){
         if (p >= 1){
             count += 1;
         }
-
-    }
+    }*/
     vector<RE> r = s->toRegex(param[0], param[1], param[2], param[3], param[4], 1);
 
     DFA* r2 = ProductAutomata.second;

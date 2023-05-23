@@ -14,7 +14,7 @@ RE::RE(const string& re, const char epsilon) {
     RE::epsilon=epsilon;
 }
 
-ENFA RE::plus(ENFA& enfa1, ENFA& enfa2) {
+ENFA RE::plus(ENFA& enfa1, ENFA& enfa2) const{
     ENFA enfa=ENFA();
     state* temp1(new state(to_string(tempcounter.count) , true, false));
     tempcounter.count++;
@@ -55,7 +55,7 @@ ENFA RE::onechar(const string& c) {
     return ENFA(temp1 ,{temp1,temp2} , {c} , {temp2}, epsilon);
 }
 
-void RE::kleene(ENFA &enfa) {
+void RE::kleene(ENFA &enfa) const {
     state* temp1(new state());
     state* temp2(new state());
     temp1->starting= true;
@@ -160,8 +160,4 @@ ENFA RE::toENFA()& {
 
     enfa.deletable = true;
     return enfa;
-}
-
-RE::~RE() {
-
 }

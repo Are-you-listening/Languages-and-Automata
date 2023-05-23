@@ -4,8 +4,8 @@
 
 #include "Note.h"
 
-Note::Note(unsigned int time_stamp, int duration, int note,  int velocity, unsigned int instrument):
-note_value(note), instrument(instrument), duration(duration), velocity(velocity), time_stamp(time_stamp) {
+Note::Note(unsigned int time_stamp, int duration, int note,  int velocity, unsigned int instrument): instrument(instrument), note_value(note), time_stamp(time_stamp),
+                                                                                                     velocity(velocity), duration(duration)    {
     Note::duration = -1;
 }
 
@@ -184,6 +184,6 @@ int Note::getDuration() const {
     return duration;
 }
 
-void Note::setDuration(int duration) {
-    Note::duration = duration;
+void Note::setDuration(int Duration) {
+    Note::duration = Duration;
 }

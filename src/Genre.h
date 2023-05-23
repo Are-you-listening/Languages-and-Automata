@@ -71,7 +71,7 @@ public:
     [[nodiscard]] bool ProperlyInitialized() const;
 
     /**
-     * \brief In case the match % <= limit, add to this Genre
+     * \brief Add a Song to this Genre
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
      * @param s
      * @return

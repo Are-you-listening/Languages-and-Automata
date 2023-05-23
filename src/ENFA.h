@@ -2,8 +2,8 @@
 // Created by anass on 1-5-2023.
 //
 
-#ifndef TA__TOG_ENFA_H
-#define TA__TOG_ENFA_H
+#ifndef TA_TOG_ENFA_H
+#define TA_TOG_ENFA_H
 
 #include <string>
 #include <vector>
@@ -31,7 +31,7 @@ protected:
     vector<state*> ECLOSE(state* Etransition)const&;
     vector<state*> ECLOSE2(state* Etransition, string input)const&;
     void Etransitions(vector<state*> &states)const&;
-    void Etransitions(vector<state*> &states, vector<state*> &found)const&;
+    void Etransitions(vector<state*> &States, vector<state*> &found)const&;
 
 public:
     bool deletable = false;
@@ -40,30 +40,29 @@ public:
     set<string> alphabet;
     vector<state*> endstates;
     string eps;
-    ENFA(const string& c);
+    explicit ENFA(const string& c);
     ENFA(const ENFA& enfa,state* state);
 
     ENFA(state*startingState, const vector<state*> &states, const set<string> &alphabet,
          const vector<state*> &endstates, const string &eps);
 
     ENFA();
-    bool accepts(string c)const&;
+    [[nodiscard]] bool accepts(string c)const&;
     void print()const&;
     DFA* toDFA()&;
-    DFA toDFA2()&;
     void printStats()const&;
     void concatenate(const ENFA& enfa)&;
     void load(const json& j);
-    json getJson() const;
+    [[nodiscard]] json getJson() const;
 
     /**
      * \brief Get the JSON of the converted NFA
      * ONLY works for Concatination ENFA
      * @return
      */
-    json getJsonNfa() const;
+    [[nodiscard]] json getJsonNfa() const;
 
     ~ENFA();
 };
 
-#endif //TA__TOG_ENFA_H
+#endif //TA_TOG_ENFA_H
