@@ -105,7 +105,6 @@ private:
     string generalize_re(const string& s);
 
 public:
-    const double time_split = 1000;
     /**
     * \brief Checks if an item is properly initialised
      * @return succes, bool deciding the succes of the operation

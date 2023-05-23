@@ -79,7 +79,7 @@ private:
     [[nodiscard]] string RoundVelocity(int r_velocity) const;
 
 public:
-    const double time_split = 1000;
+    const double time_split = 500;
     /**
      * \brief Simple Constructor
      * @param time_stamp
