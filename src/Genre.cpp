@@ -100,8 +100,9 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bo
         log = getCurrTime() + " Minimizing our beautiful product..\n\n";
         if(console){cout << log;}
         logs.push_back(log);
-
+        cout << prod->getStates().size() << endl;
         prod = prod->minimize();
+        cout << prod->getStates().size() << endl;
     }
     ProductAutomata.second = prod; //Construct First ProductAutomata //True = Doorsnede, False = Unie
     ProductAutomata.first = 2;
@@ -169,15 +170,15 @@ double Genre::similarity(Song *s) {
             count += 1;
         }
     }
-    vector<RE> r = s->toRegex(param[0], param[1], param[2], param[3], param[4], 1);
+    vector<RE> r = s->toRegex(param[0], param[1]*3, param[2], param[3], param[4], 1);
 
     DFA* r2 = ProductAutomata.second;
     auto  v = r2->getStates();
     vector<vector<DFA*>> df = ProductAutomata.second->split(count);
 
     vector<double> results = Song::similar(df, r, members.size(), false, false);
-    //cout << "r " << results[0] << " " << results[1] << " " << results[2] << endl;
-    double result = (7*results[0]+1*results[1]+2*results[2])/10;
+    cout << "r " << results[0] << " " << results[1] << " " << results[2] << endl;
+    double result = (7*results[0]+0*results[1]+3*results[2])/10;
 
     return result;
 }

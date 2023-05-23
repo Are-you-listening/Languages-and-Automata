@@ -6,7 +6,7 @@
 
 Note::Note(unsigned int time_stamp, int duration, int note,  int velocity, unsigned int instrument): instrument(instrument), note_value(note), time_stamp(time_stamp),
                                                                                                      velocity(velocity), duration(duration)    {
-    Note::duration = -1;
+    //Note::duration = -1;
 }
 
 [[nodiscard]] string Note::getRE(int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity) const{
@@ -27,7 +27,7 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
     string s;
     if(r_time_stamp>1){
         s="(";
-        for(int i=::lround(time_stamp/1000)-(r_time_stamp-1);  i!=::lround(time_stamp/1000)+(r_time_stamp-1); i++){
+        for(int i=::lround(time_stamp/time_split)-(r_time_stamp-1);  i!=::lround(time_stamp/time_split)+(r_time_stamp-1); i++){
             int temp =i;
             if (temp < 0){
                 temp = 0;
@@ -35,12 +35,12 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
             if (temp > 155){
                 temp = 155;
             }
-            s+=toChar(temp); 
+            s+=toChar(temp);
             s+="+";
         }
         s[s.size()-1] = ')';
     } else if (r_time_stamp==1){
-        int temp=lround(time_stamp/1000.0);
+        int temp=lround(time_stamp/time_split);
         if(temp>155){
             temp=155;
         }

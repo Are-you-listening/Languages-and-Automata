@@ -16,6 +16,7 @@ using namespace std;
 
 class Note {
 private:
+
     /**
      * \brief The instrument playing this note
      */
@@ -78,6 +79,7 @@ private:
     [[nodiscard]] string RoundVelocity(int r_velocity) const;
 
 public:
+    const double time_split = 1000;
     /**
      * \brief Simple Constructor
      * @param time_stamp
