@@ -100,7 +100,7 @@ void DFAE::eliminateState(const std::string &eliminatedstate) {
             }
         }
 
-        for (auto& regexconnection2 : state->regexconnections){
+        /*for (auto& regexconnection2 : state->regexconnections){
             for (const auto& connection : todestroyconnections){
                 if (regexconnection2.first == connection.first && connection.first != state){
                     stringstream tempstream;
@@ -108,7 +108,8 @@ void DFAE::eliminateState(const std::string &eliminatedstate) {
                     regexconnection2.second = tempstream.str();
                 }
             }
-        }
+        }*/
+
         for (auto add : connectionstoadd){
             state->regexconnections[add.first] = add.second;
         }

@@ -1,9 +1,0 @@
-digraph "lib/Toi_Kars" {
-  compound=true
-  node [ fontsize="10", fontname="Helvetica"];
-  edge [ labelfontsize="10", labelfontname="Helvetica"];
-  subgraph clusterdir_97aefd0d527b934f1d99a682da8fe6a9 {
-    graph [ bgcolor="#ddddee", pencolor="black", label="lib" fontname="Helvetica", fontsize="10", URL="dir_97aefd0d527b934f1d99a682da8fe6a9.html"]
-  dir_fbe2a6961606ca91fc89909f3f8de805 [shape=box, label="Toi_Kars", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_fbe2a6961606ca91fc89909f3f8de805.html"];
-  }
-}
