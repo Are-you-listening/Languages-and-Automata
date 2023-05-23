@@ -1,0 +1,19 @@
+digraph "lib" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_97aefd0d527b934f1d99a682da8fe6a9 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_97aefd0d527b934f1d99a682da8fe6a9.html"];
+    dir_97aefd0d527b934f1d99a682da8fe6a9 [shape=plaintext label="lib"];
+    dir_1765f6f9325daaa631385d7b9970f03b [shape=box label="Toi_Anas" color="black" fillcolor="white" style="filled" URL="dir_1765f6f9325daaa631385d7b9970f03b.html"];
+    dir_8e15e42c39cae87709b82924ebf3846a [shape=box label="Toi_Emil" color="black" fillcolor="white" style="filled" URL="dir_8e15e42c39cae87709b82924ebf3846a.html"];
+    dir_fbe2a6961606ca91fc89909f3f8de805 [shape=box label="Toi_Kars" color="black" fillcolor="white" style="filled" URL="dir_fbe2a6961606ca91fc89909f3f8de805.html"];
+    dir_2dc65d791ee8d8b7e20a803017696488 [shape=box label="Toi_Tibo" color="black" fillcolor="white" style="filled" URL="dir_2dc65d791ee8d8b7e20a803017696488.html"];
+  }
+  dir_68267d1309a1af8e8297ef4c3efbcdba [shape=box label="src" fillcolor="white" style="filled" color="red" URL="dir_68267d1309a1af8e8297ef4c3efbcdba.html"];
+  dir_68267d1309a1af8e8297ef4c3efbcdba->dir_8e15e42c39cae87709b82924ebf3846a [headlabel="2", labeldistance=1.5 headhref="dir_000003_000006.html"];
+  dir_68267d1309a1af8e8297ef4c3efbcdba->dir_2dc65d791ee8d8b7e20a803017696488 [headlabel="1", labeldistance=1.5 headhref="dir_000003_000008.html"];
+  dir_68267d1309a1af8e8297ef4c3efbcdba->dir_fbe2a6961606ca91fc89909f3f8de805 [headlabel="1", labeldistance=1.5 headhref="dir_000003_000007.html"];
+  dir_8e15e42c39cae87709b82924ebf3846a->dir_68267d1309a1af8e8297ef4c3efbcdba [headlabel="2", labeldistance=1.5 headhref="dir_000006_000003.html"];
+  dir_97aefd0d527b934f1d99a682da8fe6a9->dir_68267d1309a1af8e8297ef4c3efbcdba [headlabel="5", labeldistance=1.5 headhref="dir_000004_000003.html"];
+}
