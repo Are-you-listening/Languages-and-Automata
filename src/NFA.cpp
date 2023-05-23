@@ -240,8 +240,6 @@ WNFA NFA::toWNFA(){
         for (string temp : result.getAlfabet()){
             char symbol = temp[0];
             for (const auto& transition : Q.find(state.second->getName())->second->DoTransition(symbol)){
-                auto t = result.getState(transition).first;
-                state.second->addconnection(t, symbol, 1); //add connection transitie weight 1
                 state.second->addconnection(result.getState(transition).first, symbol, 1.5); //add connection transitie weight 1
             }
         }
