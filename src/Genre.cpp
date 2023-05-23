@@ -175,7 +175,7 @@ double Genre::similarity(Song *s) {
     vector<vector<DFA*>> df = ProductAutomata.second->split(count);
 
     vector<double> results = Song::similar(df, r, members.size(), false, false);
-    cout << "r " << results[0] << " " << results[1] << " " << results[2] << endl;
+
     double result = (7*results[0]+0*results[1]+3*results[2])/10;
 
     return result;
