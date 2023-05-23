@@ -178,7 +178,8 @@ double Genre::similarity(Song *s) {
 
     double result = (7*results[0]+0*results[1]+3*results[2])/10;
     cout << result;
-
+    
+    //Free used memory
     for(auto &k: df){
         for(auto &s: k){
             delete s;
