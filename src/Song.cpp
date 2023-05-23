@@ -30,6 +30,7 @@ vector<DFA*> Song::convert(vector<RE> &s, bool complement, bool reverse) {
             ENFA m = l->reverse();
             delete l;
             l = m.toDFA();
+            m.deletable= true;
         }
 
         tt.push_back(l);

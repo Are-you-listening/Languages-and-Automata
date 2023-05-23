@@ -286,6 +286,11 @@ DFA* DFA::complement() {
     j["states"]=States;
     DFA* d =  new DFA();
     d->load(j);
+
+    for(auto &k: new_states){
+        delete k;
+    }
+
     return d;
 }
 
@@ -365,6 +370,11 @@ ENFA DFA::reverse() {
 
     j["type"]="ENFA";
     j["eps"] = "*";
+
+    //Delete/free used memory
+    for(auto &k: new_states){
+        delete k;
+    }
 
     ENFA n;
     n.load(j);
