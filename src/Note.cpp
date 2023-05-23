@@ -23,7 +23,7 @@ int Note::getNoteValue() const {
     return note_value;
 }
 
-string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen rekening gehouden met range
+string Note::RoundTime_stamp(int r_time_stamp) const{
     string s;
     if(r_time_stamp>1){
         s="(";
@@ -51,7 +51,7 @@ string Note::RoundTime_stamp(int r_time_stamp) const{ //TODO hier wordt nog geen
     return s;
 }
 
-string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rekening gehouden met range
+string Note::RoundDuration(int r_duration) const{
     string s; //1
     if(r_duration>1){
         s="(";
@@ -75,7 +75,7 @@ string Note::RoundDuration(int r_duration) const{ //TODO hier wordt nog geen rek
     return s;
 }
 
-string Note::RoundVelocity(int r_velocity) const{ //TODO hier wordt nog geen rekening gehouden met range
+string Note::RoundVelocity(int r_velocity) const{
     string s;
     if(r_velocity > 1){
         s="(";
@@ -124,9 +124,9 @@ string Note::RoundInstrument(int r_instrument) const {
     }
 }
 
-string Note::RoundNote(int r_note, int r_octaaf) const { // TODO deze functie moet zeker nog een keer besproken worken. octaaf is redelijk belangerijk
+string Note::RoundNote(int r_note, int r_octaaf) const {
 
-    if (r_note == 0 && r_octaaf == 0){ // TODO deze stuk zou teug herbekeken moeten worden
+    if (r_note == 0 && r_octaaf == 0){
         return "";
     }
 
