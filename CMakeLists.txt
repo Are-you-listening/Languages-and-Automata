@@ -6,15 +6,11 @@ project(Tog)
 #flags
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "-std=c++17") #-Wall -Werror -O2 #-Ofast
+set(CMAKE_CXX_FLAGS "-std=c++17" ) #-Wall -Werror -O2 #-Ofast
 ################################################################
 #directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(lib)
-#include_directories(lib/Toi_Anas)
-#include_directories(lib/Toi_Emil)
-#include_directories(lib/Toi_Kars)
-#include_directories(lib/Toi_Tibo)
 ################################################################
 #sources
 # Set source files for RELEASE target
@@ -87,7 +83,9 @@ set(MAIN_SRC
         lib/Toi_Kars/State.cpp
 
         lib/Utils.h
-        lib/Utils.cpp)
+        lib/Utils.cpp
+
+        )
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
 ################################################################
