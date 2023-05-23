@@ -37,9 +37,8 @@ void midiExporter::changeFormat() {
 }
 
 void midiExporter::addNote(Note* note, bool note_on) {
-    REQUIRE(channel_counter <= 16 ,"out of range");
     if (instrument_map.find(note->getInstrument()) == instrument_map.end()){
-         instrument_to_channel[note->getInstrument()] = channel_counter;
+         instrument_to_channel[note->getInstrument()] = channel_counter % 16;
          channel_counter++;
          last_timestamp[note->getInstrument()] = 0;
     }
