@@ -202,7 +202,7 @@ double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
             string test=s[j].re;
             bool b = d[i]->accepts(test); //Addition Anas
             if(b){
-                if(j!=s.size()-1&&i!=d.size()-1&&d[i+1]->accepts(s[j+1].re)){
+                if(j!=s.size()-1&&i!=d.size()-1&&d[i+1]->accepts(s[j+1].re)){ //TODO Wat doet dit?
                     succes++;
                     break;
                 }
