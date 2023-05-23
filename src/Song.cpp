@@ -202,7 +202,7 @@ double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
             string test=s[j].re;
             bool b = d[i]->accepts(test); //Addition Anas
             if(b){
-                if(j!=s.size()-1&&i!=d.size()-1&&d[i+1]->accepts(s[j+1].re)){
+                if(j!=s.size()-1 && i!=d.size()-1 && d[i+1]->accepts(s[j+1].re)){
                     succes++;
                     break;
                 }
@@ -222,7 +222,6 @@ double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
 }
 
 double Song::checkKarsAnas(vector<DFA*> &d, vector<RE> &s){
-
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
 
@@ -238,7 +237,7 @@ double Song::checkKarsAnas(vector<DFA*> &d, vector<RE> &s){
     }
 
     double result = succes / (double) d.size() ;
-    if(d.size()==0){
+    if(d.empty()){
         result=0;
     }
     if(result>=0 && result<=1){succeeded = true;}
@@ -386,6 +385,7 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
 
     //Check KarsAnas
     results.push_back(checkKarsAnas(d, toCheck.second) );
+
     //Free used memory
     for(auto &k: d){
         delete k;
