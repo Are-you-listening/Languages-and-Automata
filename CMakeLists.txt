@@ -6,7 +6,7 @@ project(Tog)
 #flags
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "-std=c++17 -O0") #-Wall -Werror -02 #-Ofast
+set(CMAKE_CXX_FLAGS "-std=c++17 -O2") #-Wall -Werror -O2 #-Ofast
 ################################################################
 #directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -90,19 +90,9 @@ set(MAIN_SRC
         lib/Utils.cpp)
 
 set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
-
-# Set source files for DEBUG target
-set(DEBUG_SOURCE_FILES
-
-        testing/testing.cpp
-
-        )
 ################################################################
 # Create RELEASE target
 add_executable(Tog ${RELEASE_SOURCE_FILES} ${TA-LIB} )
-# Create DEBUG target
-add_executable(testing_tool ${DEBUG_SOURCE_FILES} ${TA-LIB})
 ################################################################
 
 target_link_libraries(Tog -lX11)
-target_link_libraries(testing_tool -lX11)
