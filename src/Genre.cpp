@@ -63,6 +63,7 @@ bool Genre::inGenre(Song *&s) {
     }else{
         log = getCurrTime() + " This song did not match the requirements of this Genre!\n\n";
     }
+
     if(console){cout << log;}
     logs.push_back(log);
 
@@ -175,8 +176,15 @@ double Genre::similarity(Song *s) {
     vector<vector<DFA*>> df = ProductAutomata.second->split(count);
 
     vector<double> results = Song::similar(df, r, members.size(), false, false);
-    cout << "r " << results[0] << " " << results[1] << " " << results[2] << endl;
+
     double result = (7*results[0]+0*results[1]+3*results[2])/10;
+    cout << result;
+
+    for(auto &k: df){
+        for(auto &s: k){
+            delete s;
+        }
+    }
 
     return result;
 }
