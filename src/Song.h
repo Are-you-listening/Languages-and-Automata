@@ -181,7 +181,7 @@ public:
      */
     vector<double> similar(pair<vector<RE>,vector<RE>> &toCheck,bool complement, bool reverse);
 
-    static vector<double> similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, bool complement, bool reverse);
+    static vector<double> similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, int count, bool complement, bool reverse);
 
     /**
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");

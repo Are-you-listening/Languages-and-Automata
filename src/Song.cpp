@@ -593,10 +593,10 @@ double Song::checkWNFA(RE &r,RE &s){
     return d;
 }
 
-vector<double> Song::similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, bool complement, bool reverse) {
+vector<double> Song::similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, int count, bool complement, bool reverse) {
     vector<double> results;
 
-    results.push_back( checkTibo2(dfa1 , toCheck));
+    results.push_back( checkTibo2(dfa1, toCheck));
     vector<DFA*> check_assemble;
     for(const auto &d: dfa1){
         for(auto &c: d){
@@ -605,7 +605,7 @@ vector<double> Song::similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, bo
     }
 
     //Check Kars
-    results.push_back(min(checkKars(check_assemble, toCheck)*2, 1.0) );
+    results.push_back(min(checkKars(check_assemble, toCheck)*count, 1.0) );
 
     //Check KarsAnas
     results.push_back(min(checkKarsAnas(check_assemble, toCheck)* (double)check_assemble.size()/(double)dfa1.size(), 1.0) );

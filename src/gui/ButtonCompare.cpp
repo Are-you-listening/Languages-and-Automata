@@ -24,6 +24,8 @@ void ButtonCompare::click() {
             DFA* genreDFA = g.getProductAutomata();
             vector<int> v = {1,1,1,1,1,-1};
             Song* new_song = new Song(genreDFA, v, false);
+            new_song->setTitle("new song "+to_string(counter));
+            counter++;
             SongWidget* new_widget = new SongWidget(getX()+10, getY()+10, getWidth()-20, 80, new_song);
             song_box->addSong(new_widget);
 

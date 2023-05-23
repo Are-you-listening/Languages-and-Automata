@@ -19,6 +19,7 @@ private:
     ButtonBool* complement_button;
     ButtonBool* reverse_button;
     PctScreen* pcts;
+    int counter = 0;
 };
 
 

@@ -41,7 +41,7 @@ set(GUI_SRC
         src/gui/SongListWidgetSingle.cpp
         src/gui/SongListWidgetSingle.h
         src/gui/SongWidget.cpp
-        src/gui/SongWidget.h src/gui/ButtonBool.cpp src/gui/ButtonBool.h src/gui/PctScreen.cpp src/gui/PctScreen.h)
+        src/gui/SongWidget.h src/gui/ButtonBool.cpp src/gui/ButtonBool.h src/gui/PctScreen.cpp src/gui/PctScreen.h src/gui/ButtonSave.cpp src/gui/ButtonSave.h)
 
 set(MAIN_SRC
         src/Genre.h

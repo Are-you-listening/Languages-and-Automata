@@ -5,6 +5,7 @@
 #include "SongListWidgetSingle.h"
 #include "ButtonBool.h"
 #include "PctScreen.h"
+#include "ButtonSave.h"
 Gui::Gui() {
     display = XOpenDisplay((char *)0);
 
@@ -52,12 +53,14 @@ void Gui::start() {
 
     PctScreen* result = new PctScreen(700, 400, 200, 200);
 
+
+
     ButtonCompare* compare_button = new ButtonCompare(400, 860, 250, 100, compare, single_song, complement_button, reverse_button, result);
 
-
+    ButtonSave* save_button = new ButtonSave(720, 860, 100, 100, single_song);
 
     vector<SongListWidget*> song_groups = {song_list, compare, single_song};
-    vector<Button*> buttons = {compare_button, complement_button, reverse_button};
+    vector<Button*> buttons = {compare_button, complement_button, reverse_button, save_button};
 
 
     XEvent event;

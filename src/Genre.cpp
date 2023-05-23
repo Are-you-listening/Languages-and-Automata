@@ -163,20 +163,20 @@ Genre::~Genre() {
 }
 
 double Genre::similarity(Song *s) {
-    /*int count = 0;
+    int count = 0;
     for (auto p: param){
         if (p >= 1){
             count += 1;
         }
-    }*/
+    }
     vector<RE> r = s->toRegex(param[0], param[1], param[2], param[3], param[4], 1);
 
     DFA* r2 = ProductAutomata.second;
     auto  v = r2->getStates();
-    vector<vector<DFA*>> df = ProductAutomata.second->split(2);
+    vector<vector<DFA*>> df = ProductAutomata.second->split(count);
 
-    vector<double> results = Song::similar(df, r, false, false);
-
+    vector<double> results = Song::similar(df, r, members.size(), false, false);
+    //cout << "r " << results[0] << " " << results[1] << " " << results[2] << endl;
     double result = (7*results[0]+1*results[1]+2*results[2])/10;
 
     return result;
