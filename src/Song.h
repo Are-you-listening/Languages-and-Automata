@@ -40,6 +40,11 @@ private:
      * \brief To keep track of the logs (pushed_back into by various functions)
      */
     vector<string> logs;
+    
+    /**
+     * \brief Value of rounding for each note in the export (1000=1s)
+     */
+    const double time_split = 500;
 
     /**
      * \brief Keep a pointer to itsself
@@ -68,7 +73,13 @@ private:
      * @return
      */
     static double checkTibo(vector<DFA*> &d, vector<RE> &s);
-
+    
+    /**
+     * \brief Variant for Genre
+     * @param d 
+     * @param s 
+     * @return 
+     */
     static double checkTibo2(vector<vector<DFA*>> &d, vector<RE> &s);
 
     /**
@@ -102,7 +113,19 @@ private:
      */
     double magimathical(vector<vector<double>> &results);
 
+    /**
+     * \brief Generate a random Regex without operator (replaces the "+" by choosing 1 option randomly, e.g. (a+b) becomes b)
+     * @param s 
+     * @return 
+     */
     string generalize_re(const string& s);
+    
+    /**
+     * \brief Generate a random Regex without operator (replaces the "+" by choosing 1 option randomly, e.g. (a+b) becomes b)
+     * @param s 
+     * @return 
+     */
+    pair<string, string> GenerateRandomRE(const string& s);
 
 public:
     /**

@@ -28,7 +28,7 @@ int main() {
             song2->setTitle(c3);
             try {
                 vector<int> V = {1, 1, 1, 1, 1, -1};
-                Genre genre = Genre(song, song2, V, c + "_compare_" + c3, 1, 0);
+                Genre genre = Genre(song, song2, V, c + "_compare_" + c3, 1, 0, 0.70);
                 DFA *genreDFA = genre.getProductAutomata();
                 Song generated = Song(genreDFA, V, true);
                 generated.save("midi_output/" + c + "_compare_" + c3);

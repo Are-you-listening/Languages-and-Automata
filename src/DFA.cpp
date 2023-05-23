@@ -129,15 +129,13 @@ void state::addTransitionFunction(string c, state* q){
 
 state* state::getComplement() const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    auto new_state(new state( name, starting, !accepting )) ;
-    new_state->states = states; //TODO Dit is memory wise best wel een probleem
+    state* new_state = new state( name, starting, !accepting );
+    new_state->states = states;
     return new_state;
 }
 
 void state::addTransitionFunctionENFA(const string &c, state*q) {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
-    //string* ptr = &c;
-    //string cCopy = *ptr;
     statesENFA[c].insert(q);
 }
 

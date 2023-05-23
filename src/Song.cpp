@@ -508,7 +508,7 @@ Song::Song(DFA* s, vector<int> &param, bool console): console(console){
     ::srand(time(NULL));
     //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
     //Start up
-    fInitCheck = this; // TODO soms wordt er een plus gehanteerd voor meerdere noten op een tijdstip, mischien moeten wij plus zo hanteren als da niet groter is dan een bepaalde waarde.
+    fInitCheck = this;
     title = s->getStartingState()->name;
 
     string log = getCurrTime() + " Creating Song Object from your perfect DFA...\n\n";

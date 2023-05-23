@@ -97,7 +97,7 @@ public:
       * @param console
       * @param TFA
       */
-    Genre(Song* s, Song* k, const vector<int> &params, const string &name, bool console, bool TFA);
+    Genre(Song* s, Song* k, const vector<int> &params, const string &name, double limit, bool console, bool TFA);
 
     /**
      * \brief Output results to a .txt file
@@ -119,8 +119,16 @@ public:
      */
     [[nodiscard]] DFA* getProductAutomata() const;
 
+    /**
+     * \brief Destructor to free used memory
+     */
     ~Genre();
-
+    
+    /**
+     * \brief Check the Similarity of a song with this Genre
+     * @param s 
+     * @return 
+     */
     double similarity(Song* s);
 };
 

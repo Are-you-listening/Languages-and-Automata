@@ -70,15 +70,14 @@ bool Genre::inGenre(Song *&s) {
     return succes;
 }
 
-Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, bool console, bool TFA): console(console), name(name) ,  param(params), TFA(TFA) {
+Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, double limit, bool console, bool TFA): limit(limit), console(console), name(name) ,  param(params), TFA(TFA) {
     REQUIRE(params.size()==6, "Params doesn't has all the parameters");
 
     //Set Data
     fInitCheck = this;
     members={s,k};
-    limit = 70;
 
-    string log = getCurrTime() + "The genre will be constructed on a " + ColorConverter(limit) +  " minimum match %\n\n";
+    string log = getCurrTime() + "The genre will be constructed on a " + ColorConverter(limit*100) +  " minimum match %\n\n";
     if(console){cout << log;}
     logs.push_back(log);
 
