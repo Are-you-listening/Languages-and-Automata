@@ -527,45 +527,20 @@ Song::Song(DFA* s, vector<int> &param, bool console): console(console){ //param 
     //For each element of the RE
     for(string::iterator it=k.re.begin(); it!=k.re.end(); it++){
         vector<unsigned int> note_values;
-        if(*it=='+'){ //TODO kan niet de perfecte fix zijn
-            continue;
-        }
-        if((*it)=='('){
-            it++;
-            while((*it)!='+'){
+        for(auto it2=param.begin(); it2!=param.end()-1; it2++){
+            if(*it2==true){ //Param used
                 note_values.push_back(toInt(*it));
+                //cout << "c " << *it << endl;//Re-convert the value
                 it++;
-            }
-            while((*it)!=')'){
-                it++;
-            }
-            Note* n=new Note(note_values[0]*1000,tan(note_values[1]/155*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
-            note_map[{note_values[0]*1000,1}].push_back(n);
-            Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
-            note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2);
-            continue;
-        } else{
-            if((*it)=='*'){
-                //cerr << "kleene star in regex" << endl;
-                //throw std::exception();
-                continue;
-            }else {
-                for(auto it2=param.begin(); it2!=param.end()-1; it2++){
-                    if(*it2==true){ //Param used
-                        note_values.push_back(toInt(*it)); //Re-convert the value
-                        it++;
-                    } else {
-                        note_values.push_back(0); //Not used, add 0
-                    }
-                }
-                it--;
-
-                Note* n=new Note(note_values[0]*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
-                note_map[{note_values[0]*1000,1}].push_back(n);
-                Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]); //Make the note with the given data
-                note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2); //Add the note
+            } else {
+                note_values.push_back(0); //Not used, add 0
             }
         }
+        it--;
+        Note* n=new Note(note_values[0]*time_split,tan((double) note_values[1]/155.0*1.6)/1.5*time_split,note_values[3],note_values[4]*3,note_values[2]);
+        note_map[{note_values[0]*time_split,1}].push_back(n);
+        Note* n2=new Note(note_values[0]*time_split+tan((double) note_values[1]/155.0*1.6)/1.5*time_split,tan((double) note_values[1]/155.0*1.6)/1.5*time_split,note_values[3],note_values[4]*3,note_values[2]); //Make the note with the given data
+        note_map[{note_values[0]*time_split+tan((double) note_values[1]/155.0*1.6)/1.5*time_split,0}].push_back(n2); //Add the note
     }
 
     log = getCurrTime() + " Construction Finished!\n\n";
@@ -636,4 +611,47 @@ double Song::checkTibo2(vector<vector<DFA *>> &d, vector<RE> &s) {
 
     ENSURE(succeeded, "Operation did not work properly");
     return result;
+}
+
+string Song::generalize_re(const string& s){
+    int bracket_counter=0;
+    string new_string;
+    for(auto it=s.begin(); it!=s.end(); it++){
+        if(*it=='+'){ //TODO kan niet de perfecte fix zijn
+            break;
+        }
+        if ((*it)=='('){
+            do{
+                if ((*it)=='('){
+                    bracket_counter++;
+                    it++;
+                }else if((*it)==')'){
+                    bracket_counter--;
+                    it++;
+                }else if ((*it)=='+'){
+                    int temp_counter = bracket_counter-1;
+                    it++;
+
+                    while(bracket_counter!=temp_counter){
+                        if ((*it)=='('){
+                            bracket_counter++;
+                            it++;
+                        }else if((*it)==')'){
+                            bracket_counter--;
+                            it++;
+                        }else{
+                            it++;
+                        }
+                    }
+                }else{
+                    new_string += *it;
+                    it++;
+                }
+            }while(bracket_counter!=0);
+            it--;
+            continue;
+        }
+        new_string += *it;
+    }
+    return new_string;
 }

@@ -5,8 +5,23 @@
 #include "src/ENFA.h"
 #include "Genre.h"
 #include "Utils.h"
-
+#include "gui/Gui.h"
 int main() {
+
+    Gui g;
+    g.start();
+
+    /*
+    Song* s = new Song("midi_files/c0.mid", 0);
+    Song* s2 = new Song("midi_files/c1.mid", 0);
+
+    Genre g = Genre(s, s2, {1, 1, 1, 1, 1, -1}, "s" ,0, 1);
+    vector<int> v = {1, 1, 1, 1, 1, -1};
+    Song* s3 = new Song(g.getProductAutomata(), v, 0);
+    s3->save("midi_output/out.mid");
+     */
+
+    /*
     vector<pair<string,string>> doubleComparison;
     ifstream Filelist("filelistAnas.txt"); // hier moet je filelist met je naam komen
     ofstream errorfile("errors.txt");
@@ -43,5 +58,6 @@ int main() {
     }
     Filelist.close();
     errorfile.close();
+     */
     return 0;
 }

@@ -5,7 +5,7 @@
 #include "DFAT.h"
 #include <algorithm>
 #include <fstream>
-
+#include "json.hpp"
 #include <iomanip>
 
 DFAT::DFAT(const string &path) {
@@ -16,8 +16,36 @@ DFAT::DFAT(const string &path) {
 
     nlohmann::json data = nlohmann::json::parse(f);
 
-    load(data);
+    for (string s: data["alphabet"].get<std::set<string>>()){
+        alfabet.insert(s[0]);
+    }
 
+    int state_size = data["states"].size();
+    for (int i = 0; i<state_size; i++){
+        string state_name = data["states"][i]["name"].get<std::string>();
+        states.insert(state_name);
+        bool starting = data["states"][i]["starting"].get<bool>();
+        if (starting){
+            start_state = state_name;
+        }
+
+        bool accepting = data["states"][i]["accepting"].get<bool>();
+        if (accepting){
+            end_states.insert(state_name);
+        }
+
+    }
+
+    int transition_size = data["transitions"].size();
+    for (int i = 0; i < transition_size; i++){
+        string from = data["transitions"][i]["from"].get<std::string>();
+        string to = data["transitions"][i]["to"].get<std::string>();
+        char input = data["transitions"][i]["input"].get<std::string>()[0];
+
+        transition_map[from].insert({input, to});
+    }
+
+    make_TFA();
 }
 
 bool DFAT::accepts(const string &s) {
@@ -97,19 +125,14 @@ void DFAT::make_TFA() {
          * Basisgeval indien een state een eindstaat is en een andere niet -> distinguishable
          */
         for (it_2 = temp; it_2 != states.end(); it_2++){
-            string t1 = *it_1;
-            string t2 = *it_2;
-            if (t1 > t2){
-                swap(t1, t2);
-            }
+            if (is_end_state(*it_1) xor is_end_state(*it_2)){
 
-            if (is_end_state(t1) xor is_end_state(t2)){
                 /**
                  * voeg toe dat deze combinatie distinguishable is
                  * ook roepen we disqualified op om recursief andere combinaties mogelijk te markeren als distinguishable
                  * */
-                set_table_filling_map(t1, t2, true, table_filling_map);
-                disqualified(t1, t2, transition_map, table_filling_map, states);
+                set_table_filling_map(*it_1, *it_2, true, table_filling_map);
+                disqualified(*it_1, *it_2, transition_map, table_filling_map, states);
 
 
             }
@@ -132,6 +155,7 @@ void DFAT::disqualified(const string &state1, const string &state2, const map<st
 
     for (char a: alfabet){
 
+
         /**
          * bewaar een set met alle states die naar state1 en state2 gaan volgens char a
          * ga nadien alle mogelijke combinaties af en bewaar ze als distinguishable
@@ -139,21 +163,17 @@ void DFAT::disqualified(const string &state1, const string &state2, const map<st
         set<string> s1;
         set<string> s2;
         for (const string &state: p_states){
-            auto target = trans_map.at(state).at(a);
-            if (target == state1){
+            if (trans_map.at(state).at(a) == state1){
                 s1.insert(state);
             }
 
-            if (target == state2){
+            if (trans_map.at(state).at(a) == state2){
                 s2.insert(state);
             }
         }
 
-        for (string s1t: s1){
-            for (string s2t: s2){
-                if (s1t > s2t){
-                    swap(s1t, s2t);
-                }
+        for (const string &s1t: s1){
+            for (const string &s2t: s2){
                 if (!in_table_filling_map(s1t, s2t, true, tfa_map)){
                     /**
                      * bewaar en zichzelf oproepen recursief
@@ -173,11 +193,14 @@ void DFAT::set_table_filling_map(const string &state1, const string &state2, boo
     /**
      * Bewaar state in TFA-map
      * */
-    auto it1 = tfa_map.find(state1);
-    if(it1 != tfa_map.end()) {
-        map<string, bool> m = it1->second;
+    if(tfa_map.find(state1) != tfa_map.end()) {
+        map<string, bool> m = tfa_map.at(state1);
         m.insert({state2, b});
         tfa_map[state1] = m;
+    }else if(tfa_map.find(state2) != tfa_map.end()){
+        map<string, bool> m = tfa_map.at(state2);
+        m.insert({state1, b});
+        tfa_map[state2] = m;
     }else{
         map<string, bool> m;
         m.insert({state2, b});
@@ -189,16 +212,20 @@ bool DFAT::in_table_filling_map(const string &state1, const string &state2, bool
     /**
      * check dat er een state1, state2 combinatie bestaat met als waarde bool b
      * */
-    auto it = tfa_map.find(state1);
-    if(it != tfa_map.end()) {
-        map<string, bool> m = it->second;
-        auto it2 = m.find(state2);
-        if (it2 != m.end()){
-            bool bm = it2->second;
+    if(tfa_map.find(state1) != tfa_map.end()) {
+        map<string, bool> m = tfa_map.at(state1);
+        if (m.find(state2) != m.end()){
+            bool bm = m.at(state2);
             return bm == b;
         }
     }
-
+    if(tfa_map.find(state2) != tfa_map.end()){
+        map<string, bool> m = tfa_map.at(state2);
+        if (m.find(state1) != m.end()){
+            bool bm = m.at(state1);
+            return bm == b;
+        }
+    }
     return false;
 }
 
@@ -241,7 +268,7 @@ void DFAT::printTable() {
 
 DFAT DFAT::minimize() {
     /**
-     * Maak een geminimaliseerde DFAT
+     * Maak een geminimaliseerde DFA
      * */
 
     /**
@@ -254,33 +281,26 @@ DFAT DFAT::minimize() {
     for (it = states.begin(); it != states.end(); it++){
 
         for (it2 = states.begin(); it2 != it; it2++){
-            string t1 = *it;
-            string t2 = *it;
-            if (t1 > t2){
-                cout << "he2" << endl;
-                swap(t1, t2);
-            }
-            if (!in_table_filling_map(t1, t2, true, table_filling_map)){
+
+            if (!in_table_filling_map(*it, *it2, true, table_filling_map)){
 
                 /**
                  * voegt toe aan equivalentie relatie (indien meer dan 2)
                  * */
-                bool b1 = get_eq(t1, equivalence).second;
-                bool b2 = get_eq(t2, equivalence).second;
+                bool b1 = get_eq(*it, equivalence).second;
+                bool b2 = get_eq(*it2, equivalence).second;
 
                 if (b1 || b2){
-                    set<string> eq_1 = get_eq(t1, equivalence).first;
-                    add_eq(t2, eq_1, equivalence);
+                    set<string> eq_1 = get_eq(*it, equivalence).first;
+                    add_eq(*it2, eq_1, equivalence);
 
-                    set<string> eq_2 = get_eq(t2, equivalence).first;
-                    add_eq(t1, eq_2, equivalence);
+                    set<string> eq_2 = get_eq(*it2, equivalence).first;
+                    add_eq(*it, eq_2, equivalence);
 
                 }else{
-                    equivalence.push_back({t1, t2});
+                    equivalence.push_back({*it, *it2});
                 }
 
-            }else{
-                cout << "he" << endl;
             }
         }
     }
@@ -288,7 +308,7 @@ DFAT DFAT::minimize() {
     /**
      * De states dat een singleton zijn, worden hier toegevoegd aan de equivalentieverzameling
      * */
-    for (auto& state: states){
+    for (auto state: states){
         bool found = get_eq(state, equivalence).second;
 
         if (!found){
@@ -339,7 +359,7 @@ DFAT DFAT::minimize() {
     }
 
     /**
-     * initialiseer de nieuwe DFAT
+     * initialiseer de nieuwe DFA
      * */
     set<string> new_states;
     for (auto state: checked){
@@ -377,13 +397,13 @@ string DFAT::set_to_string(const set<string> &s) const {
 }
 
 DFAT::DFAT(const set<char> &alfabet, const set<string> &states, const map<string, map<char, string>> &transition_map,
-           const string &start_state, const set<string> &end_states): alfabet(alfabet), states(states), transition_map(transition_map), start_state(start_state), end_states(end_states) {
+         const string &start_state, const set<string> &end_states): alfabet(alfabet), states(states), transition_map(transition_map), start_state(start_state), end_states(end_states) {
     make_TFA();
 }
 
 bool DFAT::operator==(const DFAT &d) {
     /**
-     * controleer dat de DFAT's equivalent zijn
+     * controleer dat de DFA's equivalent zijn
      * */
     if (alfabet != d.getAlfabet()){
         return false;
@@ -423,7 +443,7 @@ bool DFAT::operator==(const DFAT &d) {
         }
     }
 
-    //printTable(all_states, compare_tfa_map);
+    printTable(all_states, compare_tfa_map);
 
     /**
      * check dat de eindstaten distinguishable zijn
@@ -455,6 +475,7 @@ pair<set<string>, bool> DFAT::get_eq(const string &state, const vector<set<strin
 
     for (auto &v: equiv_vect){
         if (find(v.begin(), v.end(), state) != v.end()){
+
             return make_pair(v, true);
         }
     }
@@ -543,6 +564,40 @@ void DFAT::load(const nlohmann::json &data) {
     make_TFA();
 }
 
+void DFAT::load2(const nlohmann::json &data) {
+    for (string s: data["alphabet"].get<std::set<string>>()){
+        alfabet.insert(s[0]);
+    }
+
+    int state_size = data["states"].size();
+    for (int i = 0; i<state_size; i++){
+
+
+        string state_name = data["states"][i]["name"].get<std::string>();
+
+
+
+        states.insert(state_name);
+        bool starting = data["states"][i]["starting"].get<bool>();
+        if (starting){
+            start_state = state_name;
+        }
+
+        bool accepting = data["states"][i]["accepting"].get<bool>();
+        if (accepting){
+            end_states.insert(state_name);
+        }
+
+    }
+    int transition_size = data["transitions"].size();
+    for (int i = 0; i < transition_size; i++){
+        string from = data["transitions"][i]["from"].get<std::string>();
+        string to = data["transitions"][i]["to"].get<std::string>();
+        char input = data["transitions"][i]["input"].get<std::string>()[0];
+        transition_map[from].insert({input, to});
+    }
+}
+
 nlohmann::json DFAT::getJson() const {
     nlohmann::json data = nlohmann::json::parse(R"({})");
     data["type"] = "DFA";
@@ -588,39 +643,5 @@ nlohmann::json DFAT::getJson() const {
 
     }
     return data;
-}
-
-void DFAT::load2(const nlohmann::json &data) {
-    for (string s: data["alphabet"].get<std::set<string>>()){
-        alfabet.insert(s[0]);
-    }
-
-    int state_size = data["states"].size();
-    for (int i = 0; i<state_size; i++){
-
-
-        string state_name = data["states"][i]["name"].get<std::string>();
-
-
-
-        states.insert(state_name);
-        bool starting = data["states"][i]["starting"].get<bool>();
-        if (starting){
-            start_state = state_name;
-        }
-
-        bool accepting = data["states"][i]["accepting"].get<bool>();
-        if (accepting){
-            end_states.insert(state_name);
-        }
-
-    }
-    int transition_size = data["transitions"].size();
-    for (int i = 0; i < transition_size; i++){
-        string from = data["transitions"][i]["from"].get<std::string>();
-        string to = data["transitions"][i]["to"].get<std::string>();
-        char input = data["transitions"][i]["input"].get<std::string>()[0];
-        transition_map[from].insert({input, to});
-    }
 }
 
