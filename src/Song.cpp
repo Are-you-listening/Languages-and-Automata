@@ -523,9 +523,11 @@ Song::Song(DFA* s, vector<int> &param, bool console): console(console){ //param 
     log = getCurrTime() + " Started decoding...\n\n";
     if(console){cout << log;}
     logs.push_back(log);
+    string temp = k.re;
+    string t = generalize_re(temp);
 
     //For each element of the RE
-    for(string::iterator it=k.re.begin(); it!=k.re.end(); it++){
+    for(string::iterator it=t.begin(); it!=t.end(); it++){
         vector<unsigned int> note_values;
         for(auto it2=param.begin(); it2!=param.end()-1; it2++){
             if(*it2==true){ //Param used
