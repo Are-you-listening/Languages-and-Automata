@@ -5,24 +5,26 @@
 #include "src/ENFA.h"
 #include "Genre.h"
 #include "Utils.h"
-#include "gui/Gui.h"
+
 int main() {
+    Song* k = new Song("midi_files/c0.mid", true);
+    Song* s = new Song("midi_files/c1.mid", true);
 
-    Gui g;
-    g.start();
+    s->similarity(k,0,0);
+    //s->save("kees");
 
-    /*
-    Song* s = new Song("midi_files/c0.mid", 0);
-    Song* s2 = new Song("midi_files/c1.mid", 0);
+    vector<int> V = {1, 1, 1, 1, 1, -1};
+    Genre genre = Genre(k, s, V, "test", 1, 1);
+    DFA *genreDFA = genre.getProductAutomata();
+    Song* generated = new Song(genreDFA, V, true);
+    //generated->save("");
 
-    Genre g = Genre(s, s2, {1, 1, 1, 1, 1, -1}, "s" ,0, 1);
-    vector<int> v = {1, 1, 1, 1, 1, -1};
-    Song* s3 = new Song(g.getProductAutomata(), v, 0);
-    s3->save("midi_output/out.mid");
-     */
+    //s->similarity(generated,0,0);
 
-    /*
-    vector<pair<string,string>> doubleComparison;
+    delete k;
+    delete s;
+
+    /*vector<pair<string,string>> doubleComparison;
     ifstream Filelist("filelistAnas.txt"); // hier moet je filelist met je naam komen
     ofstream errorfile("errors.txt");
     string c;
@@ -57,7 +59,6 @@ int main() {
         Filelist2.close();
     }
     Filelist.close();
-    errorfile.close();
-     */
+    errorfile.close();*/
     return 0;
 }
