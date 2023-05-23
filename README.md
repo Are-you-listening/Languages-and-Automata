@@ -1,9 +1,18 @@
-# TA-Tog
+# I am listening
 
-"Are you listening", Project to build for the course: Languages & Automata.
+**By: Anas Stitou, Emil Lambert, Tibo Verreycken,  Kars Christian van Velzen  (UA: INF-BA1)**
 
-Codename = "Are you listening". <
+Project for the Course: INFORMAT 1001WETTAL Talen en automaten, University of Antwerp.
 
-We will build a program which can parse Songs (.mid files) and compare & categorise these songs using Finite Automata. 
+The project aims to build a program which can parse Songs and compare & categorise these songs using Finite Automata.
 
-working directory = working
+Supported Audio Files: 
+*   .mid
+
+Working Directory = **/working**
+
+Used languages:
+*   Dutch
+*   English
+
+Are you still listening?	;)*
