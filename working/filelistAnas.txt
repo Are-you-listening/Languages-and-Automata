@@ -137,7 +137,6 @@ DKC_-_Aquatic_Ambience.mid
 DKC_-_Life_in_the_Mines.mid
 DKC_-_Northern_Hemispheres.mid
 DKC_Factory-KM.mid
-DKC_Jungle-KM.mid
 DKC2_Haunted_Hall-KM.mid
 DKC2_Lost_World-KM.mid
 DKCGBAWarpZonev2.mid

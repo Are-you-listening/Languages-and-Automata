@@ -203,7 +203,7 @@ double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
             string test=s[j].re;
             bool b = d[i]->accepts(test); //Addition Anas
             if(b){
-                if(j!=s.size()-1 && i!=d.size()-1 && d[i+1]->accepts(s[j+1].re)){
+                if( j!=s.size()-1 && i!=d.size()-1 && d[i+1]->accepts(s[j+1].re)){
                     succes++;
                     break;
                 }
@@ -223,6 +223,7 @@ double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
 }
 
 double Song::checkKarsAnas(vector<DFA*> &d, vector<RE> &s){
+
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
 
@@ -238,7 +239,7 @@ double Song::checkKarsAnas(vector<DFA*> &d, vector<RE> &s){
     }
 
     double result = succes / (double) d.size() ;
-    if(d.empty()){
+    if(d.size()==0){
         result=0;
     }
     if(result>=0 && result<=1){succeeded = true;}
@@ -277,8 +278,8 @@ double Song::similarity(Song* song, bool complement, bool reverse) {
     if(console){cout << m;}
     logs.push_back(m);
 
-    result = (magimathical(results)+WNFA_result)/2; // TODO mischien parameter adden.
-    
+    result = (magimathical(results)+WNFA_result)/2;
+
     if(result<=1 && result>=0){succes = true;}
     ENSURE(succes, "Percentage must be between 0 and 1");
 
@@ -361,7 +362,7 @@ double Song::magimathical(vector<vector<double>> &results) {
             e=0;
             V0=1;
         }
-        double boolparam = ((40.0/V0)*e + (17.0/V1)*d + (6.0/V2)*c + (17.0/V3)*b + (20.0/V4)*a+ pow(pow(2,3.0/4.0)* sqrt(5),(*v)[5]))/200; //TODO (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
+        double boolparam = ((40.0/V0)*e + (17.0/V1)*d + (6.0/V2)*c + (17.0/V3)*b + (20.0/V4)*a+ pow(pow(2,3.0/4.0)* sqrt(5),(*v)[5]))/200; // (int time_stamp, int note_on, int instrument, int note_b, int velocity, int pattern); als int 1 is de index = 0, als int 0 is wordt er geen rekening gehouden met de param
         result+=boolparam*(7*results[count][0]+2*results[count][1]+1*results[count][2])/(double)results[0].size();
     }
     result=result/((double)results.size());
@@ -386,7 +387,6 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
 
     //Check KarsAnas
     results.push_back(checkKarsAnas(d, toCheck.second) );
-
     //Free used memory
     for(auto &k: d){
         delete k;
@@ -524,49 +524,27 @@ Song::Song(DFA* s, vector<int> &param, bool console): console(console){ //param 
     log = getCurrTime() + " Started decoding...\n\n";
     if(console){cout << log;}
     logs.push_back(log);
+    string temp = k.re;
+    string t = GenerateRandomRE(temp).first;
+    //string t = generalize_re(temp);
 
     //For each element of the RE
-    for(string::iterator it=k.re.begin(); it!=k.re.end(); it++){
+    for(string::iterator it=t.begin(); it!=t.end(); it++){
         vector<unsigned int> note_values;
-        if(*it=='+'){ //TODO kan niet de perfecte fix zijn
-            continue;
-        }
-        if((*it)=='('){
-            it++;
-            while((*it)!='+'){
+        for(auto it2=param.begin(); it2!=param.end()-1; it2++){
+            if(*it2==true){ //Param used
                 note_values.push_back(toInt(*it));
+                //cout << "c " << *it << endl;//Re-convert the value
                 it++;
-            }
-            while((*it)!=')'){
-                it++;
-            }
-            Note* n=new Note(note_values[0]*1000,tan(note_values[1]/155*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
-            note_map[{note_values[0]*1000,1}].push_back(n);
-            Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
-            note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2);
-            continue;
-        } else{
-            if((*it)=='*'){
-                //cerr << "kleene star in regex" << endl;
-                //throw std::exception();
-                continue;
-            }else {
-                for(auto it2=param.begin(); it2!=param.end()-1; it2++){
-                    if(*it2==true){ //Param used
-                        note_values.push_back(toInt(*it)); //Re-convert the value
-                        it++;
-                    } else {
-                        note_values.push_back(0); //Not used, add 0
-                    }
-                }
-                it--;
-
-                Note* n=new Note(note_values[0]*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
-                note_map[{note_values[0]*1000,1}].push_back(n);
-                Note* n2=new Note(note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]); //Make the note with the given data
-                note_map[{note_values[0]*1000+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2); //Add the note
+            } else {
+                note_values.push_back(0); //Not used, add 0
             }
         }
+        it--;
+        Note* n=new Note(note_values[0]*time_split,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
+        note_map[{note_values[0]*time_split,1}].push_back(n);
+        Note* n2=new Note(note_values[0]*time_split+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]); //Make the note with the given data
+        note_map[{note_values[0]*time_split+tan((double) note_values[1]/155.0*1.6)/1.5*1000,0}].push_back(n2); //Add the note
     }
 
     log = getCurrTime() + " Construction Finished!\n\n";
@@ -637,4 +615,98 @@ double Song::checkTibo2(vector<vector<DFA *>> &d, vector<RE> &s) {
 
     ENSURE(succeeded, "Operation did not work properly");
     return result;
+}
+
+string Song::generalize_re(const string& s){
+    int bracket_counter=0;
+    string new_string;
+    for(auto it=s.begin(); it!=s.end(); it++){
+        if(*it=='+'){
+            break;
+        }
+        
+        if ((*it)=='('){
+            do{
+                if ((*it)=='('){
+                    bracket_counter++;
+                    it++;
+                }else if((*it)==')'){
+                    bracket_counter--;
+                    it++;
+                }else if ((*it)=='+'){
+                    int temp_counter = bracket_counter-1;
+                    it++;
+
+                    while(bracket_counter!=temp_counter){
+                        if ((*it)=='('){
+                            bracket_counter++;
+                            it++;
+                        }else if((*it)==')'){
+                            bracket_counter--;
+                            it++;
+                        }else{
+                            it++;
+                        }
+                    }
+                }else{
+                    new_string += *it;
+                    it++;
+                }
+            }while(bracket_counter!=0);
+            it--;
+            continue;
+        }
+        new_string += *it;
+    }
+    return new_string;
+}
+
+pair<string, string> Song::GenerateRandomRE(const string& s){
+    string::const_iterator it = s.begin();
+    vector<string> v;
+    string temp;
+    int max = -1;
+    while(true){
+        if ((*it) == '('){
+            it++;
+            pair<string, string> p = GenerateRandomRE(string(it, s.end()));
+            string out = p.first;
+            it = p.second.begin();
+            temp += out;
+        }else if((*it) == '+') {
+            v.push_back(temp);
+            if ((int) temp.size() > max){
+                max = temp.size();
+            }
+            temp = "";
+            it++;
+        }else if((*it) == ')'){
+            it++;
+            break;
+        }else{
+            temp += (*it);
+            it++;
+        }
+        
+        if (it == s.end()){
+            v.push_back(temp);
+            if ((int) temp.size() > max){
+                max = temp.size();
+            }
+            break;
+        }
+    }
+
+    string final;
+    for (int i=0; i< max; i++){
+        int r;
+        do{
+            r = rand() % v.size();
+        }while(v[r].size() <= i);
+        
+        
+        final += v[r][i];
+    }
+    
+    return make_pair(final, string(it, s.end()));
 }

@@ -148,7 +148,7 @@ public:
      * @return
      */
     Song& operator=(const Song &a);
-    
+
     /**
      * \brief Destructor to free all used memory
      */
@@ -205,7 +205,7 @@ public:
      * @return
      */
     [[nodiscard]] double noteCountSimilarity(Song &s);
-    
+
     /**
      * \brief Check for 100% Equality of Songs
      * \REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");

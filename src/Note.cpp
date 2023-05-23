@@ -83,13 +83,13 @@ string Note::RoundVelocity(int r_velocity) const{ //TODO hier wordt nog geen rek
             if(i<=velocity/3+(r_velocity-1)-1){
                 int temp =i;
                 if (temp < 0){
-                    
+
                     temp = 0;
                 }
                 if (temp > 255/3){
                     temp = 255/3;
                 }
-                
+
                 s+=toChar(temp);
                 s+="+";
             } else {

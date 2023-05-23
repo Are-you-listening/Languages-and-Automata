@@ -7,25 +7,8 @@
 #include "Utils.h"
 
 int main() {
-    Song* k = new Song("midi_files/c0.mid", true);
-    Song* s = new Song("midi_files/c1.mid", true);
-
-    s->similarity(k,0,0);
-    //s->save("kees");
-
-    vector<int> V = {1, 1, 1, 1, 1, -1};
-    Genre genre = Genre(k, s, V, "test", 1, 1);
-    DFA *genreDFA = genre.getProductAutomata();
-    Song* generated = new Song(genreDFA, V, true);
-    //generated->save("");
-
-    //s->similarity(generated,0,0);
-
-    delete k;
-    delete s;
-
-    /*vector<pair<string,string>> doubleComparison;
-    ifstream Filelist("filelistAnas.txt"); // hier moet je filelist met je naam komen
+    vector<pair<string,string>> doubleComparison;
+    ifstream Filelist("filelist3.txt"); // hier moet je filelist met je naam komen
     ofstream errorfile("errors.txt");
     string c;
     string c2="midi_files/";
@@ -59,6 +42,6 @@ int main() {
         Filelist2.close();
     }
     Filelist.close();
-    errorfile.close();*/
+    errorfile.close();
     return 0;
 }
