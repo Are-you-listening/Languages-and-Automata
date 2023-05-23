@@ -576,7 +576,7 @@ double Song::checkWNFA(RE &r,RE &s){
 
 vector<double> Song::similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, int count, bool complement, bool reverse) {
     vector<double> results;
-
+    map<string, state*> stw = dfa1[0][0]->getStates();
     results.push_back( checkTibo2(dfa1, toCheck));
     vector<DFA*> check_assemble;
     for(const auto &d: dfa1){
