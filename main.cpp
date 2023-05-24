@@ -7,8 +7,32 @@
 #include "Utils.h"
 
 int main() {
-    vector<pair<string,string>> doubleComparison;
-    ifstream Filelist("filelistKars.txt"); // hier moet je filelist met je naam komen
+
+    Song* c0 = new Song("midi_files/c0.mid",1);
+    Song* c1 = new Song("midi_files/c1.mid",1);
+    Song* c2 = new Song("midi_files/c2.mid",1);
+    Song* c3 = new Song("midi_files/c3.mid",1);
+    Song* c4 = new Song("midi_files/c4.mid",1);
+    Song* c5 = new Song("midi_files/c5.mid",1);
+    Song* c6 = new Song("midi_files/c6.mid",1);
+    Song* c7 = new Song("midi_files/c7.mid",1);
+    Song* c8 = new Song("midi_files/c8.mid",1);
+    Song* c9 = new Song("midi_files/c9.mid",1);
+    Song* c10 = new Song("midi_files/c10.mid",1);
+
+    c0->similarity(c1,0,0);
+    c0->similarity(c2,0,0);
+    c0->similarity(c3,0,0);
+    c0->similarity(c4,0,0);
+    c0->similarity(c5,0,0);
+    c0->similarity(c6,0,0);
+    c0->similarity(c7,0,0);
+    c0->similarity(c8,0,0);
+    c0->similarity(c9,0,0);
+    c0->similarity(c10,0,0);
+
+    /*vector<pair<string,string>> doubleComparison;
+    ifstream Filelist("demo.txt"); // hier moet je filelist met je naam komen
     ofstream errorfile("errors.txt");
     string c;
     string c2="midi_files/";
@@ -17,7 +41,7 @@ int main() {
     while(getline(Filelist,c)){
         Song* song = new Song(c2+c,true);
         song->setTitle(c);
-        ifstream Filelist2("filelist3.txt"); // dit ongewijzigd laten a.u.b.
+        ifstream Filelist2("demo.txt"); // dit ongewijzigd laten a.u.b.
         string c3;
         while(getline(Filelist2,c3)){
             if(find(doubleComparison.begin(), doubleComparison.end(), make_pair(c,c3))!=doubleComparison.end()){
@@ -47,6 +71,6 @@ int main() {
         Filelist2.close();
     }
     Filelist.close();
-    errorfile.close();
+    errorfile.close();*/
     return 0;
 }
