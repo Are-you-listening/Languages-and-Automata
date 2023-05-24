@@ -8,7 +8,7 @@
 
 int main() {
     vector<pair<string,string>> doubleComparison;
-    ifstream Filelist("filelistAnas.txt"); // hier moet je filelist met je naam komen
+    ifstream Filelist("filelistAnas.txt");
     ofstream errorfile("errors.txt");
     string c;
     string c2="midi_files/";
