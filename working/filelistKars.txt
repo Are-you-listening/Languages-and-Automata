@@ -1,8 +1,3 @@
-DKC_Jungle-KM.mid
-DKC2_Haunted_Hall-KM.mid
-DKC2_Lost_World-KM.mid
-DKCGBAWarpZonev2.mid
-dkcjungle-2.mid
 DKR_Options-KM.mid
 dkr_starcity_v2_01_xg.mid
 dksummit.mid

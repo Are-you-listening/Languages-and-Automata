@@ -453,11 +453,11 @@ void Song::output() const {
     REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string file= "report_"+title+".txt";
-    string temp;
+    string temp = file;
     unsigned int count=0;
     while(FileExists(temp)){
         count++;
-        temp = "report_" + title + to_string(count) + ".txt";
+        temp = "report_" + title + "(" + to_string(count) + ").txt";
         file=temp;
     }
 
