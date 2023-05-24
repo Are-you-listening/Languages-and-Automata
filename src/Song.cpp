@@ -223,7 +223,6 @@ double Song::checkAnas(vector<DFA*> &d, vector<RE> &s){
 }
 
 double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
-
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
 
@@ -273,11 +272,7 @@ double Song::similarity(Song* song, bool complement, bool reverse) {
     if(WNFA_result>1){
         WNFA_result=1;
     }
-
-    /*m = getCurrTime()+" Used the WDFA, found a partial result off: "+ ColorConverter(WNFA_result*100) + " %\n\n";
-    if(console){cout << m;}
-    logs.push_back(m);*/
-
+    
     result = (magimathical(results)+WNFA_result)/2;
 
     if(result<=1 && result>=0){succes = true;}
@@ -530,7 +525,6 @@ Song::Song(DFA* s, const vector<int> &param, bool console): console(console){
     logs.push_back(log);
     string temp = k.re;
     string t = GenerateRandomRE(temp, 0).first;
-    //string t = generalize_re(temp);
 
     //For each element of the RE
     for(string::iterator it=t.begin(); it!=t.end(); it++){
@@ -541,7 +535,6 @@ Song::Song(DFA* s, const vector<int> &param, bool console): console(console){
         for(auto it2=param.begin(); it2!=param.end()-1; it2++){
             if(*it2==true){ //Param used
                 note_values.push_back(toInt(*it));
-                //cout << "c " << *it << endl;//Re-convert the value
                 it++;
             } else {
                 note_values.push_back(0); //Not used, add 0
