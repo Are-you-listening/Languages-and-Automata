@@ -193,7 +193,7 @@ double Song::checkTibo(vector<DFA*> &d, vector<RE> &s){
     return result;
 }
 
-double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
+double Song::checkAnas(vector<DFA*> &d, vector<RE> &s){
 
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
@@ -203,7 +203,7 @@ double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
             string test=s[j].re;
             bool b = d[i]->accepts(test); //Addition Anas
             if(b){
-                if( j!=s.size()-1 && i!=d.size()-1 && d[i+1]->accepts(s[j+1].re)){
+                if( j!=s.size()-1 && i!=d.size()-1 && d[i+1]->accepts(s[j+1].re)){ //Check up the next
                     succes++;
                     break;
                 }
@@ -222,7 +222,7 @@ double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
     return result;
 }
 
-double Song::checkKarsAnas(vector<DFA*> &d, vector<RE> &s){
+double Song::checkKars(vector<DFA*> &d, vector<RE> &s){
 
     bool succeeded = false;
     double succes = 0; //Counter to keep the amount of time the test passes
@@ -383,10 +383,10 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
     results.push_back( checkTibo(d , toCheck.second ) );
 
     //Check Kars
-    results.push_back(checkKars(d, toCheck.second) );
+    results.push_back(checkAnas(d, toCheck.second) );
 
     //Check KarsAnas
-    results.push_back(checkKarsAnas(d, toCheck.second) );
+    results.push_back(checkKars(d, toCheck.second) );
     //Free used memory
     for(auto &k: d){
         delete k;
@@ -588,10 +588,10 @@ vector<double> Song::similar(vector<vector<DFA*>> &dfa1, vector<RE> &toCheck, in
     }
 
     //Check Kars
-    results.push_back(min(checkKars(check_assemble, toCheck)*count, 1.0) );
+    results.push_back( min(checkAnas(check_assemble, toCheck)*count, 1.0) );
 
     //Check KarsAnas
-    results.push_back(min(checkKarsAnas(check_assemble, toCheck)* (double)check_assemble.size()/(double)dfa1.size(), 1.0) );
+    results.push_back(min(checkKars(check_assemble, toCheck)* (double)check_assemble.size()/(double)dfa1.size(), 1.0) );
 
     return results;
 }

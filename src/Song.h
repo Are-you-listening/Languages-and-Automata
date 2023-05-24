@@ -83,22 +83,22 @@ private:
     static double checkTibo2(vector<vector<DFA*>> &d, vector<RE> &s);
 
     /**
-     * \brief Cross check the similarity
+     * \brief Cross check the similarity focussed on patterns of the song
      * \REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * \ENSURE(succeeded, "Operation did not work properly");
      * @return
      */
-    static double checkKars(vector<DFA*> &d, vector<RE> &s);
+    static double checkAnas(vector<DFA*> &d, vector<RE> &s);
 
     /**
-     * \brief Cross check the similarity but more accurately?
+     * \brief Cross check the similarity
      * \REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
      * \ENSURE(succeeded, "Operation did not work properly");
      * @param d
      * @param s
      * @return
      */
-    static double checkKarsAnas(vector<DFA*> &d, vector<RE> &s);
+    static double checkKars(vector<DFA*> &d, vector<RE> &s);
 
     /**
      * \brief Use the WNFA to calculate a similarity %
