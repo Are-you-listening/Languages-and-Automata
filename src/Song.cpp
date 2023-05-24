@@ -452,12 +452,12 @@ vector<double> Song::similar(pair<vector<RE>, vector<RE>> &toCheck, bool complem
 void Song::output() const {
     REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    string file= "report_"+title+".txt";
+    string file= "reports/report_"+title+".txt";
     string temp;
     unsigned int count=0;
     while(FileExists(temp)){
         count++;
-        temp = "report_" + title + to_string(count) + ".txt";
+        temp = "reports/report_" + title + to_string(count) + ".txt";
         file=temp;
     }
 

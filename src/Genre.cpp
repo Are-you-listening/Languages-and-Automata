@@ -119,12 +119,12 @@ Genre::Genre(Song *s, Song *k, const vector<int> &params, const string &name, do
 void Genre::output() const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
-    string file= "report_"+name+".txt";
+    string file= "reports/report_"+name+".txt";
     string temp;
     unsigned int count=0;
     while(FileExists(temp)){
         count++;
-        temp = "report_" + name + to_string(count) + ".txt";
+        temp = "reports/report_" + name + to_string(count) + ".txt";
         file=temp;
     }
 

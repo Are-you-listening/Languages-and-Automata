@@ -11,6 +11,10 @@ Supported Audio Files:
 
 Working Directory = **/working**
 
+Output Directory = **/working/midi_output**
+
+Log Directory = **/working/reports**
+
 Used languages:
 *   Dutch
 *   English
