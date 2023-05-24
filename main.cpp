@@ -46,8 +46,8 @@ int main() {
     cout << HenryHerry->inGenre(c0) << endl;
 
     vector<Song*> songs = {c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, HarryPotter, GameCube};
-    //Gui g(songs);
-    //g.start();
+    Gui g(songs);
+    g.start();
 
 
 
