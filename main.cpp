@@ -5,6 +5,7 @@
 #include "src/ENFA.h"
 #include "Genre.h"
 #include "Utils.h"
+#include "src/gui/Gui.h"
 
 int main() {
     vector<int> V = {1, 1, 1, 1, 1, 1};
@@ -21,8 +22,6 @@ int main() {
     Song* c9 = new Song("midi_files/c9.mid",1);
     Song* c10 = new Song("midi_files/c10.mid",1);
     Song* HarryPotter = new Song("midi_files/HarryPotter.mid",1);
-    Song* HarryPotterPrologue = new Song("midi_files/HarryPotterPrologue(3).mid",1);
-    Song* CoolBeat = new Song("midi_files/09_-_Cool_Beat.mid",1);
     Song* GameCube = new Song("midi_files/Game_Cube_intro.mid",1);
 
     c0->similarity(c1,0,0);
@@ -38,12 +37,19 @@ int main() {
 
     c4->similarity(c5,0,0);
 
-    Genre* HenryHerry = new Genre(HarryPotter,HarryPotterPrologue,V,"HenryHerry",0.70,0,0);
+    HarryPotter->similarity(GameCube,0,0);
 
+    //Genre Output Illustratie
+    Genre* HenryHerry = new Genre(HarryPotter,GameCube,V,"HenryHerry",0.70,0,0);
     Song* product = new Song(HenryHerry->getProductAutomata(),V,1);
     product->save("midi_output/Product.mid");
-
     cout << HenryHerry->inGenre(c0) << endl;
+
+    vector<Song*> songs = {c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, HarryPotter, GameCube};
+    //Gui g(songs);
+    //g.start();
+
+
 
     delete c0;
     delete c1;
@@ -57,8 +63,6 @@ int main() {
     delete c9;
     delete c10;
     delete HarryPotter;
-    delete HarryPotterPrologue;
-    delete CoolBeat;
     delete GameCube;
     delete HenryHerry;
 

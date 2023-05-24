@@ -28,6 +28,7 @@ set(MIDIPASER_SRC
         )
 
 set(GUI_SRC
+
         src/gui/Gui.cpp
         src/gui/Gui.h
         src/gui/SongListWidget.cpp
@@ -58,6 +59,7 @@ set(MAIN_SRC
         src/Song.cpp
 
         ${MIDIPASER_SRC}
+        ${GUI_SRC}
 
         src/NFA.cpp
         src/NFA.h
