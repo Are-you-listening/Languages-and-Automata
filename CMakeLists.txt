@@ -23,7 +23,9 @@ set(MIDIPASER_SRC
         src/midiparser/ByteX.h
         src/midiparser/ByteX.cpp
         src/midiparser/midiExporter.cpp
-        src/midiparser/midiExporter.h)
+        src/midiparser/midiExporter.h
+
+        )
 
 set(GUI_SRC
         src/gui/Gui.cpp
@@ -37,7 +39,15 @@ set(GUI_SRC
         src/gui/SongListWidgetSingle.cpp
         src/gui/SongListWidgetSingle.h
         src/gui/SongWidget.cpp
-        src/gui/SongWidget.h src/gui/ButtonBool.cpp src/gui/ButtonBool.h src/gui/PctScreen.cpp src/gui/PctScreen.h src/gui/ButtonSave.cpp src/gui/ButtonSave.h)
+        src/gui/SongWidget.h
+        src/gui/ButtonBool.cpp
+        src/gui/ButtonBool.h
+        src/gui/PctScreen.cpp
+        src/gui/PctScreen.h
+        src/gui/ButtonSave.cpp
+        src/gui/ButtonSave.h
+
+        )
 
 set(MAIN_SRC
         src/Genre.h
@@ -48,7 +58,6 @@ set(MAIN_SRC
         src/Song.cpp
 
         ${MIDIPASER_SRC}
-        ${GUI_SRC}
 
         src/NFA.cpp
         src/NFA.h
@@ -93,4 +102,4 @@ set(RELEASE_SOURCE_FILES ${MAIN_SRC} main.cpp)
 add_executable(Tog ${RELEASE_SOURCE_FILES} ${TA-LIB} )
 ################################################################
 
-target_link_libraries(Tog -lX11)
+target_link_libraries(Tog -lX11) #GUI
