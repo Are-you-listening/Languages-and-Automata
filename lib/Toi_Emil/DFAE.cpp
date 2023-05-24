@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "DFAE.h"
-#include "automaat.h"
 using namespace std;
 
 DFAE::DFAE(const string &fileName) : automaat(fileName) {
@@ -74,8 +73,6 @@ void DFAE::eliminateState(const std::string &eliminatedstate) {
         }
         todestroyconnections.emplace(todestroyconnection.first, tempconnection.str());
     }
-
-    //map<Node*, string> connectionstoremove;
 
     for (const auto& temp_pair : states) {
         Node* state = temp_pair.second;
@@ -209,8 +206,6 @@ REE DFAE::toREE() const {
             }
 
             regex << start2end;     // if start2end is empty, the endstate is unreachable from the startstate, so we always add it
-
-            // also check if the string already has parentheses?
 
             if (not end2end.empty()){
                 if (end2end[0] == '(' && *(end2end.end()-1) == ')'){

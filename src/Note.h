@@ -143,4 +143,5 @@ public:
      */
     void setDuration(int Duration);
 };
+
 #endif //MIDIPARSER_NOTE_H
