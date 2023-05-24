@@ -274,9 +274,9 @@ double Song::similarity(Song* song, bool complement, bool reverse) {
         WNFA_result=1;
     }
 
-    m = getCurrTime()+" Used the WDFA, found a partial result off: "+ ColorConverter(WNFA_result*100) + " %\n\n";
+    /*m = getCurrTime()+" Used the WDFA, found a partial result off: "+ ColorConverter(WNFA_result*100) + " %\n\n";
     if(console){cout << m;}
-    logs.push_back(m);
+    logs.push_back(m);*/
 
     result = (magimathical(results)+WNFA_result)/2;
 
@@ -566,6 +566,10 @@ double Song::checkWNFA(RE &r, RE &s){
     string log = getCurrTime() + " Started using gold? (WNFA/WDFA)..\n\n";
     if(console){cout << log;}
     logs.push_back(log);
+    
+    if(r.re.size()>s.re.size()){
+        swap(r.re,s.re);
+    }
 
     //Convert to WDFA
     ENFA e = r.toENFA();
