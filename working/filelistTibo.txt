@@ -9,6 +9,7 @@ c7.mid
 c8.mid
 c9.mid
 c10.mid
+A14.mid
 sat_sonicr_sm01_2.mid
 SB5_Boss.mid
 SB5Zone2.mid
