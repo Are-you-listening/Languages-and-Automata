@@ -453,12 +453,12 @@ void Song::output() const {
     REQUIRE ( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string file= "report_"+title+".txt";
-    string file2 = "report_"+title;
+    string temp;
     unsigned int count=0;
-    while(FileExists(file)){
+    while(FileExists(temp)){
         count++;
-        file2+= to_string(count);
-        file = file2+".txt";
+        temp = "report_" + title + to_string(count) + ".txt";
+        file=temp;
     }
 
     ofstream out(file);

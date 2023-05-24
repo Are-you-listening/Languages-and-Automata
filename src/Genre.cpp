@@ -120,12 +120,12 @@ void Genre::output() const {
     REQUIRE( ProperlyInitialized(), "constructor must end in properlyInitialized state");
 
     string file= "report_"+name+".txt";
-    string file2 = "report_"+name;
+    string temp;
     unsigned int count=0;
-    while(FileExists(file)){
+    while(FileExists(temp)){
         count++;
-        file2+= to_string(count);
-        file = file2+".txt";
+        temp = "report_" + name + to_string(count) + ".txt";
+        file=temp;
     }
 
     ofstream out(file);
