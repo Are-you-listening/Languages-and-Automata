@@ -8,6 +8,13 @@
 #include <set>
 #include <vector>
 #include "json.hpp"
+#include <iostream>
+#include <fstream>
+#include <utility>
+#include <iomanip>
+#include "json.hpp"
+#include <queue>
+#include <sstream>
 using namespace std;
 
 class automaat {

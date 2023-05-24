@@ -3,14 +3,7 @@
 //
 
 #include "automaat.h"
-#include <iostream>
-#include <fstream>
-#include <utility>
-#include <iomanip>
-#include "json.hpp"
-#include "NFA.h"
-#include <queue>
-#include <sstream>
+
 using namespace std;
 using json = nlohmann::json;
 
@@ -108,7 +101,6 @@ void automaat::print() {
         temp["accepting"] = isEndState(state.first);
         Jout["states"].push_back(temp);
     }
-    // these 2 for loops can probably be merged, but I will keep them separate for readability
     for (auto state: states) {  // add all the transitions
         for (const auto& transition: state.second->getConnections()) {
                 json temp;
@@ -178,7 +170,6 @@ nlohmann::json automaat::getJson() const{
         temp["accepting"] = isEndState(state.first);
         Jout["states"].push_back(temp);
     }
-    // these 2 for loops can probably be merged, but I will keep them separate for readability
     for (auto state: states) {  // add all the transitions
         for (const auto& transition: state.second->getConnections()) {
                 json temp;
