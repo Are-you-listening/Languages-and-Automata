@@ -268,7 +268,7 @@ double Song::similarity(Song* song, bool complement, bool reverse) {
     }
 
     //Check Notes
-    WNFA_result = checkWNFA(song->toRegex(0, 0, 0, 1, 0, -1)[0],this->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
+    WNFA_result = checkWNFA(this->toRegex(0, 0, 0, 1, 0, -1)[0],song->toRegex(0, 0, 0, 1, 0, -1)[0]); //Set pattern to -1==1 long pattern
 
     if(WNFA_result>1){
         WNFA_result=1;
@@ -562,7 +562,7 @@ Song::Song(DFA* s, vector<int> &param, bool console): console(console){
     ENSURE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 }
 
-double Song::checkWNFA(RE &r,RE &s){
+double Song::checkWNFA(RE &r, RE &s){
     string log = getCurrTime() + " Started using gold? (WNFA/WDFA)..\n\n";
     if(console){cout << log;}
     logs.push_back(log);
