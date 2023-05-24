@@ -139,7 +139,11 @@ void state::addTransitionFunctionENFA(const string &c, state*q) {
     statesENFA[c].insert(q);
 }
 
-state::state() {fInitCheck=this;}
+state::state() {
+    fInitCheck=this;
+    starting= false;
+    accepting= false;
+}
 
 state::state(string name,bool starting, bool accepting) : name(std::move(name)), starting(starting),
                                                                  accepting(accepting) {fInitCheck=this;}
