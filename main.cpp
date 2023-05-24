@@ -8,7 +8,7 @@
 
 int main() {
     vector<pair<string,string>> doubleComparison;
-    ifstream Filelist("filelistdemo.txt"); // hier moet je filelist met je naam komen
+    ifstream Filelist("demo.txt"); // hier moet je filelist met je naam komen
     ofstream errorfile("errors.txt");
     string c;
     string c2="midi_files/";
@@ -17,7 +17,7 @@ int main() {
     while(getline(Filelist,c)){
         Song* song = new Song(c2+c,true);
         song->setTitle(c);
-        ifstream Filelist2("filelistdemo.txt"); // dit ongewijzigd laten a.u.b.
+        ifstream Filelist2("demo.txt"); // dit ongewijzigd laten a.u.b.
         string c3;
         while(getline(Filelist2,c3)){
             if(find(doubleComparison.begin(), doubleComparison.end(), make_pair(c,c3))!=doubleComparison.end()){
