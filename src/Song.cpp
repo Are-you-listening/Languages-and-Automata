@@ -454,8 +454,10 @@ void Song::output() const {
 
     string file= "report_"+title+".txt";
     string file2 = "report_"+title;
+    unsigned int count=0;
     while(FileExists(file)){
-        file2+="(copy)";
+        count++;
+        file2+= to_string(count);
         file = file2+".txt";
     }
 
