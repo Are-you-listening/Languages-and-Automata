@@ -19,6 +19,4 @@ const map<char, Node*> &Node::getConnections() const {
     return connections;
 }
 
-Node::~Node() {
-
-}
+Node::~Node() {}

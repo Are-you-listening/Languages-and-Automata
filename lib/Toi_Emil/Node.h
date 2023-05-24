@@ -4,10 +4,12 @@
 
 #ifndef DFA_NODE_H
 #define DFA_NODE_H
+
 #include <string>
 #include <list>
 #include <set>
 #include <map>
+
 using namespace std;
 
 class Node {
@@ -26,6 +28,5 @@ public:
 
     virtual ~Node();
 };
-
 
 #endif //DFA_NODE_H

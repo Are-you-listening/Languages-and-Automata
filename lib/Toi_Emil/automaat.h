@@ -49,5 +49,4 @@ public:
     virtual ~automaat();
 };
 
-
 #endif //DFA_AUTOMAAT_H

@@ -16,7 +16,6 @@ automaat::automaat(string fileName) {
     load(j);
 }
 
-
 void automaat::addState(string name, bool start, bool endState) {
     Node* n = new Node(name);
     states[name] = n;

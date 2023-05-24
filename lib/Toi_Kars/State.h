@@ -40,5 +40,4 @@ public:
     [[nodiscard]] bool ProperlyInitialized() const;
 };
 
-
 #endif //INC_1_STATE_H

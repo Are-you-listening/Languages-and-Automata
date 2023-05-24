@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "DFAE.h"
-using namespace std;
 
 DFAE::DFAE(const string &fileName) : automaat(fileName) {
     type = "DFAE";

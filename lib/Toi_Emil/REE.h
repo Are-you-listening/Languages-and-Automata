@@ -2,9 +2,11 @@
 // Created by anass on 2-5-2023.
 //
 
-#ifndef TA__TOG_REE_H
-#define TA__TOG_REE_H
+#ifndef TA_TOG_REE_H
+#define TA_TOG_REE_H
+
 #include <string>
+
 using namespace std;
 
 class REE {
@@ -17,5 +19,4 @@ public:
     const string &getRegex() const;
 };
 
-
-#endif //TA__TOG_REE_H
+#endif //TA_TOG_REE_H

@@ -8,6 +8,8 @@
 #include "REE.h"
 #include <sstream>
 
+using namespace std;
+
 class DFAE: public automaat{
     friend class NFAE;
 
@@ -19,7 +21,5 @@ public:
     REE toREE() const;
     string getselfconnection();
 };
-
-
 
 #endif //TA__TOG_DFAE_H
