@@ -11,16 +11,18 @@
 #ifdef __unix__
 #include <cstdio>
 #include <cstdlib>
+#include "Song.h"
 #endif
-
+#include <vector>
 class Gui {
 public:
-    Gui();
+    Gui(const vector<Song*>& s);
     void start();
 private:
     Display* display;
     Window window;
     GC graphics_content;
+    vector<Song*> s;
 };
 
 #endif //TOG_GUI_H

@@ -7,7 +7,7 @@
 #include "PctScreen.h"
 #include "ButtonSave.h"
 
-Gui::Gui() {
+Gui::Gui(const vector<Song*>& s): s(s) {
     display = XOpenDisplay((char *)0);
 
 
@@ -29,21 +29,7 @@ void Gui::start() {
     SongWidget* selected = nullptr;
     int draw_counter = 0;
 
-    SongListWidget* song_list = new SongListWidget(20, 20, 250, 700, {
-                                                                      new Song("midi_files/world-1-birabuto-remix-.mid",0),
-                                                                      new Song("midi_files/world-1-birabuto-4-.mid",0),
-                                                                      new Song("midi_files/HarryPotterPrologue(3).mid",0),
-            new Song("midi_files/c0.mid",0),new Song("midi_files/c1.mid",0),
-            new Song("midi_files/c2.mid",0),new Song("midi_files/c3.mid",0),
-            new Song("midi_files/c4.mid",0),new Song("midi_files/c5.mid",0),new Song("midi_files/c0.mid",0),
-                                                                      new Song("midi_files/c6.mid",0),
-                                                                      new Song("midi_files/c7.mid",0),
-            new Song("midi_files/c8.mid",0),
-            new Song("midi_files/c9.mid",0),
-                                                                      new Song("midi_files/c10.mid",0),
-                                                                      new Song("midi_files/c11.mid",0),
-                                                                      new Song("midi_files/c12.mid",0), new Song("midi_files/c13.mid",0)
-    });
+    SongListWidget* song_list = new SongListWidget(20, 20, 250, 700, s);
     SongListWidget* compare = new SongListWidget(400, 20, 250, 700, {});
     SongListWidgetSingle* single_song = new SongListWidgetSingle(400, 750, 250, 100, 1);
 
