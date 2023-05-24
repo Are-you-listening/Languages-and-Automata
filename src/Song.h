@@ -160,7 +160,7 @@ public:
      * @param s, a random DFA
      * @param param, the list with used parameters for Construction of Note Objects
      */
-    Song(DFA* s, vector<int> &param, bool console);
+    Song(DFA* s, const vector<int> &param, bool console);
 
     /**
      * \brief Overload Constructor (Creates a new object) Including new usages of memory!
@@ -187,7 +187,7 @@ public:
      * @param pattern, int deciding the complexity of the constructed Regex
      * @return vector<RE> rex
      */
-    [[nodiscard]] vector<RE> toRegex(int time_stamp, int duration, int instrument, int note_b, int velocity, int pattern);
+    [[nodiscard]] vector<RE> toRegex(const int time_stamp, const int duration, const int instrument, const int note_b, const int velocity, const int pattern);
 
     /**
      * \brief Count the amount of notes (per type) of a Song

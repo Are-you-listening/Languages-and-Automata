@@ -134,7 +134,7 @@ Song::~Song(){
     }
 }
 
-[[nodiscard]] vector<RE> Song::toRegex(int time_stamp, int duration, int instrument, int note_b, int velocity, int pattern){ //When int>1 -> activate round
+[[nodiscard]] vector<RE> Song::toRegex(const int time_stamp, const int duration, const int instrument, const int note_b, const int velocity, const int pattern){ //When int>1 -> activate round
     REQUIRE(ProperlyInitialized(), "Constructor must end in properly initialised state!");
 
     char epsilon='*';
@@ -506,8 +506,8 @@ void Song::switchConsoleOutput() {
     console = !console;
 }
 
-Song::Song(DFA* s, vector<int> &param, bool console): console(console){
-    ::srand(time(NULL));
+Song::Song(DFA* s, const vector<int> &param, bool console): console(console){
+    srand(time(NULL));
     //param = {int r_time_stamp, int r_duration, int r_instrument, int r_note, int r_velocity, int octaaf}
     //Start up
     fInitCheck = this;
