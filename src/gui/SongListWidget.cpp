@@ -9,14 +9,11 @@ SongListWidget::SongListWidget(unsigned int x, unsigned int y, unsigned int widt
         SongWidget* w = new SongWidget(x+10, y+10, width-20, 80, songs_in[i]);
         songs.push_back(w);
     }
-
-
 }
 
 void SongListWidget::doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool up) {
     if (inWidget(mouse_x, mouse_y)){
         if (!up && index >= 0){
-
             index_offset -= change_index;
             if (index_offset < 0 && index-1 > 0){
                 index -= ceil(abs(index_offset+1)/80.0);
@@ -26,9 +23,7 @@ void SongListWidget::doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool
                 }
             }
 
-
         }else if (up && index < 10){
-
             index_offset += change_index;
             if (index_offset > 80){
                 index += floor(index_offset/80.0);
@@ -36,7 +31,6 @@ void SongListWidget::doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool
             }
         }
     }
-
 }
 
 bool SongListWidget::inWidget(unsigned int mouse_x, unsigned int mouse_y) {
@@ -46,7 +40,6 @@ bool SongListWidget::inWidget(unsigned int mouse_x, unsigned int mouse_y) {
 }
 
 void SongListWidget::draw(Display *display, Window window, GC graphics_content) {
-
     XSetForeground(display,graphics_content, (65 << 16)+(65 << 8)+(65));
     XFillRectangle(display, window, graphics_content, x, y, width, height);
     drawSongs(display, window, graphics_content);
@@ -60,9 +53,7 @@ void SongListWidget::drawSongs(Display *display, Window window, GC graphics_cont
         if (!skip){
             song_widget->draw(display, window, graphics_content, offset, y+10, height+y-10);
         }
-
     }
-
 }
 
 SongWidget *SongListWidget::select(unsigned int mouse_x, unsigned int mouse_y) {
@@ -81,7 +72,6 @@ SongWidget *SongListWidget::select(unsigned int mouse_x, unsigned int mouse_y) {
 }
 
 void SongListWidget::addSong(SongWidget *song_widget) {
-
     song_widget->setPos(x+10, y+10);
     songs.push_back(song_widget);
 
@@ -96,6 +86,5 @@ vector<Song *> SongListWidget::getAllSongs() {
     for (auto s_w: songs){
         out.push_back(s_w->getSong());
     }
-
     return out;
 }

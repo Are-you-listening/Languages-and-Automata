@@ -17,5 +17,4 @@ private:
     unsigned int current;
 };
 
-
 #endif //TOG_SONGLISTWIDGETSINGLE_H

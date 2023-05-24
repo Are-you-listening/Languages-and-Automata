@@ -12,7 +12,9 @@
 #include <cstdio>
 #include <cstdlib>
 #endif
+
 using namespace std;
+
 class PctScreen {
 public:
     PctScreen(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
@@ -27,6 +29,5 @@ private:
     unsigned int height;
     double pct;
 };
-
 
 #endif //TOG_PCTSCREEN_H

@@ -57,7 +57,7 @@ public:
 
     /**
      * \brief Get the JSON of the converted NFA
-     * ONLY works for Concatination ENFA
+     * ONLY works for Concatenation ENFA
      * @return
      */
     [[nodiscard]] json getJsonNfa() const;

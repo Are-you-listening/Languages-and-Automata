@@ -174,24 +174,6 @@ vector<state*> ENFA::ECLOSE2(state*Etransition, string input)const&{
 }
 
 void ENFA::Etransitions(vector<state*> &States)const&{
-    /*
-    for(vector<state*>::const_iterator it=states.begin(); it!=states.end(); it++){
-        bool a=false;
-        vector<state*> states2= ECLOSE((*it));
-        for(vector<state*>::const_iterator it2=states2.begin(); it2!=states2.end(); it2++){
-            if(find(states.begin(),states.end(),(*it2))==states.end()){
-                states.push_back((*it2));
-                a=true;
-            }
-        }
-
-
-        if (a){
-            Etransitions(states);
-            it=states.begin();
-        }
-    }*/
-
     vector<state*> new_states;
     new_states.insert(new_states.begin(), States.begin(), States.end());
     Etransitions(new_states, States);
@@ -293,45 +275,6 @@ map<pair<char,string>, vector<string>> ENFA::possibleStates(state* nextState, co
 }
 
 DFA* ENFA::toDFA() &{
-    /*
-    map<char,string> dict;
-    int count=0;
-    for(vector<state*>::const_iterator state=ENFA::states.begin(); state!=ENFA::states.end(); state++, count++){
-        char temp=count;
-        while (temp=='{' || temp==',' || temp=='}'){
-            temp=count;
-            count++;
-        }
-        dict[temp]=(*state)->name;
-        (*state)->name=temp;
-    }
-    DFA dfa = ENFA::toDFA2();
-    vector<state*> tempSTATES = dfa.getStates();
-    for(vector<state*>::const_iterator state=tempSTATES.begin(); state!=tempSTATES.end(); state++){
-        vector<string> names;
-        if ((*state)->name=="{}"){
-            continue;
-        }
-        for(string::const_iterator name=(*state)->name.begin(); name!=(*state)->name.end(); name++){
-            if ((*name)=='{' || (*name)==',' || (*name)=='}'){
-                continue;
-            }
-            names.push_back(dict[(*name)]);
-        }
-        std::sort(names.begin(), names.end());
-        string s="{";
-        for(vector<string>::const_iterator name=names.begin(); name!=names.end();){
-            s+=*name;
-            name++;
-            if(name!=names.end()){
-                s+=",";
-            } else {
-                s+="}";
-            }
-        }
-        (*state)->name=s;
-    }*/
-
     ENFAT t;
     t.load(getJson());
     DFA* dfa = t.toDFA();

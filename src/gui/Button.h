@@ -19,9 +19,6 @@ public:
     bool isClicked(unsigned int mouse_x, unsigned int mouse_y);
     virtual void click() = 0;
     virtual void draw(Display* display, Window window, GC graphics_content);
-
-
-
 private:
     unsigned int x;
     unsigned int y;
@@ -35,8 +32,6 @@ protected:
     unsigned int getWidth() const;
 
     unsigned int getHeight() const;
-
 };
-
 
 #endif //TOG_BUTTON_H

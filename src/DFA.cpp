@@ -531,7 +531,6 @@ void DFA::inRange(int range, set<state*> &out,set<state*>& last, set<state*>& en
         if (out.find(s_target) == out.end()){
             inRange(range-1, out, last, end, s_target);
         }
-
     }
 }
 

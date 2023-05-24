@@ -5,8 +5,7 @@
 #include "ByteX.h"
 #include <cmath>
 
-ByteX::ByteX(unsigned int value, unsigned int length): value(value), length(length) {
-};
+ByteX::ByteX(unsigned int value, unsigned int length): value(value), length(length) {}
 
 string ByteX::toString() const {
     string s = "";
@@ -123,5 +122,4 @@ ByteX::ByteX(const string &hex_value) {
     }
     value = result;
     length = ceil(hex_value.length()/2.0);
-
 }

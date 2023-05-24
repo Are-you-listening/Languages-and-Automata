@@ -36,11 +36,6 @@ private:
     int change_index = 40;
 protected:
     vector<SongWidget*> getSongs();
-
-
-
-
 };
-
 
 #endif //TOG_SONGLISTWIDGET_H

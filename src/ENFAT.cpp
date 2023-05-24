@@ -219,7 +219,6 @@ bool ENFAT::accepts(const string &s) {
             return true;
         }
     }
-
     return false;
 }
 
@@ -279,7 +278,6 @@ void ENFAT::load(const json &data) {
 
             transition_map[from][input] = to;
         }
-
     }
 }
 

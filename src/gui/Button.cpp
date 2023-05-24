@@ -4,9 +4,7 @@
 
 #include "Button.h"
 
-Button::Button(unsigned int x, unsigned int y, unsigned int width, unsigned int height): x(x), y(y), width(width), height(height) {
-
-}
+Button::Button(unsigned int x, unsigned int y, unsigned int width, unsigned int height): x(x), y(y), width(width), height(height) {}
 
 bool Button::isClicked(unsigned int mouse_x, unsigned int mouse_y) {
     bool in_x = x <= mouse_x && mouse_x <= x+width;
@@ -15,7 +13,6 @@ bool Button::isClicked(unsigned int mouse_x, unsigned int mouse_y) {
 }
 
 void Button::draw(Display *display, Window window, GC graphics_content) {
-
     XSetForeground(display,graphics_content, (255 << 16) + (215 << 8) + 0);
     XFillRectangle(display, window, graphics_content, x, y, width, height);
 }

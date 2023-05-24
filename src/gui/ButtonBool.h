@@ -14,8 +14,6 @@ public:
     bool isOn();
 private:
     bool on;
-
 };
-
 
 #endif //TOG_BUTTONBOOL_H

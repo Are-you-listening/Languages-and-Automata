@@ -51,5 +51,4 @@ void ButtonCompare::click() {
         pcts->setPct(pct*100);
 
     }
-
 }

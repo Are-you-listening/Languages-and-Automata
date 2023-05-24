@@ -94,7 +94,6 @@ bool MidiParser::readComponent() {
         bool note_on = basic_data.getByte(1) != 0 && start;
         Note* current_note = new Note(time, note_on, basic_data.getByte(0), basic_data.getByte(1), instrument);
         addNote(time, note_on, current_note);
-        //cout << "note " << basic_data.toHex() << " " << time << "i: "<< link_channel[channel] << endl;
         if(note_duration.find((channel << 8) + basic_data.getByte(0)) != note_duration.end()){
             Note* n = note_duration.at((channel << 8) + basic_data.getByte(0));
 
@@ -163,8 +162,6 @@ bool MidiParser::readComponent() {
 
             for(auto entry: note_duration){
                 unsigned int time_stamp = entry.second->getTimeStamp();
-
-                //entry.second->setDuration(delta_time_counter-time_stamp);
                 entry.second->setDuration(400);
             }
 
@@ -242,9 +239,6 @@ bool MidiParser::readComponent() {
 
         if(note_duration.find((channel << 8) + basic_data.getByte(1)) != note_duration.end()){
             Note* n = note_duration.at((channel << 8) + basic_data.getByte(1));
-
-
-
             int duration = current_note->getTimeStamp() - n->getTimeStamp();
             n->setDuration(duration);
             note_duration.erase((channel << 8) + basic_data.getByte(1));

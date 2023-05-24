@@ -10,7 +10,6 @@
 midiExporter::midiExporter(const string &path, const map<pair<unsigned int, bool>, vector<Note *>> &note_map): note_map(note_map), path(path) {
     changeFormat();
     store();
-
 }
 
 void midiExporter::changeFormat() {
@@ -33,7 +32,6 @@ void midiExporter::changeFormat() {
     buffer.push_back(tracks_amount);
     buffer.push_back(ticks_per_frame);
     createTracks();
-
 }
 
 void midiExporter::addNote(Note* note, bool note_on) {
@@ -108,9 +106,6 @@ void midiExporter::createTracks() {
                 sub_buffer.push_back(note_byte);
                 sub_buffer.push_back(velocity);
             }
-
-            //cout << "note " << n->getNoteValue() << " " << delta << endl;
-
         }
         ByteX track_header("4d54726b");
         ByteX track_size(track_length, 4);
@@ -132,11 +127,8 @@ void midiExporter::createTracks() {
 
 void midiExporter::store() {
     ofstream o(path, ios_base::binary);
-
-
     for(auto &b: buffer){
         o << b.toString();
     }
-
     o.close();
 }

@@ -5,9 +5,7 @@
 #include "ButtonSave.h"
 
 ButtonSave::ButtonSave(unsigned int x, unsigned int y, unsigned int width, unsigned int height,
-                       SongListWidgetSingle *song_box): Button(x, y, width, height), song_box(song_box) {
-
-}
+                       SongListWidgetSingle *song_box): Button(x, y, width, height), song_box(song_box) {}
 
 void ButtonSave::click() {
     Song* song = song_box->getSong();

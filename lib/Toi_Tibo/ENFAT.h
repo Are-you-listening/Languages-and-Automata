@@ -13,7 +13,6 @@
 
 using namespace std;
 
-
 class ENFAT {
 public:
     ENFAT(const string& path);
@@ -30,8 +29,6 @@ private:
     set<string> Eclose(const string& state);
     set<string> Eclose(const string& state, const set<string>& found);
     string set_to_string(const set<string> &s) const;
-
 };
-
 
 #endif //P1_ENFA_H

@@ -4,8 +4,10 @@
 
 #ifndef TOG_BUTTONSAVE_H
 #define TOG_BUTTONSAVE_H
+
 #include "Button.h"
 #include "SongListWidgetSingle.h"
+
 class ButtonSave: public Button{
 public:
     ButtonSave(unsigned int x, unsigned int y, unsigned int width, unsigned int height, SongListWidgetSingle* song_box);

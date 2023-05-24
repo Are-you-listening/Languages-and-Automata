@@ -38,7 +38,6 @@ private:
     vector<ByteX> buffer;
     void store();
     string path;
-
 };
 
 

@@ -13,20 +13,14 @@
 #include <cstdlib>
 #endif
 
-
-
-
 class Gui {
 public:
     Gui();
     void start();
-
-public:
 private:
     Display* display;
     Window window;
     GC graphics_content;
 };
-
 
 #endif //TOG_GUI_H

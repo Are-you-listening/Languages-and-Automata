@@ -25,7 +25,6 @@ ENFAT::ENFAT(const string &path) {
 
     epsilon = data["eps"].get<std::string>()[0];
 
-
     /**
      * voegt epsilon nfa toe
      * */
@@ -42,7 +41,6 @@ ENFAT::ENFAT(const string &path) {
         if (accepting){
             end_states.insert(state_name);
         }
-
     }
 
     /**
@@ -61,10 +59,7 @@ ENFAT::ENFAT(const string &path) {
         to.insert(temp_to);
 
         transition_map[from][input] = to;
-
     }
-
-
 }
 set<string> ENFAT::Eclose(const string &state){
     /**
@@ -73,6 +68,7 @@ set<string> ENFAT::Eclose(const string &state){
     set<string> empty;
     return Eclose(state, empty);
 }
+
 set<string> ENFAT::Eclose(const string &state, const set<string>& found) {
     /**
      * echte Eclose functie, wordt gebruikt om bij te houden welke elementen we al in de verzameling hebben
@@ -102,9 +98,7 @@ set<string> ENFAT::Eclose(const string &state, const set<string>& found) {
                     set<string> rec_set = Eclose(s, new_found);
                     output.insert(rec_set.begin(), rec_set.end());
                 }
-
             }
-
         }
     return output;
 }
@@ -136,24 +130,15 @@ DFA ENFAT::toDFA() {
                     set<string> eq = Eclose(t);
                     new_pos.insert(eq.begin(), eq.end());
                 }
-
-
             }
-
             new_transition_map[set_to_string(current)][a] = set_to_string(new_pos);
 
             if (find(finished.begin(), finished.end(), new_pos) == finished.end() && find(state_queue.begin(), state_queue.end(), new_pos) == state_queue.end()){
                 state_queue.insert(new_pos);
             }
-
         }
-
         state_queue.erase(current);
         finished.insert(current);
-
-
-
-
     }
     /**
      * check voor de nieuwe eindstaten
@@ -175,7 +160,6 @@ DFA ENFAT::toDFA() {
     for (set<string> f: finished){
         states_string.insert(set_to_string(f));
     }
-
 
     for (auto state :states_string){
         if (new_transition_map.find(state) == new_transition_map.end()){

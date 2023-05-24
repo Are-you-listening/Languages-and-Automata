@@ -30,8 +30,6 @@ public:
     void clear(Display* display, Window window);
 
     Song *getSong() const;
-
-
 private:
     unsigned int x;
     unsigned int y;
@@ -42,9 +40,6 @@ private:
     unsigned int old_x;
     unsigned int old_y;
     stack<vector<unsigned int>> draw_stack;
-
-
 };
-
 
 #endif //TOG_SONGWIDGET_H

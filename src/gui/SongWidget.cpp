@@ -5,9 +5,7 @@
 #include "SongWidget.h"
 #include "cmath"
 SongWidget::SongWidget(unsigned int x, unsigned int y, unsigned int width, unsigned int height, Song *song) :
-x(x), y(y), width(width), height(height), song(song) {
-
-}
+x(x), y(y), width(width), height(height), song(song) {}
 
 void SongWidget::draw(Display *display, Window window, GC graphics_content, int offset,  unsigned int min_height, unsigned int max_height) {
     XSetForeground(display,graphics_content, (70 << 16)+(70 << 8)+205);
@@ -27,9 +25,6 @@ void SongWidget::draw(Display *display, Window window, GC graphics_content, int 
     if (height == using_height){
         XDrawString(display, window, graphics_content, x+10, using_y+40, &song->getTitle()[0], min(18, (int) song->getTitle().size()));
     }
-
-
-
 }
 
 unsigned int SongWidget::getX() const {
@@ -82,8 +77,6 @@ void SongWidget::draw(Display *display, Window window, GC graphics_content, bool
     XSetForeground(display,graphics_content, (70 << 16)+(70 << 8)+205);
     draw_stack.push({x, y, width, height});
     XFillRectangle(display, window, graphics_content, x, y, width, height);
-
-
 }
 
 void SongWidget::setPos(unsigned int x, unsigned int y) {
@@ -97,7 +90,6 @@ void SongWidget::clear(Display *display, Window window) {
         draw_stack.pop();
         XClearArea(display, window, v[0], v[1], v[2], v[3], 0);
     }
-
 }
 
 Song *SongWidget::getSong() const {

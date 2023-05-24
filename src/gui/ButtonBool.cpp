@@ -8,9 +8,7 @@ void ButtonBool::click() {
     on = !on;
 }
 
-ButtonBool::ButtonBool(unsigned int x, unsigned int y, unsigned int width, unsigned int height, bool on): Button(x, y, width, height), on(on) {
-
-}
+ButtonBool::ButtonBool(unsigned int x, unsigned int y, unsigned int width, unsigned int height, bool on): Button(x, y, width, height), on(on) {}
 
 void ButtonBool::draw(Display *display, Window window, GC graphics_content) {
     if (on){
@@ -18,7 +16,6 @@ void ButtonBool::draw(Display *display, Window window, GC graphics_content) {
     }else{
         XSetForeground(display,graphics_content, (255 << 16));
     }
-
     XFillRectangle(display, window, graphics_content, getX(), getY(), getWidth(), getHeight());
 }
 

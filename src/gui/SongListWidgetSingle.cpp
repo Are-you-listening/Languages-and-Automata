@@ -7,7 +7,6 @@
 SongListWidgetSingle::SongListWidgetSingle(unsigned int x, unsigned int y, unsigned int width, unsigned int height,
                                            unsigned int max): SongListWidget(x, y, width, height, {}), max(max) {
     current = 0;
-
 }
 
 bool SongListWidgetSingle::inWidget(unsigned int mouse_x, unsigned int mouse_y) {
@@ -21,8 +20,5 @@ Song *SongListWidgetSingle::getSong() {
     }else{
         return nullptr;
     }
-
 }
-void SongListWidgetSingle::doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool up){
-
-}
+void SongListWidgetSingle::doScrolled(unsigned int mouse_x, unsigned int mouse_y, bool up){}
