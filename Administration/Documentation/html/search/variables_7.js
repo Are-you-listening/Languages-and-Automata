@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lines_5fread_1499',['lines_read',['../structnlohmann_1_1detail_1_1position__t.html#a4bbad8bc2c0d17c1b61c3ce729908b71',1,'nlohmann::detail::position_t']]]
+  ['primitive_5fiterator_830',['primitive_iterator',['../structnlohmann_1_1detail_1_1internal__iterator.html#a2b3bb45f968210e42c282017eeeb63a8',1,'nlohmann::detail::internal_iterator']]]
 ];

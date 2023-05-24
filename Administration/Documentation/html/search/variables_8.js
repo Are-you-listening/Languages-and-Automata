@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['minus_1500',['minus',['../structnlohmann_1_1detail_1_1dtoa__impl_1_1boundaries.html#aec4e5028333c01f3229062f31ce16763',1,'nlohmann::detail::dtoa_impl::boundaries']]]
+  ['startstate_831',['startState',['../classWNFA.html#a7c8961b7e549b266ccf62be2260b7470',1,'WNFA']]],
+  ['states_832',['states',['../classWNFA.html#aae9fa92f9127b287efe545b6259fc78b',1,'WNFA']]]
 ];

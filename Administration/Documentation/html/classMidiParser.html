@@ -68,8 +68,6 @@ $(function() {
 <div class="title">MidiParser Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="MidiParser_8h_source.html">MidiParser.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -98,7 +96,7 @@ Public Member Functions</h2></td></tr>
 <p>Each byte will be read, first we have an Header, containing the amount of Tracks We read each track</p>
 <p>Their are a lot of byte combinations with their own meaning. The most important and frequent combination is an note_on/note_off event it means a note starts/ends it has the following format: note_on:: delta_time 9[channel] note velocity it has the following format: note_off:: delta_time 8[channel] note velocity(=0)</p>
 <p>the channel is 1 nibble big (value 0-15) and note, velocity is 1 byte the delta time will be before every event. a delta time is nortmally 1 byte, but if that byte its MSB is true than it also contains of the next byte, (it can go on for infinity) we then concatinate those bytes ignoring the MSB, for example 81 01 1000 0001 0000 0001 - &gt; 00 0000 1000 0001 so 2 bytes become 14 bit etc. Midiparser constructor receives a path to a midi file it will read the file and store it in a .mid file </p>
-<p>Welkom in the midiparser, here some binary data will be converted to more usefull data. Are you intrested in this very intresting journey of deciphering Bytes Follow me through this documentation and you will achieve an basic understanding of our midi-parser</p>
+<p>Welkom in the midi parser, here some binary data will be converted to more useful data. Are you interested in this very interesting journey of deciphering Bytes Follow me through this documentation and you will achieve an basic understanding of our midi-parser</p>
 
 </div>
 </div>
@@ -123,7 +121,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/midiparser/<a class="el" href="MidiParser_8h_source.html">MidiParser.h</a></li>
-<li>src/midiparser/<a class="el" href="MidiParser_8cpp.html">MidiParser.cpp</a></li>
+<li>src/midiparser/MidiParser.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

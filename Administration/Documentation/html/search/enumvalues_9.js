@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['msgpack_1621',['msgpack',['../namespacenlohmann_1_1detail.html#aa554fc6a11519e4f347deb25a9f0db40ac40d516627022a54003ac2b74a82688a',1,'nlohmann::detail']]]
+  ['parse_5ferror_899',['parse_error',['../classnlohmann_1_1detail_1_1lexer.html#a3f313cdbe187cababfc5e06f0b69b098a456e19aeafa334241c7ff3f589547f9d',1,'nlohmann::detail::lexer']]]
 ];

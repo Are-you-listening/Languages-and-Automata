@@ -72,12 +72,10 @@ $(function() {
 <div class="title">nlohmann::detail::is_sax&lt; SAX, BasicJsonType &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="json_8hpp_source.html">json.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a8ab7e51087000e948b4a2492257484dc"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnlohmann_1_1detail_1_1is__sax.html#a8ab7e51087000e948b4a2492257484dc">value</a></td></tr>
+<tr class="memitem:a8ab7e51087000e948b4a2492257484dc"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
 <tr class="separator:a8ab7e51087000e948b4a2492257484dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -105,12 +103,12 @@ template&lt;typename SAX , typename BasicJsonType &gt; </div>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">        is_detected_exact&lt;bool, null_function_t, SAX&gt;::value &amp;&amp;</div>
 <div class="line">        is_detected_exact&lt;bool, boolean_function_t, SAX&gt;::value &amp;&amp;</div>
-<div class="line">        <a class="code" href="namespacenlohmann_1_1detail.html#a7542b4dbac07817fd4849ecfa4619def">is_detected_exact</a>&lt;bool, <a class="code" href="namespacenlohmann_1_1detail.html#a4a3e14a011b9ea1ff849fc6d2411e6a0">number_integer_function_t</a>, SAX,</div>
-<div class="line">        number_integer_t&gt;<a class="code" href="structnlohmann_1_1detail_1_1is__sax.html#a8ab7e51087000e948b4a2492257484dc">::value</a> &amp;&amp;</div>
-<div class="line">        <a class="code" href="namespacenlohmann_1_1detail.html#a7542b4dbac07817fd4849ecfa4619def">is_detected_exact</a>&lt;bool, <a class="code" href="namespacenlohmann_1_1detail.html#a74da7b17bda76f65d276feb18209c913">number_unsigned_function_t</a>, SAX,</div>
-<div class="line">        number_unsigned_t&gt;<a class="code" href="structnlohmann_1_1detail_1_1is__sax.html#a8ab7e51087000e948b4a2492257484dc">::value</a> &amp;&amp;</div>
-<div class="line">        <a class="code" href="namespacenlohmann_1_1detail.html#a7542b4dbac07817fd4849ecfa4619def">is_detected_exact</a>&lt;bool, <a class="code" href="namespacenlohmann_1_1detail.html#ad42df56e913abe26ed556e0e92f386f4">number_float_function_t</a>, SAX, number_float_t,</div>
-<div class="line">        string_t&gt;<a class="code" href="structnlohmann_1_1detail_1_1is__sax.html#a8ab7e51087000e948b4a2492257484dc">::value</a> &amp;&amp;</div>
+<div class="line">        is_detected_exact&lt;bool, number_integer_function_t, SAX,</div>
+<div class="line">        number_integer_t&gt;::value &amp;&amp;</div>
+<div class="line">        is_detected_exact&lt;bool, number_unsigned_function_t, SAX,</div>
+<div class="line">        number_unsigned_t&gt;::value &amp;&amp;</div>
+<div class="line">        is_detected_exact&lt;bool, number_float_function_t, SAX, number_float_t,</div>
+<div class="line">        string_t&gt;::value &amp;&amp;</div>
 <div class="line">        is_detected_exact&lt;bool, string_function_t, SAX, string_t&gt;::value &amp;&amp;</div>
 <div class="line">        is_detected_exact&lt;bool, start_object_function_t, SAX&gt;::value &amp;&amp;</div>
 <div class="line">        is_detected_exact&lt;bool, key_function_t, SAX, string_t&gt;::value &amp;&amp;</div>
@@ -125,11 +123,6 @@ template&lt;typename SAX , typename BasicJsonType &gt; </div>
 <li>lib/<a class="el" href="json_8hpp_source.html">json.hpp</a></li>
 </ul>
 </div><!-- contents -->
-<div class="ttc" id="anamespacenlohmann_1_1detail_html_a4a3e14a011b9ea1ff849fc6d2411e6a0"><div class="ttname"><a href="namespacenlohmann_1_1detail.html#a4a3e14a011b9ea1ff849fc6d2411e6a0">nlohmann::detail::number_integer_function_t</a></div><div class="ttdeci">decltype(std::declval&lt; T &amp; &gt;().number_integer(std::declval&lt; Integer &gt;())) number_integer_function_t</div><div class="ttdef"><b>Definition:</b> json.hpp:5039</div></div>
-<div class="ttc" id="anamespacenlohmann_1_1detail_html_ad42df56e913abe26ed556e0e92f386f4"><div class="ttname"><a href="namespacenlohmann_1_1detail.html#ad42df56e913abe26ed556e0e92f386f4">nlohmann::detail::number_float_function_t</a></div><div class="ttdeci">decltype(std::declval&lt; T &amp; &gt;().number_float(std::declval&lt; Float &gt;(), std::declval&lt; const String &amp; &gt;())) number_float_function_t</div><div class="ttdef"><b>Definition:</b> json.hpp:5047</div></div>
-<div class="ttc" id="anamespacenlohmann_1_1detail_html_a74da7b17bda76f65d276feb18209c913"><div class="ttname"><a href="namespacenlohmann_1_1detail.html#a74da7b17bda76f65d276feb18209c913">nlohmann::detail::number_unsigned_function_t</a></div><div class="ttdeci">decltype(std::declval&lt; T &amp; &gt;().number_unsigned(std::declval&lt; Unsigned &gt;())) number_unsigned_function_t</div><div class="ttdef"><b>Definition:</b> json.hpp:5043</div></div>
-<div class="ttc" id="astructnlohmann_1_1detail_1_1is__sax_html_a8ab7e51087000e948b4a2492257484dc"><div class="ttname"><a href="structnlohmann_1_1detail_1_1is__sax.html#a8ab7e51087000e948b4a2492257484dc">nlohmann::detail::is_sax::value</a></div><div class="ttdeci">static constexpr bool value</div><div class="ttdef"><b>Definition:</b> json.hpp:5090</div></div>
-<div class="ttc" id="anamespacenlohmann_1_1detail_html_a7542b4dbac07817fd4849ecfa4619def"><div class="ttname"><a href="namespacenlohmann_1_1detail.html#a7542b4dbac07817fd4849ecfa4619def">nlohmann::detail::is_detected_exact</a></div><div class="ttdeci">std::is_same&lt; Expected, detected_t&lt; Op, Args... &gt; &gt; is_detected_exact</div><div class="ttdef"><b>Definition:</b> json.hpp:2376</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

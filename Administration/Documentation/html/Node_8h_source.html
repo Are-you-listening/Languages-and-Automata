@@ -69,42 +69,40 @@ $(function() {
 <div class="title">Node.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="Node_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by emill on 27/02/2023.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifndef DFA_NODE_H</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#define DFA_NODE_H</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;list&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a>;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;list&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classNode.html">   13</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNode.html">Node</a> {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classNode.html#a4cd656d544174479df27f0759e5a3997">   15</a></span>&#160;    <span class="keywordtype">string</span> <a class="code" href="classNode.html#a4cd656d544174479df27f0759e5a3997">name</a>;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classNode.html#a274d2a951bdbbdfca80472be34ec006b">   16</a></span>&#160;    map&lt;char, Node*&gt; <a class="code" href="classNode.html#a274d2a951bdbbdfca80472be34ec006b">connections</a>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classNode.html#a3ca55314288bb6a08ac027861e202271">   17</a></span>&#160;    map&lt;Node*, string&gt; <a class="code" href="classNode.html#a3ca55314288bb6a08ac027861e202271">regexconnections</a>;</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classNode.html#a73edbb1b084278d5dc5bdfda98cfb2a4">   18</a></span>&#160;    <span class="keywordtype">string</span> <a class="code" href="classNode.html#a73edbb1b084278d5dc5bdfda98cfb2a4">selfconnection</a>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classNode.html">Node</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp;name);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> addconnection(<a class="code" href="classNode.html">Node</a>* otherState, <span class="keywordtype">char</span> symbol);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;getName() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">using namespace </span>std;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classNode.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNode.html">Node</a> {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">string</span> name;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    map&lt;char, Node*&gt; connections;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    map&lt;Node*, string&gt; regexconnections;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">string</span> selfconnection;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classNode.html">Node</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp;name);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">void</span> addconnection(<a class="code" href="classNode.html">Node</a>* otherState, <span class="keywordtype">char</span> symbol);</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">const</span> map&lt;char, Node*&gt; &amp;getConnections() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;};</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;getName() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">const</span> map&lt;char, Node*&gt; &amp;getConnections() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif //DFA_NODE_H</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNode.html">Node</a>();</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;};</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif //DFA_NODE_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassNode_html_a274d2a951bdbbdfca80472be34ec006b"><div class="ttname"><a href="classNode.html#a274d2a951bdbbdfca80472be34ec006b">Node::connections</a></div><div class="ttdeci">map&lt; char, Node * &gt; connections</div><div class="ttdef"><b>Definition:</b> Node.h:16</div></div>
-<div class="ttc" id="aclassNode_html_a3ca55314288bb6a08ac027861e202271"><div class="ttname"><a href="classNode.html#a3ca55314288bb6a08ac027861e202271">Node::regexconnections</a></div><div class="ttdeci">map&lt; Node *, string &gt; regexconnections</div><div class="ttdef"><b>Definition:</b> Node.h:17</div></div>
-<div class="ttc" id="aclassNode_html"><div class="ttname"><a href="classNode.html">Node</a></div><div class="ttdef"><b>Definition:</b> Node.h:13</div></div>
-<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> json.hpp:3431</div></div>
-<div class="ttc" id="aclassNode_html_a73edbb1b084278d5dc5bdfda98cfb2a4"><div class="ttname"><a href="classNode.html#a73edbb1b084278d5dc5bdfda98cfb2a4">Node::selfconnection</a></div><div class="ttdeci">string selfconnection</div><div class="ttdef"><b>Definition:</b> Node.h:18</div></div>
-<div class="ttc" id="aclassNode_html_a4cd656d544174479df27f0759e5a3997"><div class="ttname"><a href="classNode.html#a4cd656d544174479df27f0759e5a3997">Node::name</a></div><div class="ttdeci">string name</div><div class="ttdef"><b>Definition:</b> Node.h:15</div></div>
+<div class="ttc" id="aclassNode_html"><div class="ttname"><a href="classNode.html">Node</a></div><div class="ttdef"><b>Definition:</b> Node.h:15</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
