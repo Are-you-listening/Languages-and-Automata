@@ -527,11 +527,14 @@ Song::Song(DFA* s, vector<int> &param, bool console): console(console){
     if(console){cout << log;}
     logs.push_back(log);
     string temp = k.re;
-    string t = GenerateRandomRE(temp).first;
+    string t = GenerateRandomRE(temp, 0).first;
     //string t = generalize_re(temp);
 
     //For each element of the RE
     for(string::iterator it=t.begin(); it!=t.end(); it++){
+        if ((*it) == '\000'){
+            break;
+        }
         vector<unsigned int> note_values;
         for(auto it2=param.begin(); it2!=param.end()-1; it2++){
             if(*it2==true){ //Param used
@@ -543,6 +546,7 @@ Song::Song(DFA* s, vector<int> &param, bool console): console(console){
             }
         }
         it--;
+
         Note* n=new Note(note_values[0]*time_split,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]);
         note_map[{note_values[0]*time_split,1}].push_back(n);
         Note* n2=new Note(note_values[0]*time_split+tan((double) note_values[1]/155.0*1.6)/1.5*1000,tan((double) note_values[1]/155.0*1.6)/1.5*1000,note_values[3],note_values[4]*3,note_values[2]); //Make the note with the given data
@@ -663,34 +667,40 @@ string Song::generalize_re(const string& s){
     return new_string;
 }
 
-pair<string, string> Song::GenerateRandomRE(const string& s){
-    string::const_iterator it = s.begin();
+pair<string, int> Song::GenerateRandomRE(const string& s, int ij){
+    int local_i = ij  ;
     vector<string> v;
     string temp;
     int max = -1;
+
     while(true){
-        if ((*it) == '('){
-            it++;
-            pair<string, string> p = GenerateRandomRE(string(it, s.end()));
+        char c = s[local_i];
+        if (s[local_i] == '('){
+            local_i++;
+            pair<string, int> p = GenerateRandomRE(s, local_i);
             string out = p.first;
-            it = p.second.begin();
+            local_i = p.second;
             temp += out;
-        }else if((*it) == '+') {
+        }else if(s[local_i] == '+') {
+            local_i++;
             v.push_back(temp);
             if ((int) temp.size() > max){
                 max = temp.size();
             }
             temp = "";
-            it++;
-        }else if((*it) == ')'){
-            it++;
+        }else if(s[local_i] == ')'){
+
+            v.push_back(temp);
+            if ((int) temp.size() > max){
+                max = temp.size();
+            }
             break;
         }else{
-            temp += (*it);
-            it++;
+            temp += s[local_i];
+            local_i++;
         }
         
-        if (it == s.end()){
+        if (local_i >= (int) s.size()){
             v.push_back(temp);
             if ((int) temp.size() > max){
                 max = temp.size();
@@ -709,6 +719,6 @@ pair<string, string> Song::GenerateRandomRE(const string& s){
         
         final += v[r][i];
     }
-    
-    return make_pair(final, string(it, s.end()));
+
+    return make_pair(final, local_i+1);
 }

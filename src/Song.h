@@ -125,7 +125,7 @@ private:
      * @param s 
      * @return 
      */
-    pair<string, string> GenerateRandomRE(const string& s);
+    pair<string, int> GenerateRandomRE(const string& s, int i);
 
 public:
     /**
