@@ -17,7 +17,7 @@ int main() {
     while(getline(Filelist,c)){
         Song* song = new Song(c2+c,true);
         song->setTitle(c);
-        ifstream Filelist2("filelist3.txt"); // dit ongewijzigd laten a.u.b.
+        ifstream Filelist2("filelist2.txt");
         string c3;
         while(getline(Filelist2,c3)){
             if(find(doubleComparison.begin(), doubleComparison.end(), make_pair(c,c3))!=doubleComparison.end()){
