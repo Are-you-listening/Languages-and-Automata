@@ -1,6 +1,6 @@
 # I am listening
 
-**By: Anas Stitou, Emil Lambert, Tibo Verreycken,  Kars Christian van Velzen**
+**By: Anas Stitou, Emil Lambert, Tibo Verreycken,  Kars van Velzen**
 
 ## Course Info
 
