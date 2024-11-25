@@ -1,6 +1,6 @@
 # I am listening
-
-**By: Anas Stitou, Emil Lambert, Tibo Verreycken,  Kars van Velzen**
+> A program which can parse songs and compare & categorise these songs using Finite Automata.
+> > By Anas Stitou, Emil Lambert, Tibo Verreycken & Kars van Velzen
 
 ## Course Info
 
@@ -15,8 +15,6 @@ You can find detailed information about the course using this [link](https://www
 Creating a functional program by using a set of theoretical constructs (algoritms and automata).
 
 ## Final Product
-
-A program which can parse songs and compare & categorise these songs using Finite Automata. 
 
 The program has a midi file parser from which datat is extracted and automata are constructed. By applying different algorithms we can check for similarity in songs, group songs on genre (specified by user defined paramaters) It is also possible to convert an automaton into a song (midi file).
 
